@@ -1,0 +1,8 @@
+package ufhealth.integratedmachine.client.ui.main.presenter;
+
+/**
+ * Created by Administrator on 2018/4/9 0009.
+ */
+
+public class MainPresenter {
+}

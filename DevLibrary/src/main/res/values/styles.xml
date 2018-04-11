@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--*************在屏幕中部放大或则缩小直至完全显示本身的动画效果**************-->
+    <style name="CenterOpenDialogAnim" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/show_centernotify</item>
+        <item name="android:windowExitAnimation">@anim/dismiss_centernotify</item>
+    </style>
+
+    <!--**************从屏幕底部向顶部移动直至完全显示本身的动画效果***************-->
+    <style name="BottomOpenDialogAnim" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/show_bottomnotify</item>
+        <item name="android:windowExitAnimation">@anim/dismiss_bottomnotify</item>
+    </style>
+
+    <!--*************与自定义PullableWebView配对的Progressbar的Style***************-->
+    <!--***********如果想改变进度条的颜色效果,则添加不同的drawable样式即可*********-->
+    <style name="PullableWebViewProgressbar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/pullablewebviewprogressbar</item>
+    </style>
+
+</resources>
