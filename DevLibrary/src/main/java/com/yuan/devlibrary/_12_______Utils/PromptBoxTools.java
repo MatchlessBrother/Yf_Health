@@ -38,11 +38,11 @@ public class PromptBoxTools
     /*******************************快速弹出Toast提示框，参数是内容和显示时间**********************/
     public static void showToast(Context context,Object obj, int during)
     {
-        showToast(context,obj, Gravity.TOP | Gravity.CENTER_HORIZONTAL,during);
+        showToast(context,obj,14,Gravity.TOP | Gravity.CENTER_HORIZONTAL,during);
     }
 
     /**********************快速弹出Toast提示框，参数是内容和显示位置以及显示时间*******************/
-    public static void showToast(Context context,Object obj,int gravity,int during)
+    public static void showToast(Context context,Object obj,float objSize,int gravity,int during)
     {
         Toast toast = new Toast(context);
         View layout = ResourceTools.generateView(context,R.layout.inflater_toastviewdefault);
@@ -52,6 +52,7 @@ public class PromptBoxTools
         toast.setGravity(gravity,0,12);
         toast.setDuration(during);
         TextView toastTextView = (TextView) layout.findViewById(R.id.toastview);
+        toastTextView.setTextSize(objSize);
         if (obj != null)
         {
             toastTextView.setText(obj.toString());

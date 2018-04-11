@@ -10,7 +10,7 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
-import ufhealth.integratedmachine.client.base.BaseAct;
+
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 
@@ -273,4 +273,6 @@ public class MainAct extends MainAct_V implements View.OnClickListener
     {
 
     }
+
+
 }
