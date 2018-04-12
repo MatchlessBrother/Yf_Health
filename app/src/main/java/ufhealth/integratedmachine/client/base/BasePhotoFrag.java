@@ -5,21 +5,14 @@ import android.view.Gravity;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.graphics.drawable.ColorDrawable;
-import com.yuan.devlibrary._2Activity.BasePhotoActivity;
+import com.yuan.devlibrary._3Fragment.BaseFragment;
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
-import com.yuan.devlibrary._12_______Utils.ScreenInfosTools;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
-public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_View
+public abstract class BasePhotoFrag extends BaseFragment implements BaseMvp_View
 {
-    protected void initStatusBarAddTitleBar()
-    {
-        if(!ScreenInfosTools.isShowTitleBar(this))
-            ScreenInfosTools.hideTitleBar(this);
-    }
-
     /**********************************************************************************************/
     /**********************************************************************************************/
 
@@ -31,7 +24,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void showToast(String str,float strSize)
     {
-        PromptBoxTools.showToast(this,str,strSize, TypedValue.COMPLEX_UNIT_SP, Gravity.CENTER,0);
+        PromptBoxTools.showToast(getActivity(),str,strSize, TypedValue.COMPLEX_UNIT_SP, Gravity.CENTER,0);
     }
 
     /**********************************************************************************************/
@@ -39,7 +32,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseProgressDialog showLoadingDialog()
     {
-        return PromptBoxTools.showLoadingDialog(this,"请稍等",1,80,false,null);
+        return PromptBoxTools.showLoadingDialog(getActivity(),"请稍等",1,80,false,null);
     }
 
     public void dismissLoadingDialog(BaseProgressDialog progressDialog)
@@ -49,7 +42,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseProgressDialog showLoadingDialog(boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxTools.showLoadingDialog(this,"请稍等",1,80,isCanceledOnTouchOutside,onClickOutsideListener);
+        return PromptBoxTools.showLoadingDialog(getActivity(),"请稍等",1,80,isCanceledOnTouchOutside,onClickOutsideListener);
     }
 
     /**********************************************************************************************/
@@ -67,7 +60,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseDialog showPromptDialog(String titleStr,String contentStr,String falseStr,String trueStr,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxTools.showPromptDialog(this,titleStr,Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
+        return PromptBoxTools.showPromptDialog(getActivity(),titleStr, Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
                 contentStr, Color.argb(255,102,102,102),30,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),
                 falseStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
                 trueStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,

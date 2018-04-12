@@ -1,7 +1,6 @@
 package ufhealth.integratedmachine.client.ui.base;
 
 import android.view.View;
-import android.graphics.drawable.Drawable;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
@@ -13,12 +12,19 @@ public interface BaseMvp_View
     /************显示Toast提示框************/
     void showToast(String str,float strSize);
 
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+
     /**显示加载进度框*/
     BaseProgressDialog showLoadingDialog();
 
     /**隐藏加载进度框*/
     void dismissLoadingDialog(BaseProgressDialog progressDialog);
 
+    /**显示加载进度框*/
+    BaseProgressDialog showLoadingDialog(boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener);
+
+    /**********************************************************************************************/
     /*************************************隐藏默认提示框*******************************************/
     void dismissPromptDialog(BaseDialog baseDialog);
 

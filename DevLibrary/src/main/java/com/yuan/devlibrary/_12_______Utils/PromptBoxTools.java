@@ -195,12 +195,12 @@ public class PromptBoxTools
     /********************显示权限设置提示框,contentStr为提示内容,btnStr为按钮内容******************/
     public static BaseDialog showPermissionDialog(Context context,String contentStr,String btnStr,View.OnClickListener onClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPermissionDialog(context,contentStr, Color.argb(255,255,255,255),13,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),btnStr,Color.argb(255,216,80,126),14,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),onClickListener,onClickOutsideListener);
+        return showPermissionDialog(context,contentStr, Color.argb(255,255,255,255),13,TypedValue.COMPLEX_UNIT_DIP,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),btnStr,Color.argb(255,216,80,126),14,TypedValue.COMPLEX_UNIT_DIP,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),onClickListener,onClickOutsideListener);
     }
 
     /**显示权限设置提示框,contentStr为提示内容,contentStrColor为提示字体的颜色,contentStrSize为提***
      *****示字体的大小(Dp),contentStrBackground为提示内容的背景,后面参数和前面的相似，自己变通*****/
-    public static BaseDialog showPermissionDialog(final Context context, String contentStr, int contentStrColor, int contentStrSize, Drawable contentStrBackground, String btnStr, int btnStrColor, int btnStrSize, Drawable btnStrBackground,View.OnClickListener onClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPermissionDialog(final Context context, String contentStr, int contentStrColor, int contentStrSize,int contentStrSizeType,Drawable contentStrBackground, String btnStr, int btnStrColor, int btnStrSize,int btnStrSizeType,Drawable btnStrBackground,View.OnClickListener onClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
         final BaseDialog permissionDialog = new BaseDialog(context);
         permissionDialog.setCanceledOnTouchOutside(true);
@@ -210,12 +210,12 @@ public class PromptBoxTools
         permissionDialog.setContentView(view);
         TextView content = (TextView)view.findViewById(R.id.permissiondialog_content);
         content.setText(contentStr.trim());
-        content.setTextSize(TypedValue.COMPLEX_UNIT_DIP,contentStrSize);
+        content.setTextSize(contentStrSizeType,contentStrSize);
         content.setTextColor(contentStrColor);
         content.setBackgroundDrawable(contentStrBackground);
         TextView btn = (TextView)view.findViewById(R.id.permissiondialog_btn);
         btn.setText(btnStr.trim());
-        btn.setTextSize(TypedValue.COMPLEX_UNIT_DIP,btnStrSize);
+        btn.setTextSize(btnStrSizeType,btnStrSize);
         btn.setTextColor(btnStrColor);
         btn.setBackgroundDrawable(btnStrBackground);
         if(null != onClickListener)

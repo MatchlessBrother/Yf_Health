@@ -1,7 +1,7 @@
 package com.yuan.devlibrary._3Fragment;
 
-import android.view.View;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,7 @@ import com.yuan.devlibrary._12_______Utils.ResourceTools;
 public abstract class BaseFragment extends Fragment
 {
     protected BaseActivity activity;
-    protected View         mRootView;
+    protected View        mRootView;
 
     /***********************************Fragment初始化界面的部分***********************************/
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
