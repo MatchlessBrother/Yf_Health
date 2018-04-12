@@ -1,5 +1,7 @@
 package ufhealth.integratedmachine.client.base;
 
+import android.util.TypedValue;
+
 import com.yuan.devlibrary._1App.BaseApplication;
 import com.yuan.devlibrary._1App.BaseUiAdapterHelper;
 

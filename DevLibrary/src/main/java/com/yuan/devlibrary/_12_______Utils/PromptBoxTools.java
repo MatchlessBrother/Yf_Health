@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.Gravity;
 import android.widget.Toast;
+import com.yuan.devlibrary.R;
 import android.graphics.Color;
 import android.content.Intent;
 import android.widget.TextView;
@@ -13,7 +14,6 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 import android.provider.Settings;
 import android.view.WindowManager;
-import com.yuan.devlibrary.R;
 import android.view.LayoutInflater;
 import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
@@ -30,19 +30,19 @@ public class PromptBoxTools
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
     /********************************快速弹出Toast提示框，参数是内容*******************************/
-    public static void showToast(Context context,Object obj)
+    public static void showToast(Context context,String str)
     {
-        showToast(context,obj,Toast.LENGTH_SHORT);
+        showToast(context,str,12f,TypedValue.COMPLEX_UNIT_SP,Toast.LENGTH_SHORT);
     }
 
-    /*******************************快速弹出Toast提示框，参数是内容和显示时间**********************/
-    public static void showToast(Context context,Object obj, int during)
+    /*****************************快速弹出Toast提示框，参数是内容和显示时间************************/
+    public static void showToast(Context context,String str,float strSize,int strTypeValue,int during)
     {
-        showToast(context,obj,14,Gravity.TOP | Gravity.CENTER_HORIZONTAL,during);
+        showToast(context,str,strSize,strTypeValue,Gravity.CENTER,during);
     }
 
     /**********************快速弹出Toast提示框，参数是内容和显示位置以及显示时间*******************/
-    public static void showToast(Context context,Object obj,float objSize,int gravity,int during)
+    public static void showToast(Context context,String str,float strSize,int strTypeValue,int gravity,int during)
     {
         Toast toast = new Toast(context);
         View layout = ResourceTools.generateView(context,R.layout.inflater_toastviewdefault);
@@ -52,10 +52,10 @@ public class PromptBoxTools
         toast.setGravity(gravity,0,12);
         toast.setDuration(during);
         TextView toastTextView = (TextView) layout.findViewById(R.id.toastview);
-        toastTextView.setTextSize(objSize);
-        if (obj != null)
+        toastTextView.setTextSize(strTypeValue,strSize);
+        if (str != null)
         {
-            toastTextView.setText(obj.toString());
+            toastTextView.setText(str);
             toast.show();
         }
     }
@@ -63,14 +63,21 @@ public class PromptBoxTools
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
-    /****与服务器开始通讯时默认弹出的对话框1：代表的是圆圈旋转进度框,2：代表的是飞机飞行进度框*****/
-    public static BaseProgressDialog showLoadingDialog(Context context,boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
+    /*********************************与服务器结束通讯时关闭对话框*********************************/
+    public static void dismissLoadingDialog(BaseProgressDialog progressDialog)
     {
-        return showLoadingDialog(context,"请求中……", 1,isCanceledOnTouchOutside,onClickOutsideListener);
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     /****与服务器开始通讯时默认弹出的对话框1：代表的是圆圈旋转进度框,2：代表的是飞机飞行进度框*****/
-    public static BaseProgressDialog showLoadingDialog(Context context,String msg,int themeStyleValue,boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseProgressDialog showLoadingDialog(Context context,boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
+    {
+        return showLoadingDialog(context,"请求中……",1,110,isCanceledOnTouchOutside,onClickOutsideListener);
+    }
+
+    /****与服务器开始通讯时默认弹出的对话框1：代表的是圆圈旋转进度框,2：代表的是飞机飞行进度框*****/
+    public static BaseProgressDialog showLoadingDialog(Context context,String msg,int themeStyleValue,int imgSize/**Dp*/,boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
     {
         BaseProgressDialog progressDialog = new BaseProgressDialog(context);
         progressDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
@@ -169,17 +176,11 @@ public class PromptBoxTools
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = PixelConvertedTools.dpTpx(context,110);
+        params.width = PixelConvertedTools.dpTpx(context,imgSize);
+        params.height = PixelConvertedTools.dpTpx(context,imgSize);
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return progressDialog;
-    }
-
-    /*********************************与服务器结束通讯时关闭对话框*********************************/
-    public static void dismissLoadingDialog(BaseProgressDialog progressDialog)
-    {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     /**------------------------------------------------------------------------------------------**/
@@ -264,22 +265,29 @@ public class PromptBoxTools
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
+    /*************************************隐藏默认提示框*******************************************/
+    public static void dismissPromptDialog(BaseDialog baseDialog)
+    {
+        if(null != baseDialog && baseDialog.isShowing())
+            baseDialog.dismiss();
+    }
+
     /*************************************显示默认提示框*******************************************/
     public static BaseDialog showPromptDialog(Context context,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPromptDialog(context,"亲情提示：",Color.argb(255,255,255,255),15,new ColorDrawable(0xff61dafe),View.VISIBLE,"亲！确认要进行此操作吗？",Color.argb(255,88,88,88),13,new ColorDrawable(0xffffffff),"不了",Color.argb(255,139,139,139),14,new ColorDrawable(0xffeeeeee),View.VISIBLE,"是的",Color.argb(255,255,255,255),14,new ColorDrawable(0xff61dafe),View.VISIBLE,true,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
+        return showPromptDialog(context,"亲情提示：",Color.argb(255,255,255,255),15,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,"亲！确认要进行此操作吗？",Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),"不了",Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),View.VISIBLE,"是的",Color.argb(255,255,255,255),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,true,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
     }
 
     /**显示默认提示框，参数含义自己根据名字看，字体大小值默认以DPS为准，颜色属性值默认以动态Color生*
      ********成法为准,背景属性值默认以动态ColorDrawable生成法为准,其余则按照普通情况使用即可*******/
     public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,Drawable titleStrBackground,int titleStrVisible,String contentStr,String falseStr,int falseStrVisible,String trueStr,int trueStrColor,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPromptDialog(context,titleStr,titleStrColor,15,titleStrBackground,titleStrVisible,contentStr,Color.argb(255,88,88,88),13,new ColorDrawable(0xffffffff),falseStr,Color.argb(255,139,139,139),14,new ColorDrawable(0xffeeeeee),falseStrVisible,trueStr,trueStrColor,14,trueStrBackground,trueStrVisible,isCanceledOnTouchOutside,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
+        return showPromptDialog(context,titleStr,titleStrColor,15,TypedValue.COMPLEX_UNIT_DIP,titleStrBackground,titleStrVisible,contentStr,Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),falseStr,Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),falseStrVisible,trueStr,trueStrColor,14,TypedValue.COMPLEX_UNIT_DIP,trueStrBackground,trueStrVisible,isCanceledOnTouchOutside,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
     }
 
     /**显示默认提示框，参数含义自己根据名字看，字体大小值默认以DPS为准，颜色属性值默认以动态Color生*
      ********成法为准,背景属性值默认以动态ColorDrawable生成法为准,其余则按照普通情况使用即可*******/
-    public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,int titleStrSize,Drawable titleStrBackground,int titleStrVisible,String contentStr,int contentStrColor,int contentStrSize,Drawable contentStrBackground,String falseStr,int falseStrColor,int falseStrSize,Drawable falseStrBackground,int falseStrVisible,String trueStr,int trueStrColor,int trueStrSize,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,int titleStrSize,int titleStrSizeType,Drawable titleStrBackground,int titleStrVisible,String contentStr,int contentStrColor,int contentStrSize,int contentStrSizeType,Drawable contentStrBackground,String falseStr,int falseStrColor,int falseStrSize,int falseStrSizeType,Drawable falseStrBackground,int falseStrVisible,String trueStr,int trueStrColor,int trueStrSize,int trueStrSizeType,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
         final BaseDialog promptDialog = new BaseDialog(context);
         promptDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
@@ -289,24 +297,24 @@ public class PromptBoxTools
         promptDialog.setContentView(view);
         TextView title = (TextView)view.findViewById(R.id.promptdialog_title);
         title.setText(titleStr.trim());
-        title.setTextSize(TypedValue.COMPLEX_UNIT_DIP,titleStrSize);
+        title.setTextSize(titleStrSizeType,titleStrSize);
         title.setTextColor(titleStrColor);
         title.setVisibility(titleStrVisible);
         title.setBackgroundDrawable(titleStrBackground);
         TextView content = (TextView)view.findViewById(R.id.promptdialog_content);
         content.setText(contentStr.trim());
-        content.setTextSize(TypedValue.COMPLEX_UNIT_DIP,contentStrSize);
+        content.setTextSize(contentStrSizeType,contentStrSize);
         content.setTextColor(contentStrColor);
         content.setBackgroundDrawable(contentStrBackground);
         TextView trueBtn = (TextView)view.findViewById(R.id.promptdialog_true);
         trueBtn.setText(trueStr.trim());
-        trueBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP,trueStrSize);
+        trueBtn.setTextSize(trueStrSizeType,trueStrSize);
         trueBtn.setTextColor(trueStrColor);
         trueBtn.setVisibility(trueStrVisible);
         trueBtn.setBackgroundDrawable(trueStrBackground);
         TextView falseBtn = (TextView)view.findViewById(R.id.promptdialog_false);
         falseBtn.setText(falseStr.trim());
-        falseBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP,falseStrSize);
+        falseBtn.setTextSize(falseStrSizeType,falseStrSize);
         falseBtn.setTextColor(falseStrColor);
         falseBtn.setVisibility(falseStrVisible);
         falseBtn.setBackgroundDrawable(falseStrBackground);
@@ -356,16 +364,9 @@ public class PromptBoxTools
         if(displayMetrics.widthPixels <= 1480)
             params.width = displayMetrics.widthPixels - 160;
         else
-            params.width = displayMetrics.widthPixels - displayMetrics.widthPixels/3;
+            params.width = displayMetrics.widthPixels / 2;
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return promptDialog;
-    }
-
-    /*************************************隐藏默认提示框*******************************************/
-    public static void dismissPromptDialog(BaseDialog baseDialog)
-    {
-        if(null != baseDialog && baseDialog.isShowing())
-            baseDialog.dismiss();
     }
 }

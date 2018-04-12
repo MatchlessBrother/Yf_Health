@@ -7,7 +7,7 @@
     <solid android:color="#BB000000"/>
 
     <!-- 圆角矩形四个顶角的度数-->
-    <corners android:radius="88dp"/>
+    <corners android:radius="3dp"/>
 
     <!-- padding属性:View里面的文字与View边界的间隔 -->
     <padding

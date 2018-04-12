@@ -25,7 +25,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseProgressDialog showLoading()
     {
-        return PromptBoxTools.showLoadingDialog(this,"请稍等",2,false,null);
+        return PromptBoxTools.showLoadingDialog(this,"请稍等",2,60,false,null);
     }
 
     public void hideLoading(BaseProgressDialog progressDialog)

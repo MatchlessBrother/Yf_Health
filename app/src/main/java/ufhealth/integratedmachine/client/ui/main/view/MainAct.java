@@ -1,5 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ImageButton;
@@ -11,10 +13,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import ufhealth.integratedmachine.client.base.BaseAct;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 
-public class MainAct extends MainAct_V implements View.OnClickListener
+public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 {
     private Toolbar mainToolbar;
     private TextView mainCountdown;
@@ -36,7 +41,11 @@ public class MainAct extends MainAct_V implements View.OnClickListener
     private LinearLayout mainSlideWddd;
     private LinearLayout mainSlideWdda;
     private LinearLayout mainSlideGybj;
-    private boolean mIsLogged = false;
+    private boolean mIsLogged = true;
+
+    public enum STATE {LOGING, LOGED, LOGOUT}
+    public STATE mState = STATE.LOGOUT;
+
 
     protected int setLayoutResID()
     {
@@ -128,31 +137,18 @@ public class MainAct extends MainAct_V implements View.OnClickListener
         {
            if(view.getId() == R.id.main_tsbtn)
            {
-              clickLoginBtn();
+
            }
            else
            {
-               PromptBoxTools.showToast(this,"请刷身份证登录之后再进行操作");
+               showToast("请刷身份证登录之后再进行操作",28);
            }
         }
     }
 
     /**********************************************************************************************/
     /********************************************VIEW层********************************************/
-    /**********************************************************************************************/
 
-
-    public void clickLoginBtn()
-    {
-
-    }
-
-    @Override
-    public void clickLoginIn() {
-
-    }
-
-    @Override
     public void loginIn()
     {
         try
@@ -176,7 +172,6 @@ public class MainAct extends MainAct_V implements View.OnClickListener
         }
     }
 
-    @Override
     public void loginOn()
     {
         mIsLogged = true;
@@ -190,7 +185,6 @@ public class MainAct extends MainAct_V implements View.OnClickListener
         mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    @Override
     public void loginOut()
     {
         mIsLogged = false;
@@ -206,27 +200,36 @@ public class MainAct extends MainAct_V implements View.OnClickListener
 
     public void clickZxzx()
     {
+        showToast("是是进入",25);
+    }
 
+    private BaseProgressDialog baseProgressDialog;
+
+    @Override
+    public BaseProgressDialog showLoadingDialog() {
+        return null;
     }
 
     public void clickBjjy()
     {
-
+        baseProgressDialog = showLoadingDialog();
     }
 
     public void clickTjfw()
     {
-
+        dismissLoadingDialog(baseProgressDialog);
     }
 
+    private BaseDialog baseDialog;
     public void clickYyfw()
     {
-
+        baseDialog = showPromptDialog("标题","具体提示具内容","取消",
+                "确定",false,null,null,null);
     }
 
     public void clickJkjc()
     {
-
+        dismissPromptDialog(baseDialog);
     }
 
     public void clickJkda()
@@ -274,5 +277,8 @@ public class MainAct extends MainAct_V implements View.OnClickListener
 
     }
 
+    @Override
+    public void clickLoginIn() {
 
+    }
 }

@@ -1,5 +1,6 @@
 package com.yuan.devlibrary._12_______Utils;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.view.Window;
 import android.app.Activity;
@@ -155,5 +156,11 @@ public class ScreenInfosTools
         Rect rect = new Rect();
         context.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(rect);
         return rect.height();
+    }
+
+    /************判定当前屏幕是否为竖屏,竖屏true,横屏false************/
+    public static boolean isScreenPortrait(Context context)
+    {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 }
