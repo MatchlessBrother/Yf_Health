@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">优服健康</string>
+    <string name="app_name_dev">优服健康测试版</string>
     <string name="action_settings">Settings</string>
     <string name="navigation_drawer_open">开启侧滑功能</string>
     <string name="navigation_drawer_close">关闭侧滑功能</string>

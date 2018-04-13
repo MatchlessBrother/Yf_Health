@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def keyStorePropertiesFile = rootProject.file("keystore.properties")
+def dev_keyStorePropertiesFile = rootProject.file("devkeystore.properties")
+def keyStoreProperties = new Properties()
+def dev_keyStoreProperties = new Properties()
+keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
+dev_keyStoreProperties.load(new FileInputStream(dev_keyStorePropertiesFile))
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.2"
@@ -10,27 +17,81 @@ android {
         versionName "1.0.0"
         minSdkVersion 19
         targetSdkVersion 27
+        flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    productFlavors{
+        /**正式版**/
+        publish{
+            applicationId "ufhealth.integratedmachine.client"
+            manifestPlaceholders = [APP_NAME:"@string/app_name"]
+            buildConfigField 'String', "SERVICE_URL",'"https://dt-employee-api.24hkl.com/"'
+        }
+
+        /**测试版**/
+        develop{
+            applicationId "ufhealth.integratedmachine.client.develop"
+            manifestPlaceholders =[APP_NAME:"@string/app_name_dev"]
+            buildConfigField 'String', "SERVICE_URL",'"https://dt-employee-api.24hkl.com/"'
+        }
+    }
+
+    signingConfigs{
+        release {
+            keyAlias keyStoreProperties['KeyAlias']
+            storeFile file(keyStoreProperties['StoreFile'])
+            keyPassword keyStoreProperties['KeyPassword']
+            storePassword keyStoreProperties['StorePassword']
+        }
+
+        debug{
+            keyAlias dev_keyStoreProperties['KeyAlias']
+            storeFile file(dev_keyStoreProperties['StoreFile'])
+            keyPassword dev_keyStoreProperties['KeyPassword']
+            storePassword dev_keyStoreProperties['StorePassword']
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            jniDebuggable false
+            multiDexEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            /**配置签名密匙*/
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
+            debuggable true
+            jniDebuggable true
             minifyEnabled false
+            multiDexEnabled true
+            zipAlignEnabled false
+            shrinkResources false
+            /**不用配置签名密匙*/
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
+    /**加快dex速度*/
+    dexOptions {
+        preDexLibraries true
+        maxProcessCount 8
+        javaMaxHeapSize "2048m"
+    }
+}
 dependencies {
     implementation project(':DevLibrary')
     testImplementation 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.37'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
