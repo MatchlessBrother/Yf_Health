@@ -6,14 +6,15 @@ import ufhealth.integratedmachine.client.base.BaseAct;
 
 public class UserInfoAct extends BaseAct
 {
-    protected int setLayoutResID()
-    {
+    @Override
+    protected int setLayoutResID() {
         return R.layout.activity_userinfo;
     }
 
     @Override
-    protected void initWidgets(View rootView) {
-
+    protected void initWidgets(View rootView)
+    {
+        super.initWidgets(rootView);
     }
 
     @Override

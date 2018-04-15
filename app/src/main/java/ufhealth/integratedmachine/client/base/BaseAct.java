@@ -32,7 +32,6 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
     @Override
     protected void initWidgets(View rootView)
     {
-        View obj  = rootView.findViewById(R.id.activity_title_back);
         if (null != rootView.findViewById(R.id.activity_title_back) &&
                 null != rootView.findViewById(R.id.activity_title_countdown) &&
                 null != rootView.findViewById(R.id.activity_title_content) &&
