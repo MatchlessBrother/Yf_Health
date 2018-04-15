@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -89,7 +90,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         toggle.syncState();
         if(mainDrawerlayout.isShown())
             mainDrawerlayout.closeDrawers();
-        mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         mainExit.setOnClickListener(this);
         mainTsbtn.setOnClickListener(this);
@@ -239,7 +240,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     public void clickMain_slide_img()
     {
-
+        startActivity(new Intent(this,UserInfoAct.class));
     }
 
     public void clickMain_slide_name()

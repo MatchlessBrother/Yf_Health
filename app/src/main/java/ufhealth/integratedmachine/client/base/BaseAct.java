@@ -1,9 +1,13 @@
 package ufhealth.integratedmachine.client.base;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
 import android.graphics.Color;
 import android.util.TypedValue;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import ufhealth.integratedmachine.client.R;
 import android.graphics.drawable.ColorDrawable;
 import com.yuan.devlibrary._2Activity.BaseActivity;
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
@@ -12,12 +16,47 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
-public abstract class BaseAct extends BaseActivity implements BaseMvp_View
+public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.OnClickListener
 {
+    protected TextView mTitleBackBtn;
+    protected TextView mTitleContent;
+    protected TextView mTitleCountdownBtn;
+    protected TextView mTitleMoreSelector;
+
     protected void initStatusBarAddTitleBar()
     {
-        if(!ScreenInfosTools.isShowTitleBar(this))
+        if (!ScreenInfosTools.isShowTitleBar(this))
             ScreenInfosTools.hideTitleBar(this);
+    }
+
+    @Override
+    protected void initWidgets(View rootView)
+    {
+        View obj  = rootView.findViewById(R.id.activity_title_back);
+        if (null != rootView.findViewById(R.id.activity_title_back) &&
+                null != rootView.findViewById(R.id.activity_title_countdown) &&
+                null != rootView.findViewById(R.id.activity_title_content) &&
+                null != rootView.findViewById(R.id.activity_title_more))
+        {
+            mTitleBackBtn = (TextView) rootView.findViewById(R.id.activity_title_back);
+            mTitleContent = (TextView) rootView.findViewById(R.id.activity_title_countdown);
+            mTitleCountdownBtn = (TextView) rootView.findViewById(R.id.activity_title_content);
+            mTitleMoreSelector = (TextView) rootView.findViewById(R.id.activity_title_more);
+            mTitleBackBtn.setOnClickListener(this);
+        }
+    }
+
+    protected boolean isUseDefaultTitleLine()
+    {
+        return null != mTitleBackBtn && null != mTitleCountdownBtn && null != mTitleContent && null != mTitleMoreSelector ? true : false;
+    }
+
+    public void onClick(View view)
+    {
+        switch(view.getId())
+        {
+            case R.id.activity_title_back:finish();break;
+        }
     }
 
     /**********************************************************************************************/
