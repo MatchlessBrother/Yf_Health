@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/activity_title_back"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
+        android:layout_width="38sp"
+        android:layout_height="38sp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="20pt"
         android:layout_marginRight="20pt"
@@ -48,8 +48,8 @@
 
     <TextView
         android:id="@+id/activity_title_more"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
+        android:layout_width="38sp"
+        android:layout_height="38sp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="20pt"
         android:layout_marginRight="20pt"
