@@ -4,16 +4,15 @@ import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import ufhealth.integratedmachine.client.base.BaseAct;
 
-public class UserInfoAct extends BaseAct
+public class UserInfoAct extends BaseAct implements View.OnClickListener
 {
-    @Override
-    protected int setLayoutResID() {
+    protected int setLayoutResID()
+    {
         return R.layout.activity_userinfo;
     }
 
     @Override
-    protected void initWidgets(View rootView)
-    {
+    protected void initWidgets(View rootView) {
         super.initWidgets(rootView);
     }
 
@@ -25,5 +24,10 @@ public class UserInfoAct extends BaseAct
     @Override
     protected void initLogic() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
     }
 }

@@ -1,11 +1,9 @@
 package ufhealth.integratedmachine.client.base;
 
-import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
 import android.graphics.Color;
 import android.util.TypedValue;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import ufhealth.integratedmachine.client.R;
 import android.graphics.drawable.ColorDrawable;
@@ -18,10 +16,10 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.OnClickListener
 {
-    protected TextView mTitleBackBtn;
-    protected TextView mTitleContent;
-    protected TextView mTitleCountdownBtn;
-    protected TextView mTitleMoreSelector;
+    private TextView mTitleBackBtn;
+    private TextView mTitleContent;
+    private TextView mTitleCountdownBtn;
+    private TextView mTitleMoreSelector;
 
     protected void initStatusBarAddTitleBar()
     {
@@ -29,7 +27,6 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
             ScreenInfosTools.hideTitleBar(this);
     }
 
-    @Override
     protected void initWidgets(View rootView)
     {
         if (null != rootView.findViewById(R.id.activity_title_back) &&
@@ -42,6 +39,16 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
             mTitleCountdownBtn = (TextView) rootView.findViewById(R.id.activity_title_content);
             mTitleMoreSelector = (TextView) rootView.findViewById(R.id.activity_title_more);
             mTitleBackBtn.setOnClickListener(this);
+            mTitleMoreSelector.setOnClickListener(this);
+        }
+    }
+
+    public void onClick(View view)
+    {
+        switch(view.getId())
+        {
+            case R.id.activity_title_back:finish();break;
+            case R.id.activity_title_more:showToast("hahahahah");break;
         }
     }
 
@@ -50,12 +57,27 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
         return null != mTitleBackBtn && null != mTitleCountdownBtn && null != mTitleContent && null != mTitleMoreSelector ? true : false;
     }
 
-    public void onClick(View view)
+    protected TextView getTitleMoreSelector()
     {
-        switch(view.getId())
+        if(isUseDefaultTitleLine() && null != mTitleMoreSelector)
+            return mTitleMoreSelector;
+        else
         {
-            case R.id.activity_title_back:finish();break;
+            showToast("因布局中未包含默认标题行,\n所以无法获取\"更多\"选择项");
+            return null;
         }
+    }
+
+    protected void setTitleContent(String title)
+    {
+        if(isUseDefaultTitleLine())
+            mTitleContent.setText(null != title ? title.trim().toString() : "");
+    }
+
+    protected void setTitleCountDownTime(Integer time)
+    {
+        if(isUseDefaultTitleLine())
+            mTitleCountdownBtn.setText((null != time ? time : 0) + "S");
     }
 
     /**********************************************************************************************/
