@@ -13,6 +13,12 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.ui.bjjy.view.BjjyAct;
+import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
+import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
+import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
+import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.ui.main.model.UserInfo;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
@@ -207,32 +213,38 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     public void clickZxzx()
     {
-
+        Intent intent = new Intent(this,ZxzxAct.class);
+        startActivity(intent);
     }
 
     public void clickBjjy()
     {
-
+        Intent intent = new Intent(this,BjjyAct.class);
+        startActivity(intent);
     }
 
     public void clickTjfw()
     {
-
+        Intent intent = new Intent(this,TjfwAct.class);
+        startActivity(intent);
     }
 
     public void clickYyfw()
     {
-
+        Intent intent = new Intent(this,YyfwAct.class);
+        startActivity(intent);
     }
 
     public void clickJkjc()
     {
-
+        Intent intent = new Intent(this,JkjcAct.class);
+        startActivity(intent);
     }
 
     public void clickJkda()
     {
-
+        Intent intent = new Intent(this,JkdaAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_img()
@@ -249,31 +261,37 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     public void clickMain_slide_grzl()
     {
-
+        Intent intent = new Intent(this,UserInfosAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_xxtz()
     {
-
+        Intent intent = new Intent(this,MsgNotifiesAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_wddd()
     {
-
+        Intent intent = new Intent(this,MyBillsAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_wdda()
     {
-
+        Intent intent = new Intent(this,MyArchivesAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_gybj()
     {
-
+        Intent intent = new Intent(this,AboutAppAct.class);
+        startActivity(intent);
     }
 
     public void clickMain_slide_xxtz_num()
     {
-
+        Intent intent = new Intent(this,MsgNotifiesAct.class);
+        startActivity(intent);
     }
 }

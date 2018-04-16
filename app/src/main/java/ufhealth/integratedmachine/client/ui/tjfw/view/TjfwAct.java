@@ -1,22 +1,22 @@
-package ufhealth.integratedmachine.client.ui.main.view;
+package ufhealth.integratedmachine.client.ui.tjfw.view;
 
 import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.ui.main.view_v.UserInfosAct_V;
+import ufhealth.integratedmachine.client.ui.tjfw.view_v.TjfwAct_V;
 
-public class UserInfosAct extends BaseAct implements UserInfosAct_V,View.OnClickListener
+public class TjfwAct extends BaseAct implements TjfwAct_V,View.OnClickListener
 {
     protected int setLayoutResID()
     {
-        return R.layout.activity_userinfos;
+        return R.layout.activity_tjfw;
     }
 
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleContent("个人资料");
+        setTitleContent("体检服务");
     }
 
     protected void initDatas()

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="ufhealth.integratedmachine.client">
 
     <application
@@ -22,6 +23,46 @@
 
         <activity
             android:name=".ui.main.view.UserInfosAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.main.view.MsgNotifiesAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.main.view.MyBillsAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.main.view.MyArchivesAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.main.view.AboutAppAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.ZxzxAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.bjjy.view.BjjyAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.tjfw.view.TjfwAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.yyfw.view.YyfwAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.jkjc.view.JkjcAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.jkda.view.JkdaAct"
             android:screenOrientation="landscape"/>
 
     </application>

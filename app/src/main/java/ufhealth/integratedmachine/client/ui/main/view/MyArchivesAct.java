@@ -4,19 +4,19 @@ import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.ui.main.view_v.UserInfosAct_V;
+import ufhealth.integratedmachine.client.ui.main.view_v.MyArchivesAct_V;
 
-public class UserInfosAct extends BaseAct implements UserInfosAct_V,View.OnClickListener
+public class MyArchivesAct extends BaseAct implements MyArchivesAct_V,View.OnClickListener
 {
     protected int setLayoutResID()
     {
-        return R.layout.activity_userinfos;
+        return R.layout.activity_myarchives;
     }
 
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleContent("个人资料");
+        setTitleContent("我的档案");
     }
 
     protected void initDatas()
