@@ -1,11 +1,15 @@
 package ufhealth.integratedmachine.client.ui.base;
 
 import android.view.View;
+import ufhealth.integratedmachine.client.base.BaseApp;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public interface BaseMvp_View
 {
+    /**************获取Application**********/
+    BaseApp getBaseApp();
+
     /************显示Toast提示框************/
     void showToast(String str);
 

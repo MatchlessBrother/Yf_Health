@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:singleLine="true"
-        android:text="180S"
+        android:text="0S"
         android:textColor="@color/white"
         android:textSize="36sp" />
 
@@ -57,6 +57,6 @@
         android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="27sp"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </LinearLayout>

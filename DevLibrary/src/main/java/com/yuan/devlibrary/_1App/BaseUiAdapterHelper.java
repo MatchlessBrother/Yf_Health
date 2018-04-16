@@ -104,8 +104,11 @@ public class BaseUiAdapterHelper
         if(activity == null) return;
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
-        if(ScreenInfosTools.isShowStatusBar(activity)) size.y = size.y - ScreenInfosTools.getStatusBarHeightBeforeInit(activity);
         Resources resources = activity.getResources();
+        resources.getDisplayMetrics().widthPixels = size.x;
+        resources.getDisplayMetrics().heightPixels = size.y;
+        if(ScreenInfosTools.isShowStatusBar(activity))
+            size.y = size.y - ScreenInfosTools.getStatusBarHeightBeforeInit(activity);
         if(designWidth != 0f) resources.getDisplayMetrics().xdpi = size.x / designWidth * 72f;
         if(designHeight != 0f) resources.getDisplayMetrics().scaledDensity = size.y / designHeight;
         DisplayMetrics metrics = getMetricsOnMiui(activity.getResources());
