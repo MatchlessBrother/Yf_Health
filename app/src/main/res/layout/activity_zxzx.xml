@@ -1,12 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainColor"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_title"/>
+    <include layout="@layout/activity_title" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/zxzx_drawerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainColor"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        tool:openDrawer="start">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/zxzx_bg"
+            android:orientation="vertical"
+            android:paddingLeft="600pt">
+
+            <LinearLayout
+                android:id="@+id/zxzx_search_all"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
+                android:layout_marginBottom="72sp"
+                android:layout_marginRight="200sp"
+                android:layout_marginTop="72sp"
+                android:background="@drawable/box_blue_yj_notsolid"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="44sp"
+                    android:layout_height="44sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20sp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/searchicon" />
+
+                <EditText
+                    android:id="@+id/zxzx_search_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16sp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="搜索音声、科室、症状、医院、疾病"
+                    android:textColor="@color/default_font_hint"
+                    android:textSize="26sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/zxzx_search_all"
+                android:layout_marginRight="200sp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="98sp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/zxzx_spzx_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="#CC0093DD"
+                        android:paddingBottom="40sp"
+                        android:paddingLeft="40sp"
+                        android:paddingRight="40sp"
+                        android:paddingTop="40sp">
+
+                        <TextView
+                            android:id="@+id/zxzx_spzx_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8sp"
+                            android:singleLine="true"
+                            android:text="视频咨询"
+                            android:textColor="@color/white"
+                            android:textSize="40sp" />
+
+                        <TextView
+                            android:id="@+id/zxzx_spzx_title_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/zxzx_spzx_title"
+                            android:singleLine="true"
+                            android:text="与医生面对面，交流更方便"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="26sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/zxzx_spzx_title_note"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="180sp"
+                                android:layout_height="180sp"
+                                android:src="@mipmap/spzx_white" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/zxzx_myyz_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="15sp"
+                        android:layout_weight="1"
+                        android:background="#CC27ADF1"
+                        android:paddingBottom="40sp"
+                        android:paddingLeft="40sp"
+                        android:paddingRight="40sp"
+                        android:paddingTop="40sp">
+
+                        <TextView
+                            android:id="@+id/zxzx_myyz_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8sp"
+                            android:singleLine="true"
+                            android:text="名医义诊"
+                            android:textColor="@color/white"
+                            android:textSize="40sp" />
+
+                        <TextView
+                            android:id="@+id/zxzx_myyz_title_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/zxzx_myyz_title"
+                            android:singleLine="true"
+                            android:text="大牌专家坐镇免费问诊"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="26sp" />
+
+                        <ImageView
+                            android:layout_width="104sp"
+                            android:layout_height="104sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@mipmap/myyz_white" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="98sp"
+                    android:layout_marginLeft="15sp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/zxzx_yyzx_all"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginBottom="8sp"
+                            android:layout_weight="1"
+                            android:background="#CC2BA3E1"
+                            android:paddingBottom="40sp"
+                            android:paddingLeft="40sp"
+                            android:paddingRight="40sp"
+                            android:paddingTop="40sp">
+
+                            <TextView
+                                android:id="@+id/zxzx_yyzx_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8sp"
+                                android:singleLine="true"
+                                android:text="语音咨询"
+                                android:textColor="@color/white"
+                                android:textSize="40sp" />
+
+                            <TextView
+                                android:id="@+id/zxzx_yyzx_title_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/zxzx_yyzx_title"
+                                android:singleLine="true"
+                                android:text="不想见医生？语音咨询也可以"
+                                android:textColor="#CCFFFFFF"
+                                android:textSize="26sp" />
+
+                            <ImageView
+                                android:layout_width="104sp"
+                                android:layout_height="104sp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:src="@mipmap/yyzx_white" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/zxzx_kszx_all"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="7sp"
+                            android:layout_weight="1"
+                            android:background="#CCEAB72F"
+                            android:paddingBottom="40sp"
+                            android:paddingLeft="40sp"
+                            android:paddingRight="40sp"
+                            android:paddingTop="40sp">
+
+                            <TextView
+                                android:id="@+id/zxzx_kszx_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8sp"
+                                android:singleLine="true"
+                                android:text="快速咨询"
+                                android:textColor="@color/white"
+                                android:textSize="40sp" />
+
+                            <TextView
+                                android:id="@+id/zxzx_kszx_title_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/zxzx_kszx_title"
+                                android:singleLine="true"
+                                android:text="有图有文字，恢复更精准"
+                                android:textColor="@color/white"
+                                android:textSize="26sp" />
+
+                            <ImageView
+                                android:layout_width="104sp"
+                                android:layout_height="104sp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:src="@mipmap/kszx_white" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/zxzx_bgjd_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="15sp"
+                        android:layout_weight="1"
+                        android:background="#CC42D91A"
+                        android:paddingBottom="40sp"
+                        android:paddingLeft="40sp"
+                        android:paddingRight="40sp"
+                        android:paddingTop="40sp">
+
+                        <TextView
+                            android:id="@+id/zxzx_bgjd_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8sp"
+                            android:singleLine="true"
+                            android:text="报告解读"
+                            android:textColor="@color/white"
+                            android:textSize="40sp" />
+
+                        <TextView
+                            android:id="@+id/zxzx_bgjd_title_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/zxzx_bgjd_title"
+                            android:singleLine="true"
+                            android:text="权威专家在线读片"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="26sp" />
+
+                        <ImageView
+                            android:layout_width="104sp"
+                            android:layout_height="104sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@mipmap/bgjd_white" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/zxzx_rmks_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="-2dp"
+                android:background="@drawable/box_trans_lbyj_solid"
+                android:lineSpacingExtra="12sp"
+                android:paddingBottom="30sp"
+                android:paddingLeft="24sp"
+                android:paddingRight="18sp"
+                android:paddingTop="30sp"
+                android:text="热\n门\n科\n室"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="550pt"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/mainColor"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="暂未开发！请耐心等待..."
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>
