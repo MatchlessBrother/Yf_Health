@@ -1,6 +1,7 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import android.view.View;
+import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         zxzxKszxAll = rootView.findViewById(R.id.zxzx_kszx_all);
         zxzxBgjdAll = rootView.findViewById(R.id.zxzx_bgjd_all);
         zxzxRmksAll = rootView.findViewById(R.id.zxzx_rmks_all);
+        zxzxSpzxAll.setOnClickListener(this);
     }
 
     protected void initDatas()
@@ -70,5 +72,9 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
     public void onClick(View view)
     {
         super.onClick(view);
+        switch (view.getId())
+        {
+            case R.id.zxzx_spzx_all:startActivity(new Intent(this,TwzxAct.class));break;
+        }
     }
 }

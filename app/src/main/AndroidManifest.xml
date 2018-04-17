@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ufhealth.integratedmachine.client">
 
     <application
@@ -10,7 +11,8 @@
         android:label="${APP_NAME}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup,icon,theme,label">
 
         <activity
             android:name=".ui.main.view.MainAct"
@@ -63,6 +65,10 @@
 
         <activity
             android:name=".ui.jkda.view.JkdaAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.TwzxAct"
             android:screenOrientation="landscape"/>
 
     </application>
