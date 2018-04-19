@@ -55,12 +55,12 @@ android {
 
     buildTypes {
         release {
-            debuggable false
-            minifyEnabled true
-            jniDebuggable false
+            debuggable true
+            minifyEnabled false
+            jniDebuggable true
             multiDexEnabled true
             zipAlignEnabled true
-            shrinkResources true
+            shrinkResources false
             /**配置签名密匙*/
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -90,7 +90,13 @@ dependencies {
     implementation project(':DevLibrary')
     testImplementation 'junit:junit:4.12'
     compile 'com.hwangjr.rxbus:rxbus:1.0.6'
+    compile 'com.orhanobut:dialogplus:1.11@aar'
+    compile 'com.just.agentweb:agentweb:4.0.2'
+    compile 'com.just.agentweb:download:4.0.2'
+    compile 'com.hedgehog.ratingbar:app:1.1.2'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.just.agentweb:filechooser:4.0.2'
+    compile 'com.github.donkingliang:LabelsView:1.4.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.37'

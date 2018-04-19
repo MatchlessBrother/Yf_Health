@@ -1,7 +1,7 @@
 package com.yuan.devlibrary._12_______Utils;
 
-import android.content.res.Configuration;
 import android.os.Build;
+import android.view.View;
 import android.view.Window;
 import android.app.Activity;
 import android.graphics.Rect;
@@ -11,6 +11,7 @@ import android.content.Context;
 import android.view.WindowManager;
 import android.view.KeyCharacterMap;
 import android.view.ViewConfiguration;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 
 /*******获取屏幕宽高度*******/
@@ -88,6 +89,46 @@ public class ScreenInfosTools
         context.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(contentRect);
         //return context.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop() - titleContentRect.top;
         return titleContentRect.height() - contentRect.height();
+    }
+
+    /****************隐藏导航栏和状态栏以达到全屏效果*****************/
+    public static void hideNavigationBarAndStatusBar(Activity activity)
+    {
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19)
+        {
+            View v = activity.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        }
+        else if (Build.VERSION.SDK_INT >= 19)
+        {
+            View decorView = activity.getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.STATUS_BAR_HIDDEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    /**************导航栏和状态栏是否隐藏,是否是全屏效果**************/
+    public static boolean ishideNavigationBarAndStatusBar(Activity activity)
+    {
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19)
+        {
+            View v = activity.getWindow().getDecorView();
+            if((v.getSystemUiVisibility() & View.GONE) == View.GONE)
+                return true;
+            else
+                return false;
+        }
+        else if (Build.VERSION.SDK_INT >= 19)
+        {
+            View decorView = activity.getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.STATUS_BAR_HIDDEN;
+            if((decorView.getSystemUiVisibility() & uiOptions) == uiOptions)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
     /****************************隐藏标题栏***************************/

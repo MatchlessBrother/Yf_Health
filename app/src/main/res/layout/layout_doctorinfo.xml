@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="360pt"
+    android:layout_height="match_parent"
+    android:background="@color/default_transwhite_bg"
+    android:orientation="vertical"
+    android:paddingBottom="35sp"
+    android:paddingLeft="35pt"
+    android:paddingRight="35pt"
+    android:paddingTop="35sp">
+
+    <RelativeLayout
+        android:id="@+id/doctorinfo_imgall"
+        android:layout_width="290pt"
+        android:layout_height="290sp">
+
+        <ImageView
+            android:id="@+id/doctorinfo_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/defaultheadimg" />
+
+        <TextView
+            android:id="@+id/doctorinfo_img_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/box_red_zj_solid"
+            android:paddingBottom="5sp"
+            android:paddingLeft="10pt"
+            android:paddingRight="10pt"
+            android:paddingTop="5sp"
+            android:text="在线"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/doctorinfo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_imgall"
+        android:layout_marginRight="3pt"
+        android:layout_marginTop="10sp"
+        android:singleLine="true"
+        android:text="袁小龙"
+        android:textColor="@color/default_font_black"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_imgall"
+        android:layout_marginLeft="3pt"
+        android:layout_marginTop="16sp"
+        android:singleLine="true"
+        android:text="两弹元勋"
+        android:textColor="@color/default_font_black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_hospitalname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_name"
+        android:layout_marginTop="10sp"
+        android:singleLine="true"
+        android:text="医院：甘孜州人民医院"
+        android:textColor="@color/default_font_gray"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_departmentname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_hospitalname"
+        android:layout_marginTop="10sp"
+        android:singleLine="true"
+        android:text="科室：急救科"
+        android:textColor="@color/default_font_gray"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_specialize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_departmentname"
+        android:layout_marginTop="10sp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="擅长：药到命除"
+        android:textColor="@color/default_font_gray"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/doctorinfo_imgall"
+        android:layout_below="@id/doctorinfo_specialize"
+        android:layout_marginTop="10sp"
+        android:singleLine="true"
+        android:text="来源：优服医生团队"
+        android:textColor="@color/default_font_gray"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_startchat"
+        android:layout_width="match_parent"
+        android:layout_height="78sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="30sp"
+        android:background="@drawable/btn_blue_yj_solid"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="开始咨询"
+        android:textColor="@color/white"
+        android:textSize="28sp" />
+
+    <LinearLayout
+        android:id="@+id/doctorinfo_zshppj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/doctorinfo_startchat"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doctorinfo_zsnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="343"
+                android:textColor="@color/mainColor"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="咨询"
+                android:textColor="@color/default_font_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16sp"
+            android:layout_marginTop="26sp"
+            android:background="@color/default_font_hint" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doctorinfo_hpnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="99%"
+                android:textColor="@color/mainColor"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="好评"
+                android:textColor="@color/default_font_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16sp"
+            android:layout_marginTop="26sp"
+            android:background="@color/default_font_hint" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doctorinfo_pjnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="126"
+                android:textColor="@color/mainColor"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:singleLine="true"
+                android:text="评价"
+                android:textColor="@color/default_font_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.donkingliang.labels.LabelsView
+        android:id="@+id/doctorinfo_labels"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20sp"
+        android:layout_marginTop="20sp"
+        app:labelBackground="@drawable/box_yellow_zj_solid"
+        app:labelTextColor="@color/white"
+        app:labelTextPaddingBottom="6sp"
+        app:labelTextPaddingLeft="6pt"
+        app:labelTextPaddingRight="6pt"
+        app:labelTextPaddingTop="6sp"
+        app:labelTextSize="20sp"
+        app:lineMargin="6sp"
+        app:maxSelect="0"
+        app:selectType="NONE"
+        app:wordMargin="8pt" />
+
+</RelativeLayout>

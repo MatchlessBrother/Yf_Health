@@ -43,6 +43,8 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         zxzxBgjdAll = rootView.findViewById(R.id.zxzx_bgjd_all);
         zxzxRmksAll = rootView.findViewById(R.id.zxzx_rmks_all);
         zxzxSpzxAll.setOnClickListener(this);
+        zxzxYyzxAll.setOnClickListener(this);
+        zxzxKszxAll.setOnClickListener(this);
     }
 
     protected void initDatas()
@@ -75,6 +77,8 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         switch (view.getId())
         {
             case R.id.zxzx_spzx_all:startActivity(new Intent(this,TwzxAct.class));break;
+            case R.id.zxzx_yyzx_all:startActivity(new Intent(this,ChooseDoctorAct.class));break;
+            case R.id.zxzx_kszx_all:startActivity(new Intent(this,DoctorInfoAct.class));break;
         }
     }
 }
