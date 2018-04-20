@@ -42,7 +42,7 @@ public class BjjyAct extends BaseAct implements BjjyAct_V,View.OnClickListener
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("http://192.168.199.167/jkxw/web/yygh/doctor.html");
+                .go("http://192.168.199.167/jkxw/web/index.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
     }
 

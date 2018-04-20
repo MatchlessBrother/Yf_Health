@@ -17,7 +17,7 @@
         android:layout_marginLeft="110pt"
         android:layout_marginRight="110pt"
         android:layout_marginTop="46sp"
-        android:background="#CCFFFFFF"
+        android:background="@color/default_transwhite_bg"
         android:orientation="vertical"
         android:paddingLeft="60pt"
         android:paddingRight="60pt">

@@ -106,7 +106,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_zxzx" />
 
                     <TextView
@@ -153,7 +153,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_bjjy" />
 
                     <TextView
@@ -198,7 +198,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_tjfw" />
 
                     <TextView
@@ -251,7 +251,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_yyfw" />
 
                     <TextView
@@ -298,7 +298,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_jkjc" />
 
                     <TextView
@@ -342,7 +342,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25pt"
                         android:layout_marginRight="25pt"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/main_jkda" />
 
                     <TextView
@@ -445,6 +445,7 @@
                             android:layout_width="124pt"
                             android:layout_height="124sp"
                             android:layout_gravity="center"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/defaultheadimg"
                             app:civ_border_color="#FFFFFFFF"
                             app:civ_border_width="2pt" />
@@ -473,6 +474,7 @@
                             android:layout_height="44sp"
                             android:layout_marginLeft="20pt"
                             android:layout_marginRight="30pt"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/slideitem_info" />
 
                         <TextView
@@ -503,6 +505,7 @@
                             android:layout_height="44sp"
                             android:layout_marginLeft="20pt"
                             android:layout_marginRight="30pt"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/slideitem_msg" />
 
                         <TextView
@@ -551,6 +554,7 @@
                             android:layout_height="44sp"
                             android:layout_marginLeft="20pt"
                             android:layout_marginRight="30pt"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/slideitem_bill" />
 
                         <TextView
@@ -581,6 +585,7 @@
                             android:layout_height="44sp"
                             android:layout_marginLeft="20pt"
                             android:layout_marginRight="30pt"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/slideitem_archive" />
 
                         <TextView
@@ -611,6 +616,7 @@
                             android:layout_height="44sp"
                             android:layout_marginLeft="20pt"
                             android:layout_marginRight="30pt"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/slideitem_app" />
 
                         <TextView

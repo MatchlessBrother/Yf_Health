@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bjjy_all_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/twzx_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="46sp"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="46sp"
+        android:background="@color/default_transwhite_bg"
+        android:orientation="horizontal"
+        android:paddingBottom="34sp"
+        android:paddingLeft="34pt"
+        android:paddingRight="34pt"
+        android:paddingTop="34sp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40pt"
+                    android:layout_height="40sp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/weixinpayicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="微信支付"
+                    android:textColor="#FF333333"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/pay_qrc_all"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/pay_qrc_img"
+                    android:layout_width="340pt"
+                    android:layout_height="340sp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="30sp"
+                    android:layout_marginTop="42sp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/defaultheadimg" />
+
+                <TextView
+                    android:id="@+id/pay_qrc_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/pay_qrc_img"
+                    android:gravity="center"
+                    android:text="订单将在30分钟内关闭，请及时付款"
+                    android:textColor="#FF333333"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/pay_qrc_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pay_qrc_img"
+                    android:gravity="center"
+                    android:text="请使用微信扫一扫完成付款"
+                    android:textColor="#FF666666"
+                    android:textSize="26sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/pay_sin_all"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/pay_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="30sp"
+                    android:layout_marginTop="30sp"
+                    android:gravity="center"
+                    android:text="支付失败"
+                    android:textColor="#FFFF0000"
+                    android:textSize="32sp" />
+
+                <ImageView
+                    android:id="@+id/pay_status_img"
+                    android:layout_width="150pt"
+                    android:layout_height="150sp"
+                    android:layout_above="@id/pay_status"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/pay_fail" />
+
+                <TextView
+                    android:id="@+id/pay_status_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pay_status"
+                    android:gravity="center"
+                    android:text="订单支付失败，请重新支付..."
+                    android:textColor="#FF666666"
+                    android:textSize="26sp" />
+
+                <Button
+                    android:id="@+id/pay_status_btn"
+                    android:layout_width="290pt"
+                    android:layout_height="80sp"
+                    android:layout_below="@id/pay_status_note"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30sp"
+                    android:background="@drawable/btn_blue_yj_solid"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="重新支付"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="180sp"
+            android:layout_marginTop="180sp"
+            android:background="@color/default_font_hint" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="65sp"
+                    android:singleLine="true"
+                    android:text="健康小屋订单"
+                    android:textColor="#FF333333"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/pay_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="65sp"
+                    android:singleLine="true"
+                    android:text="¥66"
+                    android:textColor="#FF333333"
+                    android:textSize="72sp" />
+
+                <TextView
+                    android:id="@+id/pay_value_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:singleLine="true"
+                    android:text="收  款  方：成都优服健康科技有限公司"
+                    android:textColor="#FF333333"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/pay_value_ordernum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:singleLine="true"
+                    android:text="订单编号：jkxw000120180405457"
+                    android:textColor="#FF333333"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/pay_value_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:singleLine="true"
+                    android:text="下单时间：2018-04-12 09:30:58"
+                    android:textColor="#FF333333"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

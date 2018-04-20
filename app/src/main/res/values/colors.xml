@@ -12,4 +12,5 @@
     <color name="default_font_hint">#FFBBBBBB</color>
     <color name="divide_line">#88EEEEEE</color>
     <color name="default_transwhite_bg">#CCFFFFFF</color>
+    <color name="default_font_green">#FF3CB42F</color>
 </resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/twzx_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="46sp"
+        android:background="@color/default_transwhite_bg"
+        android:paddingBottom="30sp"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:paddingTop="30sp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/choosemultidoctor_img"
+            android:layout_width="124pt"
+            android:layout_height="124sp"
+            android:layout_marginRight="6pt"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/defaultheadimg"
+            app:civ_border_color="@color/mainColor"
+            app:civ_border_width="2pt" />
+
+        <CheckBox
+            android:id="@+id/choosemultidoctor_mfcb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:button="@null"
+            android:drawableRight="@drawable/checkbox_blue_no"
+            android:singleLine="true"
+            android:text="免费"
+            android:textColor="@color/default_font_green"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/choosemultidoctor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/choosemultidoctor_img"
+            android:layout_marginRight="12pt"
+            android:layout_marginTop="12sp"
+            android:layout_toLeftOf="@id/choosemultidoctor_mfcb"
+            android:layout_toRightOf="@id/choosemultidoctor_img"
+            android:singleLine="true"
+            android:text="王大胆"
+            android:textColor="@color/default_font_black"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/choosemultidoctor_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/choosemultidoctor_img"
+            android:layout_marginBottom="12sp"
+            android:layout_marginRight="12pt"
+            android:layout_toLeftOf="@id/choosemultidoctor_mfcb"
+            android:layout_toRightOf="@id/choosemultidoctor_img"
+            android:singleLine="true"
+            android:text="您的问题将由系统随机分配给在线的全科医生"
+            android:textColor="@color/default_font_gray"
+            android:textSize="24sp" />
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/choosemultidoctor_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="46sp"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="20sp"
+        android:background="@color/default_transwhite_bg" />
+
+</LinearLayout>
