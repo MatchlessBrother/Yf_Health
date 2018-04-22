@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/twzx_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="46sp"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="46sp">
+
+        <include
+            android:id="@+id/yyzxing_left"
+            layout="@layout/layout_doctorinfo" />
+
+        <TextView
+            android:id="@+id/yyzxing_right_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30pt"
+            android:layout_toRightOf="@id/yyzxing_left"
+            android:background="@color/default_transwhite_bg"
+            android:gravity="center_vertical"
+            android:paddingBottom="30sp"
+            android:paddingLeft="30pt"
+            android:paddingRight="30pt"
+            android:paddingTop="30sp"
+            android:text="正在与吴克医生咨询，此次通话将在12小时后结束"
+            android:textColor="@color/default_font_gray"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/yyzxing_right_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/yyzxing_right_top"
+            android:layout_marginLeft="30pt"
+            android:layout_toRightOf="@id/yyzxing_left"
+            android:background="@color/default_transwhite_bg"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <ufhealth.integratedmachine.client.widget.RippleLayout
+                android:id="@+id/yyzxing_right_bottom_ripplelayout"
+                android:layout_width="300pt"
+                android:layout_height="300sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-100sp"
+                android:background="@color/transparent"
+                android:gravity="center"
+                app:rb_color="#CC0093DD"
+                app:rb_delay="0"
+                app:rb_duration="2000"
+                app:rb_radius="70sp"
+                app:rb_rippleAmount="1"
+                app:rb_scale="2"
+                app:rb_type="fillRipple">
+
+                <LinearLayout
+                    android:layout_width="200pt"
+                    android:layout_height="200sp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/box_blue_y_solid"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="100pt"
+                        android:layout_height="100sp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/yyzx_white" />
+
+                </LinearLayout>
+            </ufhealth.integratedmachine.client.widget.RippleLayout>
+
+            <TextView
+                android:id="@+id/yyzxing_right_bottom_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-20sp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="00:48"
+                android:textColor="@color/black"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/yyzxing_right_bottom_ljstatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12sp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="正在建立语音连接..."
+                android:textColor="@color/default_font_gray"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

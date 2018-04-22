@@ -13,4 +13,6 @@
     <color name="divide_line">#88EEEEEE</color>
     <color name="default_transwhite_bg">#CCFFFFFF</color>
     <color name="default_font_green">#FF3CB42F</color>
+    <color name="ripple_color">#FF199EE0</color>
+
 </resources>

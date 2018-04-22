@@ -18,6 +18,8 @@ import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
 import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
 import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
 import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.SpzxingAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.YyzxingAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.ui.main.model.UserInfo;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
@@ -285,7 +287,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     public void clickMain_slide_gybj()
     {
-        Intent intent = new Intent(this,AboutAppAct.class);
+        Intent intent = new Intent(this,SpzxingAct.class);
         startActivity(intent);
     }
 

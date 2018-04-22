@@ -92,5 +92,28 @@
             android:name=".ui.zxzx.view.DoctorInfoAct"
             android:screenOrientation="landscape"/>
 
+        <activity
+            android:name=".ui.zxzx.view.TwzxingAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.YyzxingAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.SpzxingAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.PayAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.ChooseMultiDoctorAct"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.zxzx.view.BillAct"
+            android:screenOrientation="landscape"/>
     </application>
 </manifest>
