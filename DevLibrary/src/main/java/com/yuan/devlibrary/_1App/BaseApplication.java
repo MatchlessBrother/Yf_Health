@@ -83,14 +83,22 @@ public class BaseApplication extends Application
     {
         if (mActivityStack == null)
             return;
-
         for (Activity activity : mActivityStack)
         {
-            if (activity != null)
+            if(activity != null)
             {
+                mActivityStack.remove(activity);
                 activity.finish();
             }
         }
+        System.gc();
+    }
+
+    /*******************************移除所有Activity*****************************/
+    public void removeAllActivity()
+    {
+        if (mActivityStack == null)
+            return;
         mActivityStack.clear();
         System.gc();
     }
@@ -107,7 +115,26 @@ public class BaseApplication extends Application
             {
                 if (activity.getClass().getSimpleName().equals(activityName))
                 {
+                    mActivityStack.remove(activity);
                     activity.finish();
+                }
+            }
+        }
+    }
+
+    /**************************根据ActivityName移除此Activity********************/
+    public void removeActivity(String activityName)
+    {
+        if (mActivityStack == null)
+            return;
+
+        for (Activity activity : mActivityStack)
+        {
+            if (activity != null)
+            {
+                if (activity.getClass().getSimpleName().equals(activityName))
+                {
+                    mActivityStack.remove(activity);
                 }
             }
         }
@@ -125,7 +152,25 @@ public class BaseApplication extends Application
             {
                 if (!activity.getClass().getSimpleName().equals(activityName))
                 {
+                    mActivityStack.remove(activity);
                     activity.finish();
+                }
+            }
+        }
+    }
+
+    /************根据ActivityName移除除该Activity外的其他所有Activity************/
+    public void removeAllActivityExcept(String activityName)
+    {
+        if (mActivityStack == null)
+            return;
+
+        for (Activity activity : mActivityStack)
+        {
+            if (activity != null)
+            {
+                if (!activity.getClass().getSimpleName().equals(activityName))
+                {
                     mActivityStack.remove(activity);
                 }
             }

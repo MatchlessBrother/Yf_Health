@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/hotdepartment_img"
+        android:layout_width="144pt"
+        android:layout_height="144sp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/defaultimage" />
+
+    <TextView
+        android:id="@+id/hotdepartment_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30pt"
+        android:layout_marginRight="30pt"
+        android:layout_marginTop="8sp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="科室名"
+        android:textColor="@color/default_font_black"
+        android:textSize="22sp" />
+
+</LinearLayout>

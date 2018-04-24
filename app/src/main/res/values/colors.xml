@@ -11,8 +11,10 @@
     <color name="default_font_gray">#FF666666</color>
     <color name="default_font_hint">#FFBBBBBB</color>
     <color name="divide_line">#88EEEEEE</color>
+    <color name="default_divide_line">#FFDDDDDD</color>
     <color name="default_transwhite_bg">#CCFFFFFF</color>
     <color name="default_font_green">#FF3CB42F</color>
     <color name="ripple_color">#FF199EE0</color>
-
+    <color name="verificatedcode_graybg">#FFB6B6B6</color>
+    <color name="verificatedcode_bluebg">#FF33a9e4</color>
 </resources>

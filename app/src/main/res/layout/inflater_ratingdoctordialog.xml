@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:paddingBottom="12sp"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:paddingTop="12sp"
+        android:singleLine="true"
+        android:text="评价医生"
+        android:textColor="@color/default_font_black"
+        android:textSize="30sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#FFDDDDDD" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20sp"
+        android:paddingLeft="60pt"
+        android:paddingRight="60pt"
+        android:paddingTop="20sp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/dialog_ratingdoctor_img"
+            android:layout_width="110pt"
+            android:layout_height="110sp"
+            android:layout_marginRight="20pt"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/defaultheadimg"
+            app:civ_border_width="1sp"
+            app:civ_border_color="#FFBBBBBB"/>
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dialog_ratingdoctor_img"
+            android:layout_marginRight="60pt"
+            android:layout_marginTop="8sp"
+            android:layout_toRightOf="@id/dialog_ratingdoctor_img"
+            android:singleLine="true"
+            android:text="王大胆"
+            android:textColor="@color/default_font_black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/dialog_ratingdoctor_name"
+            android:layout_toRightOf="@id/dialog_ratingdoctor_name"
+            android:singleLine="true"
+            android:text="主治医生"
+            android:textColor="@color/default_font_black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_hospitalname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/dialog_ratingdoctor_img"
+            android:layout_marginBottom="8sp"
+            android:layout_toRightOf="@id/dialog_ratingdoctor_img"
+            android:singleLine="true"
+            android:text="甘孜州人民医院"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_departmentname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/dialog_ratingdoctor_hospitalname"
+            android:layout_alignLeft="@id/dialog_ratingdoctor_hospitalname"
+            android:layout_below="@id/dialog_ratingdoctor_name"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="急救科"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="60pt"
+        android:paddingRight="60pt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8pt"
+            android:singleLine="true"
+            android:text="服 务 态 度： "
+            android:textColor="@color/default_font_black"
+            android:textSize="24sp" />
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:id="@+id/dialog_ratingdoctor_fwtd"
+            android:layout_width="280sp"
+            android:layout_height="wrap_content"
+            app:clickable="true"
+            app:halfstart="false"
+            app:starCount="5"
+            app:starEmpty="@mipmap/ratingnosolidicon"
+            app:starFill="@mipmap/ratingsolidicon"
+            app:starHalf="@mipmap/ratingsolidicon"
+            app:starImageHeight="45sp"
+            app:starImagePadding="15pt"
+            app:starImageWidth="45sp"
+            app:starNum="0" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_fwtd_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="（选星后有提示文字）"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:orientation="horizontal"
+        android:paddingLeft="60pt"
+        android:paddingRight="60pt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8pt"
+            android:singleLine="true"
+            android:text="专    业    度："
+            android:textColor="@color/default_font_black"
+            android:textSize="24sp" />
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:id="@+id/dialog_ratingdoctor_zyd"
+            android:layout_width="280sp"
+            android:layout_height="wrap_content"
+            app:clickable="true"
+            app:halfstart="false"
+            app:starCount="5"
+            app:starEmpty="@mipmap/ratingnosolidicon"
+            app:starFill="@mipmap/ratingsolidicon"
+            app:starHalf="@mipmap/ratingsolidicon"
+            app:starImageHeight="45sp"
+            app:starImagePadding="15pt"
+            app:starImageWidth="45sp"
+            app:starNum="0" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_zyd_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="（选星后有提示文字）"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:orientation="horizontal"
+        android:paddingLeft="60pt"
+        android:paddingRight="60pt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8pt"
+            android:singleLine="true"
+            android:text="回 复 速 度： "
+            android:textColor="@color/default_font_black"
+            android:textSize="24sp" />
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:id="@+id/dialog_ratingdoctor_hfsd"
+            android:layout_width="280sp"
+            android:layout_height="wrap_content"
+            app:clickable="true"
+            app:halfstart="false"
+            app:starCount="5"
+            app:starEmpty="@mipmap/ratingnosolidicon"
+            app:starFill="@mipmap/ratingsolidicon"
+            app:starHalf="@mipmap/ratingsolidicon"
+            app:starImageHeight="45sp"
+            app:starImagePadding="15pt"
+            app:starImageWidth="45sp"
+            app:starNum="0" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_hfsd_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="（选星后有提示文字）"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:orientation="horizontal"
+        android:paddingLeft="60pt"
+        android:paddingRight="60pt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8pt"
+            android:singleLine="true"
+            android:text="系统可用性："
+            android:textColor="@color/default_font_black"
+            android:textSize="24sp" />
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:id="@+id/dialog_ratingdoctor_xtkyx"
+            android:layout_width="280sp"
+            android:layout_height="wrap_content"
+            app:clickable="true"
+            app:halfstart="false"
+            app:starCount="5"
+            app:starEmpty="@mipmap/ratingnosolidicon"
+            app:starFill="@mipmap/ratingsolidicon"
+            app:starHalf="@mipmap/ratingsolidicon"
+            app:starImageHeight="45sp"
+            app:starImagePadding="15pt"
+            app:starImageWidth="45sp"
+            app:starNum="0" />
+
+        <TextView
+            android:id="@+id/dialog_ratingdoctor_xtkyx_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="（选星后有提示文字）"
+            android:textColor="@color/default_font_gray"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <ufhealth.integratedmachine.client.widget.CountEditText
+        android:id="@+id/dialog_ratingdoctor_et"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:layout_marginLeft="60pt"
+        android:layout_marginRight="60pt"
+        android:layout_marginTop="30sp"
+        android:background="@drawable/box_white_zj_solid"
+        android:paddingLeft="12pt"
+        android:paddingRight="12pt"
+        app:etHint="您的反馈，将是我们服务继续前进的动力。"
+        app:etHintColor="@color/default_font_hint"
+        app:etLineColor="@color/transparent"
+        app:etMaxLength="500"
+        app:etMinHeight="0sp"
+        app:etPromptPosition="promptDn"
+        app:etPromptTextColor="@color/default_font_black"
+        app:etPromptTextSize="24sp"
+        app:etTextColor="@color/default_font_black"
+        app:etTextSize="24sp"
+        app:etType="percentage" />
+
+    <Button
+        android:id="@+id/dialog_ratingdoctor_btn"
+        android:layout_width="185pt"
+        android:layout_height="75sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35sp"
+        android:background="@drawable/btn_blue_yj_solid"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="提交评论"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+</LinearLayout>

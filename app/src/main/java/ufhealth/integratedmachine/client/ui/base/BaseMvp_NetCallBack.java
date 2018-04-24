@@ -1,21 +1,70 @@
 package ufhealth.integratedmachine.client.ui.base;
 
-public interface BaseMvp_NetCallBack<V>
+import rx.Observer;
+import android.content.Context;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
+import retrofit2.adapter.rxjava.HttpException;
+import com.yuan.devlibrary._12_______Utils.NetTools;
+import ufhealth.integratedmachine.client.network.NetFlags;
+import ufhealth.integratedmachine.client.bean.BaseReturnData;
+
+public class BaseMvp_NetCallBack<T> implements Observer<BaseReturnData<T>>
 {
-    /********数据请求开始*********/
-    void onStart();
+    private Context mContext;
+    private BaseMvp_LocalCallBack mBaseMvpLocalCallBack;
 
-    /********数据请求成功*********/
-    void onSuccess(V data);
+    public BaseMvp_NetCallBack(Context context, BaseMvp_LocalCallBack<T> baseMvpLocalCallBack)
+    {
+        mContext = context;
+        mBaseMvpLocalCallBack = baseMvpLocalCallBack;
+    }
 
-    /********数据请求失败*********/
-    void onFailure(String msg);
+    public void onCompleted()
+    {
+        mBaseMvpLocalCallBack.onFinish();
 
-    /**请求数据失败,指在请求网络接口时，出现无法联网****/
-    /**缺少权限,内存泄露等原因导致无法连接到请求数据源**/
-    void onError(String msg);
+    }
 
-    /**当请求数据结束时，无论请求结果是成功，失败或是抛出异常都*/
-    /**会执行此方法给用户做处理通常隐藏“正在加载”的等待控件***/
-    void onFinish();
+    public void onError(Throwable e)
+    {
+        if (!NetTools.WhetherConnectNet(mContext))
+        {
+            mBaseMvpLocalCallBack.onError("网络不可用,请稍后再试...");
+        }
+        else if (e instanceof SocketTimeoutException)
+        {
+            mBaseMvpLocalCallBack.onError("网络连接超时,请稍后再试...");
+        }
+        else if (e instanceof ConnectException)
+        {
+            mBaseMvpLocalCallBack.onError("网络连接超时,请稍后再试...");
+        }
+        else if (e instanceof HttpException)
+        {
+            mBaseMvpLocalCallBack.onError("网络异常,请稍后再试...");
+        }
+        else if (e instanceof UnknownHostException)
+        {
+            mBaseMvpLocalCallBack.onError("网络异常,请稍后再试...");
+        }
+        else
+        {
+            mBaseMvpLocalCallBack.onError("网络发生错误,请稍后再试...");
+        }
+        mBaseMvpLocalCallBack.onFinish();
+    }
+
+    public void onNext(BaseReturnData<T> hotDepartmentData)
+    {
+        if (NetFlags.RequestFail.equals(hotDepartmentData.getCode()))
+        {
+            mBaseMvpLocalCallBack.onFailure(hotDepartmentData.getMsg());
+        }
+        else if(NetFlags.RequestSuccess.equals(hotDepartmentData.getCode()))
+        {
+            mBaseMvpLocalCallBack.onSuccess(hotDepartmentData.getData());
+        }
+    }
 }

@@ -6,7 +6,7 @@ import android.support.multidex.MultiDex;
 import com.yuan.devlibrary._1App.BaseApplication;
 import com.yuan.devlibrary._1App.BaseUiAdapterHelper;
 import ufhealth.integratedmachine.client.util.CountDownUtil;
-import ufhealth.integratedmachine.client.ui.main.model.UserInfo;
+import ufhealth.integratedmachine.client.bean.main.UserInfo;
 
 public class BaseApp extends BaseApplication
 {
@@ -15,7 +15,7 @@ public class BaseApp extends BaseApplication
     private UserInfo mUserInfo;
     private CountDownUtil mCountDownUtil;
     private BaseUiAdapterHelper mUiHelper;
-    private static final Integer COUNTDOWN_TIME = 180;//以秒为单位
+    private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
 
     protected void attachBaseContext(Context base)
     {

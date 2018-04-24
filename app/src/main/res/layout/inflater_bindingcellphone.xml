@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="30pt"
+    android:paddingRight="30pt">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="42sp"
+        android:layout_marginTop="48sp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="绑定手机"
+        android:textColor="#ff0093dd"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/bindingcellphone_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="尊敬的用户，您好！优服健康一体机需要绑定手机号码才能使用。请务必绑定真实有效的手机号码"
+        android:textColor="@color/default_font_hint"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="52sp"
+        android:orientation="horizontal"
+        android:paddingLeft="6pt"
+        android:paddingRight="6pt">
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40sp"
+            android:layout_marginRight="20pt"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bindingcellphone_user" />
+
+        <TextView
+            android:id="@+id/bindingcellphone_name_idcard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="袁小龙（510121199211296040）"
+            android:textColor="@color/default_font_black"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:layout_marginTop="8sp"
+        android:background="@color/default_divide_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52sp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="6pt"
+        android:paddingRight="6pt">
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40sp"
+            android:layout_marginRight="20pt"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bindingcellphone_phone" />
+
+        <EditText
+            android:id="@+id/bindingcellphone_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="center_vertical|left"
+            android:hint="请输入您的手机号"
+            android:inputType="number"
+            android:maxLength="11"
+            android:singleLine="true"
+            android:textColor="@color/default_font_black"
+            android:textColorHint="@color/default_font_hint"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:layout_marginTop="8sp"
+        android:background="@color/default_divide_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52sp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="6pt"
+        android:paddingRight="6pt">
+
+        <ImageView
+            android:layout_width="40pt"
+            android:layout_height="40sp"
+            android:layout_marginRight="20pt"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bindingcellphone_code" />
+
+        <EditText
+            android:id="@+id/bindingcellphone_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:gravity="center_vertical|left"
+            android:hint="请输入您的验证码"
+            android:inputType="text"
+            android:maxLength="8"
+            android:singleLine="true"
+            android:textColor="@color/default_font_black"
+            android:textColorHint="@color/default_font_hint"
+            android:textSize="28sp" />
+
+        <Button
+            android:id="@+id/bindingcellphone_code_btn"
+            android:layout_width="168pt"
+            android:layout_height="64sp"
+            android:background="@color/verificatedcode_bluebg"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:layout_marginTop="8sp"
+        android:background="@color/default_divide_line" />
+
+    <Button
+        android:id="@+id/bindingcellphone_btn"
+        android:layout_width="260pt"
+        android:layout_height="80sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50sp"
+        android:background="@drawable/btn_blue_yj_solid"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="确定"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+</LinearLayout>

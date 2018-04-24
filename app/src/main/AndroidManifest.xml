@@ -56,7 +56,8 @@
 
         <activity
             android:name=".ui.zxzx.view.ZxzxAct"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".ui.bjjy.view.BjjyAct"
@@ -82,11 +83,13 @@
 
         <activity
             android:name=".ui.zxzx.view.TwzxAct"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".ui.zxzx.view.ChooseDoctorAct"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".ui.zxzx.view.DoctorInfoAct"

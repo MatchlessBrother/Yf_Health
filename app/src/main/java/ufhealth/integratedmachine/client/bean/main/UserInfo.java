@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.ui.main.model;
+package ufhealth.integratedmachine.client.bean.main;
 
 import android.os.Parcel;
 import android.os.Parcelable;

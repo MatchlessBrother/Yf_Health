@@ -1,7 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.view_v;
 
+import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
-import ufhealth.integratedmachine.client.ui.main.model.UserInfo;
 
 public interface MainAct_V extends BaseMvp_View
 {

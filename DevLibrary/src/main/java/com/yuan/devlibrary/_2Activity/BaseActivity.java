@@ -41,6 +41,14 @@ public abstract class BaseActivity extends AppCompatActivity
     /******************初始化界面逻辑*****************/
     protected abstract void initLogic();
 
+    /*****巧妙的把每个Acivity从BaseApplication的Stack栈中移除,以便完全关闭应用或则实现其他功能*****/
+    protected void onDestroy()
+    {
+        if(BaseApplication.mApplication.hasActivity(this.getClass().getSimpleName()))
+            BaseApplication.mApplication.removeActivity(this.getClass().getSimpleName());
+        super.onDestroy();
+    }
+
     /******************获取BaseActivity本身*****************/
     protected BaseActivity getActivity()
     {
