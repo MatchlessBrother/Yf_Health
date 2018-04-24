@@ -36,7 +36,7 @@
         <ufhealth.integratedmachine.client.widget.CountEditText
             android:id="@+id/twzx_content_et"
             android:layout_width="match_parent"
-            android:layout_height="420sp"
+            android:layout_height="391sp"
             android:background="@drawable/box_white_zj_solid"
             android:paddingBottom="30sp"
             android:paddingLeft="30pt"
@@ -57,24 +57,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36sp"
+            android:layout_marginTop="15sp"
             android:gravity="bottom"
             android:orientation="horizontal">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/twzx_recyclerview"
                 android:layout_width="wrap_content"
-                android:layout_height="140sp" />
+                android:layout_height="150sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12pt"
-                android:singleLine="true"
-                android:text="最多添加5张图片！"
-                android:textColor="@color/default_font_gray"
-                android:textSize="25sp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="15sp"
+            android:text="最多添加5张图片！"
+            android:textColor="@color/default_font_gray"
+            android:textSize="25sp" />
 
         <Button
             android:id="@+id/twzx_tjwt_btn"

@@ -273,7 +273,7 @@ public class PromptBoxTools
     }
 
     /*************************************显示默认提示框*******************************************/
-    public static BaseDialog showPromptDialog(Context context,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context,OnClickPromptDialogBtnListener trueOnClickListener,OnClickPromptDialogBtnListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
         return showPromptDialog(context,"亲情提示：",Color.argb(255,255,255,255),15,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,"亲！确认要进行此操作吗？",Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),"不了",Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),View.VISIBLE,"是的",Color.argb(255,255,255,255),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,true,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
     }
@@ -322,10 +322,7 @@ public class PromptBoxTools
             view.findViewById(R.id.promptdialog_btnimg).setVisibility(View.GONE);
 
         if(null != trueOnClickListener)
-        {
             trueBtn.setOnClickListener(trueOnClickListener);
-            dismissPromptDialog(promptDialog);
-        }
         else
         {
             trueBtn.setOnClickListener(new View.OnClickListener()
@@ -338,10 +335,7 @@ public class PromptBoxTools
         }
 
         if(null != falseOnClickListener)
-        {
             falseBtn.setOnClickListener(falseOnClickListener);
-            dismissPromptDialog(promptDialog);
-        }
         else
         {
             falseBtn.setOnClickListener(new View.OnClickListener()
@@ -368,5 +362,21 @@ public class PromptBoxTools
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return promptDialog;
+    }
+
+    public static class OnClickPromptDialogBtnListener implements View.OnClickListener
+    {
+        private BaseDialog mBaseDialog;
+
+        public OnClickPromptDialogBtnListener(BaseDialog mBaseDialog)
+        {
+            this.mBaseDialog = mBaseDialog;
+        }
+
+        public void onClick(View view)
+        {
+            if(mBaseDialog.isShowing())
+                mBaseDialog.dismiss();
+        }
     }
 }
