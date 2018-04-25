@@ -39,6 +39,7 @@
             android:layout_centerVertical="true"
             android:button="@null"
             android:drawableRight="@drawable/checkbox_blue_no"
+            android:drawablePadding="8pt"
             android:singleLine="true"
             android:text="免费"
             android:textColor="@color/default_font_green"
@@ -54,7 +55,7 @@
             android:layout_toLeftOf="@id/choosemultidoctor_mfcb"
             android:layout_toRightOf="@id/choosemultidoctor_img"
             android:singleLine="true"
-            android:text="王大胆"
+            android:text="未知"
             android:textColor="@color/default_font_black"
             android:textSize="32sp" />
 

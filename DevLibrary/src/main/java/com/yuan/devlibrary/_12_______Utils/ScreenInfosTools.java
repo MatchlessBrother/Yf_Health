@@ -1,6 +1,7 @@
 package com.yuan.devlibrary._12_______Utils;
 
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.app.Activity;
@@ -24,6 +25,15 @@ public class ScreenInfosTools
         WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getSize(point);
         return point.x;
+    }
+
+    /***************************获取屏幕密度**************************/
+    public static DisplayMetrics getDisplayMetrics(Context context)
+    {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
     }
 
     /*********************获取屏幕高度(包含导航栏)********************/

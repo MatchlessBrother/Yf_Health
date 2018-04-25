@@ -327,23 +327,24 @@
                 android:text="热\n门\n科\n室"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
-
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="550pt"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:clickable="true"
             android:background="@color/white"
+            android:clickable="true"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/zxzx_hotdepartment_recyclerview"
-                android:layout_marginTop="20sp"
-                android:paddingBottom="20sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:paddingLeft="30pt"
+                android:paddingRight="30pt"
+                android:paddingTop="20sp"
+                android:paddingBottom="20sp">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>

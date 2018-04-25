@@ -5,6 +5,7 @@ import android.view.View;
 import java.util.ArrayList;
 import android.view.Gravity;
 import android.content.Intent;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.LayoutInflater;
@@ -149,28 +150,28 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
             case R.id.zxzx_spzx_all:
             {
                 Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type","spzx");
+                intent.putExtra("type",ChooseDoctorAct.SPZX);
                 startActivity(intent);
                 break;
             }
             case R.id.zxzx_yyzx_all:
             {
                 Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type","yyzx");
+                intent.putExtra("type",ChooseDoctorAct.YYZX);
                 startActivity(intent);
                 break;
             }
             case R.id.zxzx_myyz_all:
             {
                 Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type","myyz");
+                intent.putExtra("type",ChooseDoctorAct.MYYZ);
                 startActivity(intent);
                 break;
             }
             case R.id.zxzx_kszx_all:
             {
                 Intent intent = new Intent(this,TwzxAct.class);
-                intent.putExtra("type","kszx");
+                intent.putExtra("type",TwzxAct.KSZX);
                 startActivity(intent);
                 break;
             }
@@ -178,7 +179,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
             case R.id.zxzx_bgjd_all:
             {
                 Intent intent = new Intent(this,TwzxAct.class);
-                intent.putExtra("type","bgjd");
+                intent.putExtra("type",TwzxAct.BGJD);
                 startActivity(intent);
                 break;
             }

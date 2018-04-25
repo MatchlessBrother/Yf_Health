@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.util.LinkedList;
 import android.view.Gravity;
+import com.yuan.devlibrary.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.app.AlertDialog;
@@ -23,7 +24,6 @@ import java.io.FileOutputStream;
 import io.reactivex.SingleSource;
 import java.text.SimpleDateFormat;
 import android.view.WindowManager;
-import com.yuan.devlibrary.R;
 import android.view.LayoutInflater;
 import android.util.DisplayMetrics;
 import android.provider.MediaStore;
@@ -41,9 +41,9 @@ import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.yuan.devlibrary._12_______Utils.MemoryTools;
 import com.yuan.devlibrary._12_______Utils.StringTools;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
 
 public abstract class BasePhotoActivity extends BaseActivity
@@ -100,7 +100,7 @@ public abstract class BasePhotoActivity extends BaseActivity
      ***************************isRoundCropper：裁剪图片时是否进行圆形裁剪**************************
      **********************titleTextColorRes：图片截取页面标题栏的字体颜色值************************
      ****************titleBgColorRes：图片截取页面，标题栏与裁剪框按钮的背景颜色值*****************/
-    public void showSelectPhotoDialog(Integer textColorRes,final Boolean isHeadImg,final Integer ChooseBitmapMaxSize,final Boolean isRoundCropper,final Integer titleTextColorRes,final Integer titleBgColorRes)
+    public void showSelectPhotoDialog(Float textSize,Integer textSizeType,Integer textColorRes,final Boolean isHeadImg,final Integer ChooseBitmapMaxSize,final Boolean isRoundCropper,final Integer titleTextColorRes,final Integer titleBgColorRes)
     {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.show();
@@ -111,8 +111,11 @@ public abstract class BasePhotoActivity extends BaseActivity
         TextView galleryTv = (TextView)view.findViewById(R.id.selectphotodialog_gallery);
         TextView cancelTv = (TextView)view.findViewById(R.id.selectphotodialog_cancel);
         cameraTv.setTextColor(textColorRes);
+        cameraTv.setTextSize(textSizeType,textSize);
         galleryTv.setTextColor(textColorRes);
+        galleryTv.setTextSize(textSizeType,textSize);
         cancelTv.setTextColor(textColorRes);
+        cancelTv.setTextSize(textSizeType,textSize);
         cameraTv.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)

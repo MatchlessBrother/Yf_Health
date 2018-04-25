@@ -1,6 +1,7 @@
 package com.yuan.devlibrary._1App;
 
 import java.util.Stack;
+import java.util.Iterator;
 import android.app.Activity;
 import android.os.StrictMode;
 import android.app.Application;
@@ -83,11 +84,14 @@ public class BaseApplication extends Application
     {
         if (mActivityStack == null)
             return;
-        for (Activity activity : mActivityStack)
+
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext())
         {
-            if(activity != null)
+            Activity activity = iterator.next();
+            if(null != activity)
             {
-                mActivityStack.remove(activity);
+                iterator.remove();
                 activity.finish();
             }
         }
@@ -109,15 +113,14 @@ public class BaseApplication extends Application
         if (mActivityStack == null)
             return;
 
-        for (Activity activity : mActivityStack)
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext())
         {
-            if (activity != null)
+            Activity activity = iterator.next();
+            if(null != activity && activity.getClass().getSimpleName().equals(activityName))
             {
-                if (activity.getClass().getSimpleName().equals(activityName))
-                {
-                    mActivityStack.remove(activity);
-                    activity.finish();
-                }
+                iterator.remove();
+                activity.finish();
             }
         }
     }
@@ -128,14 +131,13 @@ public class BaseApplication extends Application
         if (mActivityStack == null)
             return;
 
-        for (Activity activity : mActivityStack)
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext())
         {
-            if (activity != null)
+            Activity activity = iterator.next();
+            if(null != activity && activity.getClass().getSimpleName().equals(activityName))
             {
-                if (activity.getClass().getSimpleName().equals(activityName))
-                {
-                    mActivityStack.remove(activity);
-                }
+                iterator.remove();
             }
         }
     }
@@ -146,15 +148,14 @@ public class BaseApplication extends Application
         if (mActivityStack == null)
             return;
 
-        for (Activity activity : mActivityStack)
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext())
         {
-            if (activity != null)
+            Activity activity = iterator.next();
+            if(null != activity && (!activity.getClass().getSimpleName().equals(activityName)))
             {
-                if (!activity.getClass().getSimpleName().equals(activityName))
-                {
-                    mActivityStack.remove(activity);
-                    activity.finish();
-                }
+                iterator.remove();
+                activity.finish();
             }
         }
     }
@@ -165,14 +166,13 @@ public class BaseApplication extends Application
         if (mActivityStack == null)
             return;
 
-        for (Activity activity : mActivityStack)
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext())
         {
-            if (activity != null)
+            Activity activity = iterator.next();
+            if(null != activity && (!activity.getClass().getSimpleName().equals(activityName)))
             {
-                if (!activity.getClass().getSimpleName().equals(activityName))
-                {
-                    mActivityStack.remove(activity);
-                }
+                iterator.remove();
             }
         }
     }

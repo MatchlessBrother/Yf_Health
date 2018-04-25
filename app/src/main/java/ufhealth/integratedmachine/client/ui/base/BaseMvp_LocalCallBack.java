@@ -1,8 +1,9 @@
 package ufhealth.integratedmachine.client.ui.base;
 
+import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
-public abstract class BaseMvp_LocalCallBack<V>
+public abstract class BaseMvp_LocalCallBack<V extends BaseReturnData>
 {
     private BaseProgressDialog mProgressDialog;
     private BaseMvp_Presenter mBaseMvpPresenter;

@@ -33,7 +33,7 @@ android {
         develop{
             applicationId "ufhealth.integratedmachine.client.develop"
             manifestPlaceholders =[APP_NAME:"@string/app_name_dev"]
-            buildConfigField 'String', "SERVICE_URL",'"http://60.205.148.14:8000/"'
+            buildConfigField 'String', "SERVICE_URL",'"http://192.168.199.112:8000/"'
         }
     }
 

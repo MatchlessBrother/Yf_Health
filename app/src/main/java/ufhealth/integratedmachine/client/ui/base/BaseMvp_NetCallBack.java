@@ -10,7 +10,7 @@ import com.yuan.devlibrary._12_______Utils.NetTools;
 import ufhealth.integratedmachine.client.network.NetFlags;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 
-public class BaseMvp_NetCallBack<T> implements Observer<BaseReturnData<T>>
+public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T>
 {
     private Context mContext;
     private BaseMvp_LocalCallBack mBaseMvpLocalCallBack;
@@ -56,15 +56,15 @@ public class BaseMvp_NetCallBack<T> implements Observer<BaseReturnData<T>>
         mBaseMvpLocalCallBack.onFinish();
     }
 
-    public void onNext(BaseReturnData<T> hotDepartmentData)
+    public void onNext(T returnDatas)
     {
-        if (NetFlags.RequestFail.equals(hotDepartmentData.getCode()))
+        if (NetFlags.RequestFail.equals(returnDatas.getCode()))
         {
-            mBaseMvpLocalCallBack.onFailure(hotDepartmentData.getMsg());
+            mBaseMvpLocalCallBack.onFailure(returnDatas.getMsg());
         }
-        else if(NetFlags.RequestSuccess.equals(hotDepartmentData.getCode()))
+        else if(NetFlags.RequestSuccess.equals(returnDatas.getCode()))
         {
-            mBaseMvpLocalCallBack.onSuccess(hotDepartmentData.getData());
+            mBaseMvpLocalCallBack.onSuccess(returnDatas);
         }
     }
 }

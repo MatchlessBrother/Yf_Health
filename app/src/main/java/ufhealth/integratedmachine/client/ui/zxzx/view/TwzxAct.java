@@ -5,16 +5,16 @@ import android.view.View;
 import java.util.LinkedList;
 import android.widget.Button;
 import android.graphics.Color;
+import android.content.Intent;
 import android.widget.TextView;
+import android.util.TypedValue;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
-import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
-
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.widget.CountEditText;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.TwzxAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.TwzxPresenter;
@@ -22,6 +22,7 @@ import ufhealth.integratedmachine.client.adapter.zxzx.TwzxPictureAdapter;
 
 public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListener
 {
+    public String TYPE;
     private Button twzxTjwtBtn;
     private TextView twzxNameTv;
     private Integer maxPictureNum;
@@ -29,6 +30,8 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
     private TwzxPresenter twzxPresenter;
     private RecyclerView twzxRecyclerview;
     private TwzxPictureAdapter twzxPictureAdapter;
+    public  static  final  String  KSZX = "kszx";
+    public  static  final  String  BGJD = "bgjd";
 
     protected int setLayoutResID()
     {
@@ -62,7 +65,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
             {
                 if(null != twzxPictureAdapter.getData().get(position) && twzxPictureAdapter.getData().get(position).trim().equals(""))
                 {
-                    showSelectPhotoDialog(Color.argb(255,0,147,221),false,maxPictureNum + 1 - twzxPictureAdapter.getData().size(),false,
+                    showSelectPhotoDialog(26f, TypedValue.COMPLEX_UNIT_SP,Color.argb(255,0,147,221),false,maxPictureNum + 1 - twzxPictureAdapter.getData().size(),false,
                             Color.argb(255,255,255,255),Color.argb(255,0,147,221));
                 }
             }
@@ -93,6 +96,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
     protected void initDatas()
     {
         twzxPresenter = new TwzxPresenter();
+        TYPE = getIntent().getStringExtra("type");
         twzxPresenter.attachContextAndViewLayer(this,this);
     }
 
@@ -115,12 +119,40 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
 
     }
 
+    public void commitSuccess()
+    {
+        if(TYPE.equals(KSZX))//快速咨询
+        {
+
+        }
+        else//报告解读
+        {
+
+        }
+    }
+
     public void onClick(View view)
     {
         super.onClick(view);
         switch(view.getId())
         {
-            case R.id.twzx_tjwt_btn:break;
+            case R.id.twzx_tjwt_btn:
+            {
+                if(TYPE.equals(KSZX))//快速咨询
+                {
+                    Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+                    intent.putExtra("type",ChooseMultiDoctorAct.KSZX);
+                    startActivity(intent);
+                    //twzxPresenter.uploadDatas(null,null);break;
+                }
+                else//报告解读
+                {
+                    Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+                    intent.putExtra("type",ChooseMultiDoctorAct.BGJD);
+                    startActivity(intent);
+                    //twzxPresenter.uploadDatas(null,null);break;
+                }
+            }
         }
     }
 

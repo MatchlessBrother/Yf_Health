@@ -11,12 +11,12 @@ import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_NetCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
-public class ZxzxHotDepartmentModel
+public class ZxzxModel
 {
-    public static void getHotDepartments(final Context context,final BaseMvp_LocalCallBack<List<HotDepartment>> netCallBack)
+    public static void getHotDepartments(final Context context,final BaseMvp_LocalCallBack<BaseReturnData<List<HotDepartment>>> netCallBack)
     {
         netCallBack.onStart();
-        Observable<BaseReturnData<List<HotDepartment>>> observable = NetClient.getInstance(context).getNetUrl().getHotDepartments();
+        Observable<BaseReturnData<List<HotDepartment>>> observable = NetClient.getInstance(context).getNetUrl().zxzxGetHotDepartments();
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,netCallBack));
     }
 }
