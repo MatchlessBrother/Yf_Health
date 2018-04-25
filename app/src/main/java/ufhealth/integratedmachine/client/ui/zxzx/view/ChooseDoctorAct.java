@@ -2,6 +2,8 @@ package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import android.view.View;
 import java.util.LinkedList;
+import java.util.List;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -57,10 +59,16 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chosedocSearchEt = rootView.findViewById(R.id.chosedoc_search_et);
         chosedocSearchBtn = rootView.findViewById(R.id.chosedoc_search_btn);
         chosedocRecyclerview = rootView.findViewById(R.id.chosedoc_recyclerview);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         chosedocRecyclerview.setLayoutManager(linearLayoutManager);
-        doctorInfoAdapter = new DoctorInfoAdapter(new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX);
+        if(getIntent().getStringExtra("type").equals(SPZX))
+            doctorInfoAdapter = new DoctorInfoAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.SP);
+        else if(getIntent().getStringExtra("type").equals(YYZX))
+            doctorInfoAdapter = new DoctorInfoAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.YY);
+        else if(getIntent().getStringExtra("type").equals(MYYZ))
+            doctorInfoAdapter = new DoctorInfoAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.MY);
         chosedocRecyclerview.setAdapter(doctorInfoAdapter);
 
         chosedocSearchBtn.setOnClickListener(this);
@@ -82,6 +90,11 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chooseDoctorPresenter.getDoctorInfoOfConditions();
         chooseDoctorPresenter.initConditions();
         chooseDoctorPresenter.getDoctorInfo();
+    }
+
+    public void setAdapterDatas(List<DoctorInfo.ContentBean> doctorsInfo)
+    {
+        doctorInfoAdapter.setNewData(doctorsInfo);
     }
 
     @Subscribe

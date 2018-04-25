@@ -99,11 +99,22 @@ public class DoctorInfo implements Parcelable
         private String original;
         private long doctor_id;
         private long s_cost;
+        private long y_cost;
+        private long m_cost;
+        private long k_cost;
+        private long b_cost;
         private long t_cost;
         private String department_name;
         private String avatar;
-        private long y_cost;
         private String is_free;
+
+        public long getT_cost() {
+            return t_cost;
+        }
+
+        public void setT_cost(long t_cost) {
+            this.t_cost = t_cost;
+        }
 
         public String getDoctor_name() {
             return doctor_name;
@@ -161,12 +172,36 @@ public class DoctorInfo implements Parcelable
             this.s_cost = s_cost;
         }
 
-        public long getT_cost() {
-            return t_cost;
+        public long getY_cost() {
+            return y_cost;
         }
 
-        public void setT_cost(long t_cost) {
-            this.t_cost = t_cost;
+        public void setY_cost(long y_cost) {
+            this.y_cost = y_cost;
+        }
+
+        public long getM_cost() {
+            return m_cost;
+        }
+
+        public void setM_cost(long m_cost) {
+            this.m_cost = m_cost;
+        }
+
+        public long getK_cost() {
+            return k_cost;
+        }
+
+        public void setK_cost(long k_cost) {
+            this.k_cost = k_cost;
+        }
+
+        public long getB_cost() {
+            return b_cost;
+        }
+
+        public void setB_cost(long b_cost) {
+            this.b_cost = b_cost;
         }
 
         public String getDepartment_name() {
@@ -185,14 +220,6 @@ public class DoctorInfo implements Parcelable
             this.avatar = avatar;
         }
 
-        public long getY_cost() {
-            return y_cost;
-        }
-
-        public void setY_cost(long y_cost) {
-            this.y_cost = y_cost;
-        }
-
         public String getIs_free() {
             return is_free;
         }
@@ -203,12 +230,14 @@ public class DoctorInfo implements Parcelable
     }
 
     @Override
-    public int describeContents() {
+    public int describeContents()
+    {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeByte(this.last ? (byte) 1 : (byte) 0);
         dest.writeLong(this.totalPages);
         dest.writeLong(this.totalElements);
@@ -220,10 +249,13 @@ public class DoctorInfo implements Parcelable
         dest.writeList(this.content);
     }
 
-    public DoctorInfo() {
+    public DoctorInfo()
+    {
+
     }
 
-    protected DoctorInfo(Parcel in) {
+    protected DoctorInfo(Parcel in)
+    {
         this.last = in.readByte() != 0;
         this.totalPages = in.readLong();
         this.totalElements = in.readLong();
@@ -236,14 +268,17 @@ public class DoctorInfo implements Parcelable
         in.readList(this.content, ContentBean.class.getClassLoader());
     }
 
-    public static final Creator<DoctorInfo> CREATOR = new Creator<DoctorInfo>() {
+    public static final Creator<DoctorInfo> CREATOR = new Creator<DoctorInfo>()
+    {
         @Override
-        public DoctorInfo createFromParcel(Parcel source) {
+        public DoctorInfo createFromParcel(Parcel source)
+        {
             return new DoctorInfo(source);
         }
 
         @Override
-        public DoctorInfo[] newArray(int size) {
+        public DoctorInfo[] newArray(int size)
+        {
             return new DoctorInfo[size];
         }
     };

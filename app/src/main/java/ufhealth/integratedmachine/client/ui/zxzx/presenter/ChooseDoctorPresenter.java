@@ -75,6 +75,7 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
                     if(isAttachContextAndViewLayer())
                     {
                         doctorInfo = data.getData();
+                        getViewLayer().setAdapterDatas(doctorInfo.getContent());
                     }
                 }
 
