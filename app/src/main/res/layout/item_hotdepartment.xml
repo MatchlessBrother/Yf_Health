@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/hotdepartment_img"
-        android:layout_width="144pt"
-        android:layout_height="144sp"
-        android:scaleType="centerCrop"
+        android:layout_width="130pt"
+        android:layout_height="130sp"
+        android:scaleType="fitXY"
         android:src="@mipmap/defaultimage" />
 
     <TextView
@@ -23,6 +23,6 @@
         android:singleLine="true"
         android:text="科室名"
         android:textColor="@color/default_font_black"
-        android:textSize="22sp" />
+        android:textSize="24sp" />
 
 </LinearLayout>

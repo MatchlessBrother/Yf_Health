@@ -3,6 +3,7 @@ package ufhealth.integratedmachine.client.ui.zxzx.view;
 import java.util.List;
 import android.view.View;
 import java.util.ArrayList;
+import android.view.Gravity;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,8 +18,6 @@ import android.support.v7.widget.GridLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
-import com.yuan.devlibrary._12_______Utils.SoftKeyboardTools;
-
 import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.ZxzxAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.ZxzxPresenter;
@@ -91,6 +90,8 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
                 PromptBoxTools.showToast(ZxzxAct.this,"您好！"+((HotDepartment)adapter.getData().get(position)).getName()+"模块暂未开放使用，敬请期待...");
+                if(zxzxDrawerlayout.isShown())
+                    zxzxDrawerlayout.closeDrawers();
             }
         });
 
@@ -99,6 +100,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         zxzxKszxAll.setOnClickListener(this);
         zxzxMyyzAll.setOnClickListener(this);
         zxzxBgjdAll.setOnClickListener(this);
+        zxzxRmksAll.setOnClickListener(this);
     }
 
     protected void initDatas()
@@ -179,6 +181,10 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
                 intent.putExtra("type","bgjd");
                 startActivity(intent);
                 break;
+            }
+            case R.id.zxzx_rmks_all:
+            {
+                zxzxDrawerlayout.openDrawer(Gravity.RIGHT);break;
             }
         }
     }

@@ -334,13 +334,16 @@
             android:layout_width="550pt"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:clickable="true"
             android:background="@color/white"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/zxzx_hotdepartment_recyclerview"
+                android:layout_marginTop="20sp"
+                android:paddingBottom="20sp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>

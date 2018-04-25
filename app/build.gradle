@@ -26,14 +26,14 @@ android {
         publish{
             applicationId "ufhealth.integratedmachine.client"
             manifestPlaceholders = [APP_NAME:"@string/app_name"]
-            buildConfigField 'String', "SERVICE_URL",'"http://127.0.0.1:8000/"'
+            buildConfigField 'String', "SERVICE_URL",'"http://60.205.148.14:8000/"'
         }
 
         /**测试版**/
         develop{
             applicationId "ufhealth.integratedmachine.client.develop"
             manifestPlaceholders =[APP_NAME:"@string/app_name_dev"]
-            buildConfigField 'String', "SERVICE_URL",'"http://127.0.0.1:8000/"'
+            buildConfigField 'String', "SERVICE_URL",'"http://60.205.148.14:8000/"'
         }
     }
 

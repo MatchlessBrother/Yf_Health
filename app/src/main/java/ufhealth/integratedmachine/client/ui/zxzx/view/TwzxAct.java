@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
+import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
 
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
 import ufhealth.integratedmachine.client.widget.CountEditText;
@@ -73,14 +74,16 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
             {
                 if(null != twzxPictureAdapter.getData().get(position) && !twzxPictureAdapter.getData().get(position).trim().equals(""))
                 {
-                    BaseDialog dialog = showPromptDialog("删除提示：", "确定要删除该张图片吗？", "我再想想", "是的", true, new View.OnClickListener()
-                    {
-                        public void onClick(View view)
-                        {
-                            twzxPictureAdapter.getData().remove(position);
-                            twzxPictureAdapter.notifyDataSetChanged();
-                        }
-                    }, null, null);
+                    BaseDialog dialog = showPromptDialog("删除提示：", "确定要删除该张图片吗？", "我再想想", "是的", true,
+                                        new View.OnClickListener()
+                                        {
+                                            public void onClick(View view)
+                                            {
+                                                twzxPictureAdapter.getData().remove(position);
+                                                setOnNewImgPathListener(new LinkedList());
+                                            }
+                                        }
+                                        , null, null);
                 }
                 return true;
             }

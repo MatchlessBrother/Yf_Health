@@ -273,21 +273,21 @@ public class PromptBoxTools
     }
 
     /*************************************显示默认提示框*******************************************/
-    public static BaseDialog showPromptDialog(Context context,OnClickPromptDialogBtnListener trueOnClickListener,OnClickPromptDialogBtnListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context, View.OnClickListener onClickTrueBtnListener, View.OnClickListener onClickFalseBtnListener, BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPromptDialog(context,"亲情提示：",Color.argb(255,255,255,255),15,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,"亲！确认要进行此操作吗？",Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),"不了",Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),View.VISIBLE,"是的",Color.argb(255,255,255,255),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,true,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
+        return showPromptDialog(context,"亲情提示：",Color.argb(255,255,255,255),15,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,"亲！确认要进行此操作吗？",Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),"不了",Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),View.VISIBLE,"是的",Color.argb(255,255,255,255),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xff61dafe),View.VISIBLE,true,onClickTrueBtnListener,onClickFalseBtnListener,onClickOutsideListener);
     }
 
     /**显示默认提示框，参数含义自己根据名字看，字体大小值默认以DPS为准，颜色属性值默认以动态Color生*
      ********成法为准,背景属性值默认以动态ColorDrawable生成法为准,其余则按照普通情况使用即可*******/
-    public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,Drawable titleStrBackground,int titleStrVisible,String contentStr,String falseStr,int falseStrVisible,String trueStr,int trueStrColor,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,Drawable titleStrBackground,int titleStrVisible,String contentStr,String falseStr,int falseStrVisible,String trueStr,int trueStrColor,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener onClickTrueBtnListener,View.OnClickListener onClickFalseBtnListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPromptDialog(context,titleStr,titleStrColor,15,TypedValue.COMPLEX_UNIT_DIP,titleStrBackground,titleStrVisible,contentStr,Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),falseStr,Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),falseStrVisible,trueStr,trueStrColor,14,TypedValue.COMPLEX_UNIT_DIP,trueStrBackground,trueStrVisible,isCanceledOnTouchOutside,trueOnClickListener,falseOnClickListener,onClickOutsideListener);
+        return showPromptDialog(context,titleStr,titleStrColor,15,TypedValue.COMPLEX_UNIT_DIP,titleStrBackground,titleStrVisible,contentStr,Color.argb(255,88,88,88),13,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffffffff),falseStr,Color.argb(255,139,139,139),14,TypedValue.COMPLEX_UNIT_DIP,new ColorDrawable(0xffeeeeee),falseStrVisible,trueStr,trueStrColor,14,TypedValue.COMPLEX_UNIT_DIP,trueStrBackground,trueStrVisible,isCanceledOnTouchOutside,onClickTrueBtnListener,onClickFalseBtnListener,onClickOutsideListener);
     }
 
     /**显示默认提示框，参数含义自己根据名字看，字体大小值默认以DPS为准，颜色属性值默认以动态Color生*
      ********成法为准,背景属性值默认以动态ColorDrawable生成法为准,其余则按照普通情况使用即可*******/
-    public static BaseDialog showPromptDialog(Context context,String titleStr,int titleStrColor,int titleStrSize,int titleStrSizeType,Drawable titleStrBackground,int titleStrVisible,String contentStr,int contentStrColor,int contentStrSize,int contentStrSizeType,Drawable contentStrBackground,String falseStr,int falseStrColor,int falseStrSize,int falseStrSizeType,Drawable falseStrBackground,int falseStrVisible,String trueStr,int trueStrColor,int trueStrSize,int trueStrSizeType,Drawable trueStrBackground,int trueStrVisible,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context, String titleStr, int titleStrColor, int titleStrSize, int titleStrSizeType, Drawable titleStrBackground, int titleStrVisible, String contentStr, int contentStrColor, int contentStrSize, int contentStrSizeType, Drawable contentStrBackground, String falseStr, int falseStrColor, int falseStrSize, int falseStrSizeType, Drawable falseStrBackground, int falseStrVisible, String trueStr, int trueStrColor, int trueStrSize, int trueStrSizeType, Drawable trueStrBackground, int trueStrVisible, boolean isCanceledOnTouchOutside, final View.OnClickListener onClickTrueBtnListener, final View.OnClickListener onClickFalseBtnListener, BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
         final BaseDialog promptDialog = new BaseDialog(context);
         promptDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
@@ -321,31 +321,25 @@ public class PromptBoxTools
         if(falseBtn.getVisibility() != View.VISIBLE)
             view.findViewById(R.id.promptdialog_btnimg).setVisibility(View.GONE);
 
-        if(null != trueOnClickListener)
-            trueBtn.setOnClickListener(trueOnClickListener);
-        else
+        trueBtn.setOnClickListener(new View.OnClickListener()
         {
-            trueBtn.setOnClickListener(new View.OnClickListener()
+            public void onClick(View view)
             {
-                public void onClick(View v)
-                {
-                    dismissPromptDialog(promptDialog);
-                }
-            });
-        }
+                dismissPromptDialog(promptDialog);
+                if(null != onClickTrueBtnListener)
+                    onClickTrueBtnListener.onClick(view);
+            }
+        });
 
-        if(null != falseOnClickListener)
-            falseBtn.setOnClickListener(falseOnClickListener);
-        else
+        falseBtn.setOnClickListener(new View.OnClickListener()
         {
-            falseBtn.setOnClickListener(new View.OnClickListener()
+            public void onClick(View view)
             {
-                public void onClick(View v)
-                {
-                    dismissPromptDialog(promptDialog);
-                }
-            });
-        }
+                dismissPromptDialog(promptDialog);
+                if(null != onClickFalseBtnListener)
+                    onClickFalseBtnListener.onClick(view);
+            }
+        });
 
         if(null != onClickOutsideListener)
             promptDialog.setOnClickOutsideListener(onClickOutsideListener);
@@ -362,21 +356,5 @@ public class PromptBoxTools
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return promptDialog;
-    }
-
-    public static class OnClickPromptDialogBtnListener implements View.OnClickListener
-    {
-        private BaseDialog mBaseDialog;
-
-        public OnClickPromptDialogBtnListener(BaseDialog mBaseDialog)
-        {
-            this.mBaseDialog = mBaseDialog;
-        }
-
-        public void onClick(View view)
-        {
-            if(mBaseDialog.isShowing())
-                mBaseDialog.dismiss();
-        }
     }
 }
