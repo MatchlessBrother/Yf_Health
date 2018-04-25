@@ -98,7 +98,7 @@
                         android:layout_height="44sp"
                         android:paddingLeft="20pt"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/defaultimage" />
+                        android:src="@mipmap/defaultimageicon" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
