@@ -6,11 +6,16 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 
-public class BillAct extends BaseAct implements BaseMvp_View,View.OnClickListener
+public class BillInfoAct extends BaseAct implements BaseMvp_View,View.OnClickListener
 {
+    public String TYPE;
+    public  static  final  String  SPZX = "spzx";
+    public  static  final  String  YYZX = "yyzx";
+    public  static  final  String  MYYZ = "myyz";
+
     protected int setLayoutResID()
     {
-        return R.layout.activity_bill;
+        return R.layout.activity_billinfo;
     }
 
     protected void initWidgets(View rootView)

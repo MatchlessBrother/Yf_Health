@@ -1,5 +1,7 @@
 package ufhealth.integratedmachine.client.ui.zxzx.presenter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
@@ -23,17 +25,85 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         doctorInfoOfCondition = new DoctorInfoOfCondition();
     }
 
-    public void getDoctorInfoOfConditions()
+    public void initConditions()
     {
         if(isAttachContextAndViewLayer())
         {
-            DoctorModel.getDoctorInfoOfConditions(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>>(this)
+            conditions.clear();
+            conditions.put("page","1");
+        }
+    }
+
+    public void setContent()
+    {
+        int a = 1;
+        a++;
+    }
+
+    public void getSortOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getSort() && doctorInfoOfCondition.getSort().size() > 0)
             {
-                public void onSuccess(BaseReturnData<DoctorInfoOfCondition> data)
+                getViewLayer().showSortOptions(doctorInfoOfCondition.getSort());
+                return;
+            }
+        }
+        getViewLayer().showSortOptions(new ArrayList<DoctorInfoOfCondition.SortBean>());
+    }
+
+    public void getSourceOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getOriginal() && doctorInfoOfCondition.getOriginal().size() > 0)
+            {
+                getViewLayer().showSourceOptions(doctorInfoOfCondition.getOriginal());
+                return;
+            }
+        }
+        getViewLayer().showSourceOptions(new ArrayList<DoctorInfoOfCondition.OriginalBean>());
+    }
+
+    public void getHospitalOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getHospital() && doctorInfoOfCondition.getHospital().size() > 0)
+            {
+                getViewLayer().showHospitalOptions(doctorInfoOfCondition.getHospital());
+                return;
+            }
+        }
+        getViewLayer().showHospitalOptions(new ArrayList<DoctorInfoOfCondition.HospitalBean>());
+    }
+
+    public void getDepartmentOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getDepartment() && doctorInfoOfCondition.getDepartment().size() > 0)
+            {
+                getViewLayer().showDepartmentOptions(doctorInfoOfCondition.getDepartment());
+                return;
+            }
+        }
+        getViewLayer().showDepartmentOptions(new ArrayList<DoctorInfoOfCondition.DepartmentBean>());
+    }
+
+    public void getDoctorInfo()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            DoctorModel.getDoctorsInfo(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfo>>(this)
+            {
+                public void onSuccess(BaseReturnData<DoctorInfo> data)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        doctorInfoOfCondition = data.getData();
+                        doctorInfo = data.getData();
+                        getViewLayer().initAdapterDatas(doctorInfo.getContent());
                     }
                 }
 
@@ -58,24 +128,17 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         }
     }
 
-    public void initConditions()
-    {
-        conditions.clear();
-        conditions.put("page","1");
-    }
-
-    public void getDoctorInfo()
+    public void getDoctorInfoOfConditions()
     {
         if(isAttachContextAndViewLayer())
         {
-            DoctorModel.getDoctorsInfo(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfo>>(this)
+            DoctorModel.getDoctorInfoOfConditions(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>>(this)
             {
-                public void onSuccess(BaseReturnData<DoctorInfo> data)
+                public void onSuccess(BaseReturnData<DoctorInfoOfCondition> data)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        doctorInfo = data.getData();
-                        getViewLayer().setAdapterDatas(doctorInfo.getContent());
+                        doctorInfoOfCondition = data.getData();
                     }
                 }
 

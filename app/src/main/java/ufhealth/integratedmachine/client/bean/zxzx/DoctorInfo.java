@@ -107,6 +107,24 @@ public class DoctorInfo implements Parcelable
         private String department_name;
         private String avatar;
         private String is_free;
+        private boolean isSelected;
+        private List<String> labels;
+
+        public boolean isSelected() {
+            return this.isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.isSelected = selected;
+        }
+
+        public List<String> getLabels() {
+            return this.labels;
+        }
+
+        public void setLabels(List<String> labels) {
+            this.labels = labels;
+        }
 
         public long getT_cost() {
             return t_cost;

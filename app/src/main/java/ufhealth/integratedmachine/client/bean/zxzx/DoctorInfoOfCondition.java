@@ -53,6 +53,7 @@ public class DoctorInfoOfCondition implements Parcelable
 
         private String id;
         private String name;
+        private boolean isSelected;
 
         public String getId() {
             return id;
@@ -69,6 +70,14 @@ public class DoctorInfoOfCondition implements Parcelable
         public void setName(String name) {
             this.name = name;
         }
+
+        public boolean isSelected() {
+            return this.isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.isSelected = selected;
+        }
     }
 
     public static class OriginalBean {
@@ -79,6 +88,15 @@ public class DoctorInfoOfCondition implements Parcelable
 
         private String code;
         private String name;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return this.isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.isSelected = selected;
+        }
 
         public String getCode() {
             return code;
@@ -105,6 +123,15 @@ public class DoctorInfoOfCondition implements Parcelable
 
         private String id;
         private String name;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return this.isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.isSelected = selected;
+        }
 
         public String getId() {
             return id;
@@ -131,6 +158,15 @@ public class DoctorInfoOfCondition implements Parcelable
 
         private String id;
         private String name;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return this.isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.isSelected = selected;
+        }
 
         public String getId() {
             return id;
