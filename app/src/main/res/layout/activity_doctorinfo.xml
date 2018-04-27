@@ -35,50 +35,64 @@
 
             <RelativeLayout
                 android:layout_width="350pt"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/doctorinfo_right_top_twimg"
-                    android:layout_width="104pt"
-                    android:layout_height="104sp"
-                    android:layout_marginRight="30pt"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/kszx_blue" />
+                    android:id="@+id/doctorinfo_right_top_twline"
+                    android:layout_width="match_parent"
+                    android:layout_height="6sp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/mainColor" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_twname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/doctorinfo_right_top_twimg"
-                    android:layout_marginTop="3sp"
-                    android:layout_toRightOf="@id/doctorinfo_right_top_twimg"
-                    android:singleLine="true"
-                    android:text="图文咨询"
-                    android:textColor="@color/mainColor"
-                    android:textSize="28sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_twfy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_twname"
-                    android:layout_below="@id/doctorinfo_right_top_twname"
-                    android:singleLine="true"
-                    android:text="25元/次"
-                    android:textColor="@color/red"
-                    android:textSize="24sp" />
+                    <ImageView
+                        android:id="@+id/doctorinfo_right_top_twimg"
+                        android:layout_width="104pt"
+                        android:layout_height="104sp"
+                        android:layout_marginRight="30pt"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/kszx_gray" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_twjryz"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_twfy"
-                    android:layout_below="@id/doctorinfo_right_top_twfy"
-                    android:singleLine="true"
-                    android:text="今日义诊：免费"
-                    android:textColor="#13ad29"
-                    android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_twname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/doctorinfo_right_top_twimg"
+                        android:layout_marginTop="12sp"
+                        android:layout_toRightOf="@id/doctorinfo_right_top_twimg"
+                        android:singleLine="true"
+                        android:text="图文咨询"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_twfy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_twname"
+                        android:layout_below="@id/doctorinfo_right_top_twname"
+                        android:singleLine="true"
+                        android:text="0元/次"
+                        android:textColor="@color/red"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_twjryz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_twfy"
+                        android:layout_below="@id/doctorinfo_right_top_twfy"
+                        android:singleLine="true"
+                        android:visibility="gone"
+                        android:text="今日义诊：免费"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="24sp" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <View
@@ -88,50 +102,64 @@
 
             <RelativeLayout
                 android:layout_width="350pt"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/doctorinfo_right_top_yyimg"
-                    android:layout_width="104pt"
-                    android:layout_height="104sp"
-                    android:layout_marginRight="30pt"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/kszx_blue" />
+                    android:id="@+id/doctorinfo_right_top_yyline"
+                    android:layout_width="match_parent"
+                    android:layout_height="6sp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/mainColor" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_yyname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/doctorinfo_right_top_yyimg"
-                    android:layout_marginTop="3sp"
-                    android:layout_toRightOf="@id/doctorinfo_right_top_yyimg"
-                    android:singleLine="true"
-                    android:text="语音咨询"
-                    android:textColor="@color/mainColor"
-                    android:textSize="28sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_yyfy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_yyname"
-                    android:layout_below="@id/doctorinfo_right_top_yyname"
-                    android:singleLine="true"
-                    android:text="25元/次"
-                    android:textColor="@color/red"
-                    android:textSize="24sp" />
+                    <ImageView
+                        android:id="@+id/doctorinfo_right_top_yyimg"
+                        android:layout_width="104pt"
+                        android:layout_height="104sp"
+                        android:layout_marginRight="30pt"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/yyzx_gray" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_yyjryz"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_yyfy"
-                    android:layout_below="@id/doctorinfo_right_top_yyfy"
-                    android:singleLine="true"
-                    android:text="今日义诊：免费"
-                    android:textColor="#13ad29"
-                    android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_yyname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/doctorinfo_right_top_yyimg"
+                        android:layout_marginTop="12sp"
+                        android:layout_toRightOf="@id/doctorinfo_right_top_yyimg"
+                        android:singleLine="true"
+                        android:text="语音咨询"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_yyfy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_yyname"
+                        android:layout_below="@id/doctorinfo_right_top_yyname"
+                        android:singleLine="true"
+                        android:text="0元/分钟"
+                        android:textColor="@color/red"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_yyjryz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_yyfy"
+                        android:layout_below="@id/doctorinfo_right_top_yyfy"
+                        android:singleLine="true"
+                        android:visibility="gone"
+                        android:text="今日义诊：免费"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="24sp" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <View
@@ -141,51 +169,70 @@
 
             <RelativeLayout
                 android:layout_width="350pt"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/doctorinfo_right_top_spimg"
-                    android:layout_width="104pt"
-                    android:layout_height="104sp"
-                    android:layout_marginRight="30pt"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/kszx_blue" />
+                    android:id="@+id/doctorinfo_right_top_spline"
+                    android:layout_width="match_parent"
+                    android:layout_height="6sp"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/mainColor" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_spname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/doctorinfo_right_top_spimg"
-                    android:layout_marginTop="3sp"
-                    android:layout_toRightOf="@id/doctorinfo_right_top_spimg"
-                    android:singleLine="true"
-                    android:text="视频咨询"
-                    android:textColor="@color/mainColor"
-                    android:textSize="28sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_spfy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_spname"
-                    android:layout_below="@id/doctorinfo_right_top_spname"
-                    android:singleLine="true"
-                    android:text="25元/次"
-                    android:textColor="@color/red"
-                    android:textSize="24sp" />
+                    <ImageView
+                        android:id="@+id/doctorinfo_right_top_spimg"
+                        android:layout_width="104pt"
+                        android:layout_height="104sp"
+                        android:layout_marginRight="30pt"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/spzx_gray" />
 
-                <TextView
-                    android:id="@+id/doctorinfo_right_top_spjryz"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/doctorinfo_right_top_spfy"
-                    android:layout_below="@id/doctorinfo_right_top_spfy"
-                    android:singleLine="true"
-                    android:text="今日义诊：免费"
-                    android:textColor="#13ad29"
-                    android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_spname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/doctorinfo_right_top_spimg"
+                        android:layout_marginTop="12sp"
+                        android:layout_toRightOf="@id/doctorinfo_right_top_spimg"
+                        android:singleLine="true"
+                        android:text="视频咨询"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_spfy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_spname"
+                        android:layout_below="@id/doctorinfo_right_top_spname"
+                        android:singleLine="true"
+                        android:text="0元/分钟"
+                        android:textColor="@color/red"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/doctorinfo_right_top_spjryz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/doctorinfo_right_top_spfy"
+                        android:layout_below="@id/doctorinfo_right_top_spfy"
+                        android:singleLine="true"
+                        android:text="今日义诊：免费"
+                        android:visibility="gone"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="24sp" />
+                </RelativeLayout>
             </RelativeLayout>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#FFDDDDDD" />
         </LinearLayout>
 
         <LinearLayout
@@ -206,7 +253,7 @@
                 android:layout_height="80sp"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="用户评价（126）"
+                android:text="用户评价 : (0)"
                 android:textColor="@color/default_font_black"
                 android:textSize="28sp" />
 
@@ -215,10 +262,16 @@
                 android:layout_height="1px"
                 android:background="#FFBBBBBB" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/doctorinfo_right_bottom_recyclerview"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/doctorinfo_right_bottom_swipelayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/doctorinfo_right_bottom_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

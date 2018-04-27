@@ -9,6 +9,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
+import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 
@@ -22,7 +23,11 @@ public interface NetUrl
 
     @POST("general/doctor/getDoctorListByContion")
     @FormUrlEncoded
-    Observable<BaseReturnData<DoctorInfo>> zxzxGetDoctorInfo(@FieldMap Map<String,String> conditions);
+    Observable<BaseReturnData<DoctorInfo>> zxzxGetDoctorsInfo(@FieldMap Map<String,String> conditions);
+
+    @POST("zixun/comment/getCommentByDoctor")
+    @FormUrlEncoded
+    Observable<BaseReturnData<DoctorAllInfo>> zxzxGetDoctorAllInfo(@FieldMap Map<String, String> conditions);
 
     @POST("zixun/imagetext/imageTextSave")
     @FormUrlEncoded

@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.ChooseDoctorAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
 public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,BaseViewHolder>
@@ -82,10 +83,11 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                         Intent intent = new Intent(mContext, BillInfoAct.class);
                         switch (mMediaType)
                         {
-                            case SP:intent.putExtra("type",BillInfoAct.SPZX);break;
-                            case YY:intent.putExtra("type",BillInfoAct.YYZX);break;
-                            case MY:intent.putExtra("type",BillInfoAct.MYYZ);break;
+                            case SP:intent.putExtra("type", ChooseDoctorAct.SPZX);break;
+                            case YY:intent.putExtra("type",ChooseDoctorAct.YYZX);break;
+                            case MY:intent.putExtra("type",ChooseDoctorAct.MYYZ);break;
                         }
+                        intent.putExtra("id",bean.getDoctor_id()+"");
                         mContext.startActivity(intent);
                     }
                 });

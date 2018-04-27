@@ -7,9 +7,12 @@ import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 
 public interface ChooseDoctorAct_V extends BaseMvp_View
 {
-    void initAdapterDatas(List<DoctorInfo.ContentBean> doctorsInfo);
-    void showSortOptions(List<DoctorInfoOfCondition.SortBean> sortConditions);
-    void showSourceOptions(List<DoctorInfoOfCondition.OriginalBean> sourceConditions);
-    void showHospitalOptions(List<DoctorInfoOfCondition.HospitalBean> hospitalConditions);
-    void showDepartmentOptions(List<DoctorInfoOfCondition.DepartmentBean> departmentConditions);
+    void refreshDatas(DoctorInfo doctorsInfo);
+    void finishRefresh();
+    void loadMoreDatas(DoctorInfo doctorsInfo);
+    void finishLoadMore();
+    void setSortOptions(List<DoctorInfoOfCondition.SortBean> sortConditions);
+    void setSourceOptions(List<DoctorInfoOfCondition.OriginalBean> sourceConditions);
+    void setHospitalOptions(List<DoctorInfoOfCondition.HospitalBean> hospitalConditions);
+    void setDepartmentOptions(List<DoctorInfoOfCondition.DepartmentBean> departmentConditions);
 }

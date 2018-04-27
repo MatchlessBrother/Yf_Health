@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="30sp"
-    android:background="@color/default_transwhite_bg"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -48,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -69,9 +70,9 @@
             app:starEmpty="@mipmap/ratingnosolidicon"
             app:starFill="@mipmap/ratingsolidicon"
             app:starHalf="@mipmap/ratingsolidicon"
-            app:starImageHeight="30sp"
+            app:starImageHeight="40sp"
             app:starImagePadding="15pt"
-            app:starImageWidth="30pt"
+            app:starImageWidth="40pt"
             app:starNum="0" />
     </LinearLayout>
 
@@ -79,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8pt"
             android:singleLine="true"
-            android:text="专   业  度："
+            android:text="专  业  度："
             android:textColor="@color/default_font_black"
             android:textSize="24sp" />
 
@@ -100,9 +102,9 @@
             app:starEmpty="@mipmap/ratingnosolidicon"
             app:starFill="@mipmap/ratingsolidicon"
             app:starHalf="@mipmap/ratingsolidicon"
-            app:starImageHeight="30sp"
+            app:starImageHeight="40sp"
             app:starImagePadding="15pt"
-            app:starImageWidth="30pt"
+            app:starImageWidth="40pt"
             app:starNum="0" />
     </LinearLayout>
 
@@ -110,6 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -131,9 +134,9 @@
             app:starEmpty="@mipmap/ratingnosolidicon"
             app:starFill="@mipmap/ratingsolidicon"
             app:starHalf="@mipmap/ratingsolidicon"
-            app:starImageHeight="30sp"
+            app:starImageHeight="40sp"
             app:starImagePadding="15pt"
-            app:starImageWidth="30pt"
+            app:starImageWidth="40pt"
             app:starNum="0" />
     </LinearLayout>
 
@@ -146,5 +149,11 @@
         android:text="服务很周到，接待也很耐心，值得推荐。"
         android:textColor="@color/default_font_black"
         android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="30sp"
+        android:background="@color/default_divide_line"/>
 
 </LinearLayout>

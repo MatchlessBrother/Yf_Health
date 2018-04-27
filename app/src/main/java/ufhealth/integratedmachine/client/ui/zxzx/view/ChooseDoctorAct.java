@@ -1,40 +1,38 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.view.View;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-
-import android.widget.AdapterView;
+import android.view.View;
+import java.util.LinkedList;
 import android.widget.Button;
+import android.content.Intent;
+import android.graphics.Color;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import ufhealth.integratedmachine.client.R;
-
 import com.flyco.dialog.entity.DialogMenuItem;
-import com.flyco.dialog.listener.OnOperItemClickL;
-import com.flyco.dialog.widget.NormalListDialog;
 import com.hwangjr.rxbus.annotation.Subscribe;
-import com.yuan.devlibrary._12_______Utils.ArraysetConvertedTools;
-
 import android.support.v7.widget.RecyclerView;
+import com.flyco.dialog.listener.OnOperItemClickL;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import ufhealth.integratedmachine.client.widget.ListDialog;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.adapter.zxzx.DoctorInfoAdapter;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.ChooseDoctorAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.ChooseDoctorPresenter;
-import ufhealth.integratedmachine.client.widget.ListDialog;
 
 public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.OnClickListener
 {
+    public String TYPE;
+    public  static  final  String  SPZX = "spzx";
+    public  static  final  String  YYZX = "yyzx";
+    public  static  final  String  MYYZ = "myyz";
+
     private LinearLayout chosedocDefaultsortLl;
     private TextView chosedocDefaultsortName;
     private LinearLayout chosedocSourceLl;
@@ -48,10 +46,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     private RecyclerView chosedocRecyclerview;
     private DoctorInfoAdapter doctorInfoAdapter;
     private ChooseDoctorPresenter chooseDoctorPresenter;
-    public String TYPE;
-    public  static  final  String  SPZX = "spzx";
-    public  static  final  String  YYZX = "yyzx";
-    public  static  final  String  MYYZ = "myyz";
+    private SwipeRefreshLayout chosedocSwipeRefreshLayout;
 
     protected int setLayoutResID()
     {
@@ -73,7 +68,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chosedocSearchEt = rootView.findViewById(R.id.chosedoc_search_et);
         chosedocSearchBtn = rootView.findViewById(R.id.chosedoc_search_btn);
         chosedocRecyclerview = rootView.findViewById(R.id.chosedoc_recyclerview);
-
+        chosedocSwipeRefreshLayout = rootView.findViewById(R.id.chosedoc_swiperefreshlayout);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         chosedocRecyclerview.setLayoutManager(linearLayoutManager);
@@ -90,6 +85,33 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chosedocDepartmentLl.setOnClickListener(this);
         chosedocSourceLl.setOnClickListener(this);
         chosedocDefaultsortLl.setOnClickListener(this);
+
+        chosedocSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            public void onRefresh()
+            {
+                chooseDoctorPresenter.refreshDatas();
+            }
+        });
+
+        doctorInfoAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener()
+        {
+            public void onLoadMoreRequested()
+            {
+                chooseDoctorPresenter.loadMoreDatas();
+            }
+        },chosedocRecyclerview);
+
+        doctorInfoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                Intent intent = new Intent(ChooseDoctorAct.this,DoctorInfoAct.class);
+                intent.putExtra("type",TYPE);
+                intent.putExtra("id",((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()+"");
+                startActivity(intent);
+            }
+        });
     }
 
     protected void initDatas()
@@ -102,13 +124,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     protected void initLogic()
     {
         chooseDoctorPresenter.getDoctorInfoOfConditions();
-        chooseDoctorPresenter.initConditions();
-        chooseDoctorPresenter.getDoctorInfo();
-    }
-
-    public void initAdapterDatas(List<DoctorInfo.ContentBean> doctorsInfo)
-    {
-        doctorInfoAdapter.setNewData(doctorsInfo);
+        chooseDoctorPresenter.refreshDatas();
     }
 
     public void onClick(View view)
@@ -118,33 +134,90 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             case R.id.chosedoc_search_btn:
             {
-                chooseDoctorPresenter.setContent();
+                doctorInfoAdapter.setEnableLoadMore(false);
+                chooseDoctorPresenter.setSearchContent(chosedocSearchEt.getText().toString().trim());
+                chooseDoctorPresenter.refreshDatas();
                 break;
             }
             case R.id.chosedoc_hospital_ll:
             {
-                chooseDoctorPresenter.getHospitalOptions();
+                chooseDoctorPresenter.setHospitalOptions();
                 break;
             }
             case R.id.chosedoc_department_ll:
             {
-                chooseDoctorPresenter.getDepartmentOptions();
+                chooseDoctorPresenter.setDepartmentOptions();
                 break;
             }
             case R.id.chosedoc_source_ll:
             {
-                chooseDoctorPresenter.getSourceOptions();
+                chooseDoctorPresenter.setSourceOptions();
                 break;
             }
             case R.id.chosedoc_defaultsort_ll:
             {
-                chooseDoctorPresenter.getSortOptions();
+                chooseDoctorPresenter.setSortOptions();
                 break;
             }
         }
     }
 
-    public void showSortOptions(final List<DoctorInfoOfCondition.SortBean> sortConditions)
+    public void finishRefresh()
+    {
+        chosedocSwipeRefreshLayout.setRefreshing(false);
+
+    }
+
+    public void finishLoadMore()
+    {
+        doctorInfoAdapter.loadMoreComplete();
+
+    }
+
+    public void refreshDatas(DoctorInfo doctorsInfo)
+    {
+        if(doctorsInfo.getContent().size() < doctorsInfo.getSize())
+            doctorInfoAdapter.setEnableLoadMore(false);
+        else
+            doctorInfoAdapter.setEnableLoadMore(true);
+        doctorInfoAdapter.setNewData(doctorsInfo.getContent());
+    }
+
+    public void loadMoreDatas(DoctorInfo doctorsInfo)
+    {
+        if(doctorsInfo.getContent().size() < doctorsInfo.getSize())
+            doctorInfoAdapter.setEnableLoadMore(false);
+        else
+            doctorInfoAdapter.setEnableLoadMore(true);
+        doctorInfoAdapter.addData(doctorsInfo.getContent());
+        doctorInfoAdapter.notifyDataSetChanged();
+    }
+
+
+    /********************************1医院----2科室----3来源----4排序规则********************************/
+    public ListDialog getConditionsDialog(String[] strSz, final Integer contitionsType)
+    {
+        ListDialog conditionsDialog = new ListDialog(this,strSz);
+        conditionsDialog.titleBgColor(Color.argb(255,0,147,221));
+        conditionsDialog.titleTextColor(Color.argb(255,255,255,255));
+        conditionsDialog.titleTextSize_SP(32);
+        conditionsDialog.cornerRadius(4);
+        conditionsDialog.itemTextSize(28);
+        switch(contitionsType)
+        {
+            case 1:conditionsDialog.setTitle("医院选择：");break;
+            case 2:conditionsDialog.setTitle("科室选择：");break;
+            case 3:conditionsDialog.setTitle("来源选择：");break;
+            case 4:conditionsDialog.setTitle("排序规则：");break;
+            default:conditionsDialog.setTitle("排序规则：");break;
+        }
+        conditionsDialog.widthScale(0.4f);
+        conditionsDialog.heightScale(0.6f);
+        conditionsDialog.show();
+        return conditionsDialog;
+    }
+
+    public void setSortOptions(final List<DoctorInfoOfCondition.SortBean> sortConditions)
     {
         boolean isEmpty = true;
         String[] conditionsName = new String[sortConditions.size()];
@@ -170,7 +243,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             conditionsName = temp;
         }
         final boolean finalIsEmpty = isEmpty;
-        final ListDialog listDialog = showConditionsDialog(conditionsName,4);
+        final ListDialog listDialog = getConditionsDialog(conditionsName,4);
         listDialog.setOnOperItemClickL(new OnOperItemClickL()
         {
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -195,18 +268,12 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                         {
                             sortConditions.get(index).setSelected(false);
                             if(index == sortConditions.size() - 1 && ((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals("取消选择！"))
-                            {
-                                if(!("默认排序".equals(chosedocDefaultsortName.getText().toString().trim())))
-                                    chooseDoctorPresenter.getDoctorInfo();
                                 chosedocDefaultsortName.setText("默认排序");
-                            }
                             continue;
                         }
                         else
                         {
                             sortConditions.get(index).setSelected(true);
-                            if(!(((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals(chosedocDefaultsortName.getText().toString().trim())))
-                                chooseDoctorPresenter.getDoctorInfo();
                             chosedocDefaultsortName.setText(sortConditions.get(index).getName().trim());
                         }
                     }
@@ -215,7 +282,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         });
     }
 
-    public void showSourceOptions(final List<DoctorInfoOfCondition.OriginalBean> sourceConditions)
+    public void setSourceOptions(final List<DoctorInfoOfCondition.OriginalBean> sourceConditions)
     {
         boolean isEmpty = true;
         String[] conditionsName = new String[sourceConditions.size()];
@@ -241,7 +308,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             conditionsName = temp;
         }
         final boolean finalIsEmpty = isEmpty;
-        final ListDialog listDialog = showConditionsDialog(conditionsName,4);
+        final ListDialog listDialog = getConditionsDialog(conditionsName,3);
         listDialog.setOnOperItemClickL(new OnOperItemClickL()
         {
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -265,18 +332,12 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                         {
                             sourceConditions.get(index).setSelected(false);
                             if(index == sourceConditions.size() - 1 && ((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals("取消选择！"))
-                            {
-                                if(!("来源".equals(chosedocSourceName.getText().toString().trim())))
-                                    chooseDoctorPresenter.getDoctorInfo();
                                 chosedocSourceName.setText("来源");
-                            }
                             continue;
                         }
                         else
                         {
                             sourceConditions.get(index).setSelected(true);
-                            if(!(((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals(chosedocSourceName.getText().toString().trim())))
-                                chooseDoctorPresenter.getDoctorInfo();
                             chosedocSourceName.setText(sourceConditions.get(index).getName().trim());
                         }
                     }
@@ -285,7 +346,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         });
     }
 
-    public void showHospitalOptions(final List<DoctorInfoOfCondition.HospitalBean> hospitalConditions)
+    public void setHospitalOptions(final List<DoctorInfoOfCondition.HospitalBean> hospitalConditions)
     {
         boolean isEmpty = true;
         String[] conditionsName = new String[hospitalConditions.size()];
@@ -311,7 +372,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             conditionsName = temp;
         }
         final boolean finalIsEmpty = isEmpty;
-        final ListDialog listDialog = showConditionsDialog(conditionsName,4);
+        final ListDialog listDialog = getConditionsDialog(conditionsName,1);
         listDialog.setOnOperItemClickL(new OnOperItemClickL()
         {
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -335,18 +396,12 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                         {
                             hospitalConditions.get(index).setSelected(false);
                             if(index == hospitalConditions.size() - 1 && ((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals("取消选择！"))
-                            {
-                                if(!("医院".equals(chosedocHospitalName.getText().toString().trim())))
-                                    chooseDoctorPresenter.getDoctorInfo();
                                 chosedocHospitalName.setText("医院");
-                            }
                             continue;
                         }
                         else
                         {
                             hospitalConditions.get(index).setSelected(true);
-                            if(!(((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals(chosedocHospitalName.getText().toString().trim())))
-                                chooseDoctorPresenter.getDoctorInfo();
                             chosedocHospitalName.setText(hospitalConditions.get(index).getName().trim());
                         }
                     }
@@ -355,7 +410,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         });
     }
 
-    public void showDepartmentOptions(final List<DoctorInfoOfCondition.DepartmentBean> departmentConditions)
+    public void setDepartmentOptions(final List<DoctorInfoOfCondition.DepartmentBean> departmentConditions)
     {
         boolean isEmpty = true;
         String[] conditionsName = new String[departmentConditions.size()];
@@ -381,7 +436,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             conditionsName = temp;
         }
         final boolean finalIsEmpty = isEmpty;
-        final ListDialog listDialog = showConditionsDialog(conditionsName,4);
+        final ListDialog listDialog = getConditionsDialog(conditionsName,2);
         listDialog.setOnOperItemClickL(new OnOperItemClickL()
         {
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -405,47 +460,18 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                         {
                             departmentConditions.get(index).setSelected(false);
                             if(index == departmentConditions.size() - 1 && ((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals("取消选择！"))
-                            {
-                                if(!("科室".equals(chosedocDepartmentName.getText().toString().trim())))
-                                    chooseDoctorPresenter.getDoctorInfo();
                                 chosedocDepartmentName.setText("科室");
-                            }
                             continue;
                         }
                         else
                         {
                             departmentConditions.get(index).setSelected(true);
-                            if(!(((DialogMenuItem)parent.getAdapter().getItem(position)).mOperName.trim().equals(chosedocDepartmentName.getText().toString().trim())))
-                                chooseDoctorPresenter.getDoctorInfo();
                             chosedocDepartmentName.setText(departmentConditions.get(index).getName().trim());
                         }
                     }
                 }
             }
         });
-    }
-
-    /*****************************1医院----2科室----3来源----4排序规则*****************************/
-    public ListDialog showConditionsDialog(String[] strSz, final Integer contitionsType)
-    {
-        ListDialog conditionsDialog = new ListDialog(this,strSz);
-        conditionsDialog.titleBgColor(Color.argb(255,0,147,221));
-        conditionsDialog.titleTextColor(Color.argb(255,255,255,255));
-        conditionsDialog.titleTextSize_SP(32);
-        conditionsDialog.cornerRadius(4);
-        conditionsDialog.itemTextSize(28);
-        switch(contitionsType)
-        {
-            case 1:conditionsDialog.setTitle("医院选择：");break;
-            case 2:conditionsDialog.setTitle("科室选择：");break;
-            case 3:conditionsDialog.setTitle("来源选择：");break;
-            case 4:conditionsDialog.setTitle("排序规则：");break;
-            default:conditionsDialog.setTitle("排序规则：");break;
-        }
-        conditionsDialog.widthScale(0.4f);
-        conditionsDialog.heightScale(0.6f);
-        conditionsDialog.show();
-        return conditionsDialog;
     }
 
     @Subscribe
