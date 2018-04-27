@@ -141,14 +141,14 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
                 if(TYPE.equals(KSZX))//快速咨询
                 {
                     Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-                    intent.putExtra("type",ChooseMultiDoctorAct.KSZX);
+                    intent.putExtra("type",KSZX);
                     startActivity(intent);
                     //twzxPresenter.uploadDatas(null,null);break;
                 }
                 else//报告解读
                 {
                     Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-                    intent.putExtra("type",ChooseMultiDoctorAct.BGJD);
+                    intent.putExtra("type",BGJD);
                     startActivity(intent);
                     //twzxPresenter.uploadDatas(null,null);break;
                 }

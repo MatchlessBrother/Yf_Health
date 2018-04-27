@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="工选择2个医生，订单总价：70元"
+                tools:text="共选择2个医生，订单总价：70元"
                 android:textColor="@color/default_font_black"
                 android:textSize="28sp" />
 
@@ -53,6 +53,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/btn_blue_yj_solid"
                 android:gravity="center"
+                android:visibility="gone"
                 android:singleLine="true"
                 android:text="提交问题"
                 android:textColor="@color/white"

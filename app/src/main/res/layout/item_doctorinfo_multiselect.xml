@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@id/doctorinfo_img"
         android:layout_alignParentRight="true"
+        android:drawablePadding="18pt"
         android:layout_alignTop="@id/doctorinfo_img"
         android:button="@null"
         android:drawableRight="@drawable/checkbox_blue_no"

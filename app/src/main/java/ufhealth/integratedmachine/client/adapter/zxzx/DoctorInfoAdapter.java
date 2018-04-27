@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ChooseDoctorAct;
+import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
 public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,BaseViewHolder>
@@ -136,6 +137,7 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                         break;
                     }
                 }
+                CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels_checkbox);
                 labelsView.setLabels(null != bean.getLabels() && bean.getLabels().size() != 0 ? bean.getLabels() : new ArrayList<String>());
                 ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()

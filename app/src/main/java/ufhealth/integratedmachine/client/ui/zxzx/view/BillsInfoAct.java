@@ -4,9 +4,10 @@ import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
+import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
+import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillsInfoAct_V;
 
-public class BillsInfoAct extends BaseAct implements BaseMvp_View,View.OnClickListener
+public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClickListener
 {
     protected int setLayoutResID()
     {
@@ -33,6 +34,11 @@ public class BillsInfoAct extends BaseAct implements BaseMvp_View,View.OnClickLi
     public void receiveCountDownFinish(Boolean isFinish)
     {
         super.receiveCountDownFinish(isFinish);
+
+    }
+
+    @Override
+    public void addDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean) {
 
     }
 

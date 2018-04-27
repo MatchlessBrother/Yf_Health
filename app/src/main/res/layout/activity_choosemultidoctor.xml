@@ -38,8 +38,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:button="@null"
+            android:visibility="gone"
+            android:drawablePadding="18pt"
             android:drawableRight="@drawable/checkbox_blue_no"
-            android:drawablePadding="8pt"
             android:singleLine="true"
             android:text="免费"
             android:textColor="@color/default_font_green"
@@ -55,7 +56,7 @@
             android:layout_toLeftOf="@id/choosemultidoctor_mfcb"
             android:layout_toRightOf="@id/choosemultidoctor_img"
             android:singleLine="true"
-            android:text="未知"
+            android:text="全科医生"
             android:textColor="@color/default_font_black"
             android:textSize="32sp" />
 
@@ -74,14 +75,21 @@
             android:textSize="24sp" />
     </RelativeLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/choosemultidoctor_recyclerview"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/choosemultidoctor_swipelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="46sp"
         android:layout_marginLeft="110pt"
         android:layout_marginRight="110pt"
         android:layout_marginTop="20sp"
-        android:background="@color/default_transwhite_bg" />
+        android:background="@color/default_transwhite_bg">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/choosemultidoctor_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

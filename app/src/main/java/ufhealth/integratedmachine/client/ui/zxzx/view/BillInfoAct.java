@@ -1,24 +1,20 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import android.view.View;
+import java.util.ArrayList;
+import android.content.Intent;
+import java.text.DecimalFormat;
+import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import ufhealth.integratedmachine.client.R;
-
 import com.donkingliang.labels.LabelsView;
+import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.ui.main.view.MainAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
-import ufhealth.integratedmachine.client.ui.zxzx.presenter.BillInfoPresenter;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillInfoAct_V;
+import ufhealth.integratedmachine.client.ui.zxzx.presenter.BillInfoPresenter;
 
 public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickListener
 {
@@ -161,15 +157,39 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
             {
                 if(value != 0)
                 {
-                    //调用billmodel接口生成订单并支付成功
+                    switch(getIntent().getStringExtra("type"))
+                    {
+                        case ChooseDoctorAct.SPZX:
+                        {
+                            billInfoPresenter.createVideoBill(getIntent().getStringExtra("id").trim(),startTime+"");
+                            break;
+                        }
+                        case ChooseDoctorAct.YYZX:
+                        {
+                            billInfoPresenter.createAudioBill(getIntent().getStringExtra("id").trim(),startTime+"");
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-
+                    Intent intent = new Intent(this,MainAct.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
                 break;
             }
         }
+    }
+
+    public void startAudioPayActivity()
+    {
+
+    }
+
+    public void startVideoPayActivity()
+    {
+
     }
 
     protected void onDestroy()

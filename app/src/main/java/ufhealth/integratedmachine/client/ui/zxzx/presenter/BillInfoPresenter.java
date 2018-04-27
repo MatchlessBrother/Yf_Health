@@ -5,6 +5,7 @@ import java.util.HashMap;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
+import ufhealth.integratedmachine.client.ui.zxzx.model.BillModel;
 import ufhealth.integratedmachine.client.ui.zxzx.model.DoctorModel;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillInfoAct_V;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
@@ -53,6 +54,84 @@ public class BillInfoPresenter extends BaseMvp_Presenter<BillInfoAct_V>
                     if(isAttachContextAndViewLayer())
                     {
 
+                    }
+                }
+            });
+        }
+    }
+
+    public void createAudioBill(String doctorId,String minTime)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            conditions.clear();
+            conditions.put("doctor_id",doctorId);
+            conditions.put("timeMin",minTime);
+            BillModel.createAudioBill(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorAllInfo>>(this)
+            {
+                public void onSuccess(BaseReturnData<DoctorAllInfo> data)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        doctorAllInfo = data.getData();
+                        getViewLayer().setDoctorBaseInfo(doctorAllInfo.getBaseinfo());
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    super.onFailure(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    super.onError(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+
+                    }
+                }
+            });
+        }
+    }
+
+    public void createVideoBill(String doctorId,String minTime)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            conditions.clear();
+            conditions.put("doctor_id",doctorId);
+            conditions.put("timeMin",minTime);
+            BillModel.createVideoBill(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorAllInfo>>(this)
+            {
+                public void onSuccess(BaseReturnData<DoctorAllInfo> data)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        doctorAllInfo = data.getData();
+                        getViewLayer().setDoctorBaseInfo(doctorAllInfo.getBaseinfo());
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    super.onFailure(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().showToast("生成订单失败，请重新点击");
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    super.onError(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().showToast("生成订单失败，请重新点击");
                     }
                 }
             });

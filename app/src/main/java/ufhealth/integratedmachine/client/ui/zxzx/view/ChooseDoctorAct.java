@@ -176,21 +176,21 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
 
     public void refreshDatas(DoctorInfo doctorsInfo)
     {
+        doctorInfoAdapter.setNewData(doctorsInfo.getContent());
         if(doctorsInfo.getContent().size() < doctorsInfo.getSize())
             doctorInfoAdapter.setEnableLoadMore(false);
         else
             doctorInfoAdapter.setEnableLoadMore(true);
-        doctorInfoAdapter.setNewData(doctorsInfo.getContent());
     }
 
     public void loadMoreDatas(DoctorInfo doctorsInfo)
     {
+        doctorInfoAdapter.addData(doctorsInfo.getContent());
+        doctorInfoAdapter.notifyDataSetChanged();
         if(doctorsInfo.getContent().size() < doctorsInfo.getSize())
             doctorInfoAdapter.setEnableLoadMore(false);
         else
             doctorInfoAdapter.setEnableLoadMore(true);
-        doctorInfoAdapter.addData(doctorsInfo.getContent());
-        doctorInfoAdapter.notifyDataSetChanged();
     }
 
 
