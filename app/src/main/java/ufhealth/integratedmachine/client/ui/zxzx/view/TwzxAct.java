@@ -30,8 +30,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
     private TwzxPresenter twzxPresenter;
     private RecyclerView twzxRecyclerview;
     private TwzxPictureAdapter twzxPictureAdapter;
-    public  static  final  String  KSZX = "kszx";
-    public  static  final  String  BGJD = "bgjd";
 
     protected int setLayoutResID()
     {
@@ -48,7 +46,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
         twzxContentEt = findViewById(R.id.twzx_content_et);
         twzxRecyclerview = findViewById(R.id.twzx_recyclerview);
 
-
         twzxNameTv.setText(null != getBaseApp().getUserInfo().getName() ? "问诊人：" + getBaseApp().getUserInfo().getName().trim() : "问诊人：未知");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,maxPictureNum);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -57,7 +54,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
         twzxPictureAdapter = new TwzxPictureAdapter(this,maxPictureNum,imgPaths);
         twzxRecyclerview.setAdapter(twzxPictureAdapter);
 
-
         twzxTjwtBtn.setOnClickListener(this);
         twzxPictureAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
         {
@@ -65,7 +61,8 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
             {
                 if(null != twzxPictureAdapter.getData().get(position) && twzxPictureAdapter.getData().get(position).trim().equals(""))
                 {
-                    showSelectPhotoDialog(26f, TypedValue.COMPLEX_UNIT_SP,Color.argb(255,0,147,221),false,maxPictureNum + 1 - twzxPictureAdapter.getData().size(),false,
+                    showSelectPhotoDialog(26f, TypedValue.COMPLEX_UNIT_SP,Color.argb(255,0,147,221), false,
+                            maxPictureNum + 1 - twzxPictureAdapter.getData().size(),false,
                             Color.argb(255,255,255,255),Color.argb(255,0,147,221));
                 }
             }
@@ -96,13 +93,60 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
     protected void initDatas()
     {
         twzxPresenter = new TwzxPresenter();
-        TYPE = getIntent().getStringExtra("type");
+        TYPE = getIntent().getStringExtra("type").trim();
         twzxPresenter.attachContextAndViewLayer(this,this);
     }
 
     protected void initLogic()
     {
 
+    }
+
+    public void onClick(View view)
+    {
+        super.onClick(view);
+        switch(view.getId())
+        {
+            case R.id.twzx_tjwt_btn:
+            {
+               /*if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
+                {
+                    twzxPresenter.uploadDatas(null,null);break;
+                }
+                else if(TYPE.equals(ZxzxAct.BGJD))//报告解读
+                {
+                    twzxPresenter.uploadDatas(null,null);break;
+                }*/
+                //临时跳转代码，正确的逻辑是上面的代码
+                Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+                intent.putExtra("type",ZxzxAct.KSZX);
+                startActivity(intent);
+            }
+        }
+    }
+
+    public void commitImgsSuccess()
+    {
+        if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
+        {
+            //保存图片网络地址到本地以便后面上传，并跳转选择医生界面
+            Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+            intent.putExtra("type",ZxzxAct.KSZX);
+            startActivity(intent);
+        }
+        else if(TYPE.equals(ZxzxAct.BGJD))//报告解读
+        {
+            //保存图片网络地址到本地以便后面上传，并跳转选择医生界面
+            Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+            intent.putExtra("type",ZxzxAct.BGJD);
+            startActivity(intent);
+        }
+    }
+
+    protected void onDestroy()
+    {
+        twzxPresenter.detachContextAndViewLayout();
+        super.onDestroy();
     }
 
     @Subscribe
@@ -119,51 +163,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
 
     }
 
-    public void commitSuccess()
-    {
-        if(TYPE.equals(KSZX))//快速咨询
-        {
-
-        }
-        else//报告解读
-        {
-
-        }
-    }
-
-    public void onClick(View view)
-    {
-        super.onClick(view);
-        switch(view.getId())
-        {
-            case R.id.twzx_tjwt_btn:
-            {
-                if(TYPE.equals(KSZX))//快速咨询
-                {
-                    Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-                    intent.putExtra("type",KSZX);
-                    startActivity(intent);
-                    //twzxPresenter.uploadDatas(null,null);break;
-                }
-                else//报告解读
-                {
-                    Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-                    intent.putExtra("type",BGJD);
-                    startActivity(intent);
-                    //twzxPresenter.uploadDatas(null,null);break;
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        twzxPresenter.detachContextAndViewLayout();
-        super.onDestroy();
-    }
-
-    @Override
     public void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
     {
         for(String imgPath : bitmapPaths)

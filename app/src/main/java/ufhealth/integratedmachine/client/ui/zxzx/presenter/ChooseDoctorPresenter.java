@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
+import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import ufhealth.integratedmachine.client.ui.zxzx.model.DoctorModel;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
@@ -22,132 +23,6 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         doctorInfo = new DoctorInfo();
         conditions = new HashMap<>();
         doctorInfoOfCondition = new DoctorInfoOfCondition();
-    }
-
-    public void setSortOptions()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getSort() && doctorInfoOfCondition.getSort().size() > 0)
-            {
-                getViewLayer().setSortOptions(doctorInfoOfCondition.getSort());
-                return;
-            }
-        }
-        getViewLayer().setSortOptions(new ArrayList<DoctorInfoOfCondition.SortBean>());
-    }
-
-    public void setSourceOptions()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getOriginal() && doctorInfoOfCondition.getOriginal().size() > 0)
-            {
-                getViewLayer().setSourceOptions(doctorInfoOfCondition.getOriginal());
-                return;
-            }
-        }
-        getViewLayer().setSourceOptions(new ArrayList<DoctorInfoOfCondition.OriginalBean>());
-    }
-
-    public void setHospitalOptions()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getHospital() && doctorInfoOfCondition.getHospital().size() > 0)
-            {
-                getViewLayer().setHospitalOptions(doctorInfoOfCondition.getHospital());
-                return;
-            }
-        }
-        getViewLayer().setHospitalOptions(new ArrayList<DoctorInfoOfCondition.HospitalBean>());
-    }
-
-    public void setDepartmentOptions()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getDepartment() && doctorInfoOfCondition.getDepartment().size() > 0)
-            {
-                getViewLayer().setDepartmentOptions(doctorInfoOfCondition.getDepartment());
-                return;
-            }
-        }
-        getViewLayer().setDepartmentOptions(new ArrayList<DoctorInfoOfCondition.DepartmentBean>());
-    }
-
-    public void setSearchContent(String searchContent)
-    {
-        conditions.clear();
-        conditions.put("page","1");
-        conditions.put("like_para",searchContent.trim());
-        for(DoctorInfoOfCondition.HospitalBean hospitalBean: doctorInfoOfCondition.getHospital())
-            if(hospitalBean.isSelected())
-            {
-                conditions.put("hospital_id",hospitalBean.getId());
-                break;
-            }
-
-        for(DoctorInfoOfCondition.DepartmentBean departmentBean: doctorInfoOfCondition.getDepartment())
-            if(departmentBean.isSelected())
-            {
-                conditions.put("department_id",departmentBean.getId());
-                break;
-            }
-
-        for(DoctorInfoOfCondition.SortBean sortBean: doctorInfoOfCondition.getSort())
-            if(sortBean.isSelected())
-            {
-                conditions.put("sort",sortBean.getId());
-                break;
-            }
-
-        for(DoctorInfoOfCondition.OriginalBean sourceBean: doctorInfoOfCondition.getOriginal())
-            if(sourceBean.isSelected())
-            {
-                conditions.put("original_id",sourceBean.getCode());
-                break;
-            }
-    }
-
-    public void refreshDatas()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            conditions.clear();
-            conditions.put("page","1");
-            DoctorModel.getDoctorsInfo(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfo>>(this)
-            {
-                public void onSuccess(BaseReturnData<DoctorInfo> data)
-                {
-                    if(isAttachContextAndViewLayer())
-                    {
-                        doctorInfo = data.getData();
-                        getViewLayer().refreshDatas(doctorInfo);
-                        getViewLayer().finishRefresh();
-                        conditions.put("page", String.valueOf(Integer.valueOf(conditions.get("page").trim()) + 1));
-                    }
-                }
-
-                public void onFailure(String msg)
-                {
-                    super.onFailure(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().finishRefresh();
-                    }
-                }
-
-                public void onError(String msg)
-                {
-                    super.onError(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().finishRefresh();
-                    }
-                }
-            });
-        }
     }
 
     public void loadMoreDatas()
@@ -188,6 +63,133 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         }
     }
 
+    public void setSortOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getSort() && doctorInfoOfCondition.getSort().size() > 0)
+            {
+                getViewLayer().setSortOptions(doctorInfoOfCondition.getSort());
+                return;
+            }
+            getViewLayer().setSortOptions(new ArrayList<DoctorInfoOfCondition.SortBean>());
+        }
+    }
+
+    public void setSourceOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getOriginal() && doctorInfoOfCondition.getOriginal().size() > 0)
+            {
+                getViewLayer().setSourceOptions(doctorInfoOfCondition.getOriginal());
+                return;
+            }
+            getViewLayer().setSourceOptions(new ArrayList<DoctorInfoOfCondition.OriginalBean>());
+        }
+    }
+
+    public void setHospitalOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getHospital() && doctorInfoOfCondition.getHospital().size() > 0)
+            {
+                getViewLayer().setHospitalOptions(doctorInfoOfCondition.getHospital());
+                return;
+            }
+            getViewLayer().setHospitalOptions(new ArrayList<DoctorInfoOfCondition.HospitalBean>());
+        }
+    }
+
+    public void setDepartmentOptions()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorInfoOfCondition && null != doctorInfoOfCondition.getDepartment() && doctorInfoOfCondition.getDepartment().size() > 0)
+            {
+                getViewLayer().setDepartmentOptions(doctorInfoOfCondition.getDepartment());
+                return;
+            }
+            getViewLayer().setDepartmentOptions(new ArrayList<DoctorInfoOfCondition.DepartmentBean>());
+        }
+    }
+
+    public void setConditionsContent()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            for(DoctorInfoOfCondition.HospitalBean hospitalBean: doctorInfoOfCondition.getHospital())
+                if(hospitalBean.isSelected())
+                {
+                    conditions.put("hospital_id",hospitalBean.getId().trim());
+                    break;
+                }
+
+            for(DoctorInfoOfCondition.DepartmentBean departmentBean: doctorInfoOfCondition.getDepartment())
+                if(departmentBean.isSelected())
+                {
+                    conditions.put("department_id",departmentBean.getId().trim());
+                    break;
+                }
+
+            for(DoctorInfoOfCondition.SortBean sortBean: doctorInfoOfCondition.getSort())
+                if(sortBean.isSelected())
+                {
+                    conditions.put("sort",sortBean.getId().trim());
+                    break;
+                }
+
+            for(DoctorInfoOfCondition.OriginalBean sourceBean: doctorInfoOfCondition.getOriginal())
+                if(sourceBean.isSelected())
+                {
+                    conditions.put("original_id",sourceBean.getCode().trim());
+                    break;
+                }
+        }
+    }
+
+    public void refreshDatas(String type)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            conditions.clear();
+            conditions.put("page","1");
+            conditions.put("type",type.toUpperCase());
+            DoctorModel.getDoctorsInfo(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfo>>(this)
+            {
+                public void onSuccess(BaseReturnData<DoctorInfo> data)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        doctorInfo = data.getData();
+                        getViewLayer().refreshDatas(doctorInfo);
+                        getViewLayer().finishRefresh();
+                        conditions.put("page", String.valueOf(Integer.valueOf(conditions.get("page").trim()) + 1));
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    super.onFailure(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().finishRefresh();
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    super.onError(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().finishRefresh();
+                    }
+                }
+            });
+        }
+    }
+
     public void getDoctorInfoOfConditions()
     {
         if(isAttachContextAndViewLayer())
@@ -220,6 +222,30 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
                     }
                 }
             });
+        }
+    }
+
+    public void checkRmks(HotDepartment department)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            for(DoctorInfoOfCondition.DepartmentBean departmentBean: doctorInfoOfCondition.getDepartment())
+            {
+                if(String.valueOf(department.getId()).equals(departmentBean.getId().trim()) && department.getName().trim().equals(departmentBean.getName().trim()))
+                {
+                    conditions.put("department_id",departmentBean.getId().trim());
+                    getViewLayer().setShowDepartment(departmentBean.getName().trim());
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setSearchContent(String searchContent)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            conditions.put("like_para",searchContent.trim());
         }
     }
 }

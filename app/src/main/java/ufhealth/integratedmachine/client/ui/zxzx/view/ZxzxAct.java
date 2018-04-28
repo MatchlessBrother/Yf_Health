@@ -5,7 +5,7 @@ import android.view.View;
 import java.util.ArrayList;
 import android.view.Gravity;
 import android.content.Intent;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.LayoutInflater;
@@ -18,7 +18,6 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.GridLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
 import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.ZxzxAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.ZxzxPresenter;
@@ -29,6 +28,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
     private View noDataView;
     private View noWifiView;
     private TextView zxzxRmksAll;
+    private Button zxzxSearchBtn;
     private EditText zxzxSearchEt;
     private LinearLayout zxzxSearchAll;
     private RelativeLayout zxzxSpzxAll;
@@ -40,6 +40,14 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
     private DrawerLayout zxzxDrawerlayout;
     private RecyclerView zxzxHotDepartmentRecyclerView;
     private ZxzxHotDepartmentAdapter zxzxHotDepartmentAdapter;
+    public      static      final     String    TWZX = "twzx";
+    public      static      final     String    SPZX = "spzx";
+    public      static      final     String    YYZX = "yyzx";
+    public      static      final     String    MYYZ = "myyz";
+    public      static      final     String    KSZX = "kszx";
+    public      static      final     String    BGJD = "bgjd";
+    public      static      final     String    RMKS = "rmks";
+    public    static    final    String    SEARCH  = "search";
 
     protected int setLayoutResID()
     {
@@ -54,6 +62,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         noWifiView = LayoutInflater.from(this).inflate(R.layout.recyclerview_nowifi_small,null);
         zxzxHotDepartmentRecyclerView = rootView.findViewById(R.id.zxzx_hotdepartment_recyclerview);
         zxzxDrawerlayout = rootView.findViewById(R.id.zxzx_drawerlayout);
+        zxzxSearchBtn = rootView.findViewById(R.id.zxzx_search_btn);
         zxzxSearchAll = rootView.findViewById(R.id.zxzx_search_all);
         zxzxSearchEt = rootView.findViewById(R.id.zxzx_search_et);
         zxzxSpzxAll = rootView.findViewById(R.id.zxzx_spzx_all);
@@ -90,9 +99,12 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                PromptBoxTools.showToast(ZxzxAct.this,"您好！"+((HotDepartment)adapter.getData().get(position)).getName()+"模块暂未开放使用，敬请期待...");
                 if(zxzxDrawerlayout.isShown())
                     zxzxDrawerlayout.closeDrawers();
+                Intent intent = new Intent(ZxzxAct.this,ChooseDoctorAct.class);
+                intent.putExtra(RMKS,((HotDepartment)adapter.getData().get(position)));
+                intent.putExtra("type",RMKS);
+                startActivity(intent);
             }
         });
 
@@ -102,6 +114,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
         zxzxMyyzAll.setOnClickListener(this);
         zxzxBgjdAll.setOnClickListener(this);
         zxzxRmksAll.setOnClickListener(this);
+        zxzxSearchBtn.setOnClickListener(this);
     }
 
     protected void initDatas()
@@ -116,16 +129,73 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
 
     }
 
+    public void onClick(View view)
+    {
+        super.onClick(view);
+        switch (view.getId())
+        {
+            case R.id.zxzx_search_btn:
+            {
+                Intent intent = new Intent(this,ChooseDoctorAct.class);
+                intent.putExtra(SEARCH,zxzxSearchEt.getText().toString().trim());
+                intent.putExtra("type",SEARCH);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.zxzx_spzx_all:
+            {
+                Intent intent = new Intent(this,ChooseDoctorAct.class);
+                intent.putExtra("type",SPZX);
+                startActivity(intent);
+                break;
+            }
+            case R.id.zxzx_yyzx_all:
+            {
+                Intent intent = new Intent(this,ChooseDoctorAct.class);
+                intent.putExtra("type",YYZX);
+                startActivity(intent);
+                break;
+            }
+            case R.id.zxzx_myyz_all:
+            {
+                Intent intent = new Intent(this,ChooseDoctorAct.class);
+                intent.putExtra("type",MYYZ);
+                startActivity(intent);
+                break;
+            }
+            case R.id.zxzx_kszx_all:
+            {
+                Intent intent = new Intent(this,TwzxAct.class);
+                intent.putExtra("type",KSZX);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.zxzx_bgjd_all:
+            {
+                Intent intent = new Intent(this,TwzxAct.class);
+                intent.putExtra("type",BGJD);
+                startActivity(intent);
+                break;
+            }
+            case R.id.zxzx_rmks_all:
+            {
+                zxzxDrawerlayout.openDrawer(Gravity.RIGHT);break;
+            }
+        }
+    }
+
+    protected void onDestroy()
+    {
+        zxzxPresenter.detachContextAndViewLayout();
+        super.onDestroy();
+    }
+
     public void setHotDepartmentsException()
     {
         zxzxHotDepartmentAdapter.setEmptyView(noWifiView);
 
-    }
-
-    public void setHotDepartments(List<HotDepartment> hotDepartments)
-    {
-        zxzxHotDepartmentAdapter.setNewData(hotDepartments);
-        zxzxHotDepartmentAdapter.setEmptyView(noDataView);
     }
 
     @Subscribe
@@ -142,57 +212,9 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
 
     }
 
-    public void onClick(View view)
+    public void setHotDepartments(List<HotDepartment> hotDepartments)
     {
-        super.onClick(view);
-        switch (view.getId())
-        {
-            case R.id.zxzx_spzx_all:
-            {
-                Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type",ChooseDoctorAct.SPZX);
-                startActivity(intent);
-                break;
-            }
-            case R.id.zxzx_yyzx_all:
-            {
-                Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type",ChooseDoctorAct.YYZX);
-                startActivity(intent);
-                break;
-            }
-            case R.id.zxzx_myyz_all:
-            {
-                Intent intent = new Intent(this,ChooseDoctorAct.class);
-                intent.putExtra("type",ChooseDoctorAct.MYYZ);
-                startActivity(intent);
-                break;
-            }
-            case R.id.zxzx_kszx_all:
-            {
-                Intent intent = new Intent(this,TwzxAct.class);
-                intent.putExtra("type",TwzxAct.KSZX);
-                startActivity(intent);
-                break;
-            }
-
-            case R.id.zxzx_bgjd_all:
-            {
-                Intent intent = new Intent(this,TwzxAct.class);
-                intent.putExtra("type",TwzxAct.BGJD);
-                startActivity(intent);
-                break;
-            }
-            case R.id.zxzx_rmks_all:
-            {
-                zxzxDrawerlayout.openDrawer(Gravity.RIGHT);break;
-            }
-        }
-    }
-
-    protected void onDestroy()
-    {
-        zxzxPresenter.detachContextAndViewLayout();
-        super.onDestroy();
+        zxzxHotDepartmentAdapter.setNewData(hotDepartments);
+        zxzxHotDepartmentAdapter.setEmptyView(noDataView);
     }
 }

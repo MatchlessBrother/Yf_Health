@@ -19,7 +19,7 @@ public class TwzxPresenter extends BaseMvp_Presenter<TwzxAct_V>
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().commitSuccess();
+                        getViewLayer().commitImgsSuccess();
                         getViewLayer().showToast("提交成功");
                     }
                 }

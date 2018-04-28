@@ -122,20 +122,34 @@
         android:layout_width="match_parent"
         android:layout_height="78sp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="30sp"
-        android:background="@drawable/btn_blue_yj_solid"
+        android:layout_marginTop="6sp"
+        android:background="@drawable/selector_blue_gray_ennable_box"
         android:gravity="center"
         android:singleLine="true"
-        android:visibility="invisible"
+        android:enabled="false"
+        android:visibility="visible"
         android:text="开始咨询"
         android:textColor="@color/white"
         android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/doctorinfo_startnote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:gravity="center"
+        android:layout_above="@id/doctorinfo_startchat"
+        android:singleLine="true"
+        android:visibility="visible"
+        android:text="当前未选择任何咨询服务"
+        android:textColor="@color/default_font_gray"
+        android:textSize="22sp" />
 
     <LinearLayout
         android:id="@+id/doctorinfo_zshppj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/doctorinfo_startchat"
+        android:layout_above="@id/doctorinfo_startnote"
         android:orientation="horizontal">
 
         <LinearLayout

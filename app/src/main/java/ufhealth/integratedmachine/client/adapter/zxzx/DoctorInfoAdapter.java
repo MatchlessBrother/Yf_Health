@@ -14,137 +14,149 @@ import ufhealth.integratedmachine.client.R;
 import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
-import ufhealth.integratedmachine.client.ui.zxzx.view.ChooseDoctorAct;
 import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
 public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,BaseViewHolder>
 {
     private Context mContext;
-    private String mType = "";
-    public static final String LJZX = "ljzx";//立即咨询
-    public static final String SHOWINFOS = "showinfos";//仅仅显示详情
-    public static final String MULTISELECT = "multiselect";//多选情况
+    private String  mTypeValue = "";
+    public static final String SPZX = "spzx";// 视频咨询
+    public static final String YYZX = "yyzx";// 语音咨询
+    public static final String MYYZ = "myyz";// 名医义诊
+    public static final String KSZX = "kszx";// 快速咨询
+    public static final String BGJD = "bgjd";// 报告咨询
+    public static final String RMKS = "rmks";// 热门科室
+    public static final String SEARCH  = "search";//搜索
 
-    private String mMediaType = "";
-    public static final String SP = "sp";//视频咨询
-    public static final String YY = "yy";//语音咨询
-    public static final String MY = "my";//名医义诊
-    public static final String KS = "ks";//快速咨询
-    public static final String BG = "bg";//报告咨询
-
-    public static DoctorInfoAdapter getAdapter(Context context,@Nullable List<ContentBean> datas,String type,String mediaType)
+    public static DoctorInfoAdapter getAdapter(Context context,String type,@Nullable List<ContentBean> datas)
     {
         switch(type)
         {
-            case LJZX: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_ljzx,datas,type,mediaType);
-            case SHOWINFOS: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_allinfo,datas,type,mediaType);
-            case MULTISELECT: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_multiselect,datas,type,mediaType);
-            default:return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_ljzx,datas,type,mediaType);
+            case RMKS: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_allinfo,type,datas);
+            case MYYZ: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_allinfo,type,datas);
+            case SEARCH: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_allinfo,type,datas);
+
+            case SPZX: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_ljzx,type,datas);
+            case YYZX: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_ljzx,type,datas);
+
+            case KSZX: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_multiselect,type,datas);
+            case BGJD: return new DoctorInfoAdapter(context,R.layout.item_doctorinfo_multiselect,type,datas);
+            default:return null;
         }
     }
 
-    private DoctorInfoAdapter(Context context,int layoutResId,@Nullable List<ContentBean> datas,String type,String mediaType)
+    public String getTypeValue()
+    {
+        return mTypeValue;
+    }
+
+    private DoctorInfoAdapter(Context context,int layoutResId,String type,@Nullable List<ContentBean> datas)
     {
        super(layoutResId, datas);
         mContext = context;
-        mType = (null != type ? type.trim() : LJZX);
-        mMediaType = (null != mediaType ? mediaType.trim() : SP);
+        mTypeValue  = type;
     }
 
-    protected void convert(BaseViewHolder helper, final ContentBean bean)
+    protected void convert(BaseViewHolder helper, final ContentBean contentBean)
     {
-        switch (mType)
+        switch (mTypeValue)
         {
-            case LJZX:
+            case SPZX:
+            case YYZX:
             {
-                Glide.with(mContext).load(null != bean.getAvatar() ? bean.getAvatar().trim() : "").
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
                         placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
                         into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
-                helper.setText(R.id.doctorinfo_name,(null != bean.getDoctor_name() ? bean.getDoctor_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_position,(null != bean.getJob_name() ? bean.getJob_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_hospitalname,(null != bean.getHospital_name() ? bean.getHospital_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_departmentname,(null != bean.getDepartment_name() ? bean.getDepartment_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_specialize,(null != bean.getBe_good_at() ? "擅长：" + bean.getBe_good_at().trim() : "擅长：未知"));
-                helper.setText(R.id.doctorinfo_source,(null != bean.getOriginal() ? "来源：" + bean.getOriginal().trim() : "来源：未知"));
-                switch (mMediaType)
+                helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_departmentname,(null != contentBean.getDepartment_name() ? contentBean.getDepartment_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_specialize,(null != contentBean.getBe_good_at() ? "擅长：" + contentBean.getBe_good_at().trim() : "擅长：未知"));
+                helper.setText(R.id.doctorinfo_source,(null != contentBean.getOriginal() ? "来源：" + contentBean.getOriginal().trim() : "来源：未知"));
+                switch (mTypeValue)
                 {
-                    case SP:helper.setText(R.id.doctorinfo_value,"¥" + bean.getS_cost() + " / 分钟");break;
-                    case YY:helper.setText(R.id.doctorinfo_value,"¥" + bean.getY_cost() + " / 分钟");break;
-                    case MY:helper.setText(R.id.doctorinfo_value,"¥" + bean.getT_cost() + " / 次");break;
+                    case SPZX:helper.setText(R.id.doctorinfo_value,"¥" + contentBean.getS_cost() + " / 分钟");break;
+                    case YYZX:helper.setText(R.id.doctorinfo_value,"¥" + contentBean.getY_cost() + " / 分钟");break;
                 }
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels);
-                labelsView.setLabels(null != bean.getLabels() && bean.getLabels().size() != 0 ? bean.getLabels() : new ArrayList<String>());
+                labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());
+
                 helper.itemView.findViewById(R.id.doctorinfo_ljzx).setOnClickListener(new View.OnClickListener()
                 {
                     public void onClick(View view)
                     {
                         Intent intent = new Intent(mContext, BillInfoAct.class);
-                        switch (mMediaType)
+                        switch (mTypeValue)
                         {
-                            case SP:intent.putExtra("type", ChooseDoctorAct.SPZX);break;
-                            case YY:intent.putExtra("type",ChooseDoctorAct.YYZX);break;
-                            case MY:intent.putExtra("type",ChooseDoctorAct.MYYZ);break;
+                            case SPZX:intent.putExtra("type", ZxzxAct.SPZX);break;
+                            case YYZX:intent.putExtra("type",ZxzxAct.YYZX);break;
                         }
-                        intent.putExtra("id",bean.getDoctor_id()+"");
+                        intent.putExtra("id",contentBean.getDoctor_id()+"");
                         mContext.startActivity(intent);
                     }
                 });
                 break;
             }
-            case SHOWINFOS:
+
+            case RMKS:
+            case MYYZ:
+            case SEARCH:
             {
-                Glide.with(mContext).load(null != bean.getAvatar() ? bean.getAvatar().trim() : "").
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
                         placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
                         into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
-                helper.setText(R.id.doctorinfo_name,(null != bean.getDoctor_name() ? bean.getDoctor_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_position,(null != bean.getJob_name() ? bean.getJob_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_hospitalname,(null != bean.getHospital_name() ? bean.getHospital_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_departmentname,(null != bean.getDepartment_name() ? bean.getDepartment_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_specialize,(null != bean.getBe_good_at() ? "擅长：" + bean.getBe_good_at().trim() : "擅长：未知"));
-                helper.setText(R.id.doctorinfo_source,(null != bean.getOriginal() ? "来源：" + bean.getOriginal().trim() : "来源：未知"));
-                helper.setText(R.id.doctorinfo_valuedetail_spzx,bean.getS_cost() + "元/分钟");
-                helper.setText(R.id.doctorinfo_valuedetail_yyzx,bean.getY_cost() + "元/分钟");
-                helper.setText(R.id.doctorinfo_valuedetail_twzx, bean.getT_cost() + "元/次");
+                helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_departmentname,(null != contentBean.getDepartment_name() ? contentBean.getDepartment_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_specialize,(null != contentBean.getBe_good_at() ? "擅长：" + contentBean.getBe_good_at().trim() : "擅长：未知"));
+                helper.setText(R.id.doctorinfo_source,(null != contentBean.getOriginal() ? "来源：" + contentBean.getOriginal().trim() : "来源：未知"));
+                helper.setText(R.id.doctorinfo_valuedetail_spzx,contentBean.getS_cost() + "元/分钟");
+                helper.setText(R.id.doctorinfo_valuedetail_yyzx,contentBean.getY_cost() + "元/分钟");
+                helper.setText(R.id.doctorinfo_valuedetail_twzx, contentBean.getT_cost() + "元/次");
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels_allinfo);
-                labelsView.setLabels(null != bean.getLabels() && bean.getLabels().size() != 0 ? bean.getLabels() : new ArrayList<String>());
+                labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());
                 break;
             }
-            case MULTISELECT:
+
+            case KSZX:
+            case BGJD:
             {
-                Glide.with(mContext).load(null != bean.getAvatar() ? bean.getAvatar().trim() : "").
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
                         placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
                         into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
-                helper.setText(R.id.doctorinfo_name,(null != bean.getDoctor_name() ? bean.getDoctor_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_position,(null != bean.getJob_name() ? bean.getJob_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_hospitalname,(null != bean.getHospital_name() ? bean.getHospital_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_departmentname,(null != bean.getDepartment_name() ? bean.getDepartment_name().trim() : "未知"));
-                helper.setText(R.id.doctorinfo_specialize,(null != bean.getBe_good_at() ? "擅长：" + bean.getBe_good_at().trim() : "擅长：未知"));
-                switch (mMediaType)
+                helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_departmentname,(null != contentBean.getDepartment_name() ? contentBean.getDepartment_name().trim() : "未知"));
+                helper.setText(R.id.doctorinfo_specialize,(null != contentBean.getBe_good_at() ? "擅长：" + contentBean.getBe_good_at().trim() : "擅长：未知"));
+                CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
+                switch (mTypeValue)
                 {
-                    case KS:
+                    case KSZX:
                     {
-                        helper.setText(R.id.doctorinfo_checkbox,"¥" + bean.getT_cost() + " / 次");
-                        helper.setChecked(R.id.doctorinfo_checkbox,bean.isSelected());
+                        helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
+                        helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
                         break;
                     }
-                    case BG:
+                    case BGJD:
                     {
-                        helper.setText(R.id.doctorinfo_checkbox,"¥" + bean.getT_cost() + " / 次");
-                        helper.setChecked(R.id.doctorinfo_checkbox,bean.isSelected());
+                        helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
+                        helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
                         break;
                     }
                 }
-                CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels_checkbox);
-                labelsView.setLabels(null != bean.getLabels() && bean.getLabels().size() != 0 ? bean.getLabels() : new ArrayList<String>());
+                labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());
                 ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                 {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean selected)
                     {
-                        bean.setSelected(selected);
+                        contentBean.setSelected(selected);
                     }
                 });
                 break;

@@ -11,6 +11,7 @@ public interface ChooseDoctorAct_V extends BaseMvp_View
     void finishRefresh();
     void loadMoreDatas(DoctorInfo doctorsInfo);
     void finishLoadMore();
+    void setShowDepartment(String departmentName);
     void setSortOptions(List<DoctorInfoOfCondition.SortBean> sortConditions);
     void setSourceOptions(List<DoctorInfoOfCondition.OriginalBean> sourceConditions);
     void setHospitalOptions(List<DoctorInfoOfCondition.HospitalBean> hospitalConditions);

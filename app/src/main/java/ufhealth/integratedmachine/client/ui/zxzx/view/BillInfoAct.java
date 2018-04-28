@@ -11,13 +11,14 @@ import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.ui.main.view.MainAct;
+import ufhealth.integratedmachine.client.bean.zxzx.Billinfo;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillInfoAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.BillInfoPresenter;
 
 public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickListener
 {
+    private String TYPE = "";
     private Double value = 0d;
     private Integer startTime = 5;
     private Integer changeTime = 1;
@@ -49,6 +50,7 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
     {
         super.initWidgets(rootView);
         setTitleContent("订单信息");
+        TYPE = getIntent().getStringExtra("type");
         doctorbillinfoImg = rootView.findViewById(R.id.doctorbillinfo_img);
         doctorbillinfoSource = rootView.findViewById(R.id.doctorbillinfo_source);
         doctorbillinfoName = rootView.findViewById(R.id.doctorbillinfo_name);
@@ -81,54 +83,10 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
         billInfoPresenter.initDoctorAllInfo(getIntent().getStringExtra("id"));
     }
 
-    public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)
+    protected void onDestroy()
     {
-        if(null != baseinfoBean)
-        {
-            useGlideLoadImg(doctorbillinfoImg,null != baseinfoBean.getAvatar() ? baseinfoBean.getAvatar().trim() : "");
-            doctorbillinfoName.setText(null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知");
-            doctorbillinfoPosition.setText(null != baseinfoBean.getJob_name() ? baseinfoBean.getJob_name().trim() : "未知");
-            doctorbillinfoHospitalname.setText(null != baseinfoBean.getHospital_name() ? baseinfoBean.getHospital_name().trim() : "未知");
-            doctorbillinfoDepartmentname.setText(null != baseinfoBean.getDepartment_name() ? baseinfoBean.getDepartment_name().trim() : "未知");
-            doctorbillinfoSpecialize.setText("擅长：" + (null != baseinfoBean.getBe_good_at() ? baseinfoBean.getBe_good_at().trim() : "未知" ));
-            doctorbillinfoSource.setText("来源：" + (null != baseinfoBean.getOriginal() ? baseinfoBean.getOriginal().trim() : "未知"));
-            doctorbillinfoLabels.setLabels(new ArrayList<String>());
-            switch(getIntent().getStringExtra("type"))
-            {
-                case ChooseDoctorAct.SPZX:
-                {
-                    doctorbillinfoTimeall.setVisibility(View.VISIBLE);
-                    doctorbillinfoStartpay.setVisibility(View.VISIBLE);
-                    doctorbillinfoType.setText("视频咨询");
-                    value = Double.valueOf(baseinfoBean.getS_cost());
-                    doctorbillinfoValue.setText(baseinfoBean.getS_cost()+"元/分钟");
-                    doctorbillinfoTime.setText(startTime+"分钟");
-                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getS_cost()) +"元");
-                    break;
-                }
-                case ChooseDoctorAct.YYZX:
-                {
-                    doctorbillinfoTimeall.setVisibility(View.VISIBLE);
-                    doctorbillinfoStartpay.setVisibility(View.VISIBLE);
-                    doctorbillinfoType.setText("语音咨询");
-                    value = Double.valueOf(baseinfoBean.getY_cost());
-                    doctorbillinfoValue.setText(baseinfoBean.getY_cost()+"元/分钟");
-                    doctorbillinfoTime.setText(startTime+"分钟");
-                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getY_cost()) +"元");
-                    break;
-                }
-                case ChooseDoctorAct.MYYZ:
-                {
-                    doctorbillinfoStartpay.setVisibility(View.VISIBLE);
-                    doctorbillinfoStartpay.setText("立即咨询");
-                    doctorbillinfoType.setText("名医义诊");
-                    value = Double.valueOf(baseinfoBean.getT_cost());
-                    doctorbillinfoValue.setText(baseinfoBean.getT_cost()+"元/次");
-                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getT_cost()) +"元");
-                    break;
-                }
-            }
-        }
+        billInfoPresenter.detachContextAndViewLayout();
+        super.onDestroy();
     }
 
     public void onClick(View view)
@@ -155,47 +113,33 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
             }
             case R.id.doctorbillinfo_startpay:
             {
-                if(value != 0)
+                switch(TYPE)
                 {
-                    switch(getIntent().getStringExtra("type"))
+                    case ZxzxAct.SPZX:
                     {
-                        case ChooseDoctorAct.SPZX:
-                        {
-                            billInfoPresenter.createVideoBill(getIntent().getStringExtra("id").trim(),startTime+"");
-                            break;
-                        }
-                        case ChooseDoctorAct.YYZX:
-                        {
-                            billInfoPresenter.createAudioBill(getIntent().getStringExtra("id").trim(),startTime+"");
-                            break;
-                        }
+                        billInfoPresenter.createVideoBill(getIntent().getStringExtra("id").trim(),startTime+"");
+                        break;
                     }
-                }
-                else
-                {
-                    Intent intent = new Intent(this,MainAct.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    case ZxzxAct.YYZX:
+                    {
+                        billInfoPresenter.createAudioBill(getIntent().getStringExtra("id").trim(),startTime+"");
+                        break;
+                    }
+                    case ZxzxAct.TWZX:
+                    {
+                        billInfoPresenter.createImageTextBill(new String[]{getIntent().getStringExtra("id").trim()},new String[]{""},"");
+                    }
                 }
                 break;
             }
         }
     }
 
-    public void startAudioPayActivity()
+    @Subscribe
+    public void receiveCountDownTime(Long countDownTime)
     {
+        super.receiveCountDownTime(countDownTime);
 
-    }
-
-    public void startVideoPayActivity()
-    {
-
-    }
-
-    protected void onDestroy()
-    {
-        billInfoPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 
     @Subscribe
@@ -205,10 +149,75 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
 
     }
 
-    @Subscribe
-    public void receiveCountDownTime(Long countDownTime)
+    public void startAudioPayActivity(Billinfo billinfo)
     {
-        super.receiveCountDownTime(countDownTime);
+        Intent intent = new Intent(this,PayAct.class);
+        intent.putExtra("type",TYPE);
+        intent.putExtra("bill",billinfo);
+        startActivity(intent);
+    }
 
+    public void startVideoPayActivity(Billinfo billinfo)
+    {
+        Intent intent = new Intent(this,PayAct.class);
+        intent.putExtra("type",TYPE);
+        intent.putExtra("bill",billinfo);
+        startActivity(intent);
+    }
+
+    public void startImageTextPayActivity(Billinfo billinfo)
+    {
+        Intent intent = new Intent(this,PayAct.class);
+        intent.putExtra("type",TYPE);
+        intent.putExtra("bill",billinfo);
+        startActivity(intent);
+    }
+
+    public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)
+    {
+        if(null != baseinfoBean)
+        {
+            useGlideLoadImg(doctorbillinfoImg,null != baseinfoBean.getAvatar() ? baseinfoBean.getAvatar().trim() : "");
+            doctorbillinfoName.setText(null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知");
+            doctorbillinfoPosition.setText(null != baseinfoBean.getJob_name() ? baseinfoBean.getJob_name().trim() : "未知");
+            doctorbillinfoHospitalname.setText(null != baseinfoBean.getHospital_name() ? baseinfoBean.getHospital_name().trim() : "未知");
+            doctorbillinfoDepartmentname.setText(null != baseinfoBean.getDepartment_name() ? baseinfoBean.getDepartment_name().trim() : "未知");
+            doctorbillinfoSpecialize.setText("擅长：" + (null != baseinfoBean.getBe_good_at() ? baseinfoBean.getBe_good_at().trim() : "未知" ));
+            doctorbillinfoSource.setText("来源：" + (null != baseinfoBean.getOriginal() ? baseinfoBean.getOriginal().trim() : "未知"));
+            doctorbillinfoLabels.setLabels(new ArrayList<String>());
+
+            switch(TYPE)
+            {
+                case ZxzxAct.SPZX:
+                {
+                    doctorbillinfoType.setText("视频咨询");
+                    value = Double.valueOf(baseinfoBean.getS_cost());
+                    doctorbillinfoValue.setText(baseinfoBean.getS_cost()+"元/分钟");
+                    doctorbillinfoTime.setText(startTime+"分钟");
+                    doctorbillinfoTimeall.setVisibility(View.VISIBLE);
+                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getS_cost()) +"元");
+                    break;
+                }
+                case ZxzxAct.YYZX:
+                {
+                    doctorbillinfoType.setText("语音咨询");
+                    value = Double.valueOf(baseinfoBean.getY_cost());
+                    doctorbillinfoValue.setText(baseinfoBean.getY_cost()+"元/分钟");
+                    doctorbillinfoTime.setText(startTime+"分钟");
+                    doctorbillinfoTimeall.setVisibility(View.VISIBLE);
+                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getY_cost()) +"元");
+                    break;
+                }
+                case ZxzxAct.TWZX:
+                {
+                    doctorbillinfoType.setText("图文咨询");
+                    value = Double.valueOf(baseinfoBean.getT_cost());
+                    doctorbillinfoValue.setText(baseinfoBean.getT_cost()+"元/次");
+                    doctorbillinfoTimeall.setVisibility(View.GONE);
+                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getT_cost()) +"元");
+                    break;
+                }
+            }
+        }
     }
 }

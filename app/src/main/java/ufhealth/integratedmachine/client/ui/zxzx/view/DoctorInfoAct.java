@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.graphics.BitmapFactory;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
@@ -22,6 +23,7 @@ import ufhealth.integratedmachine.client.ui.zxzx.presenter.DoctorInfoPresenter;
 
 public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnClickListener
 {
+    private String TYPE;
     private ImageView doctorinfoImg;
     private TextView doctorinfoImgStatus;
     private TextView doctorinfoName;
@@ -35,6 +37,7 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     private TextView doctorinfoHpnum;
     private TextView doctorinfoPjnum;
     private LabelsView doctorinfoLabels;
+    private TextView doctorinfo_startnote;
     private ImageView doctorinfoRightTopTwline;
     private ImageView doctorinfoRightTopTwimg;
     private TextView doctorinfoRightTopTwname;
@@ -51,6 +54,9 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     private TextView doctorinfoRightTopSpfy;
     private TextView doctorinfoRightTopSpjryz;
     private TextView doctorinfoRightBottomYhpj;
+    private RelativeLayout doctorinfoRightTopSpAll;
+    private RelativeLayout doctorinfoRightTopYyAll;
+    private RelativeLayout doctorinfoRightTopTwAll;
     private DoctorInfoPresenter doctorInfoPresenter;
     private RecyclerView doctorinfoRightBottomRecyclerview;
     private DoctorInfoRatingAdapter doctorInfoRatingAdapter;
@@ -65,7 +71,7 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     {
         super.initWidgets(rootView);
         setTitleContent("医生主页");
-
+        TYPE = getIntent().getStringExtra("type");
         doctorinfoImg = rootView.findViewById(R.id.doctorinfo_img);
         doctorinfoImgStatus = rootView.findViewById(R.id.doctorinfo_img_status);
         doctorinfoName = rootView.findViewById(R.id.doctorinfo_name);
@@ -79,6 +85,10 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
         doctorinfoHpnum = rootView.findViewById(R.id.doctorinfo_hpnum);
         doctorinfoPjnum = rootView.findViewById(R.id.doctorinfo_pjnum);
         doctorinfoLabels = rootView.findViewById(R.id.doctorinfo_labels);
+        doctorinfo_startnote = rootView.findViewById(R.id.doctorinfo_startnote);
+        doctorinfoRightTopSpAll = rootView.findViewById(R.id.doctorinfo_right_top_spall);
+        doctorinfoRightTopYyAll = rootView.findViewById(R.id.doctorinfo_right_top_yyall);
+        doctorinfoRightTopTwAll = rootView.findViewById(R.id.doctorinfo_right_top_twall);
         doctorinfoRightTopTwline = rootView.findViewById(R.id.doctorinfo_right_top_twline);
         doctorinfoRightTopTwimg = rootView.findViewById(R.id.doctorinfo_right_top_twimg);
         doctorinfoRightTopTwname = rootView.findViewById(R.id.doctorinfo_right_top_twname);
@@ -103,30 +113,40 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
         doctorInfoRatingAdapter = new DoctorInfoRatingAdapter(this,new ArrayList<DoctorAllInfo.PageBean.ContentBean>());
         doctorinfoRightBottomRecyclerview.setAdapter(doctorInfoRatingAdapter);
 
-        switch (getIntent().getStringExtra("type"))
+        switch(TYPE)
         {
-            case ChooseDoctorAct.SPZX:
+            case ZxzxAct.SPZX:
             {
+                TYPE = ZxzxAct.SPZX;
                 doctorinfoRightTopSpline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_blue));
                 doctorinfoRightTopSpname.setTextColor(Color.argb(255,0,147,221));
-                doctorinfoRightTopSpfy.setText("0元/次");
+                doctorinfoRightTopSpfy.setText("0元/分钟");
                 break;
             }
-            case ChooseDoctorAct.YYZX:
+            case ZxzxAct.YYZX:
             {
+                TYPE = ZxzxAct.YYZX;
                 doctorinfoRightTopYyline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_blue));
                 doctorinfoRightTopYyname.setTextColor(Color.argb(255,0,147,221));
-                doctorinfoRightTopYyfy.setText("0元/次");
+                doctorinfoRightTopYyfy.setText("0元/分钟");
                 break;
             }
-            case ChooseDoctorAct.MYYZ:
+            case ZxzxAct.KSZX:
+            case ZxzxAct.BGJD:
             {
+                TYPE = ZxzxAct.TWZX;
                 doctorinfoRightTopTwline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_blue));
                 doctorinfoRightTopTwname.setTextColor(Color.argb(255,0,147,221));
                 doctorinfoRightTopTwfy.setText("0元/次");
+                break;
+            }
+            default:
+            {
+                doctorinfoStartchat.setEnabled(false);
+                doctorinfo_startnote.setVisibility(View.VISIBLE);
                 break;
             }
         }
@@ -148,6 +168,9 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
         },doctorinfoRightBottomRecyclerview);
 
         doctorinfoStartchat.setOnClickListener(this);
+        doctorinfoRightTopSpAll.setOnClickListener(this);
+        doctorinfoRightTopYyAll.setOnClickListener(this);
+        doctorinfoRightTopTwAll.setOnClickListener(this);
     }
 
     protected void initDatas()
@@ -159,6 +182,70 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     protected void initLogic()
     {
         doctorInfoPresenter.initDoctorAllInfo(getIntent().getStringExtra("id").trim());
+    }
+
+    public void onClick(View view)
+    {
+        super.onClick(view);
+        switch(view.getId())
+        {
+            case R.id.doctorinfo_startchat:
+            {
+                if(TYPE == ZxzxAct.SPZX || TYPE == ZxzxAct.YYZX || TYPE == ZxzxAct.TWZX)
+                {
+                    Intent intent = new Intent(this, BillInfoAct.class);
+                    intent.putExtra("type",TYPE);
+                    intent.putExtra("id",getIntent().getStringExtra("id"));
+                    startActivity(intent);
+                }
+                break;
+            }
+
+            case R.id.doctorinfo_right_top_spall:
+            {
+                TYPE = ZxzxAct.SPZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
+                doctorinfoRightTopTwline.setVisibility(View.GONE);
+                doctorinfoRightTopYyline.setVisibility(View.GONE);
+                doctorinfoRightTopSpline.setVisibility(View.VISIBLE);
+                doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_blue));
+                doctorinfoRightTopSpname.setTextColor(Color.argb(255,0,147,221));
+                break;
+            }
+
+            case R.id.doctorinfo_right_top_yyall:
+            {
+                TYPE = ZxzxAct.YYZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
+                doctorinfoRightTopTwline.setVisibility(View.GONE);
+                doctorinfoRightTopSpline.setVisibility(View.GONE);
+                doctorinfoRightTopYyline.setVisibility(View.VISIBLE);
+                doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_blue));
+                doctorinfoRightTopYyname.setTextColor(Color.argb(255,0,147,221));
+                break;
+            }
+
+            case R.id.doctorinfo_right_top_twall:
+            {
+                TYPE = ZxzxAct.TWZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
+                doctorinfoRightTopSpline.setVisibility(View.GONE);
+                doctorinfoRightTopYyline.setVisibility(View.GONE);
+                doctorinfoRightTopTwline.setVisibility(View.VISIBLE);
+                doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_blue));
+                doctorinfoRightTopTwname.setTextColor(Color.argb(255,0,147,221));
+                break;
+            }
+        }
+    }
+
+    protected void onDestroy()
+    {
+        doctorInfoPresenter.detachContextAndViewLayout();
+        super.onDestroy();
     }
 
     public void finishRefreshDoctorRatingInfo()
@@ -192,26 +279,25 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             doctorinfoStartchat.setVisibility(View.VISIBLE);
             doctorinfoRightBottomYhpj.setText("用户评价：(" + (null != baseinfoBean.getComment_count() ? baseinfoBean.getComment_count().trim() : "0")+")");
 
+
             doctorinfoRightTopTwfy.setText(baseinfoBean.getT_cost() + "元/次");
-            /*if(null != baseinfoBean.getIs_free() && !"".equals(baseinfoBean.getIs_free().trim()))
+            if(null != baseinfoBean.getTwzxIsFree() && "yes".equals(baseinfoBean.getIs_free().trim()))
             {
                 doctorinfoRightTopTwjryz.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwjryz.setText(baseinfoBean.getIs_free().trim());
-            }*/
-
+            }
             doctorinfoRightTopYyfy.setText(baseinfoBean.getY_cost() + "元/分钟");
-            /*if(null != baseinfoBean.getIs_free() && !"".equals(baseinfoBean.getIs_free().trim()))
+            if(null != baseinfoBean.getYpzxIsFree() && "yes".equals(baseinfoBean.getYpzxIsFree().trim()))
             {
                 doctorinfoRightTopYyjryz.setVisibility(View.VISIBLE);
                 doctorinfoRightTopYyjryz.setText(baseinfoBean.getIs_free().trim());
-            }*/
-
+            }
             doctorinfoRightTopSpfy.setText(baseinfoBean.getS_cost() + "元/分钟");
-            /*if(null != baseinfoBean.getIs_free() && !"".equals(baseinfoBean.getIs_free().trim()))
+            if(null != baseinfoBean.getSpzxIsFree() && "yes".equals(baseinfoBean.getSpzxIsFree().trim()))
             {
                 doctorinfoRightTopSpjryz.setVisibility(View.VISIBLE);
                 doctorinfoRightTopSpjryz.setText(baseinfoBean.getIs_free().trim());
-            }*/
+            }
         }
     }
 
@@ -232,28 +318,6 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             doctorInfoRatingAdapter.setEnableLoadMore(false);
         else
             doctorInfoRatingAdapter.setEnableLoadMore(true);
-    }
-
-    public void onClick(View view)
-    {
-        super.onClick(view);
-        switch(view.getId())
-        {
-            case R.id.doctorinfo_startchat:
-            {
-                Intent intent = new Intent(this, BillInfoAct.class);
-                intent.putExtra("type",getIntent().getStringExtra("type").trim());
-                intent.putExtra("id",getIntent().getStringExtra("id"));
-                startActivity(intent);
-                break;
-            }
-        }
-    }
-
-    protected void onDestroy()
-    {
-        doctorInfoPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 
     @Subscribe

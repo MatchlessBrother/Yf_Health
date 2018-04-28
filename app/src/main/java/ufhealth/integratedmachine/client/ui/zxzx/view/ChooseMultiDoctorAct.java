@@ -52,7 +52,7 @@ public class ChooseMultiDoctorAct extends BaseAct implements ChooseMultiDoctor_V
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         choosemultidoctorRecyclerview.setLayoutManager(linearLayoutManager);
-        doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,new ArrayList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.MULTISELECT,TYPE);
+        doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,TYPE,new ArrayList<DoctorInfo.ContentBean>());
         choosemultidoctorRecyclerview.setAdapter(doctorInfoAdapter);
         CheckBoxRadioBtnModifyTools.setHavedDrawbleView(this,choosemultidoctorMfcb,R.drawable.checkbox_blue_no,60,60,3);
 

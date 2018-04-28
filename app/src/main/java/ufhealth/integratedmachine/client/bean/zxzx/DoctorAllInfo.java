@@ -64,6 +64,9 @@ public class DoctorAllInfo implements Parcelable
         private String department_name;
         private long t_cost;
         private String is_free;
+        private String twzxIsFree;
+        private String spzxIsFree;
+        private String ypzxIsFree;
 
         public String getComment_count() {
             return comment_count;
@@ -177,6 +180,30 @@ public class DoctorAllInfo implements Parcelable
             this.is_free = is_free;
         }
 
+        public String getTwzxIsFree() {
+            return this.twzxIsFree;
+        }
+
+        public void setTwzxIsFree(String twzxIsFree) {
+            this.twzxIsFree = twzxIsFree;
+        }
+
+        public String getSpzxIsFree() {
+            return this.spzxIsFree;
+        }
+
+        public void setSpzxIsFree(String spzxIsFree) {
+            this.spzxIsFree = spzxIsFree;
+        }
+
+        public String getYpzxIsFree() {
+            return this.ypzxIsFree;
+        }
+
+        public void setYpzxIsFree(String ypzxIsFree) {
+            this.ypzxIsFree = ypzxIsFree;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -198,6 +225,9 @@ public class DoctorAllInfo implements Parcelable
             dest.writeString(this.department_name);
             dest.writeLong(this.t_cost);
             dest.writeString(this.is_free);
+            dest.writeString(this.twzxIsFree);
+            dest.writeString(this.spzxIsFree);
+            dest.writeString(this.ypzxIsFree);
         }
 
         public BaseinfoBean() {
@@ -218,6 +248,9 @@ public class DoctorAllInfo implements Parcelable
             this.department_name = in.readString();
             this.t_cost = in.readLong();
             this.is_free = in.readString();
+            this.twzxIsFree = in.readString();
+            this.spzxIsFree = in.readString();
+            this.ypzxIsFree = in.readString();
         }
 
         public static final Creator<BaseinfoBean> CREATOR = new Creator<BaseinfoBean>() {

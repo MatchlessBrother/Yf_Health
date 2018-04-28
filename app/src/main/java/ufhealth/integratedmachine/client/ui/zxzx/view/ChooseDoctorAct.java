@@ -21,6 +21,7 @@ import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.widget.ListDialog;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
+import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.adapter.zxzx.DoctorInfoAdapter;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.ChooseDoctorAct_V;
@@ -28,22 +29,18 @@ import ufhealth.integratedmachine.client.ui.zxzx.presenter.ChooseDoctorPresenter
 
 public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.OnClickListener
 {
-    public String TYPE;
-    public  static  final  String  SPZX = "spzx";
-    public  static  final  String  YYZX = "yyzx";
-    public  static  final  String  MYYZ = "myyz";
-
-    private LinearLayout chosedocDefaultsortLl;
-    private TextView chosedocDefaultsortName;
-    private LinearLayout chosedocSourceLl;
+    public  String TYPE;
+    private Button chosedocSearchBtn;
+    private EditText chosedocSearchEt;
     private TextView chosedocSourceName;
-    private LinearLayout chosedocDepartmentLl;
+    private LinearLayout chosedocSourceLl;
+    private TextView chosedocHospitalName;
     private TextView chosedocDepartmentName;
     private LinearLayout chosedocHospitalLl;
-    private TextView chosedocHospitalName;
-    private EditText chosedocSearchEt;
-    private Button chosedocSearchBtn;
+    private TextView chosedocDefaultsortName;
+    private LinearLayout chosedocDepartmentLl;
     private RecyclerView chosedocRecyclerview;
+    private LinearLayout chosedocDefaultsortLl;
     private DoctorInfoAdapter doctorInfoAdapter;
     private ChooseDoctorPresenter chooseDoctorPresenter;
     private SwipeRefreshLayout chosedocSwipeRefreshLayout;
@@ -57,6 +54,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     {
         super.initWidgets(rootView);
         setTitleContent("选择医生");
+        TYPE = getIntent().getStringExtra("type");
         chosedocDefaultsortLl = rootView.findViewById(R.id.chosedoc_defaultsort_ll);
         chosedocDefaultsortName = rootView.findViewById(R.id.chosedoc_defaultsort_name);
         chosedocSourceLl = rootView.findViewById(R.id.chosedoc_source_ll);
@@ -69,28 +67,23 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chosedocSearchBtn = rootView.findViewById(R.id.chosedoc_search_btn);
         chosedocRecyclerview = rootView.findViewById(R.id.chosedoc_recyclerview);
         chosedocSwipeRefreshLayout = rootView.findViewById(R.id.chosedoc_swiperefreshlayout);
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         chosedocRecyclerview.setLayoutManager(linearLayoutManager);
-        if(getIntent().getStringExtra("type").equals(SPZX))
-            doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.SP);
-        else if(getIntent().getStringExtra("type").equals(YYZX))
-            doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.YY);
-        else if(getIntent().getStringExtra("type").equals(MYYZ))
-            doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,new LinkedList<DoctorInfo.ContentBean>(),DoctorInfoAdapter.LJZX,DoctorInfoAdapter.MY);
+        doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,TYPE,new LinkedList<DoctorInfo.ContentBean>());
         chosedocRecyclerview.setAdapter(doctorInfoAdapter);
 
-        chosedocSearchBtn.setOnClickListener(this);
-        chosedocHospitalLl.setOnClickListener(this);
-        chosedocDepartmentLl.setOnClickListener(this);
-        chosedocSourceLl.setOnClickListener(this);
-        chosedocDefaultsortLl.setOnClickListener(this);
 
         chosedocSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             public void onRefresh()
             {
-                chooseDoctorPresenter.refreshDatas();
+                if(TYPE == ZxzxAct.SEARCH || TYPE == ZxzxAct.RMKS)
+                    chooseDoctorPresenter.refreshDatas("");
+                else
+                    chooseDoctorPresenter.refreshDatas(TYPE);
             }
         });
 
@@ -112,11 +105,17 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                 startActivity(intent);
             }
         });
+
+
+        chosedocSearchBtn.setOnClickListener(this);
+        chosedocHospitalLl.setOnClickListener(this);
+        chosedocDepartmentLl.setOnClickListener(this);
+        chosedocSourceLl.setOnClickListener(this);
+        chosedocDefaultsortLl.setOnClickListener(this);
     }
 
     protected void initDatas()
     {
-        TYPE = getIntent().getStringExtra("type");
         chooseDoctorPresenter = new ChooseDoctorPresenter();
         chooseDoctorPresenter.attachContextAndViewLayer(this,this);
     }
@@ -124,7 +123,19 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     protected void initLogic()
     {
         chooseDoctorPresenter.getDoctorInfoOfConditions();
-        chooseDoctorPresenter.refreshDatas();
+        if(TYPE == ZxzxAct.SEARCH)
+        {
+            chosedocSearchEt.setText(getIntent().getStringExtra(ZxzxAct.SEARCH).trim());
+            chooseDoctorPresenter.setSearchContent(getIntent().getStringExtra(ZxzxAct.SEARCH));
+            chooseDoctorPresenter.refreshDatas("");
+        }
+        else if(TYPE == ZxzxAct.RMKS)
+        {
+            chooseDoctorPresenter.checkRmks((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS));
+            chooseDoctorPresenter.refreshDatas("");
+        }
+        else
+            chooseDoctorPresenter.refreshDatas(TYPE);
     }
 
     public void onClick(View view)
@@ -135,8 +146,12 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             case R.id.chosedoc_search_btn:
             {
                 doctorInfoAdapter.setEnableLoadMore(false);
+                chooseDoctorPresenter.setConditionsContent();
                 chooseDoctorPresenter.setSearchContent(chosedocSearchEt.getText().toString().trim());
-                chooseDoctorPresenter.refreshDatas();
+                if(TYPE == ZxzxAct.SEARCH || TYPE == ZxzxAct.RMKS)
+                   chooseDoctorPresenter.refreshDatas("");
+                else
+                    chooseDoctorPresenter.refreshDatas(TYPE);
                 break;
             }
             case R.id.chosedoc_hospital_ll:
@@ -160,6 +175,12 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                 break;
             }
         }
+    }
+
+    protected void onDestroy()
+    {
+        chooseDoctorPresenter.detachContextAndViewLayout();
+        super.onDestroy();
     }
 
     public void finishRefresh()
@@ -193,6 +214,24 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             doctorInfoAdapter.setEnableLoadMore(true);
     }
 
+    public void setShowDepartment(String departmentName)
+    {
+        chosedocDepartmentName.setText(departmentName.trim());
+    }
+
+    @Subscribe
+    public void receiveCountDownFinish(Boolean isFinish)
+    {
+        super.receiveCountDownFinish(isFinish);
+
+    }
+
+    @Subscribe
+    public void receiveCountDownTime(Long countDownTime)
+    {
+        super.receiveCountDownTime(countDownTime);
+
+    }
 
     /********************************1医院----2科室----3来源----4排序规则********************************/
     public ListDialog getConditionsDialog(String[] strSz, final Integer contitionsType)
@@ -472,25 +511,5 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                 }
             }
         });
-    }
-
-    @Subscribe
-    public void receiveCountDownFinish(Boolean isFinish)
-    {
-        super.receiveCountDownFinish(isFinish);
-
-    }
-
-    @Subscribe
-    public void receiveCountDownTime(Long countDownTime)
-    {
-        super.receiveCountDownTime(countDownTime);
-
-    }
-
-    protected void onDestroy()
-    {
-        chooseDoctorPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 }

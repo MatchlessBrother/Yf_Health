@@ -44,10 +44,10 @@
                 android:layout_alignTop="@id/doctorbillinfo_img"
                 android:gravity="right|top"
                 android:singleLine="true"
-                tools:text="来源：优服医疗团队"
                 android:textColor="@color/mainColor"
                 android:textSize="22sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:text="来源：优服医疗团队" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_name"
@@ -57,9 +57,9 @@
                 android:layout_marginRight="30pt"
                 android:layout_toRightOf="@id/doctorbillinfo_img"
                 android:singleLine="true"
-                tools:text="王大胆"
                 android:textColor="@color/default_font_black"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                tools:text="王大胆" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_position"
@@ -70,9 +70,9 @@
                 android:layout_toLeftOf="@id/doctorbillinfo_source"
                 android:layout_toRightOf="@id/doctorbillinfo_name"
                 android:singleLine="true"
-                tools:text="主治医生"
                 android:textColor="@color/default_font_gray"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="主治医生" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_hospitalname"
@@ -83,9 +83,9 @@
                 android:layout_marginRight="30pt"
                 android:layout_marginTop="12sp"
                 android:singleLine="true"
-                tools:text="甘孜州人民医院"
                 android:textColor="@color/default_font_gray"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="甘孜州人民医院" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_departmentname"
@@ -96,9 +96,9 @@
                 android:layout_toLeftOf="@id/doctorbillinfo_source"
                 android:layout_toRightOf="@id/doctorbillinfo_hospitalname"
                 android:singleLine="true"
-                tools:text="急救科"
                 android:textColor="@color/default_font_gray"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="急救科" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_specialize"
@@ -110,9 +110,9 @@
                 android:layout_marginTop="12sp"
                 android:layout_toLeftOf="@id/doctorbillinfo_source"
                 android:singleLine="true"
-                tools:text="擅长：专治各种不服气"
                 android:textColor="@color/default_font_gray"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="擅长：专治各种不服气" />
 
             <com.donkingliang.labels.LabelsView
                 android:id="@+id/doctorbillinfo_labels"
@@ -168,9 +168,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                tools:text="视频咨询"
                 android:textColor="@color/default_font_black"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                tools:text="视频咨询" />
         </LinearLayout>
 
         <LinearLayout
@@ -196,9 +196,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                tools:text="0元/分钟"
                 android:textColor="@color/red"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                tools:text="0元/分钟" />
 
         </LinearLayout>
 
@@ -274,10 +274,10 @@
                 android:paddingRight="30pt"
                 android:paddingTop="20sp"
                 android:singleLine="true"
-                tools:text="订单总价：0元"
                 android:textColor="@color/red"
                 android:textSize="28sp"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                tools:text="订单总价：0元" />
 
             <TextView
                 android:id="@+id/doctorbillinfo_startpay"
@@ -294,7 +294,7 @@
                 android:text="立即支付"
                 android:textColor="@color/white"
                 android:textSize="28sp"
-                android:visibility="gone"/>
+                android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
