@@ -16,6 +16,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import android.support.v4.widget.SwipeRefreshLayout;
+import com.yuan.devlibrary._12_______Utils.NetTools;
 import android.support.v7.widget.LinearLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -80,10 +81,18 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             public void onRefresh()
             {
-                if(TYPE == ZxzxAct.SEARCH || TYPE == ZxzxAct.RMKS)
+                if(TYPE.equals(ZxzxAct.SEARCH )|| TYPE.equals(ZxzxAct.RMKS))
+                {
+                    clearConditionsUi();
+                    chooseDoctorPresenter.clearConditions();
                     chooseDoctorPresenter.refreshDatas("");
+                }
                 else
+                {
+                    clearConditionsUi();
+                    chooseDoctorPresenter.clearConditions();
                     chooseDoctorPresenter.refreshDatas(TYPE);
+                }
             }
         });
 
@@ -99,10 +108,17 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                Intent intent = new Intent(ChooseDoctorAct.this,DoctorInfoAct.class);
-                intent.putExtra("type",TYPE);
-                intent.putExtra("id",((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()+"");
-                startActivity(intent);
+                if(NetTools.WhetherConnectNet(ChooseDoctorAct.this) && 0 != (((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()))
+                {
+                    Intent intent = new Intent(ChooseDoctorAct.this,DoctorInfoAct.class);
+                    intent.putExtra("type",TYPE);
+                    intent.putExtra("id",((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()+"");
+                    startActivity(intent);
+                }
+                else
+                {
+                    showToast("亲，您的网络有问题！请稍后再试...");
+                }
             }
         });
 
@@ -125,18 +141,23 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         chooseDoctorPresenter.getDoctorInfoOfConditions();
         if(TYPE.equals(ZxzxAct.SEARCH))
         {
+            chooseDoctorPresenter.clearConditions();
             chosedocSearchEt.setText(getIntent().getStringExtra(ZxzxAct.SEARCH).trim());
             chooseDoctorPresenter.setSearchContent(getIntent().getStringExtra(ZxzxAct.SEARCH));
             chooseDoctorPresenter.refreshDatas("");
         }
         else if(TYPE.equals(ZxzxAct.RMKS))
         {
+            chooseDoctorPresenter.clearConditions();
             chosedocDepartmentName.setText(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getName().trim());
             chooseDoctorPresenter.setRmksId(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getId()+"");
             chooseDoctorPresenter.refreshDatas("");
         }
         else
+        {
+            chooseDoctorPresenter.clearConditions();
             chooseDoctorPresenter.refreshDatas(TYPE);
+        }
     }
 
     public void onClick(View view)
@@ -146,11 +167,14 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             case R.id.chosedoc_search_btn:
             {
+                chooseDoctorPresenter.clearConditions();
                 doctorInfoAdapter.setEnableLoadMore(false);
                 chooseDoctorPresenter.setConditionsContent();
                 chooseDoctorPresenter.setSearchContent(chosedocSearchEt.getText().toString().trim());
-                if(TYPE == ZxzxAct.SEARCH || TYPE == ZxzxAct.RMKS)
-                   chooseDoctorPresenter.refreshDatas("");
+                if(TYPE.equals(ZxzxAct.SEARCH) || TYPE.equals(ZxzxAct.RMKS))
+                {
+                    chooseDoctorPresenter.refreshDatas("");
+                }
                 else
                     chooseDoctorPresenter.refreshDatas(TYPE);
                 break;
@@ -194,6 +218,15 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     {
         doctorInfoAdapter.loadMoreComplete();
 
+    }
+
+    public void clearConditionsUi()
+    {
+        chosedocSearchEt.setText("");
+        chosedocHospitalName.setText("医院");
+        chosedocDepartmentName.setText("科室");
+        chosedocSourceName.setText("来源");
+        chosedocDefaultsortName.setText("默认排序");
     }
 
     public void refreshDatas(DoctorInfo doctorsInfo)

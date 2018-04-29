@@ -12,12 +12,15 @@ import android.widget.CompoundButton;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import android.support.annotation.Nullable;
+import com.yuan.devlibrary._12_______Utils.NetTools;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
 import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
+
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
 public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,BaseViewHolder>
@@ -89,14 +92,21 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 {
                     public void onClick(View view)
                     {
-                        Intent intent = new Intent(mContext, BillInfoAct.class);
-                        switch (mTypeValue)
+                        if(NetTools.WhetherConnectNet(mContext) && 0 != contentBean.getDoctor_id())
                         {
-                            case SPZX:intent.putExtra("type", ZxzxAct.SPZX);break;
-                            case YYZX:intent.putExtra("type",ZxzxAct.YYZX);break;
+                            Intent intent = new Intent(mContext, BillInfoAct.class);
+                            switch (mTypeValue)
+                            {
+                                case SPZX:intent.putExtra("type", ZxzxAct.SPZX);break;
+                                case YYZX:intent.putExtra("type",ZxzxAct.YYZX);break;
+                            }
+                            intent.putExtra("id",contentBean.getDoctor_id()+"");
+                            mContext.startActivity(intent);
                         }
-                        intent.putExtra("id",contentBean.getDoctor_id()+"");
-                        mContext.startActivity(intent);
+                        else
+                        {
+                            ((BaseAct)mContext).showToast("亲，您的网络有问题！请稍后再试...");
+                        }
                     }
                 });
                 break;

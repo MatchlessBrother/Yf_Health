@@ -24,6 +24,22 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         doctorInfoOfCondition = new DoctorInfoOfCondition();
     }
 
+    public void clearConditions()
+    {
+        conditions.clear();
+        for(DoctorInfoOfCondition.HospitalBean hospitalBean: doctorInfoOfCondition.getHospital())
+            hospitalBean.setSelected(false);
+
+        for(DoctorInfoOfCondition.DepartmentBean departmentBean: doctorInfoOfCondition.getDepartment())
+            departmentBean.setSelected(false);
+
+        for(DoctorInfoOfCondition.SortBean sortBean: doctorInfoOfCondition.getSort())
+            sortBean.setSelected(false);
+
+        for(DoctorInfoOfCondition.OriginalBean sourceBean: doctorInfoOfCondition.getOriginal())
+            sourceBean.setSelected(false);
+    }
+
     public void loadMoreDatas()
     {
         if(isAttachContextAndViewLayer())
@@ -152,7 +168,6 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
     {
         if(isAttachContextAndViewLayer())
         {
-            conditions.clear();
             conditions.put("page","1");
             conditions.put("type",type.toUpperCase());
             DoctorModel.getDoctorsInfo(getContext(),conditions,new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfo>>(this)

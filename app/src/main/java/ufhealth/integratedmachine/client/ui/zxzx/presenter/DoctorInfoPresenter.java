@@ -19,6 +19,19 @@ public class DoctorInfoPresenter extends BaseMvp_Presenter<DoctorInfoAct_V>
         conditions = new HashMap<>();
     }
 
+    public boolean doctorIsValid()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            if(null != doctorAllInfo && null != doctorAllInfo.getBaseinfo() && null != doctorAllInfo.getBaseinfo().getDoctor_name())
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
     public void initDoctorAllInfo(String doctorId)
     {
         if(isAttachContextAndViewLayer())

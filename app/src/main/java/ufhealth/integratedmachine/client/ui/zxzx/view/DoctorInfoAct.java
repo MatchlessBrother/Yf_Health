@@ -13,6 +13,7 @@ import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import com.yuan.devlibrary._12_______Utils.NetTools;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
@@ -118,6 +119,8 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case ZxzxAct.SPZX:
             {
                 TYPE = ZxzxAct.SPZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopSpline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_blue));
                 doctorinfoRightTopSpname.setTextColor(Color.argb(255,0,147,221));
@@ -127,6 +130,8 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case ZxzxAct.YYZX:
             {
                 TYPE = ZxzxAct.YYZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopYyline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_blue));
                 doctorinfoRightTopYyname.setTextColor(Color.argb(255,0,147,221));
@@ -137,6 +142,8 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case ZxzxAct.BGJD:
             {
                 TYPE = ZxzxAct.TWZX;
+                doctorinfoStartchat.setEnabled(true);
+                doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_blue));
                 doctorinfoRightTopTwname.setTextColor(Color.argb(255,0,147,221));
@@ -193,10 +200,17 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             {
                 if(TYPE == ZxzxAct.SPZX || TYPE == ZxzxAct.YYZX || TYPE == ZxzxAct.TWZX)
                 {
-                    Intent intent = new Intent(this, BillInfoAct.class);
-                    intent.putExtra("type",TYPE);
-                    intent.putExtra("id",getIntent().getStringExtra("id"));
-                    startActivity(intent);
+                    if(NetTools.WhetherConnectNet(this) && doctorInfoPresenter.doctorIsValid())
+                    {
+                        Intent intent = new Intent(this, BillInfoAct.class);
+                        intent.putExtra("type",TYPE);
+                        intent.putExtra("id",getIntent().getStringExtra("id"));
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        showToast("亲，您的网络有问题！请稍后再试...");
+                    }
                 }
                 break;
             }
@@ -207,7 +221,11 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
                 doctorinfoStartchat.setEnabled(true);
                 doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.GONE);
+                doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_gray));
+                doctorinfoRightTopTwname.setTextColor(Color.argb(255,102,102,102));
                 doctorinfoRightTopYyline.setVisibility(View.GONE);
+                doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_gray));
+                doctorinfoRightTopYyname.setTextColor(Color.argb(255,102,102,102));
                 doctorinfoRightTopSpline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_blue));
                 doctorinfoRightTopSpname.setTextColor(Color.argb(255,0,147,221));
@@ -220,10 +238,14 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
                 doctorinfoStartchat.setEnabled(true);
                 doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.GONE);
-                doctorinfoRightTopSpline.setVisibility(View.GONE);
+                doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_gray));
+                doctorinfoRightTopTwname.setTextColor(Color.argb(255,102,102,102));
                 doctorinfoRightTopYyline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_blue));
                 doctorinfoRightTopYyname.setTextColor(Color.argb(255,0,147,221));
+                doctorinfoRightTopSpline.setVisibility(View.GONE);
+                doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_gray));
+                doctorinfoRightTopSpname.setTextColor(Color.argb(255,102,102,102));
                 break;
             }
 
@@ -232,11 +254,15 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
                 TYPE = ZxzxAct.TWZX;
                 doctorinfoStartchat.setEnabled(true);
                 doctorinfo_startnote.setVisibility(View.GONE);
-                doctorinfoRightTopSpline.setVisibility(View.GONE);
-                doctorinfoRightTopYyline.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_blue));
                 doctorinfoRightTopTwname.setTextColor(Color.argb(255,0,147,221));
+                doctorinfoRightTopYyline.setVisibility(View.GONE);
+                doctorinfoRightTopYyimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.yyzx_gray));
+                doctorinfoRightTopYyname.setTextColor(Color.argb(255,102,102,102));
+                doctorinfoRightTopSpline.setVisibility(View.GONE);
+                doctorinfoRightTopSpimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.spzx_gray));
+                doctorinfoRightTopSpname.setTextColor(Color.argb(255,102,102,102));
                 break;
             }
         }
