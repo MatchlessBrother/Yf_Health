@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
-import ufhealth.integratedmachine.client.bean.zxzx.HotDepartment;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import ufhealth.integratedmachine.client.ui.zxzx.model.DoctorModel;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
@@ -190,6 +189,14 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         }
     }
 
+    public void setRmksId(String rmksId)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            conditions.put("department_id",rmksId.trim());
+        }
+    }
+
     public void getDoctorInfoOfConditions()
     {
         if(isAttachContextAndViewLayer())
@@ -222,22 +229,6 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
                     }
                 }
             });
-        }
-    }
-
-    public void checkRmks(HotDepartment department)
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            for(DoctorInfoOfCondition.DepartmentBean departmentBean: doctorInfoOfCondition.getDepartment())
-            {
-                if(String.valueOf(department.getId()).equals(departmentBean.getId().trim()) && department.getName().trim().equals(departmentBean.getName().trim()))
-                {
-                    conditions.put("department_id",departmentBean.getId().trim());
-                    getViewLayer().setShowDepartment(departmentBean.getName().trim());
-                    break;
-                }
-            }
         }
     }
 

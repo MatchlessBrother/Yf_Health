@@ -25,7 +25,7 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
     private Context mContext;
     private String  mTypeValue = "";
     public static final String SPZX = "spzx";// 视频咨询
-    public static final String YYZX = "yyzx";// 语音咨询
+    public static final String YYZX = "ypzx";// 语音咨询
     public static final String MYYZ = "myyz";// 名医义诊
     public static final String KSZX = "kszx";// 快速咨询
     public static final String BGJD = "bgjd";// 报告咨询

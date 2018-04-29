@@ -42,7 +42,7 @@ public class ZxzxAct extends BaseAct implements ZxzxAct_V,View.OnClickListener
     private ZxzxHotDepartmentAdapter zxzxHotDepartmentAdapter;
     public      static      final     String    TWZX = "twzx";
     public      static      final     String    SPZX = "spzx";
-    public      static      final     String    YYZX = "yyzx";
+    public      static      final     String    YYZX = "ypzx";
     public      static      final     String    MYYZ = "myyz";
     public      static      final     String    KSZX = "kszx";
     public      static      final     String    BGJD = "bgjd";

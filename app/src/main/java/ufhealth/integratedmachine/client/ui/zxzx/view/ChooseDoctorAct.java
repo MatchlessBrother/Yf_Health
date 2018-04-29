@@ -123,15 +123,16 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
     protected void initLogic()
     {
         chooseDoctorPresenter.getDoctorInfoOfConditions();
-        if(TYPE == ZxzxAct.SEARCH)
+        if(TYPE.equals(ZxzxAct.SEARCH))
         {
             chosedocSearchEt.setText(getIntent().getStringExtra(ZxzxAct.SEARCH).trim());
             chooseDoctorPresenter.setSearchContent(getIntent().getStringExtra(ZxzxAct.SEARCH));
             chooseDoctorPresenter.refreshDatas("");
         }
-        else if(TYPE == ZxzxAct.RMKS)
+        else if(TYPE.equals(ZxzxAct.RMKS))
         {
-            chooseDoctorPresenter.checkRmks((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS));
+            chosedocDepartmentName.setText(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getName().trim());
+            chooseDoctorPresenter.setRmksId(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getId()+"");
             chooseDoctorPresenter.refreshDatas("");
         }
         else
@@ -212,11 +213,6 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
             doctorInfoAdapter.setEnableLoadMore(false);
         else
             doctorInfoAdapter.setEnableLoadMore(true);
-    }
-
-    public void setShowDepartment(String departmentName)
-    {
-        chosedocDepartmentName.setText(departmentName.trim());
     }
 
     @Subscribe
