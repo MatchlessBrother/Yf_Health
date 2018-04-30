@@ -34,7 +34,7 @@ public interface NetUrl
     @FormUrlEncoded
     Observable<BaseReturnData> twzxUploadDatas(@FieldMap Map<String, String> conditions, @Field("imgList") String[] imagesPath);
 
-    @POST("zixun/video/orderAudioSave")
+    @POST("zixun/audio/orderAudioSave")
     @FormUrlEncoded
     Observable<BaseReturnData<Billinfo>> zxzxCreateAudioBill(@Field("doctor_id") String doctorId, @Field("timeMin") String timeMin);
 
