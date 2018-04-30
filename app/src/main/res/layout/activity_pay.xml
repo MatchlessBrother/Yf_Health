@@ -38,7 +38,8 @@
                 <ImageView
                     android:layout_width="40pt"
                     android:layout_height="40sp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
+                    android:layout_marginRight="8pt"
                     android:src="@mipmap/weixinpayicon" />
 
                 <TextView
@@ -72,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@id/pay_qrc_img"
                     android:gravity="center"
-                    android:text="订单将在30分钟内关闭，请及时付款"
+                    android:text="订单将会在一段时间后关闭，请及时付款"
                     android:textColor="#FF333333"
                     android:textSize="26sp" />
 
@@ -165,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="65sp"
                     android:singleLine="true"
-                    android:text="健康小屋订单"
+                    android:text="优服健康-咨询订单"
                     android:textColor="#FF333333"
                     android:textSize="26sp" />
 
@@ -185,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20sp"
                     android:singleLine="true"
-                    android:text="收  款  方：成都优服健康科技有限公司"
+                    android:text="收  款  方：成都优服健康管理有限公司"
                     android:textColor="#FF333333"
                     android:textSize="30sp" />
 

@@ -8,6 +8,7 @@ public class Billinfo implements Parcelable
     private String payOrderNumber;
     private String payQrcodeUrl;
     private String totalPrice;
+    private String createTime;
 
     public String getPayOrderNumber() {
         return payOrderNumber;
@@ -33,6 +34,14 @@ public class Billinfo implements Parcelable
         this.totalPrice = totalPrice;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -43,6 +52,7 @@ public class Billinfo implements Parcelable
         dest.writeString(this.payOrderNumber);
         dest.writeString(this.payQrcodeUrl);
         dest.writeString(this.totalPrice);
+        dest.writeString(this.createTime);
     }
 
     public Billinfo() {
@@ -52,6 +62,7 @@ public class Billinfo implements Parcelable
         this.payOrderNumber = in.readString();
         this.payQrcodeUrl = in.readString();
         this.totalPrice = in.readString();
+        this.createTime = in.readString();
     }
 
     public static final Creator<Billinfo> CREATOR = new Creator<Billinfo>() {

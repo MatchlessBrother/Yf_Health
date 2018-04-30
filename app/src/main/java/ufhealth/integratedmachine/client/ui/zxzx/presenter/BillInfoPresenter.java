@@ -70,8 +70,8 @@ public class BillInfoPresenter extends BaseMvp_Presenter<BillInfoAct_V>
                     if(isAttachContextAndViewLayer())
                     {
                         Billinfo billinfo = returnBillInfo.getData();
-                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getPayOrderNumber() &&
-                            !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
+                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getTotalPrice() &&
+                                !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
                             getViewLayer().startAudioPayActivity(returnBillInfo.getData());
                         else
                             getViewLayer().showToast("服务器忙！请稍后重新发起咨询请求...谢谢！");
@@ -110,8 +110,8 @@ public class BillInfoPresenter extends BaseMvp_Presenter<BillInfoAct_V>
                     if(isAttachContextAndViewLayer())
                     {
                         Billinfo billinfo = returnBillInfo.getData();
-                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getPayOrderNumber() &&
-                                !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
+                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getTotalPrice() &&
+                                !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
                             getViewLayer().startVideoPayActivity(returnBillInfo.getData());
                         else
                             getViewLayer().showToast("服务器忙！请稍后重新发起咨询请求...谢谢！");
@@ -150,8 +150,8 @@ public class BillInfoPresenter extends BaseMvp_Presenter<BillInfoAct_V>
                     if(isAttachContextAndViewLayer())
                     {
                         Billinfo billinfo = returnBillInfo.getData();
-                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getPayOrderNumber() &&
-                                !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
+                        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getPayQrcodeUrl() && null != billinfo.getTotalPrice() &&
+                                !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
                             getViewLayer().startImageTextPayActivity(returnBillInfo.getData());
                         else
                             getViewLayer().showToast("服务器忙！请稍后重新发起咨询请求...谢谢！");
