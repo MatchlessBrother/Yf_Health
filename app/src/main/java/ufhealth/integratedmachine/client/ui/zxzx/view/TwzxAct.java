@@ -2,6 +2,7 @@ package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import java.util.List;
 import android.view.View;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import android.widget.Button;
 import android.graphics.Color;
@@ -119,7 +120,11 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
                 }*/
                 //临时跳转代码，正确的逻辑是上面的代码
                 Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
+                ArrayList lsArrayList = new ArrayList();
                 intent.putExtra("type",ZxzxAct.KSZX);
+                lsArrayList.addAll(twzxPictureAdapter.getData());
+                intent.putStringArrayListExtra("imgspath",lsArrayList);
+                intent.putExtra("questions",twzxContentEt.getText().trim());
                 startActivity(intent);
             }
         }
@@ -127,7 +132,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
 
     public void commitImgsSuccess()
     {
-        if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
+     /*   if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
         {
             //保存图片网络地址到本地以便后面上传，并跳转选择医生界面
             Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
@@ -140,7 +145,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
             Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
             intent.putExtra("type",ZxzxAct.BGJD);
             startActivity(intent);
-        }
+        }*/
     }
 
     protected void onDestroy()

@@ -35,7 +35,7 @@ public interface NetUrl
     @FormUrlEncoded
     Observable<BaseReturnData<DoctorAllInfo>> zxzxGetDoctorAllInfo(@FieldMap Map<String, String> conditions);
 
-    @POST("zixun/imagetext/imageTextSave")
+    @POST("zixun/imagetext/uploadTwzxImage")
     @FormUrlEncoded
     Observable<BaseReturnData> twzxUploadDatas(@FieldMap Map<String, String> conditions, @Field("imgList") String[] imagesPath);
 

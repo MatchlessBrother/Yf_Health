@@ -82,6 +82,7 @@ public class ChooseMultiDoctorAct extends BaseAct implements ChooseMultiDoctor_V
     protected void initLogic()
     {
         chooseMultiDoctorPresenter.refreshDatas();
+
     }
 
     public void finishRefresh()
