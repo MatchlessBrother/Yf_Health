@@ -42,10 +42,10 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
         super.initWidgets(rootView);
         setTitleContent("图文咨询");
         maxPictureNum = 5;
-        twzxNameTv = findViewById(R.id.twzx_name_tv);
-        twzxTjwtBtn = findViewById(R.id.twzx_tjwt_btn);
-        twzxContentEt = findViewById(R.id.twzx_content_et);
-        twzxRecyclerview = findViewById(R.id.twzx_recyclerview);
+        twzxNameTv = rootView.findViewById(R.id.twzx_name_tv);
+        twzxTjwtBtn = rootView.findViewById(R.id.twzx_tjwt_btn);
+        twzxContentEt = rootView.findViewById(R.id.twzx_content_et);
+        twzxRecyclerview = rootView.findViewById(R.id.twzx_recyclerview);
 
         twzxNameTv.setText(null != getBaseApp().getUserInfo().getName() ? "问诊人：" + getBaseApp().getUserInfo().getName().trim() : "问诊人：未知");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,maxPictureNum);
@@ -123,7 +123,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
                 ArrayList lsArrayList = new ArrayList();
                 intent.putExtra("type",ZxzxAct.KSZX);
                 lsArrayList.addAll(twzxPictureAdapter.getData());
-                intent.putStringArrayListExtra("imgspath",lsArrayList);
+                intent.putStringArrayListExtra("imgsPath",lsArrayList);
                 intent.putExtra("questions",twzxContentEt.getText().trim());
                 startActivity(intent);
             }

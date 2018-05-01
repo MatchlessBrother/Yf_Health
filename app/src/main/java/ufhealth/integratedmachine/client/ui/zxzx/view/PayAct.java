@@ -1,27 +1,23 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
-import android.content.Intent;
+import rx.Observable;
+import rx.Subscriber;
 import android.view.View;
 import android.widget.Button;
 import android.graphics.Color;
+import android.content.Intent;
 import android.widget.TextView;
 import android.widget.ImageView;
+import rx.schedulers.Schedulers;
+import java.util.concurrent.TimeUnit;
 import android.widget.RelativeLayout;
 import android.graphics.BitmapFactory;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import rx.android.schedulers.AndroidSchedulers;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.yuan.devlibrary._12_______Utils.QRCodeTools;
-
-import java.util.concurrent.TimeUnit;
-
 import ufhealth.integratedmachine.client.bean.zxzx.Billinfo;
-import ufhealth.integratedmachine.client.bean.zxzx.PayResult;
 import ufhealth.integratedmachine.client.ui.main.view.MainAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.PayAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.PayPresenter;

@@ -1,14 +1,38 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import android.support.v7.widget.RecyclerView;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import ufhealth.integratedmachine.client.adapter.zxzx.BillsInfoAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
+import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
+import ufhealth.integratedmachine.client.ui.zxzx.presenter.BillsInfoPresenter;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillsInfoAct_V;
+import ufhealth.integratedmachine.client.util.DecimalFormatTools;
 
 public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClickListener
 {
+    public String TYPE;
+    private Button billBtn;
+    private TextView billValue;
+    private RecyclerView billRecyclerview;
+    private BillsInfoAdapter billsInfoAdapter;
+    private BillsInfoPresenter billsInfoPresenter;
+
+    private String questions;
+    private List<String> imgsPath;
+    private boolean isIncludeFreeDoctor;
+    private List<DoctorInfo.ContentBean> doctors;
+
     protected int setLayoutResID()
     {
         return R.layout.activity_bill;
@@ -18,16 +42,55 @@ public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClick
     {
         super.initWidgets(rootView);
         setTitleContent("订单信息");
+        TYPE = getIntent().getStringExtra("type");
+        billBtn = (Button) findViewById(R.id.bill_btn);
+        billValue = (TextView) findViewById(R.id.bill_value);
+        billRecyclerview = (RecyclerView) findViewById(R.id.bill_recyclerview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        billRecyclerview.setLayoutManager(linearLayoutManager);
+        billsInfoAdapter = new BillsInfoAdapter(this,new ArrayList<DoctorInfo.ContentBean>());
+        billRecyclerview.setAdapter(billsInfoAdapter);
+        billBtn.setOnClickListener(this);
     }
 
     protected void initDatas()
     {
-
+        billsInfoPresenter = new BillsInfoPresenter();
+        billsInfoPresenter.attachContextAndViewLayer(this,this);
     }
 
     protected void initLogic()
     {
+        questions = getIntent().getStringExtra("questions");
+        imgsPath  = getIntent().getStringArrayListExtra("imgsPath");
+        doctors = getIntent().getParcelableArrayListExtra("doctors");
+        isIncludeFreeDoctor = getIntent().getBooleanExtra("isIncludeFreeDoctor",false);
+        billsInfoAdapter.setNewData(doctors);
 
+        double totalValue = 0d;
+        for(DoctorInfo.ContentBean doctor : doctors)
+            totalValue += doctor.getT_cost();
+        billValue.setText("共选择" + doctors.size() + "个医生，订单总价：" + DecimalFormatTools.keepTwoDecimalDigits(totalValue) + "元");
+    }
+
+    public void onClick(View view)
+    {
+        super.onClick(view);
+        switch(view.getId())
+        {
+            case R.id.bill_btn:
+            {
+                billsInfoPresenter.uploadImgs(questions,isIncludeFreeDoctor,imgsPath,doctors);
+                break;
+            }
+        }
+    }
+
+    protected void onDestroy()
+    {
+        billsInfoPresenter.detachContextAndViewLayout();
+        super.onDestroy();
     }
 
     @Subscribe
@@ -37,20 +100,10 @@ public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClick
 
     }
 
-    @Override
-    public void addDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean) {
-
-    }
-
     @Subscribe
     public void receiveCountDownTime(Long countDownTime)
     {
         super.receiveCountDownTime(countDownTime);
 
-    }
-
-    public void onClick(View view)
-    {
-        super.onClick(view);
     }
 }

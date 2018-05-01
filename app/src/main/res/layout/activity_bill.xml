@@ -53,9 +53,9 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/btn_blue_yj_solid"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:singleLine="true"
-                android:text="提交问题"
+                android:text="立即支付"
                 android:textColor="@color/white"
                 android:textSize="28sp" />
         </LinearLayout>

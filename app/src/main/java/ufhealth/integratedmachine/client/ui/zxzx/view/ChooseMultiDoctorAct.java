@@ -122,12 +122,15 @@ public class ChooseMultiDoctorAct extends BaseAct implements ChooseMultiDoctor_V
     {
         super.onTitleMoreClick();
         Intent intent = new Intent(this,BillsInfoAct.class);
-        ArrayList<String> doctorsId = new ArrayList<>();
+        ArrayList<DoctorInfo.ContentBean> doctors = new ArrayList<>();
         for(DoctorInfo.ContentBean contentBean : doctorInfoAdapter.getData())
             if(contentBean.isSelected())
-                doctorsId.add(contentBean.getDoctor_id()+"");
-        intent.putStringArrayListExtra("doctorsId",doctorsId);
+                doctors.add(contentBean);
+        intent.putExtra("type",TYPE);
+        intent.putParcelableArrayListExtra("doctors",doctors);
         intent.putExtra("isIncludeFreeDoctor",choosemultidoctorMfcb.isChecked());
+        intent.putExtra("questions",getIntent().getStringExtra("questions"));
+        intent.putStringArrayListExtra("imgsPath",getIntent().getStringArrayListExtra("imgsPath"));
         startActivity(intent);
     }
 

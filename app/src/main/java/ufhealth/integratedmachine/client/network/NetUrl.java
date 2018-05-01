@@ -1,5 +1,7 @@
 package ufhealth.integratedmachine.client.network;
 
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import rx.Observable;
 import java.util.Map;
 import java.util.List;
@@ -37,7 +39,7 @@ public interface NetUrl
 
     @POST("zixun/imagetext/uploadTwzxImage")
     @FormUrlEncoded
-    Observable<BaseReturnData> twzxUploadDatas(@FieldMap Map<String, String> conditions, @Field("imgList") String[] imagesPath);
+    Observable<BaseReturnData> twzxUploadDatas(@PartMap("Img") Map<String, String> conditions, @Field("imgList") String[] imagesPath);
 
     @POST("zixun/audio/orderAudioSave")
     @FormUrlEncoded

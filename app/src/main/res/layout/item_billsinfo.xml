@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/default_transwhite_bg"
+    android:paddingLeft="30pt"
+    android:paddingRight="30pt"
+    android:paddingTop="30sp">
+
+    <ImageView
+        android:id="@+id/billsinfo_img"
+        android:layout_width="174pt"
+        android:layout_height="174sp"
+        android:layout_marginRight="12pt"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/defaultheadimg" />
+
+    <TextView
+        android:id="@+id/billsinfo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/billsinfo_img"
+        android:layout_marginRight="30pt"
+        android:layout_toRightOf="@id/billsinfo_img"
+        android:singleLine="true"
+        android:text="王大胆"
+        android:textColor="@color/default_font_black"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/billsinfo_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/billsinfo_name"
+        android:layout_toRightOf="@id/billsinfo_name"
+        android:singleLine="true"
+        android:text="主治医生"
+        android:textColor="@color/default_font_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/billsinfo_hospitalname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/billsinfo_name"
+        android:layout_below="@id/billsinfo_name"
+        android:layout_marginRight="30pt"
+        android:layout_marginTop="12sp"
+        android:singleLine="true"
+        android:text="甘孜州人民医院"
+        android:textColor="@color/default_font_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/billsinfo_departmentname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/billsinfo_hospitalname"
+        android:layout_toRightOf="@id/billsinfo_hospitalname"
+        android:singleLine="true"
+        android:text="急救科"
+        android:textColor="@color/default_font_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/billsinfo_service_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/billsinfo_name"
+        android:layout_below="@id/billsinfo_hospitalname"
+        android:layout_marginRight="30pt"
+        android:layout_marginTop="12sp"
+        android:singleLine="true"
+        android:text="服务内容：图文咨询"
+        android:textColor="@color/default_font_gray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/billsinfo_service_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/billsinfo_img"
+        android:layout_toRightOf="@id/billsinfo_img"
+        android:singleLine="true"
+        android:text="服务费用：50元/次"
+        android:textColor="@color/default_font_gray"
+        android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/billsinfo_img"
+        android:layout_marginTop="30sp"
+        android:background="@color/default_divide_line" />
+
+</RelativeLayout>
