@@ -39,7 +39,7 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
     private TextView doctorbillinfoTotalvalue;
     private TextView doctorbillinfoStartpay;
     private BillInfoPresenter billInfoPresenter;
-    private DecimalFormat decimalFormat = new DecimalFormat("#.0");
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     protected int setLayoutResID()
     {
@@ -151,26 +151,50 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
 
     public void startAudioPayActivity(Billinfo billinfo)
     {
-        Intent intent = new Intent(this,PayAct.class);
-        intent.putExtra("type",TYPE);
-        intent.putExtra("bill",billinfo);
-        startActivity(intent);
+        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getTotalPrice() && null != billinfo.getCreateTime() && null != billinfo.getPayQrcodeUrl() &&
+        (!"".equals(billinfo.getPayOrderNumber().trim())) && (!"".equals(billinfo.getTotalPrice().trim())) && (!"".equals(billinfo.getCreateTime().trim())) && (!"".equals(billinfo.getPayQrcodeUrl().trim())))
+        {
+            Intent intent = new Intent(this,PayAct.class);
+            intent.putExtra("type",TYPE);
+            intent.putExtra("bill",billinfo);
+            startActivity(intent);
+        }
+        else
+        {
+            showToast("亲，您的网络发生异常！请确保网络正常后再试...");
+        }
     }
 
     public void startVideoPayActivity(Billinfo billinfo)
     {
-        Intent intent = new Intent(this,PayAct.class);
-        intent.putExtra("type",TYPE);
-        intent.putExtra("bill",billinfo);
-        startActivity(intent);
+        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getTotalPrice() && null != billinfo.getCreateTime() && null != billinfo.getPayQrcodeUrl() &&
+                (!"".equals(billinfo.getPayOrderNumber().trim())) && (!"".equals(billinfo.getTotalPrice().trim())) && (!"".equals(billinfo.getCreateTime().trim())) && (!"".equals(billinfo.getPayQrcodeUrl().trim())))
+        {
+            Intent intent = new Intent(this,PayAct.class);
+            intent.putExtra("type",TYPE);
+            intent.putExtra("bill",billinfo);
+            startActivity(intent);
+        }
+        else
+        {
+            showToast("亲，您的网络发生异常！请确保网络正常后再试...");
+        }
     }
 
     public void startImageTextPayActivity(Billinfo billinfo)
     {
-        Intent intent = new Intent(this,PayAct.class);
-        intent.putExtra("type",TYPE);
-        intent.putExtra("bill",billinfo);
-        startActivity(intent);
+        if(null != billinfo && null != billinfo.getPayOrderNumber() && null != billinfo.getTotalPrice() && null != billinfo.getCreateTime() && null != billinfo.getPayQrcodeUrl() &&
+                (!"".equals(billinfo.getPayOrderNumber().trim())) && (!"".equals(billinfo.getTotalPrice().trim())) && (!"".equals(billinfo.getCreateTime().trim())) && (!"".equals(billinfo.getPayQrcodeUrl().trim())))
+        {
+            Intent intent = new Intent(this,PayAct.class);
+            intent.putExtra("type",TYPE);
+            intent.putExtra("bill",billinfo);
+            startActivity(intent);
+        }
+        else
+        {
+            showToast("亲，您的网络发生异常！请确保网络正常后再试...");
+        }
     }
 
     public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)
@@ -214,7 +238,7 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
                     value = Double.valueOf(baseinfoBean.getT_cost());
                     doctorbillinfoValue.setText(baseinfoBean.getT_cost()+"元/次");
                     doctorbillinfoTimeall.setVisibility(View.GONE);
-                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(startTime * baseinfoBean.getT_cost()) +"元");
+                    doctorbillinfoTotalvalue.setText("订单总价：" + decimalFormat.format(baseinfoBean.getT_cost()) +"元");
                     break;
                 }
             }

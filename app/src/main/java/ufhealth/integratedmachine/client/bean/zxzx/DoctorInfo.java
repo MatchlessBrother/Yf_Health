@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import android.os.Parcelable;
 
+import ufhealth.integratedmachine.client.util.DecimalFormatTools;
+
 public class DoctorInfo implements Parcelable
 {
     private boolean last;
@@ -90,7 +92,7 @@ public class DoctorInfo implements Parcelable
         this.content = content;
     }
 
-    public static class ContentBean
+    public static class ContentBean implements Parcelable
     {
         private String doctor_name;
         private String hospital_name;
@@ -98,41 +100,17 @@ public class DoctorInfo implements Parcelable
         private String be_good_at;
         private String original;
         private long doctor_id;
-        private long s_cost;
-        private long y_cost;
-        private long m_cost;
-        private long k_cost;
-        private long b_cost;
-        private long t_cost;
+        private double s_cost;
+        private double y_cost;
+        private double m_cost;
+        private double k_cost;
+        private double b_cost;
+        private double t_cost;
         private String department_name;
         private String avatar;
         private String is_free;
         private boolean isSelected;
         private List<String> labels;
-
-        public boolean isSelected() {
-            return this.isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.isSelected = selected;
-        }
-
-        public List<String> getLabels() {
-            return this.labels;
-        }
-
-        public void setLabels(List<String> labels) {
-            this.labels = labels;
-        }
-
-        public long getT_cost() {
-            return t_cost;
-        }
-
-        public void setT_cost(long t_cost) {
-            this.t_cost = t_cost;
-        }
 
         public String getDoctor_name() {
             return doctor_name;
@@ -182,44 +160,54 @@ public class DoctorInfo implements Parcelable
             this.doctor_id = doctor_id;
         }
 
-        public long getS_cost() {
-            return s_cost;
+        public double getS_cost()
+        {
+            return DecimalFormatTools.keepTwoDecimalDigits(s_cost);
         }
 
-        public void setS_cost(long s_cost) {
+        public void setS_cost(double s_cost) {
             this.s_cost = s_cost;
         }
 
-        public long getY_cost() {
-            return y_cost;
+        public double getY_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(y_cost);
         }
 
-        public void setY_cost(long y_cost) {
+        public void setY_cost(double y_cost) {
             this.y_cost = y_cost;
         }
 
-        public long getM_cost() {
-            return m_cost;
+        public double getM_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(m_cost);
         }
 
-        public void setM_cost(long m_cost) {
+        public void setM_cost(double m_cost) {
             this.m_cost = m_cost;
         }
 
-        public long getK_cost() {
-            return k_cost;
+        public double getK_cost()
+        {
+            return DecimalFormatTools.keepTwoDecimalDigits(k_cost);
         }
 
-        public void setK_cost(long k_cost) {
+        public void setK_cost(double k_cost) {
             this.k_cost = k_cost;
         }
 
-        public long getB_cost() {
-            return b_cost;
+        public double getB_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(b_cost);
         }
 
-        public void setB_cost(long b_cost) {
+        public void setB_cost(double b_cost) {
             this.b_cost = b_cost;
+        }
+
+        public double getT_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(t_cost);
+        }
+
+        public void setT_cost(double t_cost) {
+            this.t_cost = t_cost;
         }
 
         public String getDepartment_name() {
@@ -245,17 +233,92 @@ public class DoctorInfo implements Parcelable
         public void setIs_free(String is_free) {
             this.is_free = is_free;
         }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
+
+        public List<String> getLabels() {
+            return labels;
+        }
+
+        public void setLabels(List<String> labels) {
+            this.labels = labels;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.doctor_name);
+            dest.writeString(this.hospital_name);
+            dest.writeString(this.job_name);
+            dest.writeString(this.be_good_at);
+            dest.writeString(this.original);
+            dest.writeLong(this.doctor_id);
+            dest.writeDouble(this.s_cost);
+            dest.writeDouble(this.y_cost);
+            dest.writeDouble(this.m_cost);
+            dest.writeDouble(this.k_cost);
+            dest.writeDouble(this.b_cost);
+            dest.writeDouble(this.t_cost);
+            dest.writeString(this.department_name);
+            dest.writeString(this.avatar);
+            dest.writeString(this.is_free);
+            dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
+            dest.writeStringList(this.labels);
+        }
+
+        public ContentBean() {
+        }
+
+        protected ContentBean(Parcel in) {
+            this.doctor_name = in.readString();
+            this.hospital_name = in.readString();
+            this.job_name = in.readString();
+            this.be_good_at = in.readString();
+            this.original = in.readString();
+            this.doctor_id = in.readLong();
+            this.s_cost = in.readDouble();
+            this.y_cost = in.readDouble();
+            this.m_cost = in.readDouble();
+            this.k_cost = in.readDouble();
+            this.b_cost = in.readDouble();
+            this.t_cost = in.readDouble();
+            this.department_name = in.readString();
+            this.avatar = in.readString();
+            this.is_free = in.readString();
+            this.isSelected = in.readByte() != 0;
+            this.labels = in.createStringArrayList();
+        }
+
+        public static final Creator<ContentBean> CREATOR = new Creator<ContentBean>() {
+            @Override
+            public ContentBean createFromParcel(Parcel source) {
+                return new ContentBean(source);
+            }
+
+            @Override
+            public ContentBean[] newArray(int size) {
+                return new ContentBean[size];
+            }
+        };
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte(this.last ? (byte) 1 : (byte) 0);
         dest.writeLong(this.totalPages);
         dest.writeLong(this.totalElements);
@@ -264,16 +327,13 @@ public class DoctorInfo implements Parcelable
         dest.writeLong(this.numberOfElements);
         dest.writeLong(this.size);
         dest.writeLong(this.number);
-        dest.writeList(this.content);
+        dest.writeTypedList(this.content);
     }
 
-    public DoctorInfo()
-    {
-
+    public DoctorInfo() {
     }
 
-    protected DoctorInfo(Parcel in)
-    {
+    protected DoctorInfo(Parcel in) {
         this.last = in.readByte() != 0;
         this.totalPages = in.readLong();
         this.totalElements = in.readLong();
@@ -282,21 +342,17 @@ public class DoctorInfo implements Parcelable
         this.numberOfElements = in.readLong();
         this.size = in.readLong();
         this.number = in.readLong();
-        this.content = new ArrayList<ContentBean>();
-        in.readList(this.content, ContentBean.class.getClassLoader());
+        this.content = in.createTypedArrayList(ContentBean.CREATOR);
     }
 
-    public static final Creator<DoctorInfo> CREATOR = new Creator<DoctorInfo>()
-    {
+    public static final Creator<DoctorInfo> CREATOR = new Creator<DoctorInfo>() {
         @Override
-        public DoctorInfo createFromParcel(Parcel source)
-        {
+        public DoctorInfo createFromParcel(Parcel source) {
             return new DoctorInfo(source);
         }
 
         @Override
-        public DoctorInfo[] newArray(int size)
-        {
+        public DoctorInfo[] newArray(int size) {
             return new DoctorInfo[size];
         }
     };

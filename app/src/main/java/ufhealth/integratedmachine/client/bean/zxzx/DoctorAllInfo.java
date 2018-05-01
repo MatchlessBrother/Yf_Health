@@ -3,8 +3,11 @@ package ufhealth.integratedmachine.client.bean.zxzx;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import ufhealth.integratedmachine.client.util.DecimalFormatTools;
 
 public class DoctorAllInfo implements Parcelable
 {
@@ -12,7 +15,6 @@ public class DoctorAllInfo implements Parcelable
      * baseinfo : {"comment_count":"s21","doctor_name":"于姝娅","hospital_name":"四川省人民医院","avatar":"123123","y_cost":20,"consult_count":"123123","job_name":"住院医师","be_good_at":"以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学","original":"优服医生团队","comment_count_per":"123","s_cost":50,"department_name":"热门1","t_cost":0,"is_free":"今日义诊"}
      * page : {"content":[{"id":2,"consult_service":"qwsqw","comment":"萨达阿斯顿撒","coment_socore":[{"score":40,"name":"专业度"}],"comment_time":"2018年04月19日 15:01:40","name":"测试"},{"id":1,"consult_service":null,"comment":"萨达","coment_socore":[],"comment_time":"2018年04月17日 15:01:28","name":"测试"},{"id":3,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"},{"id":6,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"},{"id":8,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"},{"id":9,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"},{"id":10,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"},{"id":11,"consult_service":null,"comment":null,"coment_socore":[],"comment_time":null,"name":"测试"}],"totalPages":1,"totalElements":8,"last":true,"numberOfElements":8,"sort":"662","first":true,"size":10000,"number":0}
      */
-
     private BaseinfoBean baseinfo;
     private PageBean page;
 
@@ -32,7 +34,8 @@ public class DoctorAllInfo implements Parcelable
         this.page = page;
     }
 
-    public static class BaseinfoBean implements Parcelable{
+    public static class BaseinfoBean implements Parcelable
+    {
         /**
          * comment_count : s21
          * doctor_name : 于姝娅
@@ -49,24 +52,26 @@ public class DoctorAllInfo implements Parcelable
          * t_cost : 0
          * is_free : 今日义诊
          */
-
         private String comment_count;
         private String doctor_name;
         private String hospital_name;
         private String avatar;
-        private long y_cost;
         private String consult_count;
         private String job_name;
         private String be_good_at;
         private String original;
         private String comment_count_per;
-        private long s_cost;
         private String department_name;
-        private long t_cost;
         private String is_free;
         private String twzxIsFree;
         private String spzxIsFree;
         private String ypzxIsFree;
+        private double s_cost;
+        private double y_cost;
+        private double m_cost;
+        private double k_cost;
+        private double b_cost;
+        private double t_cost;
 
         public String getComment_count() {
             return comment_count;
@@ -98,14 +103,6 @@ public class DoctorAllInfo implements Parcelable
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
-        }
-
-        public long getY_cost() {
-            return y_cost;
-        }
-
-        public void setY_cost(long y_cost) {
-            this.y_cost = y_cost;
         }
 
         public String getConsult_count() {
@@ -148,28 +145,12 @@ public class DoctorAllInfo implements Parcelable
             this.comment_count_per = comment_count_per;
         }
 
-        public long getS_cost() {
-            return s_cost;
-        }
-
-        public void setS_cost(long s_cost) {
-            this.s_cost = s_cost;
-        }
-
         public String getDepartment_name() {
             return department_name;
         }
 
         public void setDepartment_name(String department_name) {
             this.department_name = department_name;
-        }
-
-        public long getT_cost() {
-            return t_cost;
-        }
-
-        public void setT_cost(long t_cost) {
-            this.t_cost = t_cost;
         }
 
         public String getIs_free() {
@@ -181,7 +162,7 @@ public class DoctorAllInfo implements Parcelable
         }
 
         public String getTwzxIsFree() {
-            return this.twzxIsFree;
+            return twzxIsFree;
         }
 
         public void setTwzxIsFree(String twzxIsFree) {
@@ -189,7 +170,7 @@ public class DoctorAllInfo implements Parcelable
         }
 
         public String getSpzxIsFree() {
-            return this.spzxIsFree;
+            return spzxIsFree;
         }
 
         public void setSpzxIsFree(String spzxIsFree) {
@@ -197,11 +178,62 @@ public class DoctorAllInfo implements Parcelable
         }
 
         public String getYpzxIsFree() {
-            return this.ypzxIsFree;
+            return ypzxIsFree;
         }
 
         public void setYpzxIsFree(String ypzxIsFree) {
             this.ypzxIsFree = ypzxIsFree;
+        }
+
+        public double getS_cost()
+        {
+            return DecimalFormatTools.keepTwoDecimalDigits(s_cost);
+        }
+
+        public void setS_cost(double s_cost) {
+            this.s_cost = s_cost;
+        }
+
+        public double getY_cost()
+        {
+            return DecimalFormatTools.keepTwoDecimalDigits(y_cost);
+        }
+
+        public void setY_cost(double y_cost) {
+            this.y_cost = y_cost;
+        }
+
+        public double getM_cost()
+        {
+            return DecimalFormatTools.keepTwoDecimalDigits(m_cost);
+        }
+
+        public void setM_cost(double m_cost) {
+            this.m_cost = m_cost;
+        }
+
+        public double getK_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(k_cost);
+        }
+
+        public void setK_cost(double k_cost) {
+            this.k_cost = k_cost;
+        }
+
+        public double getB_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(b_cost);
+        }
+
+        public void setB_cost(double b_cost) {
+            this.b_cost = b_cost;
+        }
+
+        public double getT_cost() {
+            return DecimalFormatTools.keepTwoDecimalDigits(t_cost);
+        }
+
+        public void setT_cost(double t_cost) {
+            this.t_cost = t_cost;
         }
 
         @Override
@@ -215,19 +247,22 @@ public class DoctorAllInfo implements Parcelable
             dest.writeString(this.doctor_name);
             dest.writeString(this.hospital_name);
             dest.writeString(this.avatar);
-            dest.writeLong(this.y_cost);
             dest.writeString(this.consult_count);
             dest.writeString(this.job_name);
             dest.writeString(this.be_good_at);
             dest.writeString(this.original);
             dest.writeString(this.comment_count_per);
-            dest.writeLong(this.s_cost);
             dest.writeString(this.department_name);
-            dest.writeLong(this.t_cost);
             dest.writeString(this.is_free);
             dest.writeString(this.twzxIsFree);
             dest.writeString(this.spzxIsFree);
             dest.writeString(this.ypzxIsFree);
+            dest.writeDouble(this.s_cost);
+            dest.writeDouble(this.y_cost);
+            dest.writeDouble(this.m_cost);
+            dest.writeDouble(this.k_cost);
+            dest.writeDouble(this.b_cost);
+            dest.writeDouble(this.t_cost);
         }
 
         public BaseinfoBean() {
@@ -238,19 +273,22 @@ public class DoctorAllInfo implements Parcelable
             this.doctor_name = in.readString();
             this.hospital_name = in.readString();
             this.avatar = in.readString();
-            this.y_cost = in.readLong();
             this.consult_count = in.readString();
             this.job_name = in.readString();
             this.be_good_at = in.readString();
             this.original = in.readString();
             this.comment_count_per = in.readString();
-            this.s_cost = in.readLong();
             this.department_name = in.readString();
-            this.t_cost = in.readLong();
             this.is_free = in.readString();
             this.twzxIsFree = in.readString();
             this.spzxIsFree = in.readString();
             this.ypzxIsFree = in.readString();
+            this.s_cost = in.readDouble();
+            this.y_cost = in.readDouble();
+            this.m_cost = in.readDouble();
+            this.k_cost = in.readDouble();
+            this.b_cost = in.readDouble();
+            this.t_cost = in.readDouble();
         }
 
         public static final Creator<BaseinfoBean> CREATOR = new Creator<BaseinfoBean>() {
@@ -362,9 +400,8 @@ public class DoctorAllInfo implements Parcelable
             this.content = content;
         }
 
-
-
-        public static class ContentBean implements Parcelable{
+        public static class ContentBean implements Parcelable
+        {
             /**
              * id : 2
              * consult_service : qwsqw
