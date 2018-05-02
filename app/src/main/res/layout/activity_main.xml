@@ -118,7 +118,7 @@
                         android:layout_marginTop="6sp"
                         android:layout_toRightOf="@id/main_zxzximg"
                         android:singleLine="true"
-                        android:text="在线咨询hjwdqwd"
+                        android:text="在线咨询"
                         android:textColor="@color/mainColor"
                         android:textSize="36sp" />
 
