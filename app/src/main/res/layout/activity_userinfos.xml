@@ -1,12 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/twzx_bg"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title"/>
+    <include layout="@layout/layout_title" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="46sp"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="46sp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#990093DD"
+            android:paddingBottom="60sp"
+            android:paddingLeft="30pt"
+            android:paddingRight="30pt"
+            android:paddingTop="60sp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userinfo_img"
+                android:layout_width="150pt"
+                android:layout_height="150sp"
+                android:layout_marginRight="20pt"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/defaultheadimg"
+                app:civ_border_color="#FFFFFFFF"
+                app:civ_border_width="2pt" />
+
+            <TextView
+                android:id="@+id/userinfo_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/userinfo_img"
+                android:layout_marginTop="6sp"
+                android:layout_toRightOf="@id/userinfo_img"
+                android:singleLine="true"
+                android:text="未命名"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/userinfo_img"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/userinfo_idcard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="20pt"
+                    android:singleLine="true"
+                    android:text="身份证号：51012119921159684"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/userinfo_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="所属性别：男"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/userinfo_img"
+                android:layout_marginBottom="6sp"
+                android:layout_toRightOf="@id/userinfo_img"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/userinfo_birthday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="20pt"
+                    android:singleLine="true"
+                    android:text="出生日期：1999-09-09"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/userinfo_phonenum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="手机号码：18922822678"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="28sp"
+            android:background="@color/default_transwhite_bg"
+            android:orientation="horizontal"
+            android:paddingBottom="60sp"
+            android:paddingLeft="60pt"
+            android:paddingRight="60pt"
+            android:paddingTop="60sp">
+
+            <LinearLayout
+                android:id="@+id/userinfo_jzkgl_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100pt"
+                    android:layout_height="100sp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/jzk_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:text="就诊卡管理"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/userinfo_cydzgl_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80pt"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100pt"
+                    android:layout_height="100sp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/dz_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="常用地址管理"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

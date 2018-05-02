@@ -1,12 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/twzx_bg"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title"/>
+    <include layout="@layout/layout_title" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="46sp"
+        android:layout_marginLeft="110pt"
+        android:layout_marginRight="110pt"
+        android:layout_marginTop="46sp"
+        android:background="#CCFFFFFF"
+        android:orientation="vertical"
+        android:paddingBottom="30sp"
+        android:paddingLeft="30pt"
+        android:paddingRight="30pt"
+        android:paddingTop="30sp">
+
+        <TextView
+            android:id="@+id/aboutapp_ytj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_vertical|left"
+            android:maxLines="2"
+            android:text="优服健康一体机"
+            android:textColor="@color/default_font_black"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/aboutapp_sbbh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12sp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|left"
+            android:maxLines="2"
+            android:text="设备编号：BH1234567604"
+            android:textColor="@color/default_font_black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/aboutapp_sswz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12sp"
+            android:layout_marginTop="12sp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|left"
+            android:maxLines="2"
+            android:text="所属位置：成都市武侯区科园二路10号优服健康社区"
+            android:textColor="@color/default_font_black"
+            android:textSize="30sp" />
+
+    </LinearLayout>
 </LinearLayout>

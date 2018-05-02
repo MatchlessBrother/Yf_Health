@@ -20,5 +20,5 @@ public interface MainAct_V extends BaseMvp_View
       void clickMain_slide_wdda();
       void clickMain_slide_gybj();
       void clickMain_slide_xxtz_num();
-      void logging(UserInfo userInfo);
+      void logging(UserInfo.UserInfoBean userInfo);
 }

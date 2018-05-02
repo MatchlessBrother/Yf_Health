@@ -110,15 +110,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
         {
             case R.id.twzx_tjwt_btn:
             {
-               /*if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
-                {
-                    twzxPresenter.uploadDatas(null,null);break;
-                }
-                else if(TYPE.equals(ZxzxAct.BGJD))//报告解读
-                {
-                    twzxPresenter.uploadDatas(null,null);break;
-                }*/
-                //临时跳转代码，正确的逻辑是上面的代码
                 Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
                 ArrayList lsArrayList = new ArrayList();
                 intent.putExtra("type",ZxzxAct.KSZX);
@@ -128,24 +119,6 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
                 startActivity(intent);
             }
         }
-    }
-
-    public void commitImgsSuccess()
-    {
-     /*   if(TYPE.equals(ZxzxAct.KSZX))//快速咨询
-        {
-            //保存图片网络地址到本地以便后面上传，并跳转选择医生界面
-            Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-            intent.putExtra("type",ZxzxAct.KSZX);
-            startActivity(intent);
-        }
-        else if(TYPE.equals(ZxzxAct.BGJD))//报告解读
-        {
-            //保存图片网络地址到本地以便后面上传，并跳转选择医生界面
-            Intent intent = new Intent(this,ChooseMultiDoctorAct.class);
-            intent.putExtra("type",ZxzxAct.BGJD);
-            startActivity(intent);
-        }*/
     }
 
     protected void onDestroy()

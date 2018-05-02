@@ -1,8 +1,16 @@
 package ufhealth.integratedmachine.client.ui.main.presenter;
 
+import java.util.List;
+import okhttp3.Interceptor;
+import android.content.Context;
+import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
+import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import ufhealth.integratedmachine.client.ui.main.model.LoginModel;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenInterceptor_UnPersistentStore;
 
 public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 {
@@ -11,30 +19,63 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 
     }
 
-    public void logging()
+    public void logging(final Context context, String idCard)
     {
-        //模拟用户刷身份证进行登录--P层
         if(isAttachContextAndViewLayer())
         {
-            UserInfo userInfo = new UserInfo(1,"袁小龙","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1523879440634&di=96253c00b9a7b78764a44d9a7eedd581&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ff31fbe096b63f6240fb4d5c98d44ebf81b4ca30b.jpg");
-            //模拟用户刷身份证进行登录--调用V层
-            getViewLayer().getBaseApp().setUserInfo(userInfo);
-            getViewLayer().getBaseApp().setCountDownTime();
-            getViewLayer().getBaseApp().startCountDown();
-            getViewLayer().logging(userInfo);
+            LoginModel.login(context,idCard,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            {
+                public void onSuccess(BaseReturnData<UserInfo> returnUserInfo)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        List<Interceptor> interceptorList = NetClient.getInstance(context.getApplicationContext()).getOkHttpClient().interceptors();
+                        for(int index=0;index<interceptorList.size();index++)
+                        {
+                            if(interceptorList.get(index) instanceof TokenInterceptor_UnPersistentStore)
+                            {
+                                TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
+                                interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(),
+                                        returnUserInfo.getData().getToken().getToken().trim());
+                                getViewLayer().getBaseApp().setUserInfo(returnUserInfo.getData().getUserInfo());
+                                getViewLayer().logging(returnUserInfo.getData().getUserInfo());
+                                getViewLayer().getBaseApp().setCountDownTime();
+                                getViewLayer().getBaseApp().startCountDown();
+                                return;
+                            }
+                            if(index == interceptorList.size() -1)
+                            {
+                                getViewLayer().showToast("登录失败！请重新刷卡登录");
+                            }
+                        }
+                    }
+                }
+            });
         }
     }
 
-    public void logOut()
+    public void logOut(Context context)
     {
-        //模拟用户退出登录--P层
         if(isAttachContextAndViewLayer())
         {
-            //模拟用户退出登录--调用V层
-            getViewLayer().getBaseApp().setUserInfo(null);
-            getViewLayer().getBaseApp().cancelCountDown();
-            getViewLayer().getBaseApp().setCountDownTime();
-            getViewLayer().logOut();
+            List<Interceptor> interceptorList = NetClient.getInstance(context.getApplicationContext()).getOkHttpClient().interceptors();
+            for(int index=0;index<interceptorList.size();index++)
+            {
+                if(interceptorList.get(index) instanceof TokenInterceptor_UnPersistentStore)
+                {
+                    TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
+                    interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(),"");
+                    getViewLayer().getBaseApp().setUserInfo(null);
+                    getViewLayer().getBaseApp().cancelCountDown();
+                    getViewLayer().getBaseApp().setCountDownTime();
+                    getViewLayer().logOut();
+                    return;
+                }
+                if(index == interceptorList.size() -1)
+                {
+                    getViewLayer().showToast("退出登录失败！请重新退出登录");
+                }
+            }
         }
     }
 }

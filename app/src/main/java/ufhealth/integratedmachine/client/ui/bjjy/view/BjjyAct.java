@@ -1,54 +1,51 @@
 package ufhealth.integratedmachine.client.ui.bjjy.view;
 
 import android.view.View;
-import android.view.KeyEvent;
-import android.graphics.Color;
-import com.just.agentweb.AgentWeb;
-import android.webkit.WebSettings;
-import android.widget.LinearLayout;
-import android.view.LayoutInflater;
-import com.just.agentweb.DefaultWebClient;
+import android.content.Intent;
+import android.widget.RelativeLayout;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.ui.bjjy.view_v.BjjyAct_V;
+import ufhealth.integratedmachine.client.ui.bjjy.presenter.BjjyPresenter;
 
 public class BjjyAct extends BaseAct implements BjjyAct_V,View.OnClickListener
 {
-    private AgentWeb agentWeb;
-    private LinearLayout bjjyAllLl;
+    private RelativeLayout bjjyBghAll;
+    private RelativeLayout bjjyDbqhAll;
+    private RelativeLayout bjjyDqjcbgAll;
+    private RelativeLayout bjjyDbjzkAll;
+    private RelativeLayout bjjyYyjcAll;
+    private RelativeLayout bjjyQcphAll;
+    private BjjyPresenter bjjyPresenter;
 
     protected int setLayoutResID()
     {
         return R.layout.activity_bjjy;
     }
 
-    @Override
-    protected void onResume()
-    {
-        agentWeb.getWebLifeCycle().onResume();
-        super.onResume();
-    }
-
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
         setTitleContent("便捷就医");
-        bjjyAllLl = rootView.findViewById(R.id.bjjy_all_ll);
-        agentWeb = AgentWeb.with(this).setAgentWebParent(bjjyAllLl, new LinearLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator(Color.argb(255,68,240,0),2)
-                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.DERECT)
-                .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
-                .createAgentWeb()
-                .ready()
-                .go("http://192.168.199.167/jkxw/web/index.html");
-        agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        bjjyBghAll = (RelativeLayout) findViewById(R.id.bjjy_bgh_all);
+        bjjyDbqhAll = (RelativeLayout) findViewById(R.id.bjjy_dbqh_all);
+        bjjyDqjcbgAll = (RelativeLayout) findViewById(R.id.bjjy_dqjcbg_all);
+        bjjyDbjzkAll = (RelativeLayout) findViewById(R.id.bjjy_dbjzk_all);
+        bjjyYyjcAll = (RelativeLayout) findViewById(R.id.bjjy_yyjc_all);
+        bjjyQcphAll = (RelativeLayout) findViewById(R.id.bjjy_qcph_all);
+        bjjyBghAll.setOnClickListener(this);
+        bjjyDbqhAll.setOnClickListener(this);
+        bjjyDqjcbgAll.setOnClickListener(this);
+        bjjyDbjzkAll.setOnClickListener(this);
+        bjjyYyjcAll.setOnClickListener(this);
+        bjjyQcphAll.setOnClickListener(this);
     }
 
     protected void initDatas()
     {
-
+        bjjyPresenter = new BjjyPresenter();
+        bjjyPresenter.attachContextAndViewLayer(this,this);
     }
 
     protected void initLogic()
@@ -56,17 +53,33 @@ public class BjjyAct extends BaseAct implements BjjyAct_V,View.OnClickListener
 
     }
 
-    @Override
-    protected void onPause()
+    public void onClick(View view)
     {
-        agentWeb.getWebLifeCycle().onPause();
-        super.onPause();
+        super.onClick(view);
+        switch (view.getId())
+        {
+            case R.id.bjjy_bgh_all:
+            {
+                Intent intent = new Intent(this,BjjyBghAct.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.bjjy_dbjzk_all:
+            {
+                Intent intent = new Intent(this,BjjyDbjzkAct.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.bjjy_dbqh_all:
+            case R.id.bjjy_dqjcbg_all:
+            case R.id.bjjy_yyjc_all:
+            case R.id.bjjy_qcph_all:showToast("功能暂未开放，敬请期待...");break;
+        }
     }
 
-    @Override
     protected void onDestroy()
     {
-        agentWeb.getWebLifeCycle().onDestroy();
+        bjjyPresenter.detachContextAndViewLayout();
         super.onDestroy();
     }
 
@@ -82,18 +95,5 @@ public class BjjyAct extends BaseAct implements BjjyAct_V,View.OnClickListener
     {
         super.receiveCountDownTime(countDownTime);
 
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (agentWeb.handleKeyEvent(keyCode, event))
-            return true;
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void onClick(View view)
-    {
-        super.onClick(view);
     }
 }

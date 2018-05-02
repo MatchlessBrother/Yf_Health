@@ -13,13 +13,13 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.ui.bjjy.view.BjjyAct;
 import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
 import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
 import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
 import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
-import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
 
@@ -93,7 +93,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainDrawerlayout, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mainDrawerlayout.setDrawerListener(toggle);toggle.syncState();
         if(mainDrawerlayout.isShown()) mainDrawerlayout.closeDrawers();
-        if(getBaseApp().getIsLogged()) logged();
+        if(getBaseApp().getIsLogged()) logged(getBaseApp().getUserInfo());
         else notLogged();
 
         zxzx.setOnClickListener(this);
@@ -116,13 +116,14 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     }
 
     /*******已登录*****/
-    public void logged()
+    public void logged(UserInfo.UserInfoBean userInfo)
     {
         getBaseApp().setIsLogged(true);
         mainToolbar.setVisibility(View.VISIBLE);
         mainCountdown.setVisibility(View.VISIBLE);
         mainExit.setVisibility(View.VISIBLE);
-        mainLogin.setText("欢迎您，瓜婆娘（510121*********698）");
+        mainLogin.setText("欢迎您，" + ((null != userInfo && null != userInfo.getName() && !"".equals(userInfo.getName().trim())) ?
+                userInfo.getName().trim() : "未命名") + "（" + userInfo.getPapersNumber().trim() + "）");
         if(mainDrawerlayout.isShown())
             mainDrawerlayout.closeDrawers();
         mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -154,7 +155,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
                 case R.id.yyfw:clickYyfw();break;
                 case R.id.jkjc:clickJkjc();break;
                 case R.id.jkda:clickJkda();break;
-                case R.id.main_exit: mainPresenter.logOut();break;
+                case R.id.main_exit: mainPresenter.logOut(this);break;
                 case R.id.main_slide_img:clickMain_slide_img();break;
                 case R.id.main_slide_name:clickMain_slide_name();break;
                 case R.id.main_slide_grzl:clickMain_slide_grzl();break;
@@ -170,7 +171,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
             if(view.getId() == R.id.main_login)
             {
                 if(!getBaseApp().getIsLogged())
-                    mainPresenter.logging();
+                    mainPresenter.logging(this,"510922198812235114");
             }
             else
             {
@@ -189,7 +190,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     @Subscribe
     public void receiveCountDownFinish(Boolean isFinish)
     {
-        if(isFinish) mainPresenter.logOut();
+        if(isFinish) mainPresenter.logOut(this);
     }
 
     /**********************************************************************************************/
@@ -197,13 +198,14 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     /**********************************************************************************************/
 
     /********进行登录操作********/
-    public void logging(UserInfo userInfo)
+    public void logging(UserInfo.UserInfoBean userInfo)
     {
-        logged();
-        useGlideLoadImg(mainSlideImg,null != userInfo.headImgPath ? userInfo.headImgPath.trim().toString() : "");
+        logged(userInfo);
+        useGlideLoadImg(mainSlideImg,null != userInfo.getAvatar() ? userInfo.getAvatar().trim().toString() : "");
         mainSlideName.setText(null != userInfo.getName() ? userInfo.getName().trim().toString() : "无名氏");
     }
 
+    /********进行登出操作********/
     public void logOut()
     {
         useGlideLoadImg(mainSlideImg,R.mipmap.defaultheadimg);
@@ -247,21 +249,27 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         startActivity(intent);
     }
 
+    protected void onDestroy()
+    {
+        mainPresenter.detachContextAndViewLayout();
+        super.onDestroy();
+    }
+
     public void clickMain_slide_img()
     {
-        Intent intent = new Intent(this,UserInfosAct.class);
+        Intent intent = new Intent(this,UserInfoAct.class);
         startActivity(intent);
     }
 
     public void clickMain_slide_name()
     {
-        Intent intent = new Intent(this,UserInfosAct.class);
+        Intent intent = new Intent(this,UserInfoAct.class);
         startActivity(intent);
     }
 
     public void clickMain_slide_grzl()
     {
-        Intent intent = new Intent(this,UserInfosAct.class);
+        Intent intent = new Intent(this,UserInfoAct.class);
         startActivity(intent);
     }
 
@@ -293,12 +301,5 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     {
         Intent intent = new Intent(this,MsgNotifiesAct.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        mainPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 }

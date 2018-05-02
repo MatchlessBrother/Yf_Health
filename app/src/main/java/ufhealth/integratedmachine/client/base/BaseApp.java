@@ -12,9 +12,9 @@ public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
     private Boolean mIsLogged;
-    private UserInfo mUserInfo;
     private CountDownUtil mCountDownUtil;
     private BaseUiAdapterHelper mUiHelper;
+    private UserInfo.UserInfoBean mUserInfo;
     private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
 
     protected void attachBaseContext(Context base)
@@ -53,12 +53,6 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public UserInfo getUserInfo()
-    {
-        return mUserInfo;
-
-    }
-
     public void setCountDownTime()
     {
         mCountDownUtil.setmMillisInFuture(COUNTDOWN_TIME);
@@ -76,7 +70,13 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public void setUserInfo(UserInfo userInfo)
+    public UserInfo.UserInfoBean getUserInfo()
+    {
+        return mUserInfo;
+
+    }
+
+    public void setUserInfo(UserInfo.UserInfoBean userInfo)
     {
         mUserInfo = userInfo;
 
