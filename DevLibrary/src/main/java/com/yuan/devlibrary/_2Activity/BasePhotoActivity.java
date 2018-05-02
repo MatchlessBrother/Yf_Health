@@ -160,7 +160,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     }
 
     /***********启动照相机获取图片***********/
-    private void startCamera(Boolean isHeadImg)
+    public void startCamera(Boolean isHeadImg)
     {
         PackageManager packageManager = getPackageManager();
         /****************判定手机是否含有可用的摄像头********************/
@@ -231,7 +231,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     }
 
     /************启动图库获取图片*************/
-    private void startGallery(Boolean isHeadImg,Integer ChooseBitmapMaxSize)
+    public void startGallery(Boolean isHeadImg,Integer ChooseBitmapMaxSize)
     {
         mImgFilePath = null;
         File PathFile = new File(mCachePath);
