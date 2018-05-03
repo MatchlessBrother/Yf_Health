@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="25sp"
+    android:paddingLeft="30pt"
+    android:paddingRight="30pt"
+    android:paddingTop="25sp">
+
+    <TextView
+        android:id="@+id/twzxing_sendtextmsg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/default_font_gray"
+        android:textSize="20sp"
+        tools:text="2018/05/04  02:11:00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/twzxing_sendtextmsg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="-6pt"
+            android:background="@drawable/box_blue_yj_solid_twzxing"
+            android:gravity="right"
+            android:maxWidth="700pt"
+            android:paddingBottom="30sp"
+            android:paddingLeft="30pt"
+            android:paddingRight="30pt"
+            android:paddingTop="30sp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:text="吴医生您好，吴医生您好吴医生您好" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20pt"
+                android:layout_height="20sp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/msgfrommeicon" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/twzxing_sendtextmsg_img"
+                android:layout_width="64pt"
+                android:layout_height="64pt"
+                android:layout_marginLeft="6pt"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/defaultheadimg"
+                app:civ_border_color="#FFFFFFFF"
+                app:civ_border_width="2pt" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

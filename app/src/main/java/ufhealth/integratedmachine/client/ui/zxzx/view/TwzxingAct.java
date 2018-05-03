@@ -12,7 +12,11 @@ import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+
 import android.support.v7.widget.LinearLayoutManager;
+
+import ufhealth.integratedmachine.client.adapter.zxzx.TwzxingAdapter;
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.TwzxingAct_V;
@@ -45,7 +49,7 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
     private ImageView twzxingRightBottomExpression;
     private ImageView twzxingRightBottomPicture;
     private RecyclerView twzxingRightBottomRecyclerview;
-    private DoctorInfoRatingAdapter doctorInfoRatingAdapter;
+    private TwzxingAdapter twzxingAdapter;
 
     private TwzxingPresenter twzxingPresenter;
     private DoctorInfoPresenter doctorInfoPresenter;
@@ -87,15 +91,12 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
         doctorinfoStartchat.setVisibility(View.INVISIBLE);
         doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
 
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         twzxingRightBottomRecyclerview.setLayoutManager(linearLayoutManager);
 
-
-        doctorInfoRatingAdapter = new DoctorInfoRatingAdapter(this,new ArrayList<DoctorAllInfo.PageBean.ContentBean>());
-        twzxingRightBottomRecyclerview.setAdapter(doctorInfoRatingAdapter);
-
+        twzxingAdapter = new TwzxingAdapter(this,new ArrayList<IMMessage>());
+        twzxingRightBottomRecyclerview.setAdapter(twzxingAdapter);
 
         doctorinfoStartchat.setOnClickListener(this);
         twzxingRightBottomSend.setOnClickListener(this);
