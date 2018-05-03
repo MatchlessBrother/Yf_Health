@@ -14,10 +14,10 @@ import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 
 public class DoctorModel
 {
-    public static void getDoctorInfoOfConditions(Context context, BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>> netCallBack)
+    public static void getDoctorInfoOfConditions(Context context,String serviceType,BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>> netCallBack)
     {
         netCallBack.onStart();
-        NetClient.getInstance(context).getNetUrl().zxzxGetDoctorInfoOfCondition().
+        NetClient.getInstance(context).getNetUrl().zxzxGetDoctorInfoOfCondition(serviceType).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new BaseMvp_NetCallBack(context,netCallBack));
     }

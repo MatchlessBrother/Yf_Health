@@ -85,12 +85,14 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
                 {
                     clearConditionsUi();
                     chooseDoctorPresenter.clearConditions();
+                    chooseDoctorPresenter.clearConditionMap();
                     chooseDoctorPresenter.refreshDatas("");
                 }
                 else
                 {
                     clearConditionsUi();
                     chooseDoctorPresenter.clearConditions();
+                    chooseDoctorPresenter.clearConditionMap();
                     chooseDoctorPresenter.refreshDatas(TYPE);
                 }
             }
@@ -138,10 +140,14 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
 
     protected void initLogic()
     {
-        chooseDoctorPresenter.getDoctorInfoOfConditions();
+        if(TYPE.equals(ZxzxAct.SEARCH) || TYPE.equals(ZxzxAct.RMKS))
+            chooseDoctorPresenter.getDoctorInfoOfConditions(ZxzxAct.MYYZ);
+        else
+            chooseDoctorPresenter.getDoctorInfoOfConditions(TYPE);
         if(TYPE.equals(ZxzxAct.SEARCH))
         {
             chooseDoctorPresenter.clearConditions();
+            chooseDoctorPresenter.clearConditionMap();
             chosedocSearchEt.setText(getIntent().getStringExtra(ZxzxAct.SEARCH).trim());
             chooseDoctorPresenter.setSearchContent(getIntent().getStringExtra(ZxzxAct.SEARCH));
             chooseDoctorPresenter.refreshDatas("");
@@ -149,6 +155,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         else if(TYPE.equals(ZxzxAct.RMKS))
         {
             chooseDoctorPresenter.clearConditions();
+            chooseDoctorPresenter.clearConditionMap();
             chosedocDepartmentName.setText(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getName().trim());
             chooseDoctorPresenter.setRmksId(((HotDepartment)getIntent().getParcelableExtra(ZxzxAct.RMKS)).getId()+"");
             chooseDoctorPresenter.refreshDatas("");
@@ -156,6 +163,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         else
         {
             chooseDoctorPresenter.clearConditions();
+            chooseDoctorPresenter.clearConditionMap();
             chooseDoctorPresenter.refreshDatas(TYPE);
         }
     }
@@ -167,7 +175,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             case R.id.chosedoc_search_btn:
             {
-                chooseDoctorPresenter.clearConditions();
+                chooseDoctorPresenter.clearConditionMap();
                 doctorInfoAdapter.setEnableLoadMore(false);
                 chooseDoctorPresenter.setConditionsContent();
                 chooseDoctorPresenter.setSearchContent(chosedocSearchEt.getText().toString().trim());

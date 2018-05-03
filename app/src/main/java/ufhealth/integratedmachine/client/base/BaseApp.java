@@ -21,16 +21,20 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.yuan.devlibrary._12_______Utils.ScreenInfosTools;
 import ufhealth.integratedmachine.client.util.CountDownUtil;
-import ufhealth.integratedmachine.client.bean.main.UserInfo;
+import ufhealth.integratedmachine.client.bean.main.UserInfo.*;
 import ufhealth.integratedmachine.client.ui.main.view.MyBillsAct;
 
 public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
     private Boolean mIsLogged;
+
+    private UserInfoBean mUserInfo;
+    private ImUserInfo mImUserInfo;
+    private LoginInfo mImLoginInfo;
+
     private CountDownUtil mCountDownUtil;
     private BaseUiAdapterHelper mUiHelper;
-    private UserInfo.UserInfoBean mUserInfo;
     private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
 
     protected void attachBaseContext(Context base)
@@ -62,8 +66,8 @@ public class BaseApp extends BaseApplication
             }
         };
 
-        // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
-        NIMClient.init(this, loginInfo(), options());
+        // SDK初始化（启动后台服务，若已经存在用户登录信息,SDK将完成自动登录）
+        NIMClient.init(this,loginInfo(), options());
         if (NIMUtil.isMainProcess(this))
         {
             // 注意：以下操作必须在主进程中进行
@@ -95,13 +99,25 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public UserInfo.UserInfoBean getUserInfo()
+    public ImUserInfo getImUserInfo()
+    {
+        return mImUserInfo;
+
+    }
+
+    public void setImUserInfo(ImUserInfo imUserInfo)
+    {
+        mImUserInfo = imUserInfo;
+
+    }
+
+    public UserInfoBean getUserInfo()
     {
         return mUserInfo;
 
     }
 
-    public void setUserInfo(UserInfo.UserInfoBean userInfo)
+    public void setUserInfo(UserInfoBean userInfo)
     {
         mUserInfo = userInfo;
 
@@ -191,10 +207,8 @@ public class BaseApp extends BaseApplication
         return null;
     }
 
-    /**
-     * 配置 APP 保存图片/语音/文件/log等数据的目录
-     * 这里示例用SD卡的应用扩展存储目录
-     */
+    /**配置 APP 保存图片/语音/文件/log等数据的目录
+     *******这里示例用SD卡的应用扩展存储目录*****/
     static String getAppCacheDir(Context context)
     {
         String storageRootPath = null;
@@ -217,5 +231,15 @@ public class BaseApp extends BaseApplication
             storageRootPath = Environment.getExternalStorageDirectory() + "/" + context.getPackageName();
         }
         return storageRootPath;
+    }
+
+    public LoginInfo getIMLoginInfo()
+    {
+        return mImLoginInfo;
+    }
+
+    public void setIMLoginInfo(LoginInfo imLoginInfo)
+    {
+        mImLoginInfo = imLoginInfo;
     }
 }

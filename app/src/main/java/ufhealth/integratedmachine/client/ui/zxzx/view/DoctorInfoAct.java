@@ -39,6 +39,9 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     private TextView doctorinfoPjnum;
     private LabelsView doctorinfoLabels;
     private TextView doctorinfo_startnote;
+    private View doctorinfoRightTopTwallline;
+    private View doctorinfoRightTopYyallline;
+    private View doctorinfoRightTopSpallline;
     private ImageView doctorinfoRightTopTwline;
     private ImageView doctorinfoRightTopTwimg;
     private TextView doctorinfoRightTopTwname;
@@ -106,6 +109,9 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
         doctorinfoRightTopSpfy = rootView.findViewById(R.id.doctorinfo_right_top_spfy);
         doctorinfoRightTopSpjryz = rootView.findViewById(R.id.doctorinfo_right_top_spjryz);
         doctorinfoRightBottomYhpj = rootView.findViewById(R.id.doctorinfo_right_bottom_yhpj);
+        doctorinfoRightTopTwallline = (View) findViewById(R.id.doctorinfo_right_top_twallline);
+        doctorinfoRightTopYyallline = (View) findViewById(R.id.doctorinfo_right_top_yyallline);
+        doctorinfoRightTopSpallline = (View) findViewById(R.id.doctorinfo_right_top_spallline);
         doctorinfoRightBottomSwipeLayout = rootView.findViewById(R.id.doctorinfo_right_bottom_swipelayout);
         doctorinfoRightBottomRecyclerview = rootView.findViewById(R.id.doctorinfo_right_bottom_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -305,7 +311,6 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             doctorinfoStartchat.setVisibility(View.VISIBLE);
             doctorinfoRightBottomYhpj.setText("用户评价：(" + (null != baseinfoBean.getComment_count() ? baseinfoBean.getComment_count().trim() : "0")+")");
 
-
             doctorinfoRightTopTwfy.setText(baseinfoBean.getT_cost() + "元/次");
             if(null != baseinfoBean.getTwzxIsFree() && "yes".equals(baseinfoBean.getIs_free().trim()))
             {
@@ -323,6 +328,22 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             {
                 doctorinfoRightTopSpjryz.setVisibility(View.VISIBLE);
                 doctorinfoRightTopSpjryz.setText(baseinfoBean.getIs_free().trim());
+            }
+            if(null != baseinfoBean.getIs_support_video() && "yes".equals(baseinfoBean.getIs_support_video().trim()))
+            {
+                doctorinfoRightTopSpAll.setVisibility(View.VISIBLE);
+                doctorinfoRightTopSpallline.setVisibility(View.VISIBLE);
+            }
+            if(null != baseinfoBean.getIs_support_audio() && "yes".equals(baseinfoBean.getIs_support_audio().trim()))
+            {
+                doctorinfoRightTopYyAll.setVisibility(View.VISIBLE);
+                doctorinfoRightTopYyallline.setVisibility(View.VISIBLE);
+            }
+
+            if(null != baseinfoBean.getIs_support_tw() && "yes".equals(baseinfoBean.getIs_support_tw().trim()))
+            {
+                doctorinfoRightTopTwAll.setVisibility(View.VISIBLE);
+                doctorinfoRightTopTwallline.setVisibility(View.VISIBLE);
             }
         }
     }

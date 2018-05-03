@@ -29,9 +29,6 @@ public interface NetUrl
     @FormUrlEncoded
     Observable<BaseReturnData<UserInfo>> login(@Field("idCard") String idCard);
 
-    @POST("general/doctor/getDocDepOriList")
-    Observable<BaseReturnData<DoctorInfoOfCondition>> zxzxGetDoctorInfoOfCondition();
-
     @POST("general/doctor/getDoctorListByContion")
     @FormUrlEncoded
     Observable<BaseReturnData<DoctorInfo>> zxzxGetDoctorsInfo(@FieldMap Map<String,String> conditions);
@@ -47,6 +44,10 @@ public interface NetUrl
     @POST("zixun/imagetext/uploadTwzxImageList")
     @Multipart
     Observable<BaseReturnData<List<UploadImgReturnInfo>>> twzxUploadDatas(@Part List<MultipartBody.Part> filesList);
+
+    @POST("general/doctor/getDocDepOriList")
+    @FormUrlEncoded
+    Observable<BaseReturnData<DoctorInfoOfCondition>> zxzxGetDoctorInfoOfCondition(@Field("serviceType") String serviceType);
 
     @POST("zixun/audio/orderAudioSave")
     @FormUrlEncoded

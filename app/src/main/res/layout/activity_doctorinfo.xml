@@ -36,7 +36,8 @@
             <RelativeLayout
                 android:id="@+id/doctorinfo_right_top_twall"
                 android:layout_width="350pt"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/doctorinfo_right_top_twline"
@@ -97,14 +98,17 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/doctorinfo_right_top_twallline"
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="#FFDDDDDD" />
+                android:background="#FFDDDDDD"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/doctorinfo_right_top_yyall"
                 android:layout_width="350pt"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/doctorinfo_right_top_yyline"
@@ -165,14 +169,17 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/doctorinfo_right_top_yyallline"
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="#FFDDDDDD" />
+                android:background="#FFDDDDDD"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/doctorinfo_right_top_spall"
                 android:layout_width="350pt"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/doctorinfo_right_top_spline"
@@ -228,14 +235,16 @@
                         android:text="今日义诊：免费"
                         android:visibility="gone"
                         android:textColor="@color/default_font_gray"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"/>
                 </RelativeLayout>
             </RelativeLayout>
 
             <View
+                android:id="@+id/doctorinfo_right_top_spallline"
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="#FFDDDDDD" />
+                android:background="#FFDDDDDD"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

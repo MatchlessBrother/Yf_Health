@@ -1,15 +1,21 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.netease.nimlib.sdk.NIMClient;
 import android.support.v7.widget.Toolbar;
 import ufhealth.integratedmachine.client.R;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import android.support.v4.widget.DrawerLayout;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.yuan.devlibrary._12_______Utils.NetTools;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
@@ -18,9 +24,12 @@ import ufhealth.integratedmachine.client.ui.bjjy.view.BjjyAct;
 import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
 import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
 import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
-import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.SpzxingAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.YyzxingAct;
+import ufhealth.integratedmachine.client.ui.zxzx.view.TwzxingAct;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
 
 public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
@@ -45,6 +54,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     private CircleImageView mainSlideImg;
     private DrawerLayout mainDrawerlayout;
     private MainPresenter mainPresenter;
+    private BaseProgressDialog progressDialog;
 
     protected int setLayoutResID()
     {
@@ -233,8 +243,65 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     public void clickYyfw()
     {
-        Intent intent = new Intent(this,YyfwAct.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this,YyfwAct.class);
+        startActivity(intent);*/
+        startZxActWithDialog("TWZX","1","1","1");
+    }
+
+    public void startZxAct(final String type,final String doctorId,final String orderId,final String accId)
+    {
+        LoginInfo loginInfo = new LoginInfo(getBaseApp().getImUserInfo().getAccid().trim(),getBaseApp().getImUserInfo().getToken().trim());
+        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback<LoginInfo>()
+        {
+            public void onSuccess(LoginInfo loginInfo)
+            {
+                dismissLoadingDialog(progressDialog);
+                getBaseApp().setIMLoginInfo(loginInfo);
+                Intent intent = null;
+                switch(type)
+                {
+                    case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
+                    case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
+                    case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
+                }
+                intent.putExtra("accid",accId);
+                intent.putExtra("orderid",orderId);
+                intent.putExtra("doctorid",doctorId);
+                startActivity(intent);
+            }
+
+            public void onFailed(int code)
+            {
+                if(!NetTools.WhetherConnectNet(MainAct.this))
+                {
+                    showToast("网络发生异常！请确保网络正常后再发起咨询请求");
+                    dismissLoadingDialog(progressDialog);
+                    return;
+                }
+                else if(code  == 302)
+                {
+                    showToast("IM账号密码发生错误！请联系管理员");
+                    dismissLoadingDialog(progressDialog);
+                    return;
+                }
+                else
+                {
+                    startZxAct(type,doctorId,orderId,accId);
+                }
+            }
+
+            public void onException(Throwable exception)
+            {
+                Log.e("ImException",exception.getMessage().toString());
+                dismissLoadingDialog(progressDialog);
+            }
+        });
+    }
+
+    public void startZxActWithDialog(final String type,final String doctorId,final String orderId,final String accId)
+    {
+        progressDialog = showLoadingDialog();
+        startZxAct(type,doctorId,orderId,accId);
     }
 
     public void clickJkjc()

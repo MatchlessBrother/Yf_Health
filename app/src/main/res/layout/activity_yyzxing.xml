@@ -34,7 +34,7 @@
             android:paddingLeft="30pt"
             android:paddingRight="30pt"
             android:paddingTop="30sp"
-            android:text="正在与吴克医生咨询，此次通话将在12小时后结束"
+            tools:text="正在与医生咨询，此次通话将在0小时后结束"
             android:textColor="@color/default_font_gray"
             android:textSize="22sp" />
 

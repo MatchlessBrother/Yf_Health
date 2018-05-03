@@ -6,7 +6,8 @@ import android.os.Parcelable;
 public class UserInfo implements Parcelable
 {
     private TokenBean token;
-    private UserInfo.UserInfoBean userInfo;
+    private UserInfoBean userInfo;
+    private UserInfo.ImUserInfo yunXinUserInfo;
 
     public TokenBean getToken() {
         return token;
@@ -16,12 +17,106 @@ public class UserInfo implements Parcelable
         this.token = token;
     }
 
-    public UserInfo.UserInfoBean getUserInfo() {
+    public UserInfoBean getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfo.UserInfoBean userInfo) {
+    public void setUserInfo(UserInfoBean userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public UserInfo.ImUserInfo getYunXinUserInfo() {
+        return yunXinUserInfo;
+    }
+
+    public void setYunXinUserInfo(UserInfo.ImUserInfo yunXinUserInfo) {
+        this.yunXinUserInfo = yunXinUserInfo;
+    }
+
+    public static class ImUserInfo implements Parcelable
+    {
+        private String id;
+        private String userId;
+        private String userType;
+        private String accid;
+        private String token;
+
+        public String getId() {
+            return this.id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getUserId() {
+            return this.userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getUserType() {
+            return this.userType;
+        }
+
+        public void setUserType(String userType) {
+            this.userType = userType;
+        }
+
+        public String getAccid() {
+            return this.accid;
+        }
+
+        public void setAccid(String accid) {
+            this.accid = accid;
+        }
+
+        public String getToken() {
+            return this.token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.userId);
+            dest.writeString(this.userType);
+            dest.writeString(this.accid);
+            dest.writeString(this.token);
+        }
+
+        public ImUserInfo() {
+        }
+
+        protected ImUserInfo(Parcel in) {
+            this.id = in.readString();
+            this.userId = in.readString();
+            this.userType = in.readString();
+            this.accid = in.readString();
+            this.token = in.readString();
+        }
+
+        public static final Creator<UserInfo.ImUserInfo> CREATOR = new Creator<UserInfo.ImUserInfo>() {
+            @Override
+            public UserInfo.ImUserInfo createFromParcel(Parcel source) {
+                return new UserInfo.ImUserInfo(source);
+            }
+
+            @Override
+            public UserInfo.ImUserInfo[] newArray(int size) {
+                return new UserInfo.ImUserInfo[size];
+            }
+        };
     }
 
     public static class TokenBean implements Parcelable {
@@ -258,6 +353,7 @@ public class UserInfo implements Parcelable
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(this.token, flags);
         dest.writeParcelable(this.userInfo, flags);
+        dest.writeParcelable(this.yunXinUserInfo, flags);
     }
 
     public UserInfo() {
@@ -266,6 +362,7 @@ public class UserInfo implements Parcelable
     protected UserInfo(Parcel in) {
         this.token = in.readParcelable(TokenBean.class.getClassLoader());
         this.userInfo = in.readParcelable(UserInfoBean.class.getClassLoader());
+        this.yunXinUserInfo = in.readParcelable(ImUserInfo.class.getClassLoader());
     }
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {

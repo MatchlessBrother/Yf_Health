@@ -82,7 +82,7 @@
         <activity
             android:name=".ui.zxzx.view.ZxzxAct"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".ui.bjjy.view.BjjyAct"
@@ -109,12 +109,12 @@
         <activity
             android:name=".ui.zxzx.view.TwzxAct"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".ui.zxzx.view.ChooseDoctorAct"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".ui.zxzx.view.DoctorInfoAct"
@@ -122,7 +122,8 @@
 
         <activity
             android:name=".ui.zxzx.view.TwzxingAct"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".ui.zxzx.view.YyzxingAct"
@@ -162,7 +163,7 @@
            如果 SDKOptions 中提供了，取 SDKOptions 中的值。 -->
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="91f1b42ed3054f06b9ff015fac7a0fd7"/>
+            android:value="8654b9f7e8ac26a7cec25ca564a6c553"/>
 
         <!-- 云信后台服务，请使用独立进程。 -->
         <service

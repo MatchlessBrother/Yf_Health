@@ -1,12 +1,9 @@
 package ufhealth.integratedmachine.client.bean.zxzx;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
-
+import android.os.Parcel;
+import java.util.ArrayList;
+import android.os.Parcelable;
 import ufhealth.integratedmachine.client.util.DecimalFormatTools;
 
 public class DoctorAllInfo implements Parcelable
@@ -72,6 +69,9 @@ public class DoctorAllInfo implements Parcelable
         private double k_cost;
         private double b_cost;
         private double t_cost;
+        private String is_support_video;
+        private String is_support_audio;
+        private String is_support_tw;
 
         public String getComment_count() {
             return comment_count;
@@ -236,6 +236,30 @@ public class DoctorAllInfo implements Parcelable
             this.t_cost = t_cost;
         }
 
+        public String getIs_support_video() {
+            return this.is_support_video;
+        }
+
+        public void setIs_support_video(String is_support_video) {
+            this.is_support_video = is_support_video;
+        }
+
+        public String getIs_support_audio() {
+            return this.is_support_audio;
+        }
+
+        public void setIs_support_audio(String is_support_audio) {
+            this.is_support_audio = is_support_audio;
+        }
+
+        public String getIs_support_tw() {
+            return this.is_support_tw;
+        }
+
+        public void setIs_support_tw(String is_support_tw) {
+            this.is_support_tw = is_support_tw;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -263,6 +287,9 @@ public class DoctorAllInfo implements Parcelable
             dest.writeDouble(this.k_cost);
             dest.writeDouble(this.b_cost);
             dest.writeDouble(this.t_cost);
+            dest.writeString(this.is_support_video);
+            dest.writeString(this.is_support_audio);
+            dest.writeString(this.is_support_tw);
         }
 
         public BaseinfoBean() {
@@ -289,6 +316,9 @@ public class DoctorAllInfo implements Parcelable
             this.k_cost = in.readDouble();
             this.b_cost = in.readDouble();
             this.t_cost = in.readDouble();
+            this.is_support_video = in.readString();
+            this.is_support_audio = in.readString();
+            this.is_support_tw = in.readString();
         }
 
         public static final Creator<BaseinfoBean> CREATOR = new Creator<BaseinfoBean>() {
@@ -611,7 +641,6 @@ public class DoctorAllInfo implements Parcelable
             }
         };
     }
-
 
     @Override
     public int describeContents() {

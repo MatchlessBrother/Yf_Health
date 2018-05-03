@@ -35,10 +35,16 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                             if(interceptorList.get(index) instanceof TokenInterceptor_UnPersistentStore)
                             {
                                 TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
-                                interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(),
-                                        returnUserInfo.getData().getToken().getToken().trim());
+                                interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(), returnUserInfo.getData().getToken().getToken().trim());
+
                                 getViewLayer().getBaseApp().setUserInfo(returnUserInfo.getData().getUserInfo());
                                 getViewLayer().logging(returnUserInfo.getData().getUserInfo());
+
+                                UserInfo.ImUserInfo imUserInfo = new UserInfo.ImUserInfo();
+                                imUserInfo.setAccid("test3");
+                                imUserInfo.setToken("005d1223e1a6f9d4da435dd04d17150b");
+                                getViewLayer().getBaseApp().setImUserInfo(imUserInfo);
+
                                 getViewLayer().getBaseApp().setCountDownTime();
                                 getViewLayer().getBaseApp().startCountDown();
                                 return;
@@ -65,10 +71,17 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                 {
                     TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
                     interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(),"");
+
                     getViewLayer().getBaseApp().setUserInfo(null);
+                    getViewLayer().logOut();
+
+                    UserInfo.ImUserInfo imUserInfo = new UserInfo.ImUserInfo();
+                    imUserInfo.setAccid("");
+                    imUserInfo.setToken("");
+                    getViewLayer().getBaseApp().setImUserInfo(imUserInfo);
+
                     getViewLayer().getBaseApp().cancelCountDown();
                     getViewLayer().getBaseApp().setCountDownTime();
-                    getViewLayer().logOut();
                     return;
                 }
                 if(index == interceptorList.size() -1)

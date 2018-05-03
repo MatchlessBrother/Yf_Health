@@ -26,7 +26,6 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
 
     public void clearConditions()
     {
-        conditions.clear();
         for(DoctorInfoOfCondition.HospitalBean hospitalBean: doctorInfoOfCondition.getHospital())
             hospitalBean.setSelected(false);
 
@@ -38,6 +37,12 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
 
         for(DoctorInfoOfCondition.OriginalBean sourceBean: doctorInfoOfCondition.getOriginal())
             sourceBean.setSelected(false);
+    }
+
+    public void clearConditionMap()
+    {
+        conditions.clear();
+
     }
 
     public void loadMoreDatas()
@@ -212,11 +217,11 @@ public class ChooseDoctorPresenter extends BaseMvp_Presenter<ChooseDoctorAct_V>
         }
     }
 
-    public void getDoctorInfoOfConditions()
+    public void getDoctorInfoOfConditions(String serviceType)
     {
         if(isAttachContextAndViewLayer())
         {
-            DoctorModel.getDoctorInfoOfConditions(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>>(this)
+            DoctorModel.getDoctorInfoOfConditions(getContext(),serviceType.toUpperCase().trim(),new BaseMvp_LocalCallBack<BaseReturnData<DoctorInfoOfCondition>>(this)
             {
                 public void onSuccess(BaseReturnData<DoctorInfoOfCondition> data)
                 {
