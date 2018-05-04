@@ -17,60 +17,58 @@
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@color/default_font_gray"
+        android:textColor="#FF999999"
         android:textSize="20sp"
         tools:text="2018/05/04  02:11:00" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:maxWidth="700pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30sp"
-            android:paddingLeft="30pt"
-            android:paddingRight="30pt"
-            android:paddingTop="30sp"
-            android:textSize="20sp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/twzxing_accepttextmsg_text"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="-6pt"
-                android:gravity="right"
-                android:textColor="@color/white"
-                android:background="@drawable/box_white_yj_solid_twzxing"
-                tools:text="吴医生您好，吴医生您好吴医生您好" />
-
-
-        </LinearLayout>
-
-
-<!--
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/twzxing_accepttextmsg_img"
-            android:layout_width="64pt"
-            android:layout_height="64pt"
-            android:layout_marginRight="6pt"
+            android:layout_width="100pt"
+            android:layout_height="100sp"
+            android:layout_marginRight="8pt"
             android:scaleType="centerCrop"
             android:src="@mipmap/defaultheadimg"
             app:civ_border_color="#FFFFFFFF"
             app:civ_border_width="2pt" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/twzxing_textwhitebox"
+            android:orientation="vertical"
+            android:layout_marginTop="2sp"
+            android:paddingBottom="20sp"
+            android:paddingTop="20sp"
+            android:paddingLeft="35pt"
+            android:paddingRight="22pt">
 
-        <ImageView
-            android:layout_width="20pt"
-            android:layout_height="20sp"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/msgfromothericon" />-->
+            <TextView
+                android:id="@+id/twzxing_accepttextmsg_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="700pt"
+                android:textColor="#FF333333"
+                android:textSize="20sp"
+                tools:text="吴医生您好，生您好，吴医" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="12sp"
+                android:layout_marginTop="12sp"
+                android:background="@color/default_divide_line" />
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="郑重提示：线上咨询不能代替面诊，医生建议仅供参考！"
+                android:textColor="#FF999999"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

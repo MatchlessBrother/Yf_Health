@@ -1,19 +1,21 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
 import android.view.View;
-import android.view.KeyEvent;
 import android.graphics.Color;
 import com.just.agentweb.AgentWeb;
 import android.webkit.WebSettings;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
+import android.annotation.SuppressLint;
 import com.just.agentweb.DefaultWebClient;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.ProvideActionForWebiew;
 import ufhealth.integratedmachine.client.ui.main.view_v.MyBillsAct_V;
 import ufhealth.integratedmachine.client.ui.main.presenter.MyBillsPresenter;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickListener
 {
     private AgentWeb agentWeb;
@@ -25,6 +27,7 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
         return R.layout.activity_mybills;
     }
 
+    @SuppressLint("JavascriptInterface")
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
@@ -37,8 +40,10 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("http://f206p96248.imwork.net:13209/web/member/order-bjjy-list.html");
+                .go("http://dimdim215.imwork.net:47017/web/member/order-zxzx.html");
+                //.go("http://f206p96248.imwork.net:13209/web/member/order-bjjy-list.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        agentWeb.getWebCreator().getWebView().addJavascriptInterface(new ProvideActionForWebiew(this), "androidjs");
     }
 
     protected void initDatas()
@@ -52,21 +57,18 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
 
     }
 
-    @Override
     protected void onResume()
     {
         agentWeb.getWebLifeCycle().onResume();
         super.onResume();
     }
 
-    @Override
     protected void onPause()
     {
         agentWeb.getWebLifeCycle().onPause();
         super.onPause();
     }
 
-    @Override
     protected void onDestroy()
     {
         myBillsPresenter.detachContextAndViewLayout();

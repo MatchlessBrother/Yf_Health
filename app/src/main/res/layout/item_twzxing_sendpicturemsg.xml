@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="25sp"
+    android:paddingLeft="30pt"
+    android:paddingRight="30pt"
+    android:paddingTop="25sp">
 
+    <TextView
+        android:id="@+id/twzxing_sendpicturemsg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#FF999999"
+        android:textSize="20sp"
+        tools:text="2018/05/04  02:11:00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/twzxing_sendpicturemsg_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="80sp"
+            android:minWidth="80pt"
+            android:maxWidth="200pt"
+            android:maxHeight="200sp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/defaultimage" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/twzxing_sendpicturemsg_img"
+            android:layout_width="100pt"
+            android:layout_height="100pt"
+            android:layout_marginLeft="20pt"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/defaultheadimg"
+            app:civ_border_color="#FFFFFFFF"
+            app:civ_border_width="2pt" />
+    </LinearLayout>
 </LinearLayout>

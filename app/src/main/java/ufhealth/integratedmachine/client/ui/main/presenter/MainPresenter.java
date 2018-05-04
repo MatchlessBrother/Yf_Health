@@ -41,8 +41,8 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                                 getViewLayer().logging(returnUserInfo.getData().getUserInfo());
 
                                 UserInfo.ImUserInfo imUserInfo = new UserInfo.ImUserInfo();
-                                imUserInfo.setAccid("test3");
-                                imUserInfo.setToken("005d1223e1a6f9d4da435dd04d17150b");
+                                imUserInfo.setAccid("test1");
+                                imUserInfo.setToken("5c74364280972e9020b5d6e49d5ab798");
                                 getViewLayer().getBaseApp().setImUserInfo(imUserInfo);
 
                                 getViewLayer().getBaseApp().setCountDownTime();

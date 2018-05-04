@@ -3,12 +3,15 @@ package ufhealth.integratedmachine.client.ui.main.view;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
+import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.NIMClient;
 import android.support.v7.widget.Toolbar;
+import com.netease.nimlib.sdk.StatusCode;
 import ufhealth.integratedmachine.client.R;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +22,7 @@ import com.yuan.devlibrary._12_______Utils.NetTools;
 import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.ui.bjjy.view.BjjyAct;
 import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
@@ -55,6 +59,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     private DrawerLayout mainDrawerlayout;
     private MainPresenter mainPresenter;
     private BaseProgressDialog progressDialog;
+
+    private Observer imOnLineObserver;
 
     protected int setLayoutResID()
     {
@@ -123,6 +129,23 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         mainSlideWdda.setOnClickListener(this);
         mainSlideGybj.setOnClickListener(this);
         mainSlideXxtzNum.setOnClickListener(this);
+        imOnLineObserver = new Observer<StatusCode>()
+        {
+            //被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
+            //有一个问题是当么有网络的情况下IM无法正常退出，导致账号处于异常在线。
+            public void onEvent(StatusCode statusCode)
+            {
+                if (statusCode == StatusCode.LOGINED)
+                {
+                    getBaseApp().setImIsLogined(true);
+                }
+                else if(statusCode == StatusCode.UNLOGIN)
+                {
+                    getBaseApp().setImIsLogined(false);
+                }
+            }
+        };
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, true);
     }
 
     /*******已登录*****/
@@ -201,6 +224,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     public void receiveCountDownFinish(Boolean isFinish)
     {
         if(isFinish) mainPresenter.logOut(this);
+        if(getBaseApp().getImIsLogined()) NIMClient.getService(AuthService.class).logout();
     }
 
     /**********************************************************************************************/
@@ -245,63 +269,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     {
         /*Intent intent = new Intent(this,YyfwAct.class);
         startActivity(intent);*/
-        startZxActWithDialog("TWZX","1","1","1");
-    }
-
-    public void startZxAct(final String type,final String doctorId,final String orderId,final String accId)
-    {
-        LoginInfo loginInfo = new LoginInfo(getBaseApp().getImUserInfo().getAccid().trim(),getBaseApp().getImUserInfo().getToken().trim());
-        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback<LoginInfo>()
-        {
-            public void onSuccess(LoginInfo loginInfo)
-            {
-                dismissLoadingDialog(progressDialog);
-                getBaseApp().setIMLoginInfo(loginInfo);
-                Intent intent = null;
-                switch(type)
-                {
-                    case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
-                    case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
-                    case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
-                }
-                intent.putExtra("accid",accId);
-                intent.putExtra("orderid",orderId);
-                intent.putExtra("doctorid",doctorId);
-                startActivity(intent);
-            }
-
-            public void onFailed(int code)
-            {
-                if(!NetTools.WhetherConnectNet(MainAct.this))
-                {
-                    showToast("网络发生异常！请确保网络正常后再发起咨询请求");
-                    dismissLoadingDialog(progressDialog);
-                    return;
-                }
-                else if(code  == 302)
-                {
-                    showToast("IM账号密码发生错误！请联系管理员");
-                    dismissLoadingDialog(progressDialog);
-                    return;
-                }
-                else
-                {
-                    startZxAct(type,doctorId,orderId,accId);
-                }
-            }
-
-            public void onException(Throwable exception)
-            {
-                Log.e("ImException",exception.getMessage().toString());
-                dismissLoadingDialog(progressDialog);
-            }
-        });
-    }
-
-    public void startZxActWithDialog(final String type,final String doctorId,final String orderId,final String accId)
-    {
-        progressDialog = showLoadingDialog();
-        startZxAct(type,doctorId,orderId,accId);
+        startZxActWithDialog("YPZX","1","test3","1");
     }
 
     public void clickJkjc()
@@ -318,6 +286,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     protected void onDestroy()
     {
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, true);
         mainPresenter.detachContextAndViewLayout();
         super.onDestroy();
     }
@@ -368,5 +337,80 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     {
         Intent intent = new Intent(this,MsgNotifiesAct.class);
         startActivity(intent);
+    }
+
+    public void startZxAct(final String type,final String doctorId,final String accId,final String orderId)
+    {
+        if(getBaseApp().getImIsLogined() && null != getBaseApp().getIMLoginInfo())
+        {
+            dismissLoadingDialog(progressDialog);
+            Intent intent = null;
+            switch(type)
+            {
+                case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
+                case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
+                case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
+            }
+            intent.putExtra("accid",accId);
+            intent.putExtra("orderid",orderId);
+            intent.putExtra("doctorid",doctorId);
+            startActivity(intent);
+        }
+        else
+        {
+            LoginInfo loginInfo = new LoginInfo(getBaseApp().getImUserInfo().getAccid().trim(),getBaseApp().getImUserInfo().getToken().trim());
+            NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback<LoginInfo>()
+            {
+                public void onSuccess(LoginInfo loginInfo)
+                {
+                    dismissLoadingDialog(progressDialog);
+                    getBaseApp().setIMLoginInfo(loginInfo);
+                    Intent intent = null;
+                    switch(type)
+                    {
+                        case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
+                        case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
+                        case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
+                    }
+                    intent.putExtra("accid",accId);
+                    intent.putExtra("orderid",orderId);
+                    intent.putExtra("doctorid",doctorId);
+                    startActivity(intent);
+                }
+
+                public void onFailed(int code)
+                {
+                    if(!NetTools.WhetherConnectNet(MainAct.this))
+                    {
+                        showToast("网络发生异常！请确保网络正常后再发起咨询请求");
+                        dismissLoadingDialog(progressDialog);
+                        return;
+                    }
+                    else if(code  == 302)
+                    {
+                        showToast("IM账号密码发生错误！请联系管理员");
+                        dismissLoadingDialog(progressDialog);
+                        return;
+                    }
+                    else
+                    {
+                        startZxAct(type,doctorId,accId,orderId);
+                    }
+                }
+
+                public void onException(Throwable exception)
+                {
+                    Log.e("ImException",exception.getMessage().toString());
+                    dismissLoadingDialog(progressDialog);
+                }
+            });
+        }
+    }
+
+    @JavascriptInterface
+    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final String orderId)
+    {
+        progressDialog = showLoadingDialog();
+        startZxAct(type,doctorId,accId,orderId);
     }
 }

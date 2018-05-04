@@ -649,17 +649,17 @@ public abstract class BasePhotoActivity extends BaseActivity
         else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_IMAGE_GALLERY && data != null)
         {
             final ArrayList<String> imgList = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-            if(imgList.size() == 1)
+            /*if(imgList.size() == 1)
             {
                 String imgPath = imgList.get(0);
                 if(!StringTools.isEmpty(imgPath))
                 {
                     File bitmapFile = new File(imgPath);
-                    /****为了不破坏原有图片,我们生成新图片来进行操作****/
-                    /********超过120KB的图片需要进行像素压缩处理********/
+                    *//****为了不破坏原有图片,我们生成新图片来进行操作****//*
+                    *//********超过120KB的图片需要进行像素压缩处理********//*
                     if(bitmapFile.length() >= 120 * 1024)
                         imgPath = compressImagePixel_AllAcion(imgPath);
-                    /*****不超过120的图片则不需要进行像素压缩处理*****/
+                    *//*****不超过120的图片则不需要进行像素压缩处理*****//*
                     else
                     {
                         try
@@ -689,7 +689,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                     PromptBoxTools.showToast(this,"亲，获取选定的图片失败了！\n因为在指定路径无法查找到图片哟！");
             }
             else
-            {
+            {*/
                 Single.just("only").flatMap(new Function<String, SingleSource<LinkedList<String>>>()
                 {
                     public SingleSource<LinkedList<String>> apply(@io.reactivex.annotations.NonNull String s) throws Exception
@@ -718,7 +718,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                         setOnNewImgPathListener(dataList);
                     }
                 });
-            }
+            /*}*/
         }
         else if(requestCode == REQUEST_CODE_IMAGE_CROPPER && data != null)
         {

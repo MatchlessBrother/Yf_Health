@@ -10,8 +10,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.netease.nimlib.sdk.NIMClient;
 import android.support.multidex.MultiDex;
+
+import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.SDKOptions;
 import ufhealth.integratedmachine.client.R;
+
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yuan.devlibrary._1App.BaseApplication;
@@ -29,6 +34,7 @@ public class BaseApp extends BaseApplication
     private BaseApp mBaseApp;
     private Boolean mIsLogged;
 
+    private Boolean mImIsLogined;
     private UserInfoBean mUserInfo;
     private ImUserInfo mImUserInfo;
     private LoginInfo mImLoginInfo;
@@ -91,6 +97,18 @@ public class BaseApp extends BaseApplication
     public void setCountDownTime(Long time)
     {
         mCountDownUtil.setmMillisInFuture(null != time ? time : 0);
+    }
+
+    public Boolean getImIsLogined()
+    {
+        return this.mImIsLogined;
+
+    }
+
+    public void setImIsLogined(Boolean mImIsLogined)
+    {
+        this.mImIsLogined = mImIsLogined;
+
     }
 
     public void setIsLogged(Boolean isLogged)
@@ -156,7 +174,7 @@ public class BaseApp extends BaseApplication
         // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
         options.sdkStorageRootPath = sdkPath;
         // 配置是否需要预下载附件缩略图，默认为 true
-        options.preloadAttach = true;
+        options.preloadAttach = false;
         // 配置附件缩略图的尺寸大小。表示向服务器请求缩略图文件的大小
         // 该值一般应根据屏幕尺寸来确定， 默认值为 Screen.width / 2
         options.thumbnailSize = ScreenInfosTools.getScreenWidth(this) / 2;

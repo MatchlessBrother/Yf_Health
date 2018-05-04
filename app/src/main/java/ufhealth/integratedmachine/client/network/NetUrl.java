@@ -41,6 +41,10 @@ public interface NetUrl
     @FormUrlEncoded
     Observable<BaseReturnData<DoctorAllInfo>> zxzxGetDoctorAllInfo(@FieldMap Map<String, String> conditions);
 
+    @POST("zixun/zxorder/userOverOrder")
+    @FormUrlEncoded
+    Observable<BaseReturnData> zxzxFinishBill(@Field("zxType") String zxType,@Field("order_id") String orderId);
+
     @POST("zixun/imagetext/uploadTwzxImageList")
     @Multipart
     Observable<BaseReturnData<List<UploadImgReturnInfo>>> twzxUploadDatas(@Part List<MultipartBody.Part> filesList);
@@ -56,6 +60,8 @@ public interface NetUrl
     @POST("zixun/video/orderVideoSave")
     @FormUrlEncoded
     Observable<BaseReturnData<Billinfo>> zxzxCreateVideoBill(@Field("doctor_id") String doctorId,@Field("timeMin") String timeMin);
+
+
 
     @POST("zixun/imagetext/imageTextSave")
     @FormUrlEncoded

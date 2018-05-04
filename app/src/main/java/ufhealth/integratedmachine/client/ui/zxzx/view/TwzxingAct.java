@@ -1,32 +1,50 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
+import java.io.File;
+import java.util.List;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.graphics.Color;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.text.TextWatcher;
 import android.widget.LinearLayout;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.NIMClient;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
+import com.netease.nimlib.sdk.msg.MsgService;
 import android.support.v7.widget.RecyclerView;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import android.support.v7.widget.LinearLayoutManager;
-
-import ufhealth.integratedmachine.client.adapter.zxzx.TwzxingAdapter;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
+import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
+import ufhealth.integratedmachine.client.adapter.zxzx.TwzxingAdapter;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.TwzxingAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.DoctorInfoAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.TwzxingPresenter;
-import ufhealth.integratedmachine.client.adapter.zxzx.DoctorInfoRatingAdapter;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.DoctorInfoPresenter;
 
 public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoAct_V,View.OnClickListener
 {
+    private String orderId;
+    private String doctorId;
+    private String chatObjAccId;
+
+
     private ImageView doctorinfoImg;
     private TextView doctorinfoImgStatus;
     private TextView doctorinfoName;
@@ -48,21 +66,38 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
     private LinearLayout twzxingRightBottomAll;
     private ImageView twzxingRightBottomExpression;
     private ImageView twzxingRightBottomPicture;
-    private RecyclerView twzxingRightBottomRecyclerview;
+
+
     private TwzxingAdapter twzxingAdapter;
+    private RecyclerView twzxingRightBottomRecyclerview;
+
 
     private TwzxingPresenter twzxingPresenter;
     private DoctorInfoPresenter doctorInfoPresenter;
+
+
+    private Observer<IMMessage> statusObserver;
+    private Observer<List<IMMessage>> incomingMessageObserver;
 
     protected int setLayoutResID()
     {
         return R.layout.activity_twzxing;
     }
 
+    private boolean isHasDownloadedPicture(IMMessage message)
+    {
+        if (message.getAttachStatus() == AttachStatusEnum.transferred && !TextUtils.isEmpty(((ImageAttachment) message.getAttachment()).getPath()))
+            return true;
+        return false;
+    }
+
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
         setTitleContent("图文咨询中");
+        orderId = getIntent().getStringExtra("orderid").trim();
+        doctorId = getIntent().getStringExtra("doctorid").trim();
+        chatObjAccId = getIntent().getStringExtra("accid").trim();
         doctorinfoImg = (ImageView) rootView.findViewById(R.id.doctorinfo_img);
         doctorinfoImgStatus = (TextView) rootView.findViewById(R.id.doctorinfo_img_status);
         doctorinfoName = (TextView) rootView.findViewById(R.id.doctorinfo_name);
@@ -85,23 +120,108 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
         twzxingRightBottomExpression = (ImageView) rootView.findViewById(R.id.twzxing_right_bottom_expression);
         twzxingRightBottomPicture = (ImageView) rootView.findViewById(R.id.twzxing_right_bottom_picture);
         twzxingRightBottomRecyclerview = (RecyclerView) rootView.findViewById(R.id.twzxing_right_bottom_recyclerview);
+        doctorinfoStartchat.setEnabled(true);
         doctorinfoStartchat.setText("结束咨询");
         doctorinfoStartnote.setVisibility(View.GONE);
         twzxingRightBottomAll.setVisibility(View.GONE);
         doctorinfoStartchat.setVisibility(View.INVISIBLE);
         doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         twzxingRightBottomRecyclerview.setLayoutManager(linearLayoutManager);
-
         twzxingAdapter = new TwzxingAdapter(this,new ArrayList<IMMessage>());
         twzxingRightBottomRecyclerview.setAdapter(twzxingAdapter);
 
+        twzxingRightBottomEt.addTextChangedListener(new TextWatcher()
+        {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                if(twzxingRightBottomEt.getText().toString().length() > 0)
+                    twzxingRightBottomSend.setVisibility(View.VISIBLE);
+                else
+                    twzxingRightBottomSend.setVisibility(View.GONE);
+            }
+        });
+
+        incomingMessageObserver = new Observer<List<IMMessage>>()
+        {
+            public void onEvent(List<IMMessage> messages)
+            {
+                if(null != messages && messages.size() > 0 && null != chatObjAccId && !"".equals(chatObjAccId.trim()))
+                {
+                    IMMessage message = messages.get(0);
+                    if(message.getSessionId().equals(chatObjAccId.trim()))
+                    {
+                        if(message.getMsgType() == MsgTypeEnum.text)
+                        {
+                            twzxingAdapter.addData(message);
+                            twzxingAdapter.notifyDataSetChanged();
+                            twzxingRightBottomRecyclerview.scrollToPosition(twzxingAdapter.getItemCount()-1);
+                        }
+                        else if(message.getMsgType() == MsgTypeEnum.image)
+                        {
+                            if(!isHasDownloadedPicture(message))
+                            {
+                                NIMClient.getService(MsgService.class).downloadAttachment(message, false);
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        statusObserver = new Observer<IMMessage>()
+        {
+            public void onEvent(IMMessage message)
+            {
+                // 1、根据sessionId判断是否是自己的消息
+                // 2、更改内存中消息的状态
+                // 3、刷新界面
+                if(message.getDirect() == MsgDirectionEnum.In)//接受消息
+                {
+                    if(null != chatObjAccId && !"".equals(chatObjAccId.trim()) && message.getSessionId().equals(chatObjAccId.trim()))//只接收当前通讯对象所发送的消息
+                    {
+                        if(message.getMsgType() == MsgTypeEnum.image)
+                        {
+                            if(message.getAttachStatus() == AttachStatusEnum.transferred)
+                            {
+                                twzxingAdapter.addData(message);
+                                twzxingAdapter.notifyDataSetChanged();
+                                twzxingRightBottomRecyclerview.scrollToPosition(twzxingAdapter.getItemCount()-1);
+                            }
+                        }
+                    }
+                }
+                else if(message.getDirect() == MsgDirectionEnum.Out)//发送消息
+                {
+                    if(message.getMsgType() == MsgTypeEnum.text)//我发送的文本消息
+                    {
+                        if(message.getStatus() == MsgStatusEnum.success)//确定文本消息已发送
+                        {
+                            twzxingAdapter.addData(message);
+                            twzxingAdapter.notifyDataSetChanged();
+                            twzxingRightBottomRecyclerview.scrollToPosition(twzxingAdapter.getItemCount()-1);
+                        }
+                    }
+                    else if(message.getMsgType() == MsgTypeEnum.image)//我发送的图片消息
+                    {
+                        if(message.getAttachStatus() == AttachStatusEnum.transferred)//确定图片消息已发送
+                        {
+                            twzxingAdapter.addData(message);
+                            twzxingAdapter.notifyDataSetChanged();
+                            twzxingRightBottomRecyclerview.scrollToPosition(twzxingAdapter.getItemCount()-1);
+                        }
+                    }
+                }
+            }
+        };
         doctorinfoStartchat.setOnClickListener(this);
         twzxingRightBottomSend.setOnClickListener(this);
         twzxingRightBottomPicture.setOnClickListener(this);
         twzxingRightBottomExpression.setOnClickListener(this);
+        NIMClient.getService(MsgServiceObserve.class).observeMsgStatus(statusObserver, true);
+        NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
     }
 
     protected void initDatas()
@@ -114,7 +234,8 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
 
     protected void initLogic()
     {
-        doctorInfoPresenter.initDoctorAllInfo(getIntent().getStringExtra("doctorid").trim());
+        doctorInfoPresenter.initDoctorAllInfo(doctorId);
+
     }
 
     public void onClick(View view)
@@ -122,12 +243,9 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
         super.onClick(view);
         switch (view.getId())
         {
-            case R.id.activity_title_back:
-            {
-                break;
-            }
             case R.id.doctorinfo_startchat:
             {
+                twzxingPresenter.finishBill("TWZX",orderId);
                 break;
             }
             case R.id.twzxing_right_bottom_expression:
@@ -141,27 +259,37 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
             }
             case R.id.twzxing_right_bottom_send:
             {
+                SessionTypeEnum sessionType = SessionTypeEnum.P2P;
+                IMMessage textMessage = MessageBuilder.createTextMessage(chatObjAccId, sessionType,twzxingRightBottomEt.getText().toString().trim());
+                NIMClient.getService(MsgService.class).sendMessage(textMessage, true);
+                twzxingRightBottomEt.setText("");
                 break;
             }
         }
     }
 
-    public void onBackPressed()
-    {
-
-    }
-
     protected void onDestroy()
     {
+        NIMClient.getService(MsgServiceObserve.class).observeMsgStatus(statusObserver, false);
+        NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
         doctorInfoPresenter.detachContextAndViewLayout();
         twzxingPresenter.detachContextAndViewLayout();
         super.onDestroy();
     }
 
-    @Subscribe
-    public void receiveCountDownFinish(Boolean isFinish)
+    public void finishBillSuccess()
     {
-        super.receiveCountDownFinish(isFinish);
+        finish();
+
+    }
+
+    public void finishRefreshDoctorRatingInfo()
+    {
+
+    }
+
+    public void finishLoadMoreDoctorRatingInfo()
+    {
 
     }
 
@@ -172,17 +300,32 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
 
     }
 
-    public void finishRefreshDoctorRatingInfo() {}
+    @Subscribe
+    public void receiveCountDownFinish(Boolean isFinish)
+    {
+        super.receiveCountDownFinish(isFinish);
 
-    public void finishLoadMoreDoctorRatingInfo() {}
+    }
 
-    public void refreshDoctorRatingInfo(DoctorAllInfo.PageBean pageBean) {}
+    public void refreshDoctorRatingInfo(DoctorAllInfo.PageBean pageBean)
+    {
 
-    public void loadMoreDoctorRatingInfo(DoctorAllInfo.PageBean pageBean) {}
+    }
+
+    public void loadMoreDoctorRatingInfo(DoctorAllInfo.PageBean pageBean)
+    {
+
+    }
 
     public void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
     {
-
+        for(String imagePath : bitmapPaths)
+        {
+            SessionTypeEnum sessionType = SessionTypeEnum.P2P;
+            File file = new File(imagePath.trim());
+            IMMessage message = MessageBuilder.createImageMessage(chatObjAccId, sessionType, file, file.getName());
+            NIMClient.getService(MsgService.class).sendMessage(message, true);
+        }
     }
 
     public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)

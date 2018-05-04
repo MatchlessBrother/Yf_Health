@@ -76,11 +76,9 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         yyzxingRightBottomLjstatus = (TextView) rootView.findViewById(R.id.yyzxing_right_bottom_ljstatus);
         rippleView = (RippleLayout)rootView.findViewById(R.id.yyzxing_right_bottom_ripplelayout);
 
-
         /**********连接成功再播放动画**************/
-        rippleView.startRippleAnimation();
+        //rippleView.startRippleAnimation();
         /**********连接成功再播放动画**************/
-
 
         doctorinfoStartchat.setText("结束咨询");
         doctorinfoStartnote.setVisibility(View.GONE);
