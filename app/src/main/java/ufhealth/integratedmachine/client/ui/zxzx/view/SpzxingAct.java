@@ -2,6 +2,9 @@ package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import android.view.View;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.graphics.Color;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -10,6 +13,12 @@ import android.widget.RelativeLayout;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
+import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
+import com.netease.nimlib.sdk.avchat.model.AVChatCommonEvent;
+import com.netease.nimlib.sdk.avchat.model.AVChatData;
+
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.SpzxingAct_V;
@@ -19,6 +28,18 @@ import ufhealth.integratedmachine.client.ui.zxzx.presenter.DoctorInfoPresenter;
 
 public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,View.OnClickListener
 {
+    private long syTime;
+    private long ksTime;
+    private Timer timer;
+    private boolean isNoTime;
+    private TimerTask timerTask;
+
+    private int rtcStatus;
+    private String orderId;
+    private String doctorId;
+    private String doctorName;
+    private String chatObjAccId;
+
     private RelativeLayout doctorinfoImgall;
     private ImageView doctorinfoImg;
     private TextView doctorinfoImgStatus;
@@ -43,6 +64,12 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
 
     private SpzxingPresenter spzxingPresenter;
     private DoctorInfoPresenter doctorInfoPresenter;
+
+    private AVChatData avChatData = null;
+    private Boolean toggleSpeakerMode = false;
+    private Observer<AVChatCommonEvent> callHangupObserver = null;
+    private Observer<AVChatCalleeAckEvent> callAckObserver = null;
+    private AVChatStateObserverLite aVChatStateObserverLite = null;
 
     protected int setLayoutResID()
     {

@@ -1,12 +1,16 @@
 package ufhealth.integratedmachine.client.ui.zxzx.view;
 
 import java.util.Map;
+import java.util.Timer;
 import android.view.View;
+import java.util.TimerTask;
 import java.util.ArrayList;
 import android.graphics.Color;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import com.netease.nimlib.sdk.Observer;
 import com.donkingliang.labels.LabelsView;
@@ -17,6 +21,7 @@ import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
+import com.netease.nimlib.sdk.avchat.constant.AVChatResCode;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
@@ -28,6 +33,7 @@ import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatSessionStats;
 import com.netease.nimlib.sdk.avchat.constant.AVChatEventType;
 import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
+import com.netease.nimlib.sdk.avchat.constant.AVChatUserQuitType;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.YyzxingAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.DoctorInfoAct_V;
@@ -36,9 +42,20 @@ import ufhealth.integratedmachine.client.ui.zxzx.presenter.DoctorInfoPresenter;
 
 public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,View.OnClickListener
 {
+    private long syTime;
+    private long ksTime;
+    private Timer timer;
+    private boolean isNoTime;
+    private TimerTask timerTask;
+
+
+    private int rtcStatus;
     private String orderId;
     private String doctorId;
+    private String doctorName;
     private String chatObjAccId;
+
+
     private RippleLayout rippleView;
     private ImageView doctorinfoImg;
     private TextView doctorinfoImgStatus;
@@ -54,8 +71,10 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     private TextView doctorinfoZsnum;
     private TextView doctorinfoHpnum;
     private TextView doctorinfoPjnum;
+    private TextView yyzxingRightTopTime;
+    private CheckBox yyzxingRightTopSpeaker;
+    private CheckBox yyzxingRightTopMicrophone;
     private LabelsView doctorinfoLabels;
-    private TextView yyzxingRightTop;
     private RelativeLayout doctorinfoImgall;
     private LinearLayout yyzxingRightBottom;
     private TextView yyzxingRightBottomTime;
@@ -65,10 +84,10 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     private DoctorInfoPresenter doctorInfoPresenter;
 
     private AVChatData avChatData = null;
+    private Boolean toggleSpeakerMode = false;
     private Observer<AVChatCommonEvent> callHangupObserver = null;
     private Observer<AVChatCalleeAckEvent> callAckObserver = null;
     private AVChatStateObserverLite aVChatStateObserverLite = null;
-
 
     protected int setLayoutResID()
     {
@@ -79,6 +98,8 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     {
         super.initWidgets(rootView);
         setTitleContent("语音咨询中");
+        ksTime = 0;
+        syTime = getIntent().getLongExtra("sytime",0);
         orderId = getIntent().getStringExtra("orderid").trim();
         doctorId = getIntent().getStringExtra("doctorid").trim();
         chatObjAccId = getIntent().getStringExtra("accid").trim();
@@ -97,21 +118,17 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         doctorinfoZsnum = (TextView) rootView.findViewById(R.id.doctorinfo_zsnum);
         doctorinfoHpnum = (TextView) rootView.findViewById(R.id.doctorinfo_hpnum);
         doctorinfoPjnum = (TextView) rootView.findViewById(R.id.doctorinfo_pjnum);
+        yyzxingRightTopTime = (TextView) findViewById(R.id.yyzxing_right_top_time);
+        yyzxingRightTopSpeaker = (CheckBox) findViewById(R.id.yyzxing_right_top_speaker);
+        yyzxingRightTopMicrophone = (CheckBox) findViewById(R.id.yyzxing_right_top_microphone);
         doctorinfoLabels = (LabelsView) rootView.findViewById(R.id.doctorinfo_labels);
-        yyzxingRightTop = (TextView) rootView.findViewById(R.id.yyzxing_right_top);
         yyzxingRightBottom = (LinearLayout) rootView.findViewById(R.id.yyzxing_right_bottom);
         yyzxingRightBottomTime = (TextView) rootView.findViewById(R.id.yyzxing_right_bottom_time);
         yyzxingRightBottomLjstatus = (TextView) rootView.findViewById(R.id.yyzxing_right_bottom_ljstatus);
         rippleView = (RippleLayout)rootView.findViewById(R.id.yyzxing_right_bottom_ripplelayout);
-
-        /**********连接成功再播放动画**************/
-        //rippleView.startRippleAnimation();
-        /**********连接成功再播放动画**************/
-
-        doctorinfoStartchat.setText("结束咨询");
+        doctorinfoStartchat.setEnabled(true);
         doctorinfoStartnote.setVisibility(View.GONE);
         doctorinfoStartchat.setVisibility(View.INVISIBLE);
-        doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
         doctorinfoStartchat.setOnClickListener(this);
     }
 
@@ -126,22 +143,73 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     protected void initLogic()
     {
         doctorInfoPresenter.initDoctorAllInfo(getIntent().getStringExtra("doctorid").trim());
+        yyzxingRightTopSpeaker.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bol)
+            {
+                if(bol)
+                    openSpeakerModel();
+                else
+                    closeSpeakerModel();
+            }
+        });
+        yyzxingRightTopMicrophone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bol)
+            {
+                if(bol)
+                    openMicrophone();
+                else
+                    closeMicrophone();
+            }
+        });
+        yyzxingRightTopSpeaker.setChecked(true);
+        yyzxingRightTopMicrophone.setChecked(true);
+
 
         callHangupObserver = new Observer<AVChatCommonEvent>()
         {
             public void onEvent(AVChatCommonEvent hangUpInfo)//结束通话
             {
-                AVChatManager.getInstance().disableRtc();//销毁音视频引擎和释放资源
+                if(hangUpInfo.getEvent() == AVChatEventType.PEER_HANG_UP)
+                {
+                    setZxStatusUi(1);
+                    finishAutoCalculationTime();
+                    destroyAudioEnviroment();
+                    rippleView.stopRippleAnimation();
+                    showToast("对方关闭语音咨询，谢谢使用！");
+                    yyzxingRightBottomLjstatus.setText("成功关闭语音咨询，谢谢使用！");
+                }
             }
         };
-
         aVChatStateObserverLite = new AVChatStateObserverLite()
         {
             public void onLeaveChannel() {}
 
             public void onCallEstablished()
             {
-                //回话建立完毕，可以正式开始通讯
+                setZxStatusUi(3);
+                beginAutoCalculationTime();
+                rippleView.startRippleAnimation();
+                yyzxingRightBottomLjstatus.setText("语音连接成功，请开始咨询！");
+            }
+
+            public void onUserLeave(String account, int event)
+            {
+                if(event  == AVChatUserQuitType.TIMEOUT && null != avChatData)
+                {
+                    finishAudioChat(avChatData);
+                    showToast("对方网络异常导致离线了哟！");
+                }
+            }
+
+            public void onJoinedChannel(int code, String audioFile, String videoFile, int elapsed)
+            {
+                if(code != AVChatResCode.JoinChannelCode.OK)
+                {
+                    setZxStatusUi(1);
+                    yyzxingRightBottomLjstatus.setText("建立语音连接失败，请稍后重试...");
+                }
             }
 
             public void onDisconnectServer() {}
@@ -160,8 +228,6 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
 
             public void onFirstVideoFrameRendered(String user) {}
 
-            public void onUserLeave(String account, int event) {}
-
             public void onFirstVideoFrameAvailable(String account) {}
 
             public void onVideoFpsReported(String account, int fps) {}
@@ -174,48 +240,57 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
 
             public void onNetworkQuality(String user, int quality, AVChatNetworkStats stats) {}
 
-            public void onJoinedChannel(int code, String audioFile, String videoFile, int elapsed) {}
-
             public void onVideoFrameResolutionChanged(String user, int width, int height, int rotate) {}
 
             public boolean onVideoFrameFilter(AVChatVideoFrame frame, boolean maybeDualInput) {return false;}
         };
-
         callAckObserver = new Observer<AVChatCalleeAckEvent>()
         {
             public void onEvent(AVChatCalleeAckEvent ackInfo)
             {
                 if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY)
                 {
-                    //对方正在忙
+                    setZxStatusUi(1);
+                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
                 }
                 else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT)
                 {
-                    //对方拒绝接听
+                    setZxStatusUi(1);
+                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
                 }
                 else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE)
                 {
-                    //对方同意接听
+                    yyzxingRightBottomLjstatus.setText("正在建立语音连接，请稍等...");
                 }
             }
         };
-
         AVChatManager.getInstance().observeAVChatState(aVChatStateObserverLite, true);
         AVChatManager.getInstance().observeCalleeAckNotification(callAckObserver, true);
         AVChatManager.getInstance().observeHangUpNotification(callHangupObserver, true);
     }
 
+    @Override
     public void onClick(View view)
     {
-        super.onClick(view);
         switch (view.getId())
         {
             case R.id.activity_title_back:
             {
+                if(rtcStatus == 1)
+                    finish();
+                else if(rtcStatus == 3 && null != avChatData)
+                    finishAudioChat(avChatData);
                 break;
             }
             case R.id.doctorinfo_startchat:
             {
+                if(rtcStatus == 1)
+                {
+                    setZxStatusUi(2);
+                    beginAudioChat(chatObjAccId,AVChatType.AUDIO);
+                }
+                else if(rtcStatus == 3 && null != avChatData)
+                    finishAudioChat(avChatData);
                 break;
             }
         }
@@ -223,7 +298,10 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
 
     public void onBackPressed()
     {
-
+        if(rtcStatus == 1)
+            finish();
+        else if(rtcStatus == 3 && null != avChatData)
+            finishAudioChat(avChatData);
     }
 
     protected void onDestroy()
@@ -234,6 +312,241 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         doctorInfoPresenter.detachContextAndViewLayout();
         yyzxingPresenter.detachContextAndViewLayout();
         super.onDestroy();
+    }
+
+    public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)
+    {
+        if(null != baseinfoBean)
+        {
+            useGlideLoadImg(doctorinfoImg,null != baseinfoBean.getAvatar() ? baseinfoBean.getAvatar().trim() : "");
+            doctorinfoImgStatus.setText("在线");
+            doctorinfoImgStatus.setVisibility(View.GONE);
+            doctorinfoName.setText(null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知");
+            doctorinfoPosition.setText(null != baseinfoBean.getJob_name() ? baseinfoBean.getJob_name().trim() : "未知");
+            doctorinfoHospitalname.setText("医院：" + (null != baseinfoBean.getHospital_name() ? baseinfoBean.getHospital_name().trim() : "未知"));
+            doctorinfoDepartmentname.setText("科室：" + (null != baseinfoBean.getDepartment_name() ? baseinfoBean.getDepartment_name().trim() : "未知"));
+            doctorinfoSpecialize.setText("擅长：" + (null != baseinfoBean.getBe_good_at() ? baseinfoBean.getBe_good_at().trim() : "未知" ));
+            doctorinfoSource.setText("来源：" + (null != baseinfoBean.getOriginal() ? baseinfoBean.getOriginal().trim() : "未知"));
+            doctorinfoZsnum.setText(null != baseinfoBean.getConsult_count() ? baseinfoBean.getConsult_count().trim() : "0");
+            doctorinfoHpnum.setText(null != baseinfoBean.getComment_count_per() ? baseinfoBean.getComment_count_per().trim() + "%" : "0%");
+            doctorinfoPjnum.setText(null != baseinfoBean.getComment_count() ? baseinfoBean.getComment_count().trim() : "0");
+            doctorinfoLabels.setLabels(new ArrayList<String>());
+            doctorinfoStartchat.setVisibility(View.VISIBLE);
+            setZxStatusUi(2);
+            beginAudioChat(chatObjAccId,AVChatType.AUDIO);
+            doctorName = null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知";
+            yyzxingRightBottomTime.setText(getTimeText(ksTime));
+            yyzxingRightTopTime.setText("正在与" + doctorName + "医生咨询，此次通话将在 " + getTimeText(syTime) + " 后结束");
+        }
+    }
+
+    /**1未开始语音通讯，2处于连接过程中,3正在咨询,4处于关闭过程中,5时限用完**/
+    public void setZxStatusUi(int rtcCode)
+    {
+        switch(rtcCode)
+        {
+            case 1:
+            {
+                rtcStatus = 1;
+                doctorinfoStartchat.setText("开始咨询");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,0,147,221));
+                break;
+            }
+            case 2:
+            {
+                rtcStatus = 2;
+                doctorinfoStartchat.setText("正在连接");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,0,147,221));
+                break;
+            }
+            case 3:
+            {
+                rtcStatus = 3;
+                doctorinfoStartchat.setText("结束咨询");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
+                break;
+            }
+            case 4:
+            {
+                rtcStatus = 4;
+                doctorinfoStartchat.setText("正在结束");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
+                break;
+            }
+            case 5:
+            {
+                rtcStatus = 1;
+                doctorinfoStartchat.setEnabled(false);
+                doctorinfoStartchat.setText("谢谢咨询");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,102,102,102));
+                yyzxingRightTopTime.setText("正在与" + doctorName + "医生咨询，此次通话已结束");
+            }
+        }
+    }
+
+    /********************************开启麦克风**************************/
+    public void openMicrophone()
+    {
+        AVChatManager.getInstance().muteLocalAudio(false);
+
+    }
+
+    /********************************关闭麦克风**************************/
+    public void closeMicrophone()
+    {
+        AVChatManager.getInstance().muteLocalAudio(true);
+
+    }
+
+    /*********************************开启扬声器***************************/
+    public void openSpeakerModel()
+    {
+        AVChatManager.getInstance().setSpeaker(true);
+
+    }
+
+    /*******************************关闭扬声器*****************************/
+    public void closeSpeakerModel()
+    {
+        AVChatManager.getInstance().setSpeaker(false);
+
+    }
+
+    /****************************关闭音频通讯环境**************************/
+    public void destroyAudioEnviroment()
+    {
+        AVChatManager.getInstance().setParameters(new AVChatParameters());
+        AVChatManager.getInstance().disableRtc();
+    }
+
+    /***************************初始化音频通讯环境*************************/
+    public AVChatNotifyOption initAudioEnviroment()
+    {
+        AVChatManager.getInstance().enableRtc();//打开Rtc模块
+        AVChatParameters avChatParameters = new AVChatParameters();//设置自定义音频需要的可选参数
+        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_NOISE_SUPPRESSOR);
+        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_AUTOMATIC_GAIN_CONTROL);
+        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_ACOUSTIC_ECHO_CANCELER);
+        AVChatManager.getInstance().setParameters(avChatParameters);
+        AVChatNotifyOption notifyOption = new AVChatNotifyOption();
+        notifyOption.webRTCCompat = false;//是否兼容WebRTC模式
+        notifyOption.extendMessage = orderId; //附加字段
+        notifyOption.forceKeepCalling = true;//为true则离线持续呼叫
+        return notifyOption;
+    }
+
+    /********************************挂断音频******************************/
+    public void finishAudioChat(AVChatData avChatData)
+    {
+        AVChatManager.getInstance().hangUp2(avChatData.getChatId(), new AVChatCallback<Void>()
+        {
+            public void onSuccess(Void aVoid)
+            {
+                if(!isNoTime)
+                    setZxStatusUi(1);
+                else
+                    setZxStatusUi(5);
+                destroyAudioEnviroment();
+                finishAutoCalculationTime();
+                rippleView.stopRippleAnimation();
+                yyzxingRightBottomLjstatus.setText("成功关闭语音咨询，谢谢使用！");
+            }
+
+            public void onFailed(int code)
+            {
+                setZxStatusUi(3);
+                yyzxingRightBottomLjstatus.setText("关闭语音咨询失败，请重试...");
+            }
+
+            public void onException(Throwable exception)
+            {
+                setZxStatusUi(3);
+                yyzxingRightBottomLjstatus.setText("关闭语音咨询失败，请重试...");
+            }
+        });
+    }
+
+    /********************************拨打音频******************************/
+    public void beginAudioChat(String otherSideAccId, final AVChatType aVChatType)
+    {
+        AVChatManager.getInstance().call2(otherSideAccId,aVChatType,initAudioEnviroment(),new AVChatCallback<AVChatData>()
+        {
+            public void onSuccess(AVChatData data)
+            {
+                avChatData = data; //发起会话成功
+                yyzxingRightBottomLjstatus.setText("成功发起语音咨询请求，请稍等...");
+            }
+
+            public void onFailed(int code)
+            {
+                setZxStatusUi(1);
+                destroyAudioEnviroment();
+                yyzxingRightBottomLjstatus.setText("发起语音咨询请求失败，请重试...");
+            }
+
+            public void onException(Throwable exception)
+            {
+                setZxStatusUi(1);
+                destroyAudioEnviroment();
+                yyzxingRightBottomLjstatus.setText("发起语音咨询请求失败，请重试...");
+            }
+        });
+    }
+
+    /**************开始倒计时************/
+    public void beginAutoCalculationTime()
+    {
+        timer = new Timer();
+        timerTask = new TimerTask()
+        {
+            public void run()
+            {
+                runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        syTime--;
+                        ksTime++;
+                        yyzxingRightBottomTime.setText(getTimeText(ksTime));
+                        yyzxingRightTopTime.setText("正在与" + doctorName + "医生咨询，此次通话将在 " + getTimeText(syTime) + " 后结束");
+                        if(syTime < 0)
+                        {
+                            isNoTime = true;
+                            showToast("咨询时限用完了！如需继续咨询，请购买咨询时间后再继续咨询，谢谢使用！");
+                            finishAutoCalculationTime();
+                            if(avChatData != null)
+                            {
+                                finishAudioChat(avChatData);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask,1000,1000);
+    }
+
+    /**************结束倒计时************/
+    public void finishAutoCalculationTime()
+    {
+        timer.cancel();
+
+    }
+
+    public String getTimeText(long secondTime)
+    {
+        int seconds = (int)secondTime % 60;
+        int minutes = (int)((secondTime / 60) % 60);
+        int hours = (int)((secondTime / (60 * 60)) % 24);
+        int days = (int)(secondTime / (60 * 60 * 24));
+        boolean hasDays = days > 0;
+        return String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
+                hasDays ? days : hours,
+                hasDays ? hours : minutes,
+                hasDays ? minutes : seconds,
+                hasDays ? "天" : "小时",
+                hasDays ? "小时" : "分钟",
+                hasDays ? "分钟" : "秒");
     }
 
     public void finishRefreshDoctorRatingInfo()
@@ -258,90 +571,6 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     {
         super.receiveCountDownTime(countDownTime);
 
-    }
-
-    /********************************挂断音频******************************/
-    public void finishAudioChat(AVChatData avChatData)
-    {
-        AVChatManager.getInstance().hangUp2(avChatData.getChatId(), new AVChatCallback<Void>()
-        {
-            public void onSuccess(Void aVoid)
-            {
-                //成功挂断电话
-            }
-
-            public void onFailed(int code)
-            {
-
-            }
-
-            public void onException(Throwable exception)
-            {
-
-            }
-        });
-    }
-
-    /********************************拨打音频******************************/
-    public void beginAudioChat(String account, final AVChatType callTypeEnum)
-    {
-        AVChatManager.getInstance().enableRtc();//打开Rtc模块
-
-        AVChatParameters avChatParameters = new AVChatParameters();//设置自定义音频需要的可选参数
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_NOISE_SUPPRESSOR);
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_AUTOMATIC_GAIN_CONTROL);
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_ACOUSTIC_ECHO_CANCELER);
-        AVChatManager.getInstance().setParameters(avChatParameters);
-
-        AVChatNotifyOption notifyOption = new AVChatNotifyOption();
-        notifyOption.webRTCCompat = false;//是否兼容WebRTC模式
-        notifyOption.extendMessage = orderId; //附加字段
-        notifyOption.forceKeepCalling = true;//为true则离线持续呼叫
-
-        //发起语音呼叫
-        AVChatManager.getInstance().call2(account, callTypeEnum, notifyOption, new AVChatCallback<AVChatData>()
-        {
-            @Override
-            public void onSuccess(AVChatData data)
-            {
-                avChatData = data; //发起会话成功
-            }
-
-            public void onFailed(int code)
-            {
-              /*  closeRtc();
-                closeSessions(-1);*/
-            }
-
-            public void onException(Throwable exception)
-            {
-               /* closeRtc();
-                closeSessions(-1);*/
-            }
-        });
-    }
-
-    public void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean)
-    {
-        if(null != baseinfoBean)
-        {
-            useGlideLoadImg(doctorinfoImg,null != baseinfoBean.getAvatar() ? baseinfoBean.getAvatar().trim() : "");
-            doctorinfoImgStatus.setText("在线");
-            doctorinfoImgStatus.setVisibility(View.GONE);
-            doctorinfoName.setText(null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知");
-            doctorinfoPosition.setText(null != baseinfoBean.getJob_name() ? baseinfoBean.getJob_name().trim() : "未知");
-            doctorinfoHospitalname.setText("医院：" + (null != baseinfoBean.getHospital_name() ? baseinfoBean.getHospital_name().trim() : "未知"));
-            doctorinfoDepartmentname.setText("科室：" + (null != baseinfoBean.getDepartment_name() ? baseinfoBean.getDepartment_name().trim() : "未知"));
-            doctorinfoSpecialize.setText("擅长：" + (null != baseinfoBean.getBe_good_at() ? baseinfoBean.getBe_good_at().trim() : "未知" ));
-            doctorinfoSource.setText("来源：" + (null != baseinfoBean.getOriginal() ? baseinfoBean.getOriginal().trim() : "未知"));
-            doctorinfoZsnum.setText(null != baseinfoBean.getConsult_count() ? baseinfoBean.getConsult_count().trim() : "0");
-            doctorinfoHpnum.setText(null != baseinfoBean.getComment_count_per() ? baseinfoBean.getComment_count_per().trim() + "%" : "0%");
-            doctorinfoPjnum.setText(null != baseinfoBean.getComment_count() ? baseinfoBean.getComment_count().trim() : "0");
-            doctorinfoLabels.setLabels(new ArrayList<String>());
-            yyzxingRightTop.setText("正在与" + (null != baseinfoBean.getDoctor_name() ? baseinfoBean.getDoctor_name().trim() : "未知") +
-                                    "医生咨询，此次通话将在" + getIntent().getIntExtra("time",0) / 60 + "分钟后结束");
-            doctorinfoStartchat.setVisibility(View.VISIBLE);
-        }
     }
 
     public void refreshDoctorRatingInfo(DoctorAllInfo.PageBean pageBean)

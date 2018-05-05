@@ -269,7 +269,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     {
         /*Intent intent = new Intent(this,YyfwAct.class);
         startActivity(intent);*/
-        startZxActWithDialog("YPZX","1","test3","1");
+        startZxActWithDialog("SPZX","1","test3",18l,"1");
     }
 
     public void clickJkjc()
@@ -339,7 +339,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         startActivity(intent);
     }
 
-    public void startZxAct(final String type,final String doctorId,final String accId,final String orderId)
+    public void startZxAct(final String type,final String doctorId,final String accId,final long time,final String orderId)
     {
         if(getBaseApp().getImIsLogined() && null != getBaseApp().getIMLoginInfo())
         {
@@ -354,6 +354,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
             intent.putExtra("accid",accId);
             intent.putExtra("orderid",orderId);
             intent.putExtra("doctorid",doctorId);
+            intent.putExtra("sytime",time);
             startActivity(intent);
         }
         else
@@ -375,6 +376,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
                     intent.putExtra("accid",accId);
                     intent.putExtra("orderid",orderId);
                     intent.putExtra("doctorid",doctorId);
+                    intent.putExtra("sytime",time);
                     startActivity(intent);
                 }
 
@@ -394,7 +396,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
                     }
                     else
                     {
-                        startZxAct(type,doctorId,accId,orderId);
+                        startZxAct(type,doctorId,accId,time,orderId);
                     }
                 }
 
@@ -408,9 +410,9 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     }
 
     @JavascriptInterface
-    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final String orderId)
+    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final long time,final String orderId)
     {
         progressDialog = showLoadingDialog();
-        startZxAct(type,doctorId,accId,orderId);
+        startZxAct(type,doctorId,accId,time,orderId);
     }
 }

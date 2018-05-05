@@ -21,22 +21,60 @@
             android:id="@+id/yyzxing_left"
             layout="@layout/layout_doctorinfo" />
 
-        <TextView
+        <LinearLayout
             android:id="@+id/yyzxing_right_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="30pt"
             android:layout_toRightOf="@id/yyzxing_left"
-            android:background="@color/default_transwhite_bg"
             android:gravity="center_vertical"
-            android:paddingBottom="30sp"
+            android:background="@color/default_transwhite_bg"
+            android:orientation="horizontal"
+            android:paddingBottom="16sp"
             android:paddingLeft="30pt"
             android:paddingRight="30pt"
-            android:paddingTop="30sp"
-            tools:text="正在与医生咨询，此次通话将在0小时后结束"
-            android:textColor="@color/default_font_gray"
-            android:textSize="22sp" />
+            android:paddingTop="16sp">
+
+            <TextView
+                android:id="@+id/yyzxing_right_top_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/default_font_gray"
+                android:textSize="22sp"
+                tools:text="正在与医生咨询，此次通话将在0小时后结束" />
+
+
+            <CheckBox
+                android:id="@+id/yyzxing_right_top_speaker"
+                android:layout_width="60pt"
+                android:layout_height="60sp"
+                android:layout_marginLeft="12pt"
+                android:layout_marginRight="12pt"
+                android:background="@drawable/checkbox_speaker"
+                android:button="@null"
+                android:checked="false" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8sp"
+                android:layout_marginTop="8sp"
+                android:background="@color/default_font_hint" />
+
+            <CheckBox
+                android:id="@+id/yyzxing_right_top_microphone"
+                android:layout_width="60pt"
+                android:layout_height="60sp"
+                android:layout_marginLeft="12pt"
+                android:layout_marginRight="12pt"
+                android:background="@drawable/checkbox_microphone"
+                android:button="@null"
+                android:checked="false" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/yyzxing_right_bottom"
@@ -90,7 +128,7 @@
                 android:layout_marginTop="-20sp"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="00:48"
+                android:text="00:00"
                 android:textColor="@color/black"
                 android:textSize="48sp" />
 
