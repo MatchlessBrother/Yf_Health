@@ -1,0 +1,206 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+* { margin: 0px; padding: 0px; }
+html { height: 100%; }
+body { margin: 0px auto; height: 100%; font: 20px/150% Tahoma,Verdana,Arial,"Microsoft YaHei"; color: #333; overflow-x: hidden; background: url(../images/background.jpg) no-repeat; background-size: cover; background-attachment:fixed; }
+
+a,input { outline: none; }
+a { text-decoration: none; color: #666; }
+img   { margin: 0px; border: 0px; }
+ul li {list-style: none; }
+h1,h2,h3,h4,h5,h6 {margin: 0px;padding: 0px;font-weight: normal; }
+input,textarea,button,select { outline: 0 none; font: normal 12px/1.5 Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei; }
+input[type="checkbox"] { margin: -2px 5px 0px 0px; vertical-align: middle; }
+textarea { resize: none; box-sizing: border-box; }
+
+/*图标*/
+@font-face {
+	font-family: 'iconfont';
+    src: url('iconfont/iconfont.eot'); /* IE9*/
+    src: url('iconfont/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfont/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfont/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfont/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+                
+.iconfont{font-family:"iconfont";font-size:12px;font-style:normal; }
+
+/* 对齐 */
+.fl { float: left; }
+.fr { float: right; }
+.tl { text-align: left; }
+.tc { text-align: center; }
+.tr { text-align: right; }
+.center { margin: 0px auto; }
+.hide { display: none; }
+
+/* 间距 */
+.pd5 { padding: 5px !important; }
+.pd10 { padding: 10px !important; }
+.pd15 { padding: 15px !important; }
+.pd20 { padding: 20px !important; }
+.pd30 { padding: 30px !important; }
+.pd-t10 { padding-top: 10px !important; }
+.pd-b10 { padding-bottom: 10px !important; }
+.pd-t20 { padding-top: 20px !important; }
+.pd-t30 { padding-top: 30px !important; }
+.pd-b20 { padding-bottom: 20px !important; }
+.pd-b30 { padding-bottom: 30px !important; }
+.mg5 { margin: 5px !important; }
+.mg10 { margin: 10px !important; }
+.mg15 { margin: 15px !important; }
+.mg20 { margin: 20px !important; }
+.mg-t10 { margin-top: 10px !important; }
+.mg-t20 { margin-top: 20px !important; }
+
+/*文字颜色*/
+.c-blue { color: #0093dd; }
+.c-white { color: #ffffff; }
+.c-red { color: #ff0000; }
+.c-green { color: #03d512;  }
+.c-333 { color: #333; }
+.c-666 { color: #666; }
+.c-999 { color: #999; }
+.c-bbb { color: #bbb; }
+
+/* 字号 */
+.fs12 { font-size: 12px; }
+.fs13 { font-size: 13px; }
+.fs14 { font-size: 14px; }
+.fs15 { font-size: 15px; }
+.fs16 { font-size: 16px; }
+.fs18 { font-size: 18px; }
+.fs20 { font-size: 20px; }
+.fs22 { font-size: 22px; }
+.fs24 { font-size: 24px; }
+.fs26 { font-size: 26px; }
+.fs28 { font-size: 28px; }
+.fs30 { font-size: 30px; }
+.fs32 { font-size: 32px; }
+.fs34 { font-size: 34px; }
+.fs36 { font-size: 36px; }
+
+/*栅格布局*/
+.row { margin-left: -10px; margin-right: -10px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.row:before,.row:after { display: table; content: " "; }
+.row:after { clear: both; }
+.col-1,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9,.col-10,.col-11,.col-12 { min-height: 1px; padding-left: 10px; padding-right: 10px; float: left; box-sizing: border-box; }
+.col-1  { width: 8.33333333%; }
+.col-2  { width: 16.66666667%; }
+.col-3  { width: 25%; }
+.col-4  { width: 33.33333333%; }
+.col-5  { width: 41.66666667%; }
+.col-6  { width: 50%; }
+.col-7  { width: 58.33333333%; }
+.col-8  { width: 66.66666667%; }
+.col-9  { width: 75%; }
+.col-10 { width: 83.33333333%; }
+.col-11 { width: 91.66666667%; }
+.col-12 { width: 100%; }
+
+/*flex布局 -- 只适应高版本浏览器 --*/
+.flex-box { display: flex; display: -webkit-flex; }
+	.flex-item { -webkit-box-flex: 1; -webkit-flex: 1; flex: 2; }
+
+
+
+/* 公共部份 */
+.header { height: 44px; background: #0093dd; }
+	.header h1 { line-height: 44px; text-align: center; color: #fff; font-size: 18px; }
+
+.pages { padding: 48px 110px; }
+	.box-default { box-shadow: 0 0 8px rgba(0,0,0,.05); border-radius: 3px; background: rgba(255,255,255,.7); }
+.search { height: 70px; margin-top: 10px; border-radius: 40px; position: relative; overflow: hidden; }
+	.search .iconfont { position: absolute; left: 30px; top: 22px; }
+	.search input[type="text"] { width: 100%; padding: 17px 150px 17px 70px; font-size: 24px; box-sizing:border-box; border: none; background: none; }
+	.search .btn { width: 140px; height: 70px; border-left: #eee solid 1px; position: absolute; right: 0; top: 0; }
+	.search .btn button { width: 140px; height: 70px; background: none; border: none; font-size: 24px; color: #666; }
+	.search .btn button:active { background: #0093dd; color: #fff; }
+
+.button { height: 80px; line-height: 80px; padding: 0px 50px; color: #fff; font-size: 30px; border-radius: 5px; border: none; background: #0093dc; display: inline-block; cursor: pointer; text-align: center; box-sizing:border-box; }
+.button:active { -webkit-filter:saturate(1.5); -webkit-tap-highlight-color:rgba(0,0,0,0); }
+.button-reverse { background: #fafafa; border: #bbb solid 1px; color: #666; }
+
+
+/* 医生列表 */
+.doctor-list { margin: 20px 0; }
+	.doctor-list .item { padding: 30px; overflow: hidden; border-bottom: #eee solid 1px; line-height: 34px; }
+	.doctor-list .item:last-child { border: none; }
+	.doctor-list img { width: 160px; height: 160px; margin-right: 30px; border-radius: 50%; float: left; }
+	.doctor-list h3 { padding: 8px 0 5px 0; }
+	.doctor-list h4 { padding-top: 5px; }
+	.doctor-list p { padding-top: 5px; color: #666; font-size: 18px; text-overflow: ellipsis; display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+
+/* 医院列表 */
+.hospital-list { padding: 0 0; }
+	.hospital-list .item { padding: 30px; height: 120px; margin-bottom: 20px; font-size: 24px; line-height: 30px; overflow: hidden; }
+	.hospital-list .item:active,.doctor-list .item:active,.dep-list .item:active { background: #fff; }
+	.hospital-list img { margin-right: 30px; width: 120px; height: 120px; float: left; }
+	.hospital-list h3 { padding: 5px 0 8px 0; }
+	.hospital-list p { padding-top: 5px; white-space: nowrap; word-break: keep-all; overflow: hidden; text-overflow: ellipsis; }
+.dep-list .item { padding: 15px 10px; margin: 10px 0; text-align: center; white-space: nowrap; word-break: keep-all; overflow: hidden; text-overflow: ellipsis; }
+
+
+/* 表单 */
+.form-box .item { min-height: 80px; border-bottom: #eee solid 1px; position: relative; font-size: 24px; }
+.form-box .item:last-child { border: none; }
+	.form-box .title { padding-left: 30px; line-height: 80px; color: #666; position: absolute; left: 0; }
+	.form-box .item-val .val,.form-box .item-arrow .val { padding-left: 170px; line-height: 80px; }
+	.form-box .item-text input { width: 100%; padding: 22px 0 21px 170px; border: 0; box-sizing:border-box; font-size: 24px; background: none; }
+	.form-box .date-range { height: 60px; margin: 10px 30px 10px 30px; text-align: center; position: relative; }
+	.form-box .date-range span { line-height: 60px; color: #bbb; }
+	.form-box .date-range .date-box { width: 47%; height: 60px; border: #ddd solid 1px; position: absolute; top: 0; border-radius: 3px; }
+	.form-box .date-range input { width: 100%; padding: 12px 30px; border: none; background: none; box-sizing:border-box; font-size: 24px; }
+	.form-box .btn-oper { padding: 0 30px; height: 60px; line-height: 60px; position: absolute; right: 10px; top: 10px; font-size: 20px; }
+	.form-box .item-arrow .arrow { position: absolute; right: 20px; top: 25px; }
+	.form-box .item-arrow:active { background: #fff; }
+
+/* 表单样式 */
+.check-box,.radio-box { line-height: 30px; font-size: 24px; display:inline-block; box-sizing:border-box; cursor:pointer; position:relative; }
+.check-box:active,.radio-box:active { -webkit-tap-highlight-color:rgba(0,0,0,0); }
+.check-box label,.radio-box label { padding-left: 18px; cursor: pointer; }
+.check-box span,.radio-box span { width: 28px; height: 28px; text-align: center; border: #ccc solid 1px; position: absolute; left: 0; top: 0; background: #fff; }
+.check-box span i { margin-top: -5px; font-weight: bold; vertical-align: middle; font-size: 12px; color: #0093dd; display: none; }
+.check-box input,.radio-box input { width: 18px; height: 18px; position: absolute; left: 0; top: 0; opacity: 0; }
+.check-box input:active,.radio-box input:active {-webkit-tap-highlight-color:rgba(0,0,0,0);}
+.check-box input:checked +label span { border-color: #0093dd; }
+.check-box input:checked +label span i { display: inline-block; }
+.radio-box span { border-radius: 50%; }
+.radio-box span i { width: 8px; height: 8px; margin-top: -4px; background: #fff; display: inline-block; vertical-align: middle; border-radius: 50%; }
+.radio-box input:checked +label span { border-color: #0093dd; }
+.radio-box input:checked +label span i { background: #0093dd }
+.check-box-text,.radio-box-text { padding-right: 25px; }
+.check-box-text label,.radio-box-text label { padding-left: 44px; }
+
+/* 支付相关 */
+.pay-box { padding: 30px; }
+	.pay-box .title { padding-bottom: 20px; font-size: 30px; border-bottom: #eee solid 1px; }
+	.pay-box .title img { margin: -5px 10px 0 0; display: inline-block; vertical-align: middle; }
+	.pay-box .row { padding: 50px 0; position: relative; }
+	.pay-box .line { width: 1px; height: 70%; background: #ddd; position: absolute; left: 50%; top: 15%; }
+	.pay-box .cost { padding-left: 150px; }
+	.pay-box .cost .total { padding: 50px 0 0 0; }
+	.pay-box .cost .total .tag { margin-top: -14px; display: inline-block; vertical-align: top; font-size: 36px; }
+	.pay-box .cost .total .num { font-size: 72px; }
+	.pay-box .cost ul { padding-top: 30px; font-size: 24px }
+	.pay-box .cost ul li { padding-top: 10px; }
+
+/* 图片上传 */
+.upload_imgs { }
+	.upload_imgs ul { overflow: hidden; }
+	.upload_imgs ul li { width:140px; height:140px; padding: 0px; margin: 0px 30px 10px 0px; border: #ddd solid 1px; background: #fff; float: left; overflow: hidden; position: relative; }
+	.upload_imgs ul li img { width: 140px; height: 140px; margin: 0px; float: left; }
+	.upload_imgs ul li a.del { width: 24px; height: 24px; padding: 0px; min-height: 16px; line-height: 24px; text-align: center; font-size: 14px; background: rgba(0,0,0,0.5); position: absolute; top: 0px; right: 0px; color: #fff; }
+	.upload_imgs ul li.add { line-height: 130px; color: #ccc; }
+	.upload_imgs ul li.add i { font-size: 40px; }
+	.upload_imgs ul li.add input { width: 100%; height: 100%; background: red; position: absolute; left: 0; top: 0; opacity: 0; }
+
+/* 药品列表 */
+.yp-box .list { padding: 20px 0; border-bottom: #ddd solid 1px; overflow: hidden; position: relative; }
+.yp-box .list:last-child { border: none;  }
+	.yp-box .upload_imgs { float: left;  }
+	.yp-box .oper { margin: 38px 0 0 50%; transform: translate(-100px,0); }
+	.yp-box .oper input { width: 80px; padding: 10px; background: #fff; text-align: center; border: #ddd solid 1px; }
+	.yp-box .oper span { width: 50px; height: 50px; line-height: 50px; margin: 0 5px; text-align: center; background: #0093dd; display: inline-block; border-radius: 50%; color: #fff;  }
+	.yp-box .del { position: absolute; right: 30px; top: 50%; transform: translate(0,-50%); }

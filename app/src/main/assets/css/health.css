@@ -1,0 +1,32 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+.tab-menu { height: 91px; }
+	.tab-menu ul { box-shadow: 0 -2px 3px rgba(0,0,0,.05); float: left; border-radius: 3px 3px 0 0; overflow: hidden; }
+	.tab-menu li { height: 90px; line-height: 90px; border-right: #ddd solid 1px; border-bottom: #ddd solid 1px; background: rgba(255,255,255,.7); float: left; }
+	.tab-menu li:last-child { border: 0; }
+	.tab-menu li a { padding: 0 60px; display: block; font-size: 28px; }
+	.tab-menu li.current { height: 88px; background: #fff; border-bottom: #0093dd solid 2px; }
+	.tab-menu li.current a { color: #0093dd; }
+.tab-body .item { height: 749px; display: none; overflow-y: auto; font-size: 24px; line-height: 36px; }
+.tab-body .item:first-child { display: block; }
+	
+.cover .card { margin: 30px 6px 0 6px; padding: 30px 40px; font-size: 28px; background: #fff; border: #eee solid 1px; color: #333; border-radius: 3px; }
+	.cover .card li { padding: 15px 0; }
+.cover .date { width: 400px; padding: 50px 0; float: right; }
+
+.table { border-collapse: collapse; background: #fff; }
+	.table th,.table td { padding: 20px; border: #eee solid 1px; }
+
+.re-list dl { margin: 20px 6px; padding: 20px; background: #fff; color: #333; border-radius: 3px; box-shadow: 0 0 3px rgba(0,0,0,.1); }
+	.re-list dt { padding-bottom: 15px; border-bottom: #eee solid 1px; }
+	.re-list ul { margin-top: 10px; overflow: hidden; }
+	.re-list li { width: 50%; padding-top: 5px; float: left; }
+
+.monitoring { margin-top: 30px; color: #fff; }
+	.monitoring .box-default { width: 548px; height: 396px; margin: 15px 0 0 15px; float: left; background: rgba(0,147,221,.6); position: relative; }
+	.monitoring .box-default .tc { height: 120px; padding: 30px; }
+	.monitoring .box-default .tc .iconfont { font-size: 120px; line-height: 120px; }
+	.monitoring .box-default .des { width: 100%; padding: 0 30px; position: absolute; bottom: 30px; overflow: hidden; color: rgba(255,255,255,.7); box-sizing:border-box; }
+	.monitoring .box-default .des p { height: 150px; overflow: hidden; }
+	.monitoring .box-default .des h3 { padding-bottom: 10px; font-size: 30px; color: #fff; }
