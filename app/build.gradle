@@ -93,6 +93,7 @@ dependencies {
     implementation project(':DevLibrary')
     testImplementation 'junit:junit:4.12'
     compile 'com.hwangjr.rxbus:rxbus:1.0.6'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // 互动白板服务需要
     compile 'com.netease.nimlib:rts:4.4.0'

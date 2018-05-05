@@ -1,5 +1,10 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
@@ -8,10 +13,21 @@ import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.invs.BltBase;
+import com.invs.BtReaderClient;
+import com.invs.IClientCallBack;
+import com.invs.InvsConst;
+import com.invs.InvsIdCard;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.NIMClient;
 import android.support.v7.widget.Toolbar;
 import com.netease.nimlib.sdk.StatusCode;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import ufhealth.integratedmachine.client.R;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +36,8 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.yuan.devlibrary._12_______Utils.NetTools;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.Toast;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
@@ -34,9 +52,14 @@ import ufhealth.integratedmachine.client.ui.zxzx.view.YyzxingAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.TwzxingAct;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
+
+import java.util.Observable;
+
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
 
-public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
+import static com.invs.InvsConst.msg;
+
+public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,IClientCallBack
 {
     private Toolbar mainToolbar;
     private TextView mainCountdown;
@@ -61,6 +84,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     private BaseProgressDialog progressDialog;
 
     private Observer imOnLineObserver;
+    private ReadThread mReadThread = null;
+    private BtReaderClient mBtReaderClient;
 
     protected int setLayoutResID()
     {
@@ -89,6 +114,39 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         mainSlideWdda = rootView.findViewById(R.id.main_slide_wdda);
         mainSlideGybj = rootView.findViewById(R.id.main_slide_gybj);
         mainSlideXxtzNum = rootView.findViewById(R.id.main_slide_xxtz_num);
+
+        mBtReaderClient = new BtReaderClient(this);
+        mBtReaderClient.setCallBack(this);
+        rx.Observable.just("").map(new Func1<String, String>()
+        {
+            public String call(String s)
+            {
+                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(!btAdapter.isEnabled())
+                    btAdapter.enable();
+                while(true)
+                {
+                    if(mBtReaderClient.connectBt("00:0E:0B:00:02:33"))
+                        break;
+                }
+                return s;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>()
+        {
+            public void call(String s)
+            {
+                startThreadReadCard();
+                //4、开启循环读卡（业务中应该放在点击登录的时候，开启循环读卡；登录成功后，关闭循环读卡）
+                //startThreadReadCard();  //开启循环读卡
+                //stopThreadReadCard(); //关闭循环读卡
+                //5、注册BroadcastReceiver，用于接收蓝牙传回的消息
+            }
+        });
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(msg);
+        registerReceiver(mBltReceiver, intentFilter);
+
     }
 
     protected void initDatas()
@@ -227,6 +285,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         if(getBaseApp().getImIsLogined()) NIMClient.getService(AuthService.class).logout();
     }
 
+    /*****************************************蓝牙层******************************************/
+
     /**********************************************************************************************/
     /********************************************VIEW层********************************************/
     /**********************************************************************************************/
@@ -244,6 +304,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     {
         useGlideLoadImg(mainSlideImg,R.mipmap.defaultheadimg);
         mainSlideName.setText("用户姓名");
+        startThreadReadCard();
         notLogged();
     }
 
@@ -415,4 +476,159 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         progressDialog = showLoadingDialog();
         startZxAct(type,doctorId,accId,time,orderId);
     }
+
+
+    public void startThreadReadCard()
+    {
+        mReadThread = new ReadThread();
+        mReadThread.start();
+    }
+
+    public void stopThreadReadCard()
+    {
+        if (mReadThread != null && mReadThread.isAlive()){
+            mReadThread.over();
+            mReadThread = null;
+        }
+    }
+
+    public void onBtState(final boolean isConnect)
+    {
+        if (isConnect)
+            mainLogin.setText("请刷身份证进行登录操作...");
+        else
+            mainLogin.setText("正在连接身份证读取设备，请稍等...");
+    }
+
+    public class BaseThread extends Thread
+    {
+        public boolean mOver = false;
+        public boolean isOver(){
+            return (this.interrupted() || mOver);
+        }
+
+        public void over()
+        {
+            this.interrupted();
+            mOver = true;
+        }
+    }
+
+    public class ReadThread extends BaseThread
+    {
+        public InvsIdCard mCard = null;
+        protected void sendMsg(int cmd, boolean succ)
+        {
+            Intent intent = new Intent();
+            intent.setAction(msg);
+            intent.putExtra("cmd", cmd);
+            intent.putExtra("tag", succ);
+            if (succ && cmd == InvsConst.Cmd_ReadCard)
+                intent.putExtra("InvsIdCard", mCard);
+            MainAct.this.sendBroadcast(intent);
+        }
+
+        void readCard()
+        {
+            try
+            {
+                SystemClock.sleep(100);
+                int iResult = mBtReaderClient.findCardCmd();
+                if (iResult == -1)
+                {
+                    mBtReaderClient.disconnectBt();
+                    over();
+                    return;
+                }
+                else if (iResult == 0x9f)
+                {
+
+                }
+                else
+                {
+                    sendMsg(InvsConst.Cmd_ReadCard, false);
+                    return;
+                }
+
+                iResult = mBtReaderClient.readCardCmd();
+                if (iResult == -1)
+                {
+                    mBtReaderClient.disconnectBt();
+                    over();
+                    return;
+                }
+                else if (iResult == 0x90)
+                {
+                    mCard = mBtReaderClient.mInvsIdCard;
+                    sendMsg(InvsConst.Cmd_ReadCard, true);
+                }
+                else
+                {
+                    sendMsg(InvsConst.Cmd_ReadCard, false);
+                    return;
+                }
+
+                while(!isOver())
+                {
+                    SystemClock.sleep(50);
+                    iResult = mBtReaderClient.readAppCmd();
+                    if (iResult == 0x90 || iResult == 0x91)
+                        continue;
+
+                    if (iResult == -1)
+                    {
+                        mBtReaderClient.disconnectBt();
+                        over();
+                    }
+                    break;
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        public void run()
+        {
+            while(!isOver())
+            {
+                readCard();
+            }
+            SystemClock.sleep(5);
+        }
+    }
+
+    private final BroadcastReceiver mBltReceiver = new BroadcastReceiver()
+    {
+        public void onReceive(Context context, Intent intent)
+        {
+            final String action = intent.getAction();
+            if (msg.equals(action))
+            {
+                if (intent.getBooleanExtra("tag", false))
+                {
+                    InvsIdCard invsIdCard = (InvsIdCard) intent.getSerializableExtra("InvsIdCard");
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("姓名：" + invsIdCard.name);
+                    sb.append("\r\n");
+                    sb.append("性别：" + invsIdCard.sex);
+                    sb.append("\r\n");
+                    sb.append("民族：" + invsIdCard.nation);
+                    sb.append("\r\n");
+                    sb.append("出生日期：" + invsIdCard.birth);
+                    sb.append("\r\n");
+                    sb.append("住址：" + invsIdCard.address);
+                    sb.append("\r\n");
+                    sb.append("身份证号：" + invsIdCard.idNo);
+                    showToast(sb.toString());
+                    if(null != invsIdCard && null != invsIdCard.idNo && !"".equals(invsIdCard.idNo))
+                        stopThreadReadCard();
+                }
+                else
+                {
+                    //读卡失败
+                }
+            }
+        }
+    };
 }

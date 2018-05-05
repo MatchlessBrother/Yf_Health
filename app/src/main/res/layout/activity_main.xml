@@ -80,7 +80,7 @@
                 android:layout_marginRight="200pt"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="请刷身份证进行登录操作..."
+                android:text="正在连接身份证读取设备，请稍等..."
                 android:textColor="@color/default_font_black"
                 android:textSize="36sp"
                 android:visibility="visible" />
