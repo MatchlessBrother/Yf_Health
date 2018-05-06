@@ -367,7 +367,7 @@
                         android:layout_toRightOf="@id/main_jkdaimg"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="这句话还没有想好"
+                        android:text="实时记录您每次健康检测的数据"
                         android:textColor="@color/default_font_gray"
                         android:textSize="27sp" />
                 </RelativeLayout>

@@ -1,0 +1,152 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/member.css" />
+</head>
+<body>
+
+<div class="pages">
+
+	<div class="sidebar box-default">
+		<div class="menu">
+			<ul>
+				<li><a href="order-zxzx.html"><i class="iconfont">&#xe645;</i>在线咨询</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li class="current"><a href="javascript:void(0);"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li><a href="javascript:void(0);"><i class="iconfont">&#xe659;</i>体检服务</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li><a href="javascript:void(0);"><i class="iconfont">&#xe605;</i>用药服务</a><i class="iconfont arrow">&#xe64d;</i></li>
+			</ul>
+		</div>
+	</div>
+	<div class="content box-default">
+		<div class="menu-tab">
+			<ul>
+				<li jy-status="1000"><a href="javascript:void(0);">待付款<span id="stat1000"></span></a></li>
+				<li jy-status="1001"><a href="javascript:void(0);">待接单<span id="stat1001"></span></a></li>
+				<li jy-status="2000"><a href="javascript:void(0);">进行中<span id="stat2000"></span></a></li>
+				<li jy-status="3011"><a href="javascript:void(0);">待评价<span id="stat3011"></span></a></li>
+				<li jy-status="0"><a href="javascript:void(0);">全部<span id="stat0"></span></a></li>
+			</ul>
+		</div>
+		<div class="main" style="height:780px;margin-top:15px">
+			<div class="order-list">
+				
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	loadStatData();
+	
+	$(".menu-tab li").click(function(){
+		setItem("jyStatus", $(this).attr("jy-status"));
+		$(".menu-tab li").removeClass("current");
+		$(this).addClass("current");
+		loadList();
+	});
+
+	if (getItem("jyStatus") == null) {
+		setItem("jyStatus", 1000);
+		$(".menu-tab li:eq(0)").addClass("current");
+	} else {
+		jyStatus = getItem("jyStatus");
+		$(".menu-tab li[jy-status="+jyStatus+"]").addClass("current");
+	}
+
+	loadList();
+});
+function loadStatData() {
+	ajax("/jiuyi/order/statAllOrderStatus", null, function(res) {
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$("#stat1000").html(res.s1000 > 0 ? res.s1000 : "");
+		$("#stat1001").html(res.s1001 > 0 ? res.s1001 : "");
+		$("#stat2000").html(res.s2000 > 0 ? res.s2000 : "");
+		$("#stat3011").html(res.s3011 > 0 ? res.s3011 : "");
+		$("#stat0").html(res.s0 > 0 ? res.s0 : "");
+	});
+}
+function loadList(){
+	ajax("/jiuyi/order/findByMmeberIdAndStatus", {status:getItem("jyStatus")}, function(res) {
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$(".order-list").html("");
+		for (var i = 0 ; i < res.length ; i++) {
+			var status = "";
+			var button = "";
+			if (res[i].status == 1000) {
+				status = '<span class="c-red">'+res[i].statusName+'</span>';
+				button = '<a href="javascript:cancel(\''+res[i].businessCode+'\','+res[i].id+')" class="button button-reverse">取消订单</a><a href="javascript:pay(\''+res[i].businessCode+'\','+res[i].id+');" class="button">去付款</a>';
+			} else if (res[i].status == 1001) {
+				status = '<span class="c-red">待接单</span>';
+				button = '<a href="javascript:cancel(\''+res[i].businessCode+'\','+res[i].id+');" class="button button-reverse">取消订单</a>';
+			} else if (res[i].status >= 2000 && res[i].status <= 2999) {
+				status = '<span class="c-green">进行中</span>';
+			} else if (res[i].status == 3011) {
+				status = '<span class="c-red">待评价</span>';
+				button = '<a href="javascript:comment(\''+res[i].businessCode+'\','+res[i].id+');" class="button">去评价</a>';
+			} else if (res[i].status > 3011 && res[i].status <= 3999) {
+				status = '<span class="c-bbb">已完成</span>';
+			} else if (res[i].status >= 4000 && res[i].status <= 4999) {
+				status = '<span class="c-bbb">已取消</span>';
+			}
+
+			var html = '<dl><dt>'+res[i].hospitalName+'<div class="fr">'+status+'</div></dt>';
+			html += '<dd><div class="info"><a href="javascript:detail(\''+res[i].businessCode+'\','+res[i].id+');"><ul style="margin:0"><li>就医项目：<span class="c-333">'+res[i].businessName+'</span></li>';
+			html += '<li>订单编号：<span class="c-333">'+res[i].orderNumber+'</span></li><li>下单时间：<span class="c-333">'+res[i].createTime+'</span></li>';
+			html += '<li>就&nbsp;&nbsp;诊&nbsp;&nbsp;人：<span class="c-333">'+res[i].patientName+'</span></li><li>订单价格：<span class="c-red">'+res[i].amount+'元</span></li>';
+			html += '</ul></a><i class="iconfont arrow">&#xe64d;</i></div></dd><dd class="oper">';
+			html += button;
+			html += '</dd></dl>';
+			$(".order-list").append(html);
+		}
+	});
+}
+function cancel(businessCode, id){
+	if (confirm("确认取消订单?")) {
+		ajax("/jiuyi/"+businessCode.toLowerCase()+"/cancel", {orderId:id}, function(res){
+			layer.msg(res.msg);
+			if (res.code <= 0) {
+				return;
+			}
+			loadStatData();
+			loadList();
+		});
+	}
+}
+function pay(businessCode, id){
+	setItem("orderId", id);
+	if (businessCode.toLowerCase() == "bgh") {
+		window.location.href = "../yygh/pay.html";
+	} else if (businessCode.toLowerCase() == "dbjzk") {
+		window.location.href = "../dbjzk/pay.html";
+	}
+}
+function detail(businessCode, id){
+	setItem("orderId", id);
+	window.location.href = "order-bjjy-detail-"+businessCode.toLowerCase()+".html";
+}
+function comment(businessCode, id){
+	layer.msg("comment "+businessCode+" "+id);
+}
+
+</script>
+
+</body>
+</html>

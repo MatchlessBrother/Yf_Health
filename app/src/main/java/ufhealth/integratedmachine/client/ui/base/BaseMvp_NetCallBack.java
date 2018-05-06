@@ -66,5 +66,9 @@ public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T
         {
             mBaseMvpLocalCallBack.onSuccess(returnDatas);
         }
+        else if(NetFlags.NeedBindIdCard.equals(returnDatas.getCode()))
+        {
+            mBaseMvpLocalCallBack.onSuccess(returnDatas);
+        }
     }
 }

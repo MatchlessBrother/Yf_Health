@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+</head>
+<body>
+
+<div class="pages">
+	<div class="row hospital-list">
+	</div>
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".hospital-list").on("click", ".item", function(){
+			if (getItem("hospitalId") != null && getItem("hospitalId") != $(this).attr("data-id")) {
+				removeItem("date");
+				removeItem("time");
+				removeItem("dbjzkNeedPapersType");
+				removeItem("certificateSubmitType");
+				removeItem("certificateImage1");
+				removeItem("certificateImage1Url");
+				removeItem("certificateImage2");
+				removeItem("certificateImage2Url");
+				removeItem("cardReceiveType");
+			}
+			setItem("hospitalId", $(this).attr("data-id"));
+			setItem("hospitalName", $(this).attr("data-name"));
+			window.location.href = "index.html";
+		});
+		ajax("/general/hospital/findByServiceType", {serviceType:1}, function(res){
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			for (var i = 0 ; i < res.length ; i++) {
+				var html = '<div class="col-6"><div class="item box-default" data-id="'+res[i].id+'" data-name="'+res[i].name+'">';
+				html += '<img src="'+res[i].logoPath+'"><h3 class="fs28">'+res[i].name+'</h3><p class="c-blue">'+res[i].levelName+'</p><p class="c-bbb">'+res[i].address+'</p>';
+				html += '</div></div>';
+				$(".hospital-list").append(html);
+			}
+		});
+	});
+</script>
+
+</body>
+</html>

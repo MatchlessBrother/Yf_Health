@@ -30,7 +30,7 @@ android {
         /**正式版**/
         publish{
             manifestPlaceholders = [APP_NAME:"@string/app_name"]
-            buildConfigField 'String', "SERVICE_URL",'"http://60.205.148.14:8000/"'
+            buildConfigField 'String', "SERVICE_URL",'"http://dimdim215.imwork.net:53102/"'
         }
 
         /**测试版**/

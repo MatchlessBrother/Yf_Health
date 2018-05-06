@@ -138,11 +138,6 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         doctorInfoPresenter.attachContextAndViewLayer(this,this);
         yyzxingPresenter = new YyzxingPresenter();
         yyzxingPresenter.attachContextAndViewLayer(this,this);
-    }
-
-    protected void initLogic()
-    {
-        doctorInfoPresenter.initDoctorAllInfo(getIntent().getStringExtra("doctorid").trim());
         yyzxingRightTopSpeaker.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             public void onCheckedChanged(CompoundButton compoundButton, boolean bol)
@@ -165,33 +160,53 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         });
         yyzxingRightTopSpeaker.setChecked(true);
         yyzxingRightTopMicrophone.setChecked(true);
+    }
 
-
-        callHangupObserver = new Observer<AVChatCommonEvent>()
+    protected void initLogic()
+    {
+        doctorInfoPresenter.initDoctorAllInfo(doctorId);
+        callAckObserver = new Observer<AVChatCalleeAckEvent>()
         {
-            public void onEvent(AVChatCommonEvent hangUpInfo)//结束通话
+            public void onEvent(AVChatCalleeAckEvent ackInfo)
             {
-                if(hangUpInfo.getEvent() == AVChatEventType.PEER_HANG_UP)
+                if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY)
                 {
                     setZxStatusUi(1);
-                    finishAutoCalculationTime();
                     destroyAudioEnviroment();
-                    rippleView.stopRippleAnimation();
-                    showToast("对方关闭语音咨询，谢谢使用！");
-                    yyzxingRightBottomLjstatus.setText("成功关闭语音咨询，谢谢使用！");
+                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
+                }
+                else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT)
+                {
+                    setZxStatusUi(1);
+                    destroyAudioEnviroment();
+                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
+                }
+                else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE)
+                {
+                    yyzxingRightBottomLjstatus.setText("正在建立语音连接，请稍等...");
                 }
             }
         };
+
+
         aVChatStateObserverLite = new AVChatStateObserverLite()
         {
-            public void onLeaveChannel() {}
-
             public void onCallEstablished()
             {
                 setZxStatusUi(3);
                 beginAutoCalculationTime();
                 rippleView.startRippleAnimation();
                 yyzxingRightBottomLjstatus.setText("语音连接成功，请开始咨询！");
+            }
+
+            public void onJoinedChannel(int code, String audioFile, String videoFile, int elapsed)
+            {
+                if(code != AVChatResCode.JoinChannelCode.OK)
+                {
+                    setZxStatusUi(1);
+                    destroyAudioEnviroment();
+                    yyzxingRightBottomLjstatus.setText("建立语音连接失败，请稍后重试...");
+                }
             }
 
             public void onUserLeave(String account, int event)
@@ -203,14 +218,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
                 }
             }
 
-            public void onJoinedChannel(int code, String audioFile, String videoFile, int elapsed)
-            {
-                if(code != AVChatResCode.JoinChannelCode.OK)
-                {
-                    setZxStatusUi(1);
-                    yyzxingRightBottomLjstatus.setText("建立语音连接失败，请稍后重试...");
-                }
-            }
+            public void onLeaveChannel() {}
 
             public void onDisconnectServer() {}
 
@@ -244,26 +252,24 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
 
             public boolean onVideoFrameFilter(AVChatVideoFrame frame, boolean maybeDualInput) {return false;}
         };
-        callAckObserver = new Observer<AVChatCalleeAckEvent>()
+
+
+        callHangupObserver = new Observer<AVChatCommonEvent>()
         {
-            public void onEvent(AVChatCalleeAckEvent ackInfo)
+            public void onEvent(AVChatCommonEvent hangUpInfo)//结束通话
             {
-                if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY)
+                if(hangUpInfo.getEvent() == AVChatEventType.PEER_HANG_UP)
                 {
                     setZxStatusUi(1);
-                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
-                }
-                else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT)
-                {
-                    setZxStatusUi(1);
-                    yyzxingRightBottomLjstatus.setText("医生正在与他人语音，请稍后再试...");
-                }
-                else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE)
-                {
-                    yyzxingRightBottomLjstatus.setText("正在建立语音连接，请稍等...");
+                    destroyAudioEnviroment();
+                    finishAutoCalculationTime();
+                    rippleView.stopRippleAnimation();
+                    showToast("对方关闭语音咨询，谢谢使用！");
+                    yyzxingRightBottomLjstatus.setText("成功关闭语音咨询，谢谢使用！");
                 }
             }
         };
+
         AVChatManager.getInstance().observeAVChatState(aVChatStateObserverLite, true);
         AVChatManager.getInstance().observeCalleeAckNotification(callAckObserver, true);
         AVChatManager.getInstance().observeHangUpNotification(callHangupObserver, true);
@@ -278,7 +284,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
             {
                 if(rtcStatus == 1)
                     finish();
-                else if(rtcStatus == 3 && null != avChatData)
+                else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
                     finishAudioChat(avChatData);
                 break;
             }
@@ -287,10 +293,12 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
                 if(rtcStatus == 1)
                 {
                     setZxStatusUi(2);
-                    beginAudioChat(chatObjAccId,AVChatType.AUDIO);
+                    beginAudioChat(chatObjAccId,AVChatType.VIDEO);
                 }
                 else if(rtcStatus == 3 && null != avChatData)
+                {
                     finishAudioChat(avChatData);
+                }
                 break;
             }
         }
@@ -300,7 +308,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     {
         if(rtcStatus == 1)
             finish();
-        else if(rtcStatus == 3 && null != avChatData)
+        else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
             finishAudioChat(avChatData);
     }
 
@@ -340,7 +348,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
         }
     }
 
-    /**1未开始语音通讯，2处于连接过程中,3正在咨询,4处于关闭过程中,5时限用完**/
+    /**1未开始语音通讯，2处于连接过程中,3正在咨询,4时限用完**/
     public void setZxStatusUi(int rtcCode)
     {
         switch(rtcCode)
@@ -368,18 +376,11 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
             }
             case 4:
             {
-                rtcStatus = 4;
-                doctorinfoStartchat.setText("正在结束");
-                doctorinfoStartchat.setBackgroundColor(Color.argb(255,255,0,0));
-                break;
-            }
-            case 5:
-            {
                 rtcStatus = 1;
                 doctorinfoStartchat.setEnabled(false);
                 doctorinfoStartchat.setText("谢谢咨询");
-                doctorinfoStartchat.setBackgroundColor(Color.argb(255,102,102,102));
                 yyzxingRightTopTime.setText("正在与" + doctorName + "医生咨询，此次通话已结束");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,102,102,102));
             }
         }
     }
@@ -415,7 +416,6 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     /****************************关闭音频通讯环境**************************/
     public void destroyAudioEnviroment()
     {
-        AVChatManager.getInstance().setParameters(new AVChatParameters());
         AVChatManager.getInstance().disableRtc();
     }
 
@@ -423,11 +423,6 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     public AVChatNotifyOption initAudioEnviroment()
     {
         AVChatManager.getInstance().enableRtc();//打开Rtc模块
-        AVChatParameters avChatParameters = new AVChatParameters();//设置自定义音频需要的可选参数
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_NOISE_SUPPRESSOR);
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_AUTOMATIC_GAIN_CONTROL);
-        avChatParameters.setRequestKey(AVChatParameters.KEY_AUDIO_EFFECT_ACOUSTIC_ECHO_CANCELER);
-        AVChatManager.getInstance().setParameters(avChatParameters);
         AVChatNotifyOption notifyOption = new AVChatNotifyOption();
         notifyOption.webRTCCompat = false;//是否兼容WebRTC模式
         notifyOption.extendMessage = orderId; //附加字段
@@ -445,7 +440,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
                 if(!isNoTime)
                     setZxStatusUi(1);
                 else
-                    setZxStatusUi(5);
+                    setZxStatusUi(4);
                 destroyAudioEnviroment();
                 finishAutoCalculationTime();
                 rippleView.stopRippleAnimation();
@@ -511,13 +506,11 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
                         yyzxingRightTopTime.setText("正在与" + doctorName + "医生咨询，此次通话将在 " + getTimeText(syTime) + " 后结束");
                         if(syTime < 0)
                         {
-                            isNoTime = true;
                             showToast("咨询时限用完了！如需继续咨询，请购买咨询时间后再继续咨询，谢谢使用！");
                             finishAutoCalculationTime();
+                            isNoTime = true;
                             if(avChatData != null)
-                            {
                                 finishAudioChat(avChatData);
-                            }
                         }
                     }
                 });
@@ -529,10 +522,11 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     /**************结束倒计时************/
     public void finishAutoCalculationTime()
     {
-        timer.cancel();
-
+        if(null != timer)
+            timer.cancel();
     }
 
+    /********时间中文化（单位：秒）**********/
     public String getTimeText(long secondTime)
     {
         int seconds = (int)secondTime % 60;

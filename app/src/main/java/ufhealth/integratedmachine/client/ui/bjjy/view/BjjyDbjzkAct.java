@@ -1,18 +1,22 @@
 package ufhealth.integratedmachine.client.ui.bjjy.view;
 
 import android.view.View;
+import android.view.KeyEvent;
 import android.graphics.Color;
 import android.webkit.WebSettings;
 import com.just.agentweb.AgentWeb;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
+import android.annotation.SuppressLint;
 import com.just.agentweb.DefaultWebClient;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.ProvideActionForWebiew;
 import ufhealth.integratedmachine.client.ui.bjjy.view_v.BjjyDbjzkAct_V;
 import ufhealth.integratedmachine.client.ui.bjjy.presenter.BjjyDbjzkPresenter;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class BjjyDbjzkAct extends BaseAct implements BjjyDbjzkAct_V,View.OnClickListener
 {
     private AgentWeb agentWeb;
@@ -24,6 +28,7 @@ public class BjjyDbjzkAct extends BaseAct implements BjjyDbjzkAct_V,View.OnClick
         return R.layout.activity_bjjydbjzk;
     }
 
+    @SuppressLint("JavascriptInterface")
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
@@ -36,8 +41,9 @@ public class BjjyDbjzkAct extends BaseAct implements BjjyDbjzkAct_V,View.OnClick
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("http://f206p96248.imwork.net:13209/web/dbjzk/index.html");
+                .go("file:///android_asset/web/dbjzk/index.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        agentWeb.getWebCreator().getWebView().addJavascriptInterface(new ProvideActionForWebiew(this), "androidjs");
     }
 
     protected void initDatas()
@@ -76,13 +82,12 @@ public class BjjyDbjzkAct extends BaseAct implements BjjyDbjzkAct_V,View.OnClick
 
     }
 
- /*   @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (agentWeb.handleKeyEvent(keyCode, event))
             return true;
         return super.onKeyDown(keyCode, event);
-    }*/
+    }
 
     @Subscribe
     public void receiveCountDownFinish(Boolean isFinish)

@@ -1,0 +1,90 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/yygh.css" />
+</head>
+<body>
+
+<div class="pages">
+
+	<div class="row hospital-list">
+		<div class="col-12">
+			<div class="item box-default">
+				<img src="../../images/hospital/03.png">
+				<h3 class="fs30">四川省妇幼保健院</h3>
+				<p class="c-blue">三级甲等</p>
+				<p class="c-bbb">四川省成都市青羊区十二桥路39号</p>
+			</div>
+		</div>
+	</div>
+	<div class="row dep-list">
+		<div class="col-4">
+			<div class="item box-default">
+				中医儿科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医其他门诊-中医外科换药
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医养生保健门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医内科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医妇科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医妇科门诊-中医妇科
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医男科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医肛肠·痔瘘科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医针灸科门诊
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="item box-default">
+				中医骨科门诊-中医骨伤科
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	ajax("/general/hospital/findByServiceType", {serviceType:1} , function(res){
+		alert(res);
+	})
+})
+</script>
+
+</body>
+</html>

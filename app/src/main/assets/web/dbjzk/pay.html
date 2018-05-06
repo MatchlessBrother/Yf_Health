@@ -1,0 +1,160 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+
+</head>
+<body>
+
+<div class="pages">
+
+	<div class="form-box box-default">
+		<div class="item item-val">
+			<label class="title">就&nbsp;&nbsp;诊&nbsp;&nbsp;人：</label>
+			<div id="name" class="val"></div>
+		</div>
+		<div class="item item-val">
+			<label class="title">电话号码：</label>
+			<div id="telephone" class="val"></div>
+		</div>
+		<div class="item item-val">
+			<label class="title">就诊医院：</label>
+			<div id="hospitalName" class="val"></div>
+		</div>
+		<div class="item item-val">
+			<label class="title">办卡时间：</label>
+			<div id="date" class="val"></div>
+		</div>
+	</div>
+	<div class="pay-box box-default mg-t20">
+		<h2 class="title"><img src="../../images/wepay.png">微信支付</h2>
+		<div class="row">
+			<span class="line"></span>
+			<div class="col-6">
+				<h3 class="tc fs28 pd-b30">请使用微信扫一扫进行支付下单</h3>
+				<div class="tc pd-t10">
+					<div id="payQrCode"></div>
+				</div>
+				<p id="description" class="fs16 pd20 c-666"></p>
+			</div>
+			<div class="col-6">
+				<div class="cost">
+					<h3 class="fs28 pd-b20">就医服务订单</h3>
+					<div class="total"><span class="tag">￥</span> <span id="amount" class="num">-</span></div>
+					<p id="amountDetail" class="pd-t20">
+						
+					</p>
+					<ul>
+						<li id="orderNumber">订单编号：</li>
+						<li id="createTime">下单时间：</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	if (getItem("orderId") != null) {
+		pay();
+	} else {
+		createAndPay();
+	}
+});
+function createAndPay() {
+	$("#name").html(name);
+	$("#telephone").html(getItem("telephone"));
+	$("#hospitalName").html(getItem("hospitalName"));
+	$("#patientCard").html(getItem("isNeedDbjzkService") == "1" ? "需要办理" : getItem("patientCard"));
+	$("#date").html(getItem("date"));
+	var data = {telephone:getItem("telephone"), hospitalId:getItem("hospitalId"), certificateSubmitType:getItem("certificateSubmitType"), certificateImage1:getItem("certificateImage1"), certificateImage2:getItem("certificateImage2"), cardReceiveType:getItem("cardReceiveType"), date:getItem("date")+" "+getItem("time")};
+	ajax("/jiuyi/dbjzk/create", data, function(res){
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$("#amount").html(res.amount);
+		if (res.cardCost != null) {
+			$("#amountDetail").append('代办就诊卡工本费：<span class="c-red">￥'+res.cardCost+'</span><br/>');
+		}
+		if (res.advanceCardExpressCost != null) {
+			$("#amountDetail").append('代办就诊卡快递费：<span class="c-red">￥'+res.advanceCardExpressCost+'</span><br/>');
+		}
+		if (res.serviceCost != null) {
+			$("#amountDetail").append('代办就诊卡服务费：<span class="c-red">￥'+res.serviceCost+'</span><br/>');
+		}
+		$("#orderNumber").html("订单编号："+res.orderNumber);
+		$("#createTime").html("下单时间："+res.createTime);
+		$('#payQrCode').qrcode(res.payQrcodeUrl);
+		$("#description").html('支付成功后页面会跳转至下单成功页面，同时您的手机会收到我们的挂号短信，请注意查收。');
+		queryPayResult(res.payOrderNumber);
+	});
+}
+function pay() {
+	ajax("/jiuyi/dbjzk/findByMemberIdAndOrderId", {orderId:getItem("orderId")}, function(res) {
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$("#name").html(res.patientName);
+		$("#telephone").html(res.patientMobilePhone);
+		$("#hospitalName").html(res.hospitalName);
+		$("#patientCard").html(res.patientCard);
+		$("#date").html(new Date(res.expectCardTime).format("yyyy-MM-dd HH:mm"));
+		
+		$("#amount").html(res.amount);
+		if (res.cardCost != null) {
+			$("#amountDetail").append('代办就诊卡工本费：<span class="c-red">￥'+res.cardCost+'</span><br/>');
+		}
+		if (res.advanceCardExpressCost != null) {
+			$("#amountDetail").append('代办就诊卡快递费：<span class="c-red">￥'+res.advanceCardExpressCost+'</span><br/>');
+		}
+		if (res.serviceCost != null) {
+			$("#amountDetail").append('代办就诊卡服务费：<span class="c-red">￥'+res.serviceCost+'</span><br/>');
+		}
+		$("#orderNumber").html("订单编号："+res.orderNumber);
+		$("#createTime").html("下单时间："+new Date(res.createTime).format("yyyy-MM-dd HH:mm:ss"));
+		$("#description").html('支付成功后页面会跳转至下单成功页面，同时您的手机会收到我们的挂号短信，请注意查收。');
+		
+		ajax("/jiuyi/dbjzk/reCreateWechatPayment", {orderId:getItem("orderId")}, function(res) {
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			$('#payQrCode').qrcode(res.payQrcodeUrl);
+			queryPayResult(res.payOrderNumber);
+		});
+	});
+}
+function queryPayResult(payOrderNumber) {
+	setTimeout(function(){
+		ajaxNoLoading("/member/wechatPayment/queryPayResult", {orderNumber:payOrderNumber}, function(res){
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			if (res.payStatus == 2) {
+				setItem("serviceName", "就医服务");
+				window.location.href = "../public/success.html";
+			}
+			queryPayResult(payOrderNumber);
+		});
+	}, 1000);
+}
+</script>
+
+</body>
+</html>

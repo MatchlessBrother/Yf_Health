@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/member.css" />
+</head>
+<body>
+
+<div class="pages">
+	<div class="sidebar box-default">
+		<div class="menu">
+			<ul>
+				<li class="current"><a href="javascript:void(0);"><i class="iconfont">&#xe645;</i>在线咨询</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li><a href="order-bjjy.html"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
+			</ul>
+		</div>
+	</div>
+	<div class="content box-default">
+		<div class="menu-tab">
+			<ul>
+				<li class="current" id="1000"><a href="javascript:void(0);"  onclick="loadData(1000)">待付款<span id="dzf"></span></a></li>
+				<li id="1002"><a href="javascript:void(0);"  onclick="loadData(1002)">待咨询<span id="dzx"></span></a></li>
+			    <li id="2000"><a href="javascript:void(0);"  onclick="loadData(2000)">进行中<span id="jxz"></span></a></li>
+				<li id="1003"><a href="javascript:void(0);"  onclick="loadData(1003)">待评价<span id="dpj"></span></a></li>
+				<li id="1004"><a href="javascript:void(0);"  onclick="loadData(1004)">已完成<span id="ywc"></span></a></li>
+				<li id="0"><a href="javascript:void(0);"  onclick="loadData(0)">全部<span id="all"></span></a></li>
+			</ul>
+		</div>
+		<div class="main" style="height:780px;margin-top:15px">
+			<div class="order-list">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	loadData(1000);
+});
+function loadData(status){
+	$("#"+status).addClass("current").siblings().removeClass("current");
+	ajax('/zixun/zxorder/findMyOrder', {status:status} , function(res){
+		if(res.code == 1){
+			$("#dzf").html(res.data.dzf);
+			$("#dzx").html(res.data.dzx);
+			$("#dpj").html(res.data.dpj);
+			$("#ywc").html(res.data.ywc);
+			$("#jxz").html(res.data.jxz);
+			$("#all").html(res.data.total);
+			var dataList = res.data.dataList;
+			var html ="";
+			for(var i=0;i<dataList.length;i++){
+					html +="<dl>";
+					html +="<dt>";
+					if(dataList[i].zxtype=="YPZX"){
+						html+="服务内容:语音咨询";
+					}else if(dataList[i].zxtype=="SPZX"){
+						html+="服务内容:视频咨询";
+					}else if(dataList[i].zxtype=="TWZX"){
+						html+="服务内容:图文咨询";
+					}
+					html+= "<div class='fr'>";
+					if(dataList[i].status=='1000'){
+						html+= "<span class='c-red'>待付款</span>";
+					}else if(dataList[i].status=='1002'){
+						html+= "<span class='c-red'>待咨询</span>";
+					}else if(dataList[i].status=='1003'){
+						html+= "<span class='c-red'>待评价</span>";
+					}else if(dataList[i].status=='1004'){
+						html+= "<span class='c-red'>已完成</span>";
+					}else if(dataList[i].status=='2000'){
+						html+= "<span class='c-red'>进行中</span>";
+					}
+					
+					html+= "</div>";
+					html+= "</dt>";
+					html+= "<dd><div class='info'>";
+					html+= "<a href='javascript:void(0);'  onclick=goToDetail(\'"+dataList[i].order_id+"\',\'"+dataList[i].zxtype+"\')>";
+					html+= "<img src='../../images/user/head5.png'>";
+					html+= "<ul>"
+					html+= "<li>医生信息：<span class='c-333'>"+dataList[i].doc_name+"   "+dataList[i].hospital_name+" "+dataList[i].depart_name+"</span></li>";
+					html+= "<li>订单编号：<span class='c-333'>"+dataList[i].order_number+" </span></li>";
+					html+= "<li>下单时间：<span class='c-333'>"+dataList[i].create_time+"</span></li>";
+					html+= "<li>订单价格：<span class='c-red'>"+dataList[i].amount+"元</span></li>";
+					html+= "</ul>";
+					html+= "</a>";
+					html+= "<i class='iconfont arrow'>&#xe64d;</i>";
+					html+= "</div></dd>";
+					html+= "<dd class='oper'>";
+					if(dataList[i].status=='1000'){
+						//html+= "<a href='javascript:void(0);' class='button button-reverse'>取消订单</a>";
+						html+= "<a href='javascript:void(0);' class='button'   onclick=goToPay(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去付款</a>";
+					}else if(dataList[i].status=='1001' || dataList[i].status=='1002'){
+						html+= "<a href='javascript:void(0);' class='button'   onclick=goToZiXun(\'"+dataList[i].zxtype+"\',\'"+dataList[i].order_id+"\',\'"+dataList[i].accid+"\',\'"+dataList[i].doctor_id+"\')>去咨询</a>";
+					}else if(dataList[i].status=='1003'){
+						html+= "<a href='javascript:void(0);' class='button'   onclick=goToPingJia(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去评价</a>";
+					}
+					html+= "</dd>";
+					html+= "</dl>";
+			}
+			$(".order-list").html(html);
+		}else{
+			layer.msg(res.msg);
+		}
+  	});
+}
+function goToPay(order_number,zxType){
+	setItem("order_number", order_number);
+	setItem("zxType", zxType);
+	window.location.href = "pay.html";
+}
+/**
+ * 去评价
+ */
+function goToPingJia(){
+	
+}
+/**
+ * 去咨询
+ * doctor_id医生ID
+ * order_id 订单ID
+ * accid 醫生的通信賬戶
+ * zxtype 
+ */
+function goToZiXun(zxtype,order_id,accid,doctor_id){
+		androidjs.startZxActWithDialog(zxtype,order_id,accid,doctor_id);
+}
+/**
+ * 查询详情
+ */
+function goToDetail(zx_order_id,zxType){
+	setItem("zx_order_id", zx_order_id);
+	setItem("zxType", zxType);
+	window.location.href = "order-zxzx-detail.html";
+}
+</script>
+
+</body>
+</html>

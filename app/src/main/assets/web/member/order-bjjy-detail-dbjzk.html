@@ -1,0 +1,183 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/member.css" />
+</head>
+<body>
+
+<div class="pages">
+	<div class="main" style="height:780px;">
+		<div class="box-default order-detail-box">
+			<div class="title">
+				<span class="hospitalName"></span>
+				<div class="fr">
+					<span class="status c-red"></span>
+				</div>
+			</div>
+			<div class="info">
+				<ul style="margin:0">
+					<li>就医项目：<span class="c-333">代办就诊卡</span></li>
+					<li>订单编号：<span class="c-333 orderNumber"></span></li>
+					<li>下单时间：<span class="c-333 createTime"></span></li>
+					<li>就&nbsp;&nbsp;诊&nbsp;&nbsp;人：<span class="c-333 patientName"></span></li>
+					<li>订单价格：<span class="c-red amount"></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="box-default order-detail-box mg-t10">
+			<div class="title">就诊信息</div>
+			<div class="user">
+				<ul>
+					<li>就诊人：<span class="c-333 patientName"></span></li>
+					<li>就诊医院：<span class="c-333 hospitalName"></span></li>
+					<li>证件类型：<span class="c-333 patientPapersType"></span></li>
+					<li>证件号码：<span class="c-333 patientPapersNumber"></span></li>
+					<li>希望办好卡时间：<span class="c-333 date"></span></li>
+					<li>交收方式：<span class="c-333 cardReceiveType"></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="box-default order-detail-box mg-t10">
+			<div class="title">费用明细</div>
+			<div class="cost">
+				<ul class="costList">
+					
+				</ul>
+			</div>
+		</div>
+		<div class="box-default order-status mg-t10">
+			<div class="flex-box">
+				<div class="status1001 flex-item">
+					<div class="dot">
+						<h3>下单</h3>
+						<p></p>
+					</div>
+				</div>
+				<div class="status2000 flex-item">
+					<div class="dot">
+						<h3>进行中</h3>
+						<p></p>
+					</div>
+				</div>
+				<div class="status3011 flex-item">
+					<div class="dot">
+						<h3>待评价</h3>
+						<p></p>
+					</div>
+				</div>
+				<div class="status3000 flex-item">
+					<div class="dot">
+						<h3>已完成</h3>
+						<p></p>
+					</div>
+				</div>
+			</div>
+			<div class="bar"></div>
+		</div>
+	</div>
+
+	<div class="flexbar">
+		<div class="fl fs30">费用合计：<span class="c-red amount1"></span></div>
+		<a href="javascript:pay();" class="payBtn fr button" style="display: none; margin-left: 10px;">去付款</a>
+		<a href="javascript:cancel();" class="cancelBtn fr button" style="display: none; margin-left: 10px;">取消订单</a>
+		<a href="javascript:comment();" class="commentBtn fr button" style="display: none;">去评价</a>
+	</div>
+
+</div>
+
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	ajax("/jiuyi/dbjzk/findByMemberIdAndOrderId", {orderId:getItem("orderId")}, function(res) {
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$(".hospitalName").html(res.hospitalName);
+		if (res.status >= 2000 && res.status <= 2999) {
+			$(".status").html("进行中");
+		} else if (res.status > 3011 && res.status <= 3999) {
+			$(".status").html("已完成");
+		} else {
+			$(".status").html(res.statusName);
+		}
+		$(".orderNumber").html(res.orderNumber);
+		$(".createTime").html(res.createTime);
+		$(".patientName").html(res.patientName);
+		$(".amount").html(res.amount);
+		$(".patientPapersType").html(res.patientPapersTypeName);
+		$(".patientPapersNumber").html(res.patientPapersNumber);
+		var date = new Date(res.expectCardTime);
+		$(".date").html(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes());
+		$(".cardReceiveType").html(res.cardReceiveTypeName);
+		$(".patientPapersNumber").html(res.patientPapersNumber);
+		for (var i = 0 ; i < res.statusRecords.length ; i++) {
+			var record = res.statusRecords[i];
+			date = new Date(record.changeTime);
+			if (record.status == 1001) {
+				$(".status1001").addClass("bar-active").children().addClass("dot-active");
+				$(".status1001").find("p").html(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes());
+			} else if (record.status >= 2000 && record.status <= 2999) {
+				$(".status2000").addClass("bar-active").children().addClass("dot-active");
+				$(".status2000").find("p").html(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes());
+			} else if (record.status == 3011) {
+				$(".status3011").addClass("bar-active").children().addClass("dot-active");
+				$(".status3011").find("p").html(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes());
+			} else if (record.status >= 3012 && record.status <= 3099) {
+				$(".status3000").addClass("bar-active").children().addClass("dot-active");
+				$(".status3000").find("p").html(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes());
+			}
+		}
+		if (res.status >= 4000 && res.status <= 4999) {
+			$(".flex-box .flex-item").removeClass("bar-active");
+			$(".flex-box .dot").removeClass("dot-active");
+		}
+
+		var amountDetail = "";
+		amountDetail += res.cardCost != null ? '<li>工本费<span class="fr c-333">'+res.cardCost+'元</span></li>' : "";
+		amountDetail += res.certificatePickUpCost != null ? '<li>上门取件费<span class="fr c-333">'+res.certificatePickUpCost+'元</span></li>' : "";
+		amountDetail += res.advanceCardExpressCost != null ? '<li>预收快递费<span class="fr c-333">'+res.advanceCardExpressCost+'元</span></li>' : "";
+		amountDetail += res.serviceCost != null ? '<li>服务费<span class="fr c-333">'+res.serviceCost+'元</span></li>' : "";
+		$(".costList").html(amountDetail);
+		$(".amount1").html(res.amount+"元");
+
+		if (res.status == 1000) {
+			$(".payBtn").show();
+			$(".cancelBtn").show();
+		} else if (res.status == 1001) {
+			$(".cancelBtn").show();
+		} 
+		/* else if (res.status == 3011) {
+			$(".commentBtn").show();
+		} */
+	});
+});
+function cancel(){
+	if (confirm("确认取消订单?")) {
+		ajax("/jiuyi/dbjzk/cancel", {orderId:getItem("orderId")}, function(res){
+			layer.msg(res.msg);
+			if (res.code <= 0) {
+				return;
+			}
+			location.reload();
+		});
+	}
+}
+function pay(){
+	window.location.href = "../dbjzk/pay.html";
+}
+function comment(){
+	layer.msg("comment "+getItem("orderId"));
+}
+</script>
+
+</body>
+</html>

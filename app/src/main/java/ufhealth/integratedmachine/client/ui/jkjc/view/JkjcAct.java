@@ -1,12 +1,13 @@
 package ufhealth.integratedmachine.client.ui.jkjc.view;
 
 import android.view.View;
+import android.view.KeyEvent;
 import android.graphics.Color;
 import android.webkit.WebSettings;
 import com.just.agentweb.AgentWeb;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.content.res.AssetManager;
+import android.annotation.SuppressLint;
 import com.just.agentweb.DefaultWebClient;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -15,18 +16,19 @@ import ufhealth.integratedmachine.client.ProvideActionForWebiew;
 import ufhealth.integratedmachine.client.ui.jkjc.view_v.JkjcAct_V;
 import ufhealth.integratedmachine.client.ui.jkjc.presenter.JkjcPresenter;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class JkjcAct extends BaseAct implements JkjcAct_V,View.OnClickListener
 {
     private AgentWeb agentWeb;
     private LinearLayout jkjcAllLl;
     private JkjcPresenter jkjcPresenter;
-    private AssetManager assetManager;
 
     protected int setLayoutResID()
     {
         return R.layout.activity_jkjc;
     }
 
+    @SuppressLint("JavascriptInterface")
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
@@ -39,8 +41,7 @@ public class JkjcAct extends BaseAct implements JkjcAct_V,View.OnClickListener
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("file:///android_asset/web/jkjc/index.html");
-        //.go("http://f206p96248.imwork.net:13209/web/member/order-bjjy-list.html");
+                .go("file:///android_asset/web/health_monitor/index.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         agentWeb.getWebCreator().getWebView().addJavascriptInterface(new ProvideActionForWebiew(this), "androidjs");
     }
@@ -79,6 +80,13 @@ public class JkjcAct extends BaseAct implements JkjcAct_V,View.OnClickListener
     {
         super.onClick(view);
 
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (agentWeb.handleKeyEvent(keyCode, event))
+            return true;
+        return super.onKeyDown(keyCode, event);
     }
 
     @Subscribe

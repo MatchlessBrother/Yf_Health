@@ -1,0 +1,149 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css?asdfdf=asd223323f" />
+</head>
+<body>
+
+<div class="pages">
+
+	<div class="form-box box-default">
+		<div class="item item-val">
+			<label class="title">就&nbsp;&nbsp;诊&nbsp;&nbsp;人：</label>
+			<div class="val">胡成飞</div>
+		</div>
+		<div class="item item-text">
+			<label class="title">电话号码：</label>
+			<input type="text" placeholder="请输入您的电话号码" >
+		</div>
+		<div class="item item-arrow" id="btn-hospital">
+			<label class="title">就诊医院：</label>
+			<span class="arrow"><i class="iconfont fs28 c-bbb">&#xe64d;</i></span>
+		</div>
+		<div class="item item-val">
+			<div style="padding:30px 0 0 30px" class="fs18 c-bbb">您所选择的医院要求交送的证件为就诊卡、缴费单和处方笺，您需确保将证件交给优服，才能完成下单。订单完成后或取消订单，我们将妥善将资料送回，请放心</div>
+			<label class="title">是否已开检查单：</label>
+			<div class="val" style="padding-left:240px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-1" id="radiobox-1" checked />
+					<label for="radiobox-1">
+						<span><i></i></span>
+						是
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-1" id="radiobox-2" />
+					<label for="radiobox-2">
+						<span><i></i></span>
+						否
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="item item-val">			
+			<label class="title">凭证递交方式：</label>
+			<div class="val" style="padding-left:240px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-3" id="radiobox-5" checked />
+					<label for="radiobox-5">
+						<span><i></i></span>
+						稍后快递
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-3" id="radiobox-6" />
+					<label for="radiobox-6">
+						<span><i></i></span>
+						我已自行提交
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-3" id="radiobox-7" />
+					<label for="radiobox-7">
+						<span><i></i></span>
+						优服上门取件
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-box box-default mg-t20">
+		<div class="item item-text">
+			<label class="title">选择药物（拍摄处方笺照片或药瓶照片）</label>
+			<a href="javascript:void(0);" class="button btn-oper" id="btn-jzk">+添加药品</a>
+			<div style="padding:70px 0 0 30px" class="fs18 c-bbb">请将需要带送的药品的处方筏或药瓶用本设备拍摄其高清图片，并保证图片清晰，内容完善</div>
+			<div class="pd-b10 yp-box" style="margin:0 30px 0 30px">
+				<div class="list">
+					<div class="upload_imgs">
+						<ul>
+							<li style="margin-bottom:0px;" class="add tc"><input type="file" /><i class="iconfont">&#xe61a;</i></li>
+						</ul>
+					</div>
+					<div class="oper">
+						<span class="reduce">-</span>
+						<input type="text" value="1" class="inpNum">
+						<span class="numAdd">+</span>
+					</div>
+					<a href="javascript:void(0);" class="del c-red">删除</a>
+				</div>
+			</div>
+		</div>
+		<div class="item item-text">
+			<label class="title">收药时间：</label>
+			<input type="text" >
+		</div>
+	</div>
+	<p class="tc pd-t30 fs26 c-666">
+		<a href="javascript:void(0);" class="c-blue">下单须知</a>
+	</p>
+	<div class="pd30 tc"><button class="button" style="width:400px;border-radius:40px" id="btn-order">立即下单</button></div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+
+	//药品数量
+	var minAmount = 1;
+	var maxAmount = 5;
+	$(".yp-box .numAdd").click(
+		function(){
+			var nowAmount = parseInt($(this).prev().val());
+			if(nowAmount<maxAmount){
+				$(this).prev().val(nowAmount+1);
+			}else{
+				layer.msg("药品数量已到最大值");
+			}
+		}
+	);
+	$(".yp-box .reduce").click(
+		function(){
+			var nowAmount = parseInt($(this).next().val());
+			if(nowAmount>minAmount){
+				$(this).next().val(nowAmount-1);
+			}else{
+				layer.msg("药品数量不能小于1");
+			}
+		}
+	);
+
+	//选择医院
+	$("#btn-hospital").click(function(){
+		window.location.href="../public/hospital.html"
+	})
+	//立即下单
+	$("#btn-order").click(function(){
+		window.location.href="../public/pay.html"
+	})
+
+})
+</script>
+
+</body>
+</html>

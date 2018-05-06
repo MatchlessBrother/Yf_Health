@@ -22,12 +22,20 @@ import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfoOfCondition;
 
 public interface NetUrl
 {
-    @POST("general/hospitalHotDepartment/findHospitalHotDepartment")
-    Observable<BaseReturnData<List<HotDepartment>>> zxzxGetHotDepartments();
-
     @POST("member/login")
     @FormUrlEncoded
-    Observable<BaseReturnData<UserInfo>> login(@Field("idCard") String idCard);
+    Observable<BaseReturnData<UserInfo>> login(@Field("idCard") String idCard,@Field("name") String name,@Field("birthday") String birthday,@Field("gender") Integer gender,@Field("nation") String nation,@Field("address") String address);
+
+    @POST("member/sendIdentifyingCode")
+    @FormUrlEncoded
+    Observable<BaseReturnData> getVerifiedCode(@Field("phone") String phoneNum);
+
+    @POST("member/bindPhone")
+    @FormUrlEncoded
+    Observable<BaseReturnData> bindPhoneNum(@Field("idCard") String idCard,@Field("phone")String phone,@Field("code")String code);
+
+    @POST("general/hospitalHotDepartment/findHospitalHotDepartment")
+    Observable<BaseReturnData<List<HotDepartment>>> zxzxGetHotDepartments();
 
     @POST("general/doctor/getDoctorListByContion")
     @FormUrlEncoded
@@ -60,8 +68,6 @@ public interface NetUrl
     @POST("zixun/video/orderVideoSave")
     @FormUrlEncoded
     Observable<BaseReturnData<Billinfo>> zxzxCreateVideoBill(@Field("doctor_id") String doctorId,@Field("timeMin") String timeMin);
-
-
 
     @POST("zixun/imagetext/imageTextSave")
     @FormUrlEncoded

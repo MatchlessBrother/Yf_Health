@@ -1,0 +1,361 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/datepicker.css" />
+<style type="text/css">
+.jzk-box .form-box { border: #eee solid 1px; }
+</style>
+</head>
+<body>
+
+<div class="pages">
+	<div class="form-box box-default">
+		<div class="item item-val">
+			<label class="title">就&nbsp;&nbsp;诊&nbsp;&nbsp;人：</label>
+			<div id="name" class="val"></div>
+		</div>
+		<div class="item item-text">
+			<label class="title">电话号码：</label>
+			<input id="telephone" type="number" placeholder="请输入您的电话号码" >
+		</div>
+		<div class="item item-arrow" id="btn-hospital">
+			<label class="title">就诊医院：</label>
+			<div id="hospitalName" class="val"></div>
+			<span class="arrow"><i class="iconfont fs28 c-bbb">&#xe64d;</i></span>
+		</div>
+		<div class="item item-text">
+			<label class="title">就诊卡号：</label>
+			<input id="patiend-card-input" type="number" placeholder="请输入您的就诊卡号" >
+			<a href="javascript:void(0);" class="button btn-oper" id="btn-jzk">无就诊卡?</a>
+		</div>
+		<div class="item">
+			<div class="c-666" style="padding:25px 15px 15px 30px">选择就诊时间段：</div>
+			<div class="date-range" style="padding-bottom:35px;">
+				<div class="date-box" style="left:0"><input type="data" id="startDate" readonly="readonly" /></div>
+				<span>一</span>
+				<div class="date-box" style="right:0"><input type="text" id="endDate" readonly="readonly" /></div>
+			</div>
+		</div>
+	</div>
+	<p class="tc pd-t30 fs26 c-666">
+		<a href="javascript:void(0);" class="c-blue">下单须知</a>
+		由于医疗资源的紧缺性，挂号代办订单一经下单成功工作人员接单后将不允许修改和退号，敬请谅解！
+	</p>
+	<div class="pd30 tc"><button class="button" style="width:400px;border-radius:40px" id="btn-order">立即下单</button></div>
+
+</div>
+
+<div class="jzk-box pd30 hide">
+	<div class="form-box box-default">
+		<div class="item item-val">
+			<label class="title">就&nbsp;&nbsp;诊&nbsp;&nbsp;人：</label>
+			<div id="dbjzkName" class="val">胡成飞</div>
+		</div>
+		<div class="item item-val">
+			<label class="title">就诊医院：</label>
+			<div id="dbjzkHospitalName" class="val"></div>
+		</div>
+		<div id="dbjzkRequired1" class="item item-val" style="display: none;">
+			<div style="padding:30px 0 0 30px" class="fs18 c-bbb">本院办理就诊卡需要有效身份证件照片</div>
+			<label class="title">上传证件照片：</label>
+			<div class="val" style="padding-left:220px">
+				<div class="upload_imgs" style="margin:15px 0 30px 0;">
+					<ul>
+						<li style="margin-bottom:0px;" data-id="certificateImage1" class="add tc"><form enctype="multipart/form-data"><input name="certificateImage" type="file"/><i class="iconfont">&#xe61a;</i></form></li>
+						<li style="margin-bottom:0px;" data-id="certificateImage2" class="add tc"><form enctype="multipart/form-data"><input name="certificateImage" type="file"/><i class="iconfont">&#xe61a;</i></form></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="dbjzkRequired2" class="item item-val" style="display: none;">
+			<div style="padding:30px 0 0 30px" class="fs18 c-bbb">本院办理就诊卡需要有效身份证件原件</div>
+			<label class="title">原件提交方式：</label>
+			<div class="val" style="padding-left:220px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="submitTypeRadiobox" id="radiobox-3" value="1" checked />
+					<label for="radiobox-3">
+						<span><i></i></span>
+						快递寄送
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="item item-val">			
+			<label class="title">卡片交收方式：</label>
+			<div class="val" style="padding-left:220px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="receiveTypeRadiobox" id="radiobox-5" value="4" checked />
+					<label for="radiobox-5">
+						<span><i></i></span>
+						快递寄送
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="receiveTypeRadiobox" id="radiobox-6" value="5" />
+					<label for="radiobox-6">
+						<span><i></i></span>
+						自取（请在工作时间前往114优服服务台进行收取）
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/datepicker.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#name").html(name);
+
+	if (getItem("telephone") == null) {
+		$("#telephone").val(telephone);
+		setItem("telephone", telephone);
+	} else {
+		$("#telephone").val(getItem("telephone"));
+	}
+	$("#telephone").keyup(function(){
+		setItem("telephone", $(this).val());
+		if (getItem("telephone") == "") {
+			removeItem("telephone");
+		}
+	});
+
+	if (getItem("hospitalId") != null) {
+		$("#hospitalName").html(getItem("hospitalName"));
+		loadPatiendCard();
+		ajax("/jiuyi/bgh/availableDateRange", {hospitalId:getItem("hospitalId")}, function(res) {
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			var startDate = new Date(res.startDate.split("-")[0], parseInt(res.startDate.split("-")[1])-1, res.startDate.split("-")[2], 0, 0, 0, 0);
+			var endDate = new Date(res.endDate.split("-")[0], parseInt(res.endDate.split("-")[1])-1, res.endDate.split("-")[2], 0, 0, 0, 0);
+			var unavailableDates = new Array();
+			for (var i = 0 ; i < res.unavailableDates.length ; i++) {
+				unavailableDates[i] = parseInt(res.unavailableDates[i].replace(/-/g, ''));
+			}
+			setDateRange(startDate, endDate, unavailableDates);
+		});
+	}
+
+	//选择医院
+	$("#btn-hospital").click(function(){
+		window.location.href="hospital.html"
+	});
+
+	$("#patiend-card-input").val(getItem("patientCard") == null ? '' : getItem("patientCard"));
+	$("#patiend-card-input").keyup(function(){
+		setItem("patientCard", $(this).val());
+	});
+
+	//就诊卡弹出
+	if (getItem("isNeedDbjzkService") == null) {
+		setItem("isNeedDbjzkService", 0);
+	}
+	$("#btn-jzk").click(function(){
+		if (getItem("hospitalId") == null) {
+			layer.msg("请先选择医院");
+			return;
+		}
+		$("#dbjzkName").html(name);
+		$("#dbjzkHospitalName").html(getItem("hospitalName"));
+		ajax("/jiuyi/dbjzk/hospitalDbjzk", {hospitalId:getItem("hospitalId")}, function(res){
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			$("#patiend-card-input").val("");
+			removeItem("patientCard");
+			setItem("isNeedDbjzkService", 1);
+			setItem("dbjzkNeedPapersType", res.dbjzkNeedPapersType);
+
+			if (res.dbjzkNeedPapersType == 0) {
+				
+			} else if (res.dbjzkNeedPapersType == 1) {
+				$("#dbjzkRequired1").show();
+			} else if (res.dbjzkNeedPapersType == 2) {
+				setItem("certificateSubmitType", $("input[name='submitTypeRadiobox']:checked").val());
+				$("#dbjzkRequired2").show();
+			}
+
+			setItem("cardReceiveType", $("input[name='receiveTypeRadiobox']:checked").val());
+
+			layer.open({
+				type: 1,
+				title: "代办就诊卡",
+				area: ['1280px', '720px'],
+				btn: ['确定办理', '我有就诊卡'],
+				closeBtn: 0,
+				content: $(".jzk-box"),
+				yes: function(){
+					if (getItem("dbjzkNeedPapersType") == 1 && (getItem("certificateImage1") == null || getItem("certificateImage2") == null)) {
+						layer.msg("请上传您的证件正面照片和反面照片");
+						return;
+					}
+					if (getItem("dbjzkNeedPapersType") == 2 && getItem("certificateSubmitType") == null) {
+						layer.msg("请选择您的证件交送方式");
+						return;
+					}
+					if (getItem("cardReceiveType") == null) {
+						layer.msg("请选择就诊卡交收方式");
+						return;
+					}
+					layer.closeAll();
+				},
+				btn2: function(){
+					setItem("isNeedDbjzkService", 0);
+					removeItem("dbjzkNeedPapersType")
+					removeItem("certificateSubmitType");
+					removeItem("certificateImage1");
+					removeItem("certificateImage1Url");
+					removeItem("certificateImage2");
+					removeItem("certificateImage2Url");
+					removeItem("cardReceiveType");
+					$(".upload_imgs li").html('<form enctype="multipart/form-data"><input name="certificateImage" type="file"/><i class="iconfont">&#xe61a;</i></form>').addClass("add tc");
+					loadPatiendCard();
+					layer.closeAll();
+				}
+			});
+		});
+	});
+
+	$("input[name='submitTypeRadiobox'][value='"+getItem("certificateSubmitType")+"']").prop("checked",true);
+	$("input[name='submitTypeRadiobox']").click(function(){
+		setItem("certificateSubmitType", $(this).val());
+	});
+
+	$("input[name='receiveTypeRadiobox'][value='"+getItem("cardReceiveType")+"']").prop("checked",true);
+	$("input[name='receiveTypeRadiobox']").click(function(){
+		setItem("cardReceiveType", $(this).val());
+	});
+
+	if (getItem("certificateImage1") != null) {
+		$(".upload_imgs li:eq(0)").html('<img src="'+getItem("certificateImage1Url")+'"><a href="javascript:void(0);" class="del">X</a></li>').removeClass("add tc");
+	}
+	if (getItem("certificateImage2") != null) {
+		$(".upload_imgs li:eq(1)").html('<img src="'+getItem("certificateImage2Url")+'"><a href="javascript:void(0);" class="del">X</a></li>').removeClass("add tc");
+	}
+	$(".upload_imgs").on("change","input[type='file']",function(){
+		var liDom = $(this).parent().parent();
+		ajaxUpload("/jiuyi/dbjzk/uploadCertificateImage", new FormData($(this).parent()[0]), function(res){
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			var dataId = liDom.attr("data-id");
+			setItem(dataId, res.key);
+			setItem(dataId+"Url", res.url);
+			liDom.html('<img src="'+res.url+'"><a href="javascript:void(0);" class="del">X</a>');
+		});
+	});
+	$(".upload_imgs").on("click",".del",function(){
+		var liDom = $(this).parent();
+		var dataId = liDom.attr("data-id");
+		removeItem(dataId, null);
+		removeItem(dataId+"Url", null);
+		liDom.html('<form enctype="multipart/form-data"><input name="certificateImage" type="file"/><i class="iconfont">&#xe61a;</i></form>').addClass("add tc");
+	});
+
+	if (getItem("startDate") != null) {
+		$("#startDate").val(getItem("startDate"));
+	}
+	if (getItem("endDate") != null) {
+		$("#endDate").val(getItem("endDate"));
+	}
+
+	//立即下单
+	$("#btn-order").click(function(){
+		if (getItem("telephone") == null) {
+			layer.msg("请输入您的电话号码");
+			return;
+		}
+		if (getItem("hospitalId") == null) {
+			layer.msg("请选择医院");
+			return;
+		}
+		if (getItem("isNeedDbjzkService") == 0 && (getItem("patientCard") == null || getItem("patientCard") == "")) {
+			layer.msg("请输入您的就诊卡号");
+			return;
+		}
+		if (getItem("isNeedDbjzkService") == 1) {
+			removeItem("patientCard");
+			$("#patiend-card-input").val("");
+		}
+		if (getItem("startDate") == null || getItem("endDate") == null) {
+			layer.msg("请选择就诊时间段");
+			return;
+		}
+		window.location.href="pay.html"
+	})
+
+})
+function setDateRange(startDate, endDate, unavailableDates) {
+	var checkin = $('#startDate').fdatepicker({
+		format: 'yyyy-mm-dd',
+		startDate: startDate,
+		endDate: endDate,
+		onRender: function (date) {
+			date = parseInt(date.getFullYear()+""+(date.getMonth()<9?"0":"")+(date.getMonth()+1)+""+(date.getDate()<10?"0":"")+date.getDate());
+			for (var i = 0 ; i < unavailableDates.length ; i++) {
+				if (unavailableDates[i] == date) {
+					return "disabled";
+				}
+			}
+		}
+	}).on('changeDate', function (ev) {
+		setItem("startDate", $('#startDate').val());
+		if (ev.date.valueOf() > checkout.date.valueOf()) {
+			var newDate = new Date(ev.date)
+			newDate.setDate(newDate.getDate());
+			checkout.update(newDate);
+			setItem("endDate", $('#endDate').val());
+		}
+		checkin.hide();
+		$('#endDate')[0].focus();
+	}).data('datepicker');
+	var checkout = $('#endDate').fdatepicker({
+		format: 'yyyy-mm-dd',
+		startDate: startDate,
+		endDate: endDate,
+		onRender: function (date) {
+			date = parseInt(date.getFullYear()+""+(date.getMonth()<9?"0":"")+(date.getMonth()+1)+""+(date.getDate()<10?"0":"")+date.getDate());
+			for (var i = 0 ; i < unavailableDates.length ; i++) {
+				if (unavailableDates[i] == date) {
+					return "disabled";
+				}
+			}
+		}
+	}).on('changeDate', function (ev) {
+		setItem("endDate", $('#endDate').val());
+		checkout.hide();
+	}).data('datepicker');
+}
+function loadPatiendCard() {
+	if (getItem("isNeedDbjzkService") != 1) {
+		ajax("/member/patientCard/findByHospitalId", {hospitalId:getItem("hospitalId")}, function(res) {
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			if (res.cardNumber != null) {
+				$("#patiend-card-input").val(res.cardNumber);
+				setItem("patientCard", res.cardNumber);
+			}
+		});
+	}
+}
+</script>
+
+</body>
+</html>

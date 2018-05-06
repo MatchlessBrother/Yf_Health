@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css?asdfdf=asd223323f" />
+</head>
+<body>
+
+<div class="pages">
+
+	<div class="form-box box-default">
+		<div class="item item-val">
+			<label class="title">就&nbsp;&nbsp;诊&nbsp;&nbsp;人：</label>
+			<div class="val">胡成飞</div>
+		</div>
+		<div class="item item-text">
+			<label class="title">电话号码：</label>
+			<input type="text" placeholder="请输入您的电话号码" >
+		</div>
+		<div class="item item-arrow" id="btn-hospital">
+			<label class="title">就诊医院：</label>
+			<span class="arrow"><i class="iconfont fs28 c-bbb">&#xe64d;</i></span>
+		</div>
+		<div class="item item-text">
+			<label class="title">就诊卡号：</label>
+			<input type="text" placeholder="请输入该医院的就诊卡号" >
+		</div>
+		<div class="item item-val">
+			<label class="title">凭证递交方式：</label>
+			<div class="val" style="padding-left:220px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-1" id="radiobox-1" checked />
+					<label for="radiobox-1">
+						<span><i></i></span>
+						稍后快递
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-1" id="radiobox-2" />
+					<label for="radiobox-2">
+						<span><i></i></span>
+						我已自行提交
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-1" id="radiobox-3" />
+					<label for="radiobox-3">
+						<span><i></i></span>
+						优服上门取件
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="item item-val">			
+			<label class="title">卡片交收方式：</label>
+			<div class="val" style="padding-left:220px">
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-3" id="radiobox-5" checked />
+					<label for="radiobox-5">
+						<span><i></i></span>
+						快递寄送
+					</label>
+				</div>
+				<div class="radio-box radio-box-text">
+					<input type="radio" name="radiobox-3" id="radiobox-6" />
+					<label for="radiobox-6">
+						<span><i></i></span>
+						自取（请在工作时间前往114优服服务台进行收取）
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p class="tc pd-t30 fs26 c-666">
+		<a href="javascript:void(0);" class="c-blue">下单须知</a>
+	</p>
+	<div class="pd30 tc"><button class="button" style="width:400px;border-radius:40px" id="btn-order">立即下单</button></div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	//选择医院
+	$("#btn-hospital").click(function(){
+		window.location.href="../public/hospital.html"
+	})
+	//立即下单
+	$("#btn-order").click(function(){
+		window.location.href="../public/pay.html"
+	})
+
+})
+</script>
+
+</body>
+</html>

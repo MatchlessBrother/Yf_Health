@@ -1,13 +1,17 @@
-var token = "sxzfcsadfv23r12rdas";
-var name = "刘伟";
-var telephone = "13541100997";
-var apiUrl = "http://127.0.0.1:8000";
+var token = androidjs.getToken();
+//var name = "";
+//var telephone = "";
+var apiUrl = "http://dimdim215.imwork.net:53102";
+
 function ajax(url, postData, doSuccess, doFail, doComplete){
     var layerIndex;
     $.ajax({
     	url: apiUrl + url,
     	method: 'POST',
     	data: postData,
+    	headers: {
+        	memberToken:token 
+        },
         beforeSend: function() {
             layerIndex = layer.load(1, {
               shade: [0.1,'#fff']
@@ -40,6 +44,9 @@ function ajaxUpload(url, postData, doSuccess, doFail, doComplete){
         processData: false,
         contentType: false,
         cache: false,
+        headers: {
+        	memberToken:token 
+        },
         beforeSend: function() {
             layerIndex = layer.load(1, {
               shade: [0.1,'#fff']
@@ -68,6 +75,9 @@ function ajaxNoLoading(url, postData, doSuccess, doFail, doComplete){
         url: apiUrl + url,
         method: 'POST',
         data: postData,
+        headers: {
+        	memberToken:token 
+        },
         beforeSend: function() {
             
         },

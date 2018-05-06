@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css?asdfasdf=asdafasd" />
+
+</head>
+<body>
+
+<div class="pages">
+	<div class="pay-box box-default mg-t20">
+		<h2 class="title"><img src="../../images/wepay.png">微信支付</h2>
+		<div class="row">
+			<span class="line"></span>
+			<div class="col-6">
+				<h3 class="tc fs28 pd-b30">请使用微信扫一扫进行支付下单</h3>
+				<div class="tc pd-t10"><div id="payQrCode"></div></div>
+			</div>
+			<div class="col-6">
+				<div class="cost">
+					<h3 class="fs28 pd-b20" id="zxType"></h3>
+					<div class="total"><span class="tag">￥</span> <span class="num" id="amount"></span></div>
+					<ul>
+						<li>收&nbsp;&nbsp;款&nbsp;&nbsp;方：成都优服健康科技有限公司</li>
+						<li id="ddbh">订单编号：</li>
+						<li id="zfsj">支付时间：</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	var order_number = getItem("order_number");
+	var zxType = getItem("zxType");
+	ajax('/zixun/zxorder/goToPay', {order_number:order_number,zxType:zxType} , function(res){
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		res = res.data;
+		$("#amount").html(res.totalPrice);
+		$("#ddbh").html("订单编号:"+order_number);
+		$("#zfsj").html("支付时间:"+res.createTime);
+		if(zxType=="TWZX"){
+			$("#zxType").html("图文咨询订单");
+		}else if(zxType=="SPZX"){
+			$("#zxType").html("视频咨询订单");
+		}else if(zxType=="YPZX"){
+			$("#zxType").html("语音咨询订单");
+		}
+		$('#payQrCode').qrcode(res.payQrcodeUrl);
+		queryPayResult(res.payOrderNumber);
+	});
+});
+function queryPayResult(payOrderNumber) {
+	setTimeout(function(){
+		ajaxNoLoading("/member/wechatPayment/queryPayResult", {orderNumber:payOrderNumber}, function(res){
+			if (res.code <= 0) {
+				layer.msg(res.msg);
+				return;
+			}
+			res = res.data;
+			if (res.payStatus == 2) {
+				setItem("serviceName", "在线咨询服务");
+				window.location.href = "../public/success.html";
+			}
+			queryPayResult(payOrderNumber);
+		});
+	}, 1000);
+}
+</script>
+
+</body>
+</html>

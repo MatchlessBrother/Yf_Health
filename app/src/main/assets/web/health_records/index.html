@@ -1,0 +1,205 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/health.css" />
+</head>
+<body>
+
+<div class="pages">
+	
+	<div class="tab-menu">
+		<ul>
+			<li class="current"><a href="javascript:void(0);">封面</a></li>
+			<li><a href="javascript:void(0);">健康信息档案</a></li>
+			<li><a href="javascript:void(0);">健康检测档案</a></li>
+		</ul>
+	</div>
+
+	<div class="tab-body box-default pd30">
+		<section class="item cover">
+			&nbsp;档案编号：<span id="record_no"></span>
+			<div class="card">
+				<ul>
+					<li>
+						<label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+						<span id="name"></span>
+					</li>
+					<li>
+						<label>户籍地址：</label>
+						<span id="address"></span>
+					</li>
+					<li>
+						<label>联系电话：</label>
+						<span id="mobile_phone"></span>
+					</li>
+					<li>
+						<label>身份证号：</label>
+						<span id="papers_number"></span>
+					</li>
+					<li>
+						<label>民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族：</label>
+						<span id="nation"></span>
+					</li>
+				</ul>
+			</div>
+			<div class="date">
+				建档单位： <span id="create_org_name"></span><br/><br/>
+				责任医生：<span id="create_doctor_name"></span><br/><br/>
+				建档日期： <span id="create_time"></span>
+			</div>
+		</section>
+		<section class="item">
+			<table cellspacing="0" cellpadding="0" width="100%" class="table">
+				<tr>
+					<td>姓名：<span id="name1"></span></td>
+					<td width="20%">性别：<span id="gender_name"></span></td>
+					<td width="20%">出生年月：<span id="birthday"></span></td>
+				</tr>
+				<tr>
+					<td>健康档案编号：<span id="record_no1"></span></td>
+					<td>ABO血型：<span id="abo_blood_name"></span></td>
+					<td>RH血型：<span id="rh_blood_name"></span></td>
+				</tr>
+				<tr>
+					<td colspan="3">慢性病患病情况：<span id="chronic"></span></td>
+				</tr>
+				<tr>
+					<td colspan="3">过敏史：<span id="allergic"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">紧急情况联系人1：<span id="first_linkman_name"></span></td>
+					<td>联系电话：<span id="first_linkman_telephone"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">紧急情况联系人2：<span id="second_linkman_name"></span></td>
+					<td>联系电话：<span id="second_linkman_telephone"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">建档机构名称：<span id="create_org_name1"></span></td>
+					<td>联系电话：<span id="create_org_telephone"></span></td>
+				</tr>
+				<tr>
+					<td colspan="2">责任医生或护士：<span id="create_doctor_name1"></span></td>
+					<td>联系电话：<span id="create_doctor_telephone"></span></td>
+				</tr>
+			</table>
+		</section>
+		<section class="item">
+			<div class="tc fs30 c-bbb pd30" id="record_empty" style="display: none">暂无健康检测记录</div>
+			<div class="re-list" id="record_not_empty">
+				
+			</div>
+		</section>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/layer/layer.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".tab-menu li").click(function(){
+		$(this).addClass("current").siblings().removeClass("current");
+		$(".tab-body .item").eq($(this).index()).show().siblings().hide();
+	});
+	ajax("/jc/show/queryAll", {}, function(res) {
+		if (res.code <= 0) {
+			layer.msg(res.msg);
+			return;
+		}
+		var data = res.data;
+		var healthRecord = data.healthRecord;
+		if(healthRecord != null){
+			$("#record_no").html(healthRecord.record_no == null ? "" : healthRecord.record_no);
+			$("#create_org_name").html(healthRecord.create_org_name == null ? "" : healthRecord.create_org_name);
+			$("#create_doctor_name").html(healthRecord.create_doctor_name == null ? "" : healthRecord.create_doctor_name);
+			$("#create_time").html(healthRecord.create_time == null ? "" : healthRecord.create_time);
+			$("#record_no1").html(healthRecord.record_no == null ? "" : healthRecord.record_no);
+			$("#abo_blood_name").html(healthRecord.abo_blood_name == null ? "" : healthRecord.abo_blood_name);
+			$("#rh_blood_name").html(healthRecord.rh_blood_name == null ? "" : healthRecord.rh_blood_name);
+			var chronic_name = healthRecord.chronic_name;
+			var chronic_other = healthRecord.chronic_other;
+			if(chronic_name == null) {
+				$("#chronic").html("");
+			}else{
+				if(chronic_other == null){
+					$("#chronic").html(chronic_name);
+				}else{
+					$("#chronic").html(chronic_name + " 备注：" + chronic_other);
+				}
+			}
+			$("#first_linkman_name").html(healthRecord.first_linkman_name == null ? "" : healthRecord.first_linkman_name);
+			$("#first_linkman_telephone").html(healthRecord.first_linkman_telephone == null ? "" : healthRecord.first_linkman_telephone);
+			$("#second_linkman_name").html(healthRecord.second_linkman_name == null ? "" : healthRecord.second_linkman_name);
+			$("#second_linkman_telephone").html(healthRecord.second_linkman_telephone == null ? "" : healthRecord.second_linkman_telephone);
+			$("#allergic").html(healthRecord.allergic == null ? "" : healthRecord.allergic);
+			$("#create_org_name1").html(healthRecord.create_org_name == null ? "" : healthRecord.create_org_name);
+			$("#create_org_telephone").html(healthRecord.create_org_telephone == null ? "" : healthRecord.create_org_telephone);
+			$("#create_doctor_name1").html(healthRecord.create_doctor_name == null ? "" : healthRecord.create_doctor_name);
+			$("#create_doctor_telephone").html(healthRecord.create_doctor_telephone == null ? "" : healthRecord.create_doctor_telephone);
+		}
+		var member = data.member;
+		if(member != null){
+			$("#name").html(member.name == null ? "" : member.name);
+			$("#address").html(member.address == null ? "" : member.address);
+			$("#mobile_phone").html(member.mobile_phone == null ? "" : member.mobile_phone);
+			$("#papers_number").html(member.papers_number == null ? "" : member.papers_number);
+			$("#nation").html(member.nation == null ? "" : member.nation);
+			$("#name1").html(member.name == null ? "" : member.name);
+			$("#gender_name").html(member.gender_name == null ? "" : member.gender_name);
+			$("#birthday").html(member.birthday == null ? "" : member.birthday);
+		}
+		var physicalLst = data.physicalLst;
+		if(physicalLst == null){
+			$("#record_not_empty").hide();
+			$("#record_empty").show();
+		}else{
+			$("#record_not_empty").show();
+			$("#record_empty").hide();
+			var html = "";
+			for(var i = 0; i < physicalLst.length; i++){
+				html += "<dl>";
+				html += "<dt class=\"c-999\">编号：<span class=\"c-blue\">" + (physicalLst[i].record_no == null ? "" : physicalLst[i].record_no) + "</span>";
+				html += "<div class=\"fr\">时间：" + (physicalLst[i].measure_time == null ? "" : fmtDate(physicalLst[i].measure_time)) + "</div></dt>";
+				html += "<dd><ul>";
+				var temperatureRecord = physicalLst[i].temperatureRecord;
+				if(temperatureRecord != null){
+					html += "<li>体温检测：" + (temperatureRecord.temperature == null ? "" : temperatureRecord.temperature + "°C");
+					html += " 结果：" + (temperatureRecord.result_name == null ? "" : temperatureRecord.result_name) + "</li>";
+				}
+				var bloodPressureRecord = physicalLst[i].bloodPressureRecord;
+				if(bloodPressureRecord != null){
+					html += "<li>血压检测：收缩压 " + (bloodPressureRecord.high_pressure == null ? "" : bloodPressureRecord.high_pressure + "mmHg");
+					html += " 舒张压 " + (bloodPressureRecord.low_pressure == null ? "" : bloodPressureRecord.low_pressure + "mmHg");
+					html += " 脉搏 " + (bloodPressureRecord.pulse == null ? "" : bloodPressureRecord.pulse + "次/分钟");
+					html += " 结果：" + (bloodPressureRecord.result_name == null ? "" : bloodPressureRecord.result_name) + "</li>";
+				}
+				var bloodOxygenRecord = physicalLst[i].bloodOxygenRecord;
+				if(bloodOxygenRecord != null){
+					html += "<li>血氧检测： " + (bloodOxygenRecord.blood_oxygen == null ? "" : bloodOxygenRecord.blood_oxygen + "%");
+					html += " 脉率 " + (bloodOxygenRecord.bpm == null ? "" : bloodOxygenRecord.bpm + "bpm");
+					html += " 结果：" + (bloodOxygenRecord.result_name == null ? "" : bloodOxygenRecord.result_name) + "</li>";
+				}
+				html += "</ul></dd></dl>";
+			}
+			$("#record_not_empty").html(html);
+		}
+	});
+});
+
+function fmtDate(obj){
+    var date =  new Date(obj);
+    var y = 1900+date.getYear();
+    var m = "0"+(date.getMonth()+1);
+    var d = "0"+date.getDate();
+    return y+"-"+m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+}
+</script>
+
+</body>
+</html>

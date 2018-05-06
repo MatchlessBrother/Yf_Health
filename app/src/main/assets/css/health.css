@@ -21,7 +21,7 @@
 .re-list dl { margin: 20px 6px; padding: 20px; background: #fff; color: #333; border-radius: 3px; box-shadow: 0 0 3px rgba(0,0,0,.1); }
 	.re-list dt { padding-bottom: 15px; border-bottom: #eee solid 1px; }
 	.re-list ul { margin-top: 10px; overflow: hidden; }
-	.re-list li { width: 50%; padding-top: 5px; float: left; }
+	.re-list li { padding-top: 5px; }
 
 .monitoring { margin-top: 30px; color: #fff; }
 	.monitoring .box-default { width: 548px; height: 396px; margin: 15px 0 0 15px; float: left; background: rgba(0,147,221,.6); position: relative; }

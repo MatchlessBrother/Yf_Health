@@ -1,18 +1,22 @@
 package ufhealth.integratedmachine.client.ui.bjjy.view;
 
 import android.view.View;
+import android.view.KeyEvent;
 import android.graphics.Color;
 import android.webkit.WebSettings;
 import com.just.agentweb.AgentWeb;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.annotation.SuppressLint;
 import com.just.agentweb.DefaultWebClient;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import ufhealth.integratedmachine.client.ProvideActionForWebiew;
 import ufhealth.integratedmachine.client.ui.bjjy.view_v.BjjyBghAct_V;
 import ufhealth.integratedmachine.client.ui.bjjy.presenter.BjjyBghPresenter;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class BjjyBghAct extends BaseAct implements BjjyBghAct_V,View.OnClickListener
 {
     private AgentWeb agentWeb;
@@ -24,6 +28,7 @@ public class BjjyBghAct extends BaseAct implements BjjyBghAct_V,View.OnClickList
         return R.layout.activity_bjjybgh;
     }
 
+    @SuppressLint("JavascriptInterface")
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
@@ -36,8 +41,9 @@ public class BjjyBghAct extends BaseAct implements BjjyBghAct_V,View.OnClickList
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("http://f206p96248.imwork.net:13209/web/yygh/index.html");
+                .go("file:///android_asset/web/yygh/index.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        agentWeb.getWebCreator().getWebView().addJavascriptInterface(new ProvideActionForWebiew(this), "androidjs");
     }
 
     protected void initDatas()
@@ -51,21 +57,18 @@ public class BjjyBghAct extends BaseAct implements BjjyBghAct_V,View.OnClickList
 
     }
 
-    @Override
     protected void onResume()
     {
         agentWeb.getWebLifeCycle().onResume();
         super.onResume();
     }
 
-    @Override
     protected void onPause()
     {
         agentWeb.getWebLifeCycle().onPause();
         super.onPause();
     }
 
-    @Override
     protected void onDestroy()
     {
         bjjyBghPresenter.detachContextAndViewLayout();
@@ -79,13 +82,12 @@ public class BjjyBghAct extends BaseAct implements BjjyBghAct_V,View.OnClickList
 
     }
 
- /*   @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (agentWeb.handleKeyEvent(keyCode, event))
             return true;
         return super.onKeyDown(keyCode, event);
-    }*/
+    }
 
     @Subscribe
     public void receiveCountDownFinish(Boolean isFinish)

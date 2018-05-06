@@ -1,6 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
 import android.view.View;
+import android.view.KeyEvent;
 import android.graphics.Color;
 import com.just.agentweb.AgentWeb;
 import android.webkit.WebSettings;
@@ -40,8 +41,8 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
                 .setMainFrameErrorView(LayoutInflater.from(this).inflate(R.layout.webview_error,null))
                 .createAgentWeb()
                 .ready()
-                .go("http://dimdim215.imwork.net:47017/web/member/order-zxzx.html");
-                //.go("http://f206p96248.imwork.net:13209/web/member/order-bjjy-list.html");
+                //.go("http://dimdim215.imwork.net:53102/web/index.html");
+                .go("file:///android_asset/web/member/order-zxzx.html");
         agentWeb.getAgentWebSettings().getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         agentWeb.getWebCreator().getWebView().addJavascriptInterface(new ProvideActionForWebiew(this), "androidjs");
     }
@@ -82,13 +83,12 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
 
     }
 
- /*   @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (agentWeb.handleKeyEvent(keyCode, event))
             return true;
         return super.onKeyDown(keyCode, event);
-    }*/
+    }
 
     @Subscribe
     public void receiveCountDownFinish(Boolean isFinish)

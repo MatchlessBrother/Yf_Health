@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:enabled="false"
             android:button="@null"
             android:visibility="gone"
             android:drawablePadding="18pt"

@@ -1,0 +1,74 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../../css/yygh.css" />
+</head>
+<body>
+
+<div class="pages">
+	
+	<div class="search box-default">
+		<i class="iconfont fs30 c-bbb">&#xe620;</i>
+		<input type="text" placeholder="请输入医生姓名">
+		<div class="btn">
+			<button>搜索</button>
+		</div>
+	</div>
+
+	<div class="doctor-list box-default">
+		<div class="item">
+			<img src="../../images/user/head5.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+		<div class="item">
+			<img src="../../images/user/head6.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+		<div class="item">
+			<img src="../../images/user/head7.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+		<div class="item">
+			<img src="../../images/user/head5.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+		<div class="item">
+			<img src="../../images/user/head6.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+		<div class="item">
+			<img src="../../images/user/head7.png">
+			<h3 class="fs30 c-333">于姝娅</h3>
+			<h4>中医儿科门诊</h4>
+			<p>擅长：以中国传统的中药、针灸、推拿等治疗方法为手段，研究自胎儿至青少年这一时期小儿的生长发育、生理病理、喂养保健，以及各类疾病预防和治疗的一门医学科学。</p>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+$(function(){
+	ajax("/general/hospital/findByServiceType", {serviceType:1} , function(res){
+		alert(res);
+	})
+})
+</script>
+
+</body>
+</html>

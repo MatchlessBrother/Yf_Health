@@ -20,7 +20,6 @@ import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
 import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
-
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
 public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,BaseViewHolder>
@@ -125,8 +124,11 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 helper.setText(R.id.doctorinfo_departmentname,(null != contentBean.getDepartment_name() ? contentBean.getDepartment_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_specialize,(null != contentBean.getBe_good_at() ? "擅长：" + contentBean.getBe_good_at().trim() : "擅长：未知"));
                 helper.setText(R.id.doctorinfo_source,(null != contentBean.getOriginal() ? "来源：" + contentBean.getOriginal().trim() : "来源：未知"));
+                helper.setGone(R.id.doctorinfo_valuedetail_spzx_all,contentBean.getS_cost() >= 0 ? true :false);
                 helper.setText(R.id.doctorinfo_valuedetail_spzx,contentBean.getS_cost() + "元/分钟");
+                helper.setGone(R.id.doctorinfo_valuedetail_yyzx_all,contentBean.getY_cost() >= 0 ? true :false);
                 helper.setText(R.id.doctorinfo_valuedetail_yyzx,contentBean.getY_cost() + "元/分钟");
+                helper.setGone(R.id.doctorinfo_valuedetail_twzx_all,contentBean.getT_cost() >= 0 ? true :false);
                 helper.setText(R.id.doctorinfo_valuedetail_twzx, contentBean.getT_cost() + "元/次");
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels_allinfo);
                 labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());

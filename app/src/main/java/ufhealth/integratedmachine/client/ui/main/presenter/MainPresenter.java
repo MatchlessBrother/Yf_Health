@@ -19,16 +19,18 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 
     }
 
-    public void logging(final Context context, String idCard)
+    public void logging(final Context context, final String idCard,final String name,final String birthday,final Integer gender,final String nation,final String address)
     {
         if(isAttachContextAndViewLayer())
         {
-            LoginModel.login(context,idCard,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            LoginModel.login(context,idCard,name,birthday,gender,nation,address,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfo> returnUserInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
+                        if(null == returnUserInfo.getData().getUserInfo().getMobilePhone() || returnUserInfo.getData().getUserInfo().getMobilePhone().equals(""))
+                            getViewLayer().showBindIdCardDialog(name,idCard);
                         List<Interceptor> interceptorList = NetClient.getInstance(context.getApplicationContext()).getOkHttpClient().interceptors();
                         for(int index=0;index<interceptorList.size();index++)
                         {
@@ -36,15 +38,9 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                             {
                                 TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
                                 interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(), returnUserInfo.getData().getToken().getToken().trim());
-
+                                getViewLayer().getBaseApp().setImUserInfo(returnUserInfo.getData().getYunXinUserInfo());
                                 getViewLayer().getBaseApp().setUserInfo(returnUserInfo.getData().getUserInfo());
                                 getViewLayer().logging(returnUserInfo.getData().getUserInfo());
-
-                                UserInfo.ImUserInfo imUserInfo = new UserInfo.ImUserInfo();
-                                imUserInfo.setAccid("test1");
-                                imUserInfo.setToken("5c74364280972e9020b5d6e49d5ab798");
-                                getViewLayer().getBaseApp().setImUserInfo(imUserInfo);
-
                                 getViewLayer().getBaseApp().setCountDownTime();
                                 getViewLayer().getBaseApp().startCountDown();
                                 return;
@@ -60,7 +56,42 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
         }
     }
 
-    public void logOut(Context context)
+    public void bindPhoneNum(final Context context,final String idCard,final String phone,final String code)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            LoginModel.bindPhoneNum(context,idCard,phone,code,new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            {
+                public void onSuccess(BaseReturnData returnUserInfo)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().bindIdCardSuccess();
+                    }
+                }
+            });
+        }
+    }
+
+    public void getVerifiedCode(final Context context,final String phoneNum)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            LoginModel.getVerifiedCode(context,phoneNum,new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            {
+                public void onSuccess(BaseReturnData returnUserInfo)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().getVerifiedCodeSuccess();
+                        getViewLayer().showToast("成功获取短信验证码");
+                    }
+                }
+            });
+        }
+    }
+
+    public void logOut(final Context context)
     {
         if(isAttachContextAndViewLayer())
         {
@@ -71,14 +102,9 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                 {
                     TokenInterceptor_UnPersistentStore interceptor = (TokenInterceptor_UnPersistentStore) interceptorList.get(index);
                     interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(),"");
-
+                    getViewLayer().getBaseApp().setImUserInfo(new UserInfo.ImUserInfo());
                     getViewLayer().getBaseApp().setUserInfo(null);
                     getViewLayer().logOut();
-
-                    UserInfo.ImUserInfo imUserInfo = new UserInfo.ImUserInfo();
-                    imUserInfo.setAccid("");
-                    imUserInfo.setToken("");
-                    getViewLayer().getBaseApp().setImUserInfo(imUserInfo);
                     getViewLayer().getBaseApp().cancelCountDown();
                     getViewLayer().getBaseApp().setCountDownTime();
                     return;
