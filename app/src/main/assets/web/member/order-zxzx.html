@@ -14,7 +14,7 @@
 		<div class="menu">
 			<ul>
 				<li class="current"><a href="javascript:void(0);"><i class="iconfont">&#xe645;</i>在线咨询</a><i class="iconfont arrow">&#xe64d;</i></li>
-				<li><a href="order-bjjy.html"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li><a href="order-bjjy-list.html"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
 			</ul>
 		</div>
 	</div>
@@ -96,11 +96,11 @@ function loadData(status){
 					html+= "<i class='iconfont arrow'>&#xe64d;</i>";
 					html+= "</div></dd>";
 					html+= "<dd class='oper'>";
-					if(dataList[i].status=='1000'){
+					if(dataList[i].status=='1000'){  													
 						//html+= "<a href='javascript:void(0);' class='button button-reverse'>取消订单</a>";
 						html+= "<a href='javascript:void(0);' class='button'   onclick=goToPay(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去付款</a>";
 					}else if(dataList[i].status=='1001' || dataList[i].status=='1002'){
-						html+= "<a href='javascript:void(0);' class='button'   onclick=goToZiXun(\'"+dataList[i].zxtype+"\',\'"+dataList[i].order_id+"\',\'"+dataList[i].accid+"\',\'"+dataList[i].doctor_id+"\')>去咨询</a>";
+						html+= "<a href='javascript:void(0);' class='button'   onclick=goToZiXun(\'"+dataList[i].zxtype+"\',"+dataList[i].doctor_id+",\'"+dataList[i].accid+"\',"+dataList[i].syTime+",\'"+dataList[i].order_id+"\')>去咨询</a>";
 					}else if(dataList[i].status=='1003'){
 						html+= "<a href='javascript:void(0);' class='button'   onclick=goToPingJia(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去评价</a>";
 					}
@@ -131,8 +131,8 @@ function goToPingJia(){
  * accid 醫生的通信賬戶
  * zxtype 
  */
-function goToZiXun(zxtype,order_id,accid,doctor_id){
-		androidjs.startZxActWithDialog(zxtype,order_id,accid,doctor_id);
+function goToZiXun(zxtype,doctorId,accId,syTime,orderId){
+		androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
 }
 /**
  * 查询详情

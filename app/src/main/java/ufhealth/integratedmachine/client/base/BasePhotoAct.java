@@ -102,7 +102,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
     protected void setTitleCountDownTime(Long time)
     {
         if(isUseDefaultTitleLine())
-            mTitleCountdownBtn.setText((null != time ? time : 0) + "S");
+            mTitleCountdownBtn.setText((null != time ? time : 0) + "秒后自动退出");
     }
 
     protected void setTitleCountDownVisibility(Integer visibility)

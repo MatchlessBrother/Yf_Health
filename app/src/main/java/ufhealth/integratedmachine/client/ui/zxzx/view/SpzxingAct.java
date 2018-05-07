@@ -329,7 +329,7 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
 
         AVChatParameters avChatParameters = new AVChatParameters();
         avChatParameters.set(AVChatParameters.KEY_VIDEO_ROTATE_IN_RENDING , true);
-        avChatParameters.set(AVChatParameters.KEY_DEVICE_DEFAULT_ROTATION, Surface.ROTATION_270);
+        avChatParameters.set(AVChatParameters.KEY_DEVICE_DEFAULT_ROTATION, Surface.ROTATION_0);
         AVChatManager.getInstance().setParameters(avChatParameters);
 
         AVChatManager.getInstance().setupLocalVideoRender(spzxingRightMevedio, false, AVChatVideoScalingType.SCALE_ASPECT_FIT);

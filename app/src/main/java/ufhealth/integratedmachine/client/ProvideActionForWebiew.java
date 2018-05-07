@@ -46,14 +46,20 @@ public class ProvideActionForWebiew
     }
 
     @JavascriptInterface
-    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final Long syTime,final String orderId)
+    public void finishActivity()
+    {
+        baseAct.finish();
+    }
+
+    @JavascriptInterface
+    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final String syTime,final String orderId)
     {
         progressDialog = baseAct.showLoadingDialog();
         startZxAct(type,doctorId,accId,syTime,orderId);
     }
 
     @JavascriptInterface
-    public void startZxAct(final String type,final String doctorId,final String accId,final Long syTime,final String orderId)
+    public void startZxAct(final String type,final String doctorId,final String accId,final String syTime,final String orderId)
     {
         if(baseAct.getBaseApp().getImIsLogined() && null != baseAct.getBaseApp().getIMLoginInfo())
         {
@@ -66,7 +72,7 @@ public class ProvideActionForWebiew
                 case "TWZX":intent = new Intent(baseAct.getBaseContext(),TwzxingAct.class);break;
             }
             intent.putExtra("accid",accId);
-            intent.putExtra("sytime",syTime);
+            intent.putExtra("sytime",Long.valueOf(syTime));
             intent.putExtra("orderid",orderId);
             intent.putExtra("doctorid",doctorId);
             baseAct.startActivity(intent);
@@ -92,7 +98,7 @@ public class ProvideActionForWebiew
                             case "TWZX":intent = new Intent(baseAct.getBaseContext(),TwzxingAct.class);break;
                         }
                         intent.putExtra("accid",accId);
-                        intent.putExtra("sytime",syTime);
+                        intent.putExtra("sytime",Long.valueOf(syTime));
                         intent.putExtra("orderid",orderId);
                         intent.putExtra("doctorid",doctorId);
                         baseAct.startActivity(intent);

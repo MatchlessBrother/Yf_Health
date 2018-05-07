@@ -102,7 +102,7 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
     public void setTitleCountDownTime(Long time)
     {
         if (isUseDefaultTitleLine())
-            mTitleCountdownBtn.setText((null != time ? time : 0) + "S");
+            mTitleCountdownBtn.setText((null != time ? time : 0) + "秒后自动退出");
     }
 
     public void setTitleCountDownVisibility(Integer visibility)

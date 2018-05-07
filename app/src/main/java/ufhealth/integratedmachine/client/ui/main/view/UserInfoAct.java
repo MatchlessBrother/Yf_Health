@@ -6,6 +6,10 @@ import com.bumptech.glide.Glide;
 import android.widget.LinearLayout;
 import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
@@ -63,8 +67,8 @@ public class UserInfoAct extends BaseAct implements UserInfoAct_V,View.OnClickLi
             userinfoName.setText(null != userInfo.getName() ? userInfo.getName().trim() : "未知");
             userinfoIdcard.setText("身份证号：" + (null != userInfo.getPapersNumber() ? userInfo.getPapersNumber().trim() : "未知"));
             userinfoGender.setText("所属性别：" + (userInfo.getGender() == 1 ? "男" : "女"));
-            userinfoBirthday.setText("出生日期：" + (null != userInfo.getBirthday() ? userInfo.getBirthday().trim() : "未知"));
-            userinfoPhonenum.setText("身份证号：" + (null != userInfo.getMobilePhone() ? userInfo.getMobilePhone().trim() : "未知"));
+            userinfoBirthday.setText("出生日期：" + (null != userInfo.getBirthday() ? new SimpleDateFormat("yyyy-MM-dd").format(new Date(Long.valueOf(userInfo.getBirthday()))) : "未知"));
+            userinfoPhonenum.setText("手机号码：" + (null != userInfo.getMobilePhone() ? userInfo.getMobilePhone().trim() : "未知"));
         }
     }
 

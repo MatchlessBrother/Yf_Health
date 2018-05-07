@@ -80,7 +80,6 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
     public void onClick(View view)
     {
         super.onClick(view);
-
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event)

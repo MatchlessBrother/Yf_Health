@@ -75,7 +75,7 @@ $(function(){
 	}
 });
 function createAndPay() {
-	$("#name").html(name);
+	$("#name").html(getItem("name"));
 	$("#telephone").html(getItem("telephone"));
 	$("#hospitalName").html(getItem("hospitalName"));
 	$("#patientCard").html(getItem("isNeedDbjzkService") == "1" ? "需要办理" : getItem("patientCard"));

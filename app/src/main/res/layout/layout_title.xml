@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/activity_title_countdown"
-        android:layout_width="160pt"
+        android:layout_width="300pt"
         android:layout_height="match_parent"
         android:gravity="center"
         android:singleLine="true"
@@ -42,7 +42,7 @@
         tools:text="标题" />
 
     <TextView
-        android:layout_width="160pt"
+        android:layout_width="300pt"
         android:layout_height="match_parent"
         android:visibility="invisible" />
 

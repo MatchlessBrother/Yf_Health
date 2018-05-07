@@ -125,7 +125,7 @@ public class PayAct extends BaseAct implements PayAct_V,View.OnClickListener
             public void onNext(String s)
             {
                 Intent intent = new Intent(PayAct.this, MainAct.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
             public void onError(Throwable e){}

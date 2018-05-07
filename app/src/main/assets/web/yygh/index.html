@@ -112,12 +112,19 @@
 <script type="text/javascript" src="../../js/commom.js"></script>
 <script type="text/javascript">
 $(function(){
-	$("#name").html(name);
-
-	if (getItem("telephone") == null) {
-		$("#telephone").val(telephone);
-		setItem("telephone", telephone);
+	if (getItem("name") == null) {
+		ajax('/member/findByToken', {} , function(res){
+			if(res.code == 1){
+				$("#name").html(res.data.name);
+				$("#telephone").val(res.data.phone);
+				setItem("name", res.data.name);
+				setItem("telephone", res.data.phone);
+			}else{
+				layer.msg("基础数据获取失败");
+			}
+		});
 	} else {
+		$("#name").html(getItem("name"));
 		$("#telephone").val(getItem("telephone"));
 	}
 	$("#telephone").keyup(function(){

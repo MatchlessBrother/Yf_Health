@@ -1,6 +1,5 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
-import android.util.Log;
 import android.view.View;
 import rx.functions.Func1;
 import com.invs.InvsConst;
@@ -9,7 +8,6 @@ import rx.functions.Action1;
 import android.os.SystemClock;
 import android.content.Intent;
 import android.content.Context;
-import android.webkit.JavascriptInterface;
 import android.widget.TextView;
 import com.invs.BtReaderClient;
 import rx.schedulers.Schedulers;
@@ -22,8 +20,6 @@ import static com.invs.InvsConst.msg;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.NIMClient;
 import android.support.v7.widget.Toolbar;
-
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.StatusCode;
 import android.content.BroadcastReceiver;
 import android.bluetooth.BluetoothAdapter;
@@ -42,17 +38,10 @@ import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
 import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
 import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
 import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
-import ufhealth.integratedmachine.client.ui.zxzx.view.SpzxingAct;
-import ufhealth.integratedmachine.client.ui.zxzx.view.TwzxingAct;
-import ufhealth.integratedmachine.client.ui.zxzx.view.YyzxingAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.util.BindingCellPhoneDialog;
-
-import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
-import com.yuan.devlibrary._12_______Utils.NetTools;
-
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
 
 public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,IClientCallBack
@@ -161,7 +150,6 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
                 //5、注册BroadcastReceiver，用于接收蓝牙传回的消息
             }
         });
-
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(msg);
         registerReceiver(mBltReceiver, intentFilter);
@@ -182,29 +170,6 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
             }
         };
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, true);
-    }
-
-    protected void initDatas()
-    {
-        mainPresenter = new MainPresenter();
-        mainPresenter.attachContextAndViewLayer(this,this);
-    }
-
-    protected void onResume()
-    {
-        super.onResume();
-        initLogic();
-    }
-
-    protected void initLogic()
-    {
-        setSupportActionBar(mainToolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainDrawerlayout, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mainDrawerlayout.setDrawerListener(toggle);toggle.syncState();
-        if(mainDrawerlayout.isShown()) mainDrawerlayout.closeDrawers();
-        if(getBaseApp().getIsLogged()) logged(getBaseApp().getUserInfo());
-        else notLogged();
-
         zxzx.setOnClickListener(this);
         bjjy.setOnClickListener(this);
         tjfw.setOnClickListener(this);
@@ -220,6 +185,22 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         mainSlideWdda.setOnClickListener(this);
         mainSlideGybj.setOnClickListener(this);
         mainSlideXxtzNum.setOnClickListener(this);
+    }
+
+    protected void initDatas()
+    {
+        mainPresenter = new MainPresenter();
+        mainPresenter.attachContextAndViewLayer(this,this);
+    }
+
+    protected void initLogic()
+    {
+        setSupportActionBar(mainToolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainDrawerlayout, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mainDrawerlayout.setDrawerListener(toggle);toggle.syncState();
+        if(mainDrawerlayout.isShown()) mainDrawerlayout.closeDrawers();
+        if(getBaseApp().getIsLogged()) logged(getBaseApp().getUserInfo());
+        else notLogged();
     }
 
     /*******已登录*****/
@@ -289,20 +270,6 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
             showToast("请刷身份证进行登录操\n作,否则无法操作哟...",28);
     }
 
-    @Subscribe
-    public void receiveCountDownTime(Long countDownTime)
-    {
-        if(null != mainCountdown)
-        mainCountdown.setText(null != countDownTime ? countDownTime + "S" : "0S");
-}
-
-    @Subscribe
-    public void receiveCountDownFinish(Boolean isFinish)
-    {
-        if(isFinish) mainPresenter.logOut(this);
-        if(getBaseApp().getImIsLogined()) NIMClient.getService(AuthService.class).logout();
-    }
-
     /**********************************************************************************************/
     /********************************************VIEW层********************************************/
     /**********************************************************************************************/
@@ -311,6 +278,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
     public void logging(UserInfo.UserInfoBean userInfo)
     {
         logged(userInfo);
+        stopThreadReadCard();
         useGlideLoadImg(mainSlideImg,null != userInfo.getAvatar() ? userInfo.getAvatar().trim().toString() : "");
         mainSlideName.setText(null != userInfo.getName() ? userInfo.getName().trim().toString() : "无名氏");
     }
@@ -318,10 +286,44 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
     /********进行登出操作********/
     public void logOut()
     {
+        if(getBaseApp().getImIsLogined())
+            NIMClient.getService(AuthService.class).logout();
         useGlideLoadImg(mainSlideImg,R.mipmap.defaultheadimg);
         mainSlideName.setText("用户姓名");
-        startThreadReadCard();
         notLogged();
+        rx.Observable.just("").map(new Func1<String, String>()
+        {
+            public String call(String s)
+            {
+                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(!btAdapter.isEnabled())
+                    btAdapter.enable();
+                while(true)
+                {
+                    if(mBtReaderClient.connectBt("00:0E:0B:00:02:33"))
+                        break;
+                }
+                return s;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>()
+        {
+            public void call(String s)
+            {
+                startThreadReadCard();
+                //4、开启循环读卡（业务中应该放在点击登录的时候，开启循环读卡；登录成功后，关闭循环读卡）
+                //startThreadReadCard();  //开启循环读卡
+                //stopThreadReadCard(); //关闭循环读卡
+                //5、注册BroadcastReceiver，用于接收蓝牙传回的消息
+            }
+        });
+    }
+
+    protected void onDestroy()
+    {
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, false);
+        mainPresenter.detachContextAndViewLayout();
+        unregisterReceiver(mBltReceiver);
+        super.onDestroy();
     }
 
     public void clickZxzx()
@@ -338,14 +340,16 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
 
     public void clickTjfw()
     {
-        Intent intent = new Intent(this,TjfwAct.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this,TjfwAct.class);
+        startActivity(intent);*/
+        showToast("功能暂未开放，敬请期待...");
     }
 
     public void clickYyfw()
     {
-        Intent intent = new Intent(this,YyfwAct.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this,YyfwAct.class);
+        startActivity(intent);*/
+        showToast("功能暂未开放，敬请期待...");
     }
 
     public void clickJkjc()
@@ -358,13 +362,6 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
     {
         Intent intent = new Intent(this,JkdaAct.class);
         startActivity(intent);
-    }
-
-    protected void onDestroy()
-    {
-        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, false);
-        mainPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 
     public void clickMain_slide_img()
@@ -387,8 +384,9 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
 
     public void clickMain_slide_xxtz()
     {
-        Intent intent = new Intent(this,MsgNotifiesAct.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this,MsgNotifiesAct.class);
+        startActivity(intent);*/
+        showToast("功能暂未开放，敬请期待...");
     }
 
     public void clickMain_slide_wddd()
@@ -411,86 +409,25 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
 
     public void clickMain_slide_xxtz_num()
     {
-        Intent intent = new Intent(this,MsgNotifiesAct.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(this,MsgNotifiesAct.class);
+        startActivity(intent);*/
+        showToast("功能暂未开放，敬请期待...");
     }
 
-    public void startZxAct(final String type,final String doctorId,final String accId,final long time,final String orderId)
+    @Subscribe
+    public void receiveCountDownTime(Long countDownTime)
     {
-        if(getBaseApp().getImIsLogined() && null != getBaseApp().getIMLoginInfo())
-        {
-            dismissLoadingDialog(progressDialog);
-            Intent intent = null;
-            switch(type)
-            {
-                case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
-                case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
-                case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
-            }
-            intent.putExtra("accid",accId);
-            intent.putExtra("orderid",orderId);
-            intent.putExtra("doctorid",doctorId);
-            intent.putExtra("sytime",time);
-            startActivity(intent);
-        }
-        else
-        {
-            LoginInfo loginInfo = new LoginInfo(getBaseApp().getImUserInfo().getAccid().trim(),getBaseApp().getImUserInfo().getToken().trim());
-            NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback<LoginInfo>()
-            {
-                public void onSuccess(LoginInfo loginInfo)
-                {
-                    dismissLoadingDialog(progressDialog);
-                    getBaseApp().setIMLoginInfo(loginInfo);
-                    Intent intent = null;
-                    switch(type)
-                    {
-                        case "SPZX":intent = new Intent(MainAct.this,SpzxingAct.class);break;
-                        case "YPZX":intent = new Intent(MainAct.this,YyzxingAct.class);break;
-                        case "TWZX":intent = new Intent(MainAct.this,TwzxingAct.class);break;
-                    }
-                    intent.putExtra("accid",accId);
-                    intent.putExtra("orderid",orderId);
-                    intent.putExtra("doctorid",doctorId);
-                    intent.putExtra("sytime",time);
-                    startActivity(intent);
-                }
-
-                public void onFailed(int code)
-                {
-                    if(!NetTools.WhetherConnectNet(MainAct.this))
-                    {
-                        showToast("网络发生异常！请确保网络正常后再发起咨询请求");
-                        dismissLoadingDialog(progressDialog);
-                        return;
-                    }
-                    else if(code  == 302)
-                    {
-                        showToast("IM账号密码发生错误！请联系管理员");
-                        dismissLoadingDialog(progressDialog);
-                        return;
-                    }
-                    else
-                    {
-                        startZxAct(type,doctorId,accId,time,orderId);
-                    }
-                }
-
-                public void onException(Throwable exception)
-                {
-                    Log.e("ImException",exception.getMessage().toString());
-                    dismissLoadingDialog(progressDialog);
-                }
-            });
-        }
+        if(null != mainCountdown)
+            mainCountdown.setText(null != countDownTime ? countDownTime + "秒后自动退出" : "0秒后自动退出");
     }
 
-    @JavascriptInterface
-    public void startZxActWithDialog(final String type,final String doctorId,final String accId,final long time,final String orderId)
+    @Subscribe
+    public void receiveCountDownFinish(Boolean isFinish)
     {
-        progressDialog = showLoadingDialog();
-        startZxAct(type,doctorId,accId,time,orderId);
+        if(isFinish) mainPresenter.logOut(this);
+         if(null != getBaseApp().getImIsLogined()) NIMClient.getService(AuthService.class).logout();
     }
+
 
     /**********************************************************/
     /**********************绑定身份证模块**********************/
@@ -520,21 +457,17 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         }
     }
 
-    public  void  bindIdCardSuccess()
+    public  void  bindIdCardSuccess(String phone)
     {
         if(null != cellPhoneDialog)
         {
             cellPhoneDialog.dismissDialog();
-            showToast("身份证绑定成功，请重新刷卡登录！");
+            getBaseApp().getUserInfo().setMobilePhone(phone.trim());
         }
     }
-    /**********************************************************/
-    /**********************************************************/
 
-
-
-    /**********************************************************/
-    /*************************蓝牙模块*************************/
+    /***********************************************************/
+    /**************************蓝牙模块*************************/
     public void startThreadReadCard()
     {
         mReadThread = new ReadThread();
@@ -649,11 +582,30 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
 
     public void onBtState(final boolean isConnect)
     {
-        if (isConnect)
-            mainLogin.setText("请刷身份证进行登录操作...");
+        if(getBaseApp().getUserInfo() != null)
+        {
+            getBaseApp().setIsLogged(true);
+            mainExit.setVisibility(View.VISIBLE);
+            mainToolbar.setVisibility(View.VISIBLE);
+            mainCountdown.setVisibility(View.VISIBLE);
+            mainLogin.setText("欢迎您，" + ((null != getBaseApp().getUserInfo() && null != getBaseApp().getUserInfo().getName() && !"".equals(getBaseApp().getUserInfo().getName().trim())) ?
+                    getBaseApp().getUserInfo().getName().trim() : "未命名") + "（" + getBaseApp().getUserInfo().getPapersNumber().trim() + "）");
+        }
         else
-            mainLogin.setText("正在连接身份证读取设备，请稍等...");
+        {
+            if (isConnect)
+                mainLogin.setText("请刷身份证进行登录操作...");
+            else
+                mainLogin.setText("正在连接身份证读取设备，请稍等...");
+        }
     }
-    /**********************************************************/
-    /**********************************************************/
+
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        if(getBaseApp().getIsLogged())
+            logged(getBaseApp().getUserInfo());
+        else
+            notLogged();
+    }
 }

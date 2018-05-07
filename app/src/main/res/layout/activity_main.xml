@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/main_countdown"
-            android:layout_width="160pt"
+            android:layout_width="300pt"
             android:layout_height="match_parent"
             android:gravity="center"
             android:singleLine="true"
@@ -42,7 +42,7 @@
             android:textSize="36sp" />
 
         <TextView
-            android:layout_width="160pt"
+            android:layout_width="300pt"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
@@ -578,7 +578,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="88sp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="44pt"

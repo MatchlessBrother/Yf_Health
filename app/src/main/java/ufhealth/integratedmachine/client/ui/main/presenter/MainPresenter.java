@@ -66,7 +66,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().bindIdCardSuccess();
+                        getViewLayer().bindIdCardSuccess(phone);
                     }
                 }
             });

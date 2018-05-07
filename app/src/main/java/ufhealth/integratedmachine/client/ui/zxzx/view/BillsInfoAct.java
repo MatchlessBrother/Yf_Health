@@ -67,6 +67,12 @@ public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClick
         isIncludeFreeDoctor = getIntent().getBooleanExtra("isIncludeFreeDoctor",false);
         billsInfoAdapter.setNewData(doctors);
 
+        List<String> lsImgsPath = new ArrayList<>();
+        for(String imgPath : imgsPath)
+           if(!"".equals(imgPath.trim()))
+               lsImgsPath.add(imgPath);
+        imgsPath.clear();
+        imgsPath.addAll(lsImgsPath);
         double totalValue = 0d;
         for(DoctorInfo.ContentBean doctor : doctors)
             totalValue += doctor.getT_cost();
@@ -81,14 +87,14 @@ public class BillsInfoAct extends BaseAct implements BillsInfoAct_V,View.OnClick
             case R.id.bill_btn:
             {
                 if(null != imgsPath && imgsPath.size() > 0)
-                    billsInfoPresenter.uploadImgs(this,questions,imgsPath,doctors,isIncludeFreeDoctor);
+                    billsInfoPresenter.uploadImgs(this,null != questions ? questions.trim() : "",imgsPath,doctors,isIncludeFreeDoctor);
                 else
                 {
                     List<String> doctorsId = new ArrayList<>();
                     for(DoctorInfo.ContentBean doctor : doctors)
                         if(null != doctor && 0 != doctor.getDoctor_id())
                             doctorsId.add(doctor.getDoctor_id()+"");
-                    billsInfoPresenter.createImageTextBill(this,questions,BillsInfoPresenter.setToArray(imgsPath),BillsInfoPresenter.setToArray(doctorsId),isIncludeFreeDoctor);
+                    billsInfoPresenter.createImageTextBill(this,null != questions ? questions.trim() : "",imgsPath.size() > 0 ? BillsInfoPresenter.setToArray(imgsPath) : new String[]{""},BillsInfoPresenter.setToArray(doctorsId),isIncludeFreeDoctor);
                 }
                 break;
             }

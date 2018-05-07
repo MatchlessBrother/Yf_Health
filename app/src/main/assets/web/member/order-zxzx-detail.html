@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="box-default order-detail-box mg-t10">
+		<div class="box-default order-detail-box mg-t10" style="height:512px;">
 			<div class="title">问诊信息</div>
 			<div class="user">
 				<ul>
@@ -95,7 +95,12 @@
 				
 				if(orderInfo.status=='1002'){
 					$("#order_status").html("待咨询");
-					$("#actionMeun").append("<a href='javascript:void(0);' goToZiXun(\'"+zxType+"\',\'"+zx_order_id+"\',\'"+doctor.accid+"\',\'"+orderInfo.doctorId+"\') class='fr button'>开始咨询</a>");
+					if(zxType=='TWZX'){
+						$("#actionMeun").append("<a href='javascript:void(0);' onclick=goToZiXun(\'"+zxType+"\',\'"+orderInfo.doctorId+"\',\'"+doctor.accid+"\',"+0+",\'"+zx_order_id+"\') class='fr button'>开始咨询</a>");
+					}else{
+						var syTime = orderInfo.serviceLength-orderInfo.serviceMin;
+						$("#actionMeun").append("<a href='javascript:void(0);' onclick=goToZiXun(\'"+zxType+"\',\'"+orderInfo.doctorId+"\',\'"+doctor.accid+"\',"+syTime+",\'"+zx_order_id+"\') class='fr button'>开始咨询</a>");
+					}
 				}else if(orderInfo.status=='1000'){
 					$("#order_status").html("待支付");
 				}else if(orderInfo.status=='1003'){
@@ -120,9 +125,9 @@
  * accid 醫生的通信賬戶
  * zxtype 
  */
-function goToZiXun(zxtype,order_id,accid,doctor_id){
-	androidjs.startZxActWithDialog(zxtype,order_id,accid,doctor_id);
-}
+ function goToZiXun(zxtype,doctorId,accId,syTime,orderId){
+		androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+ }
 </script>
 
 </body>

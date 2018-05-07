@@ -19,7 +19,8 @@
         android:paddingBottom="30sp"
         android:paddingLeft="30pt"
         android:paddingRight="30pt"
-        android:paddingTop="30sp">
+        android:paddingTop="30sp"
+        android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/choosemultidoctor_img"

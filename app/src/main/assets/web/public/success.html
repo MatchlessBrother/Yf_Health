@@ -17,7 +17,7 @@
 			<h2 class="fs36 pd-t20">下单成功</h2>
 		</div>
 		<div id="description" class="fs24" style="width:750px;margin:0 auto;padding:80px 0;line-height: 36px;">尊敬的-用户，我们已经成功接收您的-订单。稍后会有一条短信发送至您的手机，请确保您填写的信息完整无误。为保证业务的顺利进行，我们在必要环节会通过电话或短信的方式和您进行沟通，请保持手机畅通，如有疑问或建议，欢迎拨打客服电话83100000</div>
-		<div class="tc"><a href="javascript:void(0);" class="button">返回首页</a></div>
+		<div class="tc"><a id="gotoHomeBtn" href="javascript:void(0);" class="button">返回首页</a></div>
 	</div>
 
 </div>
@@ -27,6 +27,9 @@
 <script type="text/javascript">
 	$(function(){
 		$("#description").html("尊敬的"+name+"用户，我们已经成功接收您的"+getItem("serviceName")+"订单。稍后会有一条短信发送至您的手机，请确保您填写的信息完整无误。为保证业务的顺利进行，我们在必要环节会通过电话或短信的方式和您进行沟通，请保持手机畅通，如有疑问或建议，欢迎拨打客服电话83100000");
+		$("#gotoHomeBtn").click(function(){
+			androidjs.finishActivity();
+		});
 	});
 </script>
 </body>

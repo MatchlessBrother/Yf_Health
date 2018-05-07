@@ -41,7 +41,7 @@ public class BaseApp extends BaseApplication
 
     private CountDownUtil mCountDownUtil;
     private BaseUiAdapterHelper mUiHelper;
-    private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
+    private static final Integer COUNTDOWN_TIME = 3600;//以秒为单位
 
     protected void attachBaseContext(Context base)
     {

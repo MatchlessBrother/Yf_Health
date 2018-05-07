@@ -79,7 +79,6 @@ public class JkjcAct extends BaseAct implements JkjcAct_V,View.OnClickListener
     public void onClick(View view)
     {
         super.onClick(view);
-
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event)

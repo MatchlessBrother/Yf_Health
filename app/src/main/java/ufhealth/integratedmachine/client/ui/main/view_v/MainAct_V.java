@@ -12,7 +12,6 @@ public interface MainAct_V extends BaseMvp_View
       void clickYyfw();
       void clickJkjc();
       void clickJkda();
-      void bindIdCardSuccess();
       void clickMain_slide_img();
       void clickMain_slide_name();
       void clickMain_slide_grzl();
@@ -22,6 +21,7 @@ public interface MainAct_V extends BaseMvp_View
       void clickMain_slide_gybj();
       void getVerifiedCodeSuccess();
       void clickMain_slide_xxtz_num();
+      void bindIdCardSuccess(String phone);
       void logging(UserInfo.UserInfoBean userInfo);
       void showBindIdCardDialog(String name,String idCard);
 }
