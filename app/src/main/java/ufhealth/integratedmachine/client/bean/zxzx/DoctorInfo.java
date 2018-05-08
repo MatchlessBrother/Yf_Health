@@ -111,6 +111,7 @@ public class DoctorInfo implements Parcelable
         private String is_free;
         private boolean isSelected;
         private List<String> labels;
+        private int is_service;
 
         public String getDoctor_name() {
             return doctor_name;
@@ -250,6 +251,14 @@ public class DoctorInfo implements Parcelable
             this.labels = labels;
         }
 
+        public int getIs_service() {
+            return this.is_service;
+        }
+
+        public void setIs_service(int is_service) {
+            this.is_service = is_service;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -274,6 +283,7 @@ public class DoctorInfo implements Parcelable
             dest.writeString(this.is_free);
             dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
             dest.writeStringList(this.labels);
+            dest.writeInt(this.is_service);
         }
 
         public ContentBean() {
@@ -297,6 +307,7 @@ public class DoctorInfo implements Parcelable
             this.is_free = in.readString();
             this.isSelected = in.readByte() != 0;
             this.labels = in.createStringArrayList();
+            this.is_service = in.readInt();
         }
 
         public static final Creator<ContentBean> CREATOR = new Creator<ContentBean>() {

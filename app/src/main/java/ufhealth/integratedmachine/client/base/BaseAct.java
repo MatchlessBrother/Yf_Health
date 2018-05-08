@@ -138,7 +138,7 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
 
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
-        if(getBaseApp().getIsLogged())
+        if(null != getBaseApp().getUserInfo())
         {
             switch(ev.getAction())
             {

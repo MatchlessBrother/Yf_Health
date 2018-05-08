@@ -6,6 +6,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import android.text.Editable;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.graphics.Color;
 import android.widget.EditText;
@@ -240,9 +241,16 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
 
     public void onClick(View view)
     {
-        super.onClick(view);
         switch (view.getId())
         {
+            case R.id.activity_title_back:
+            {
+                Intent intent = new Intent();
+                setResult(0,intent);
+                finish();
+                break;
+            }
+
             case R.id.doctorinfo_startchat:
             {
                 twzxingPresenter.finishBill("TWZX",orderId);
@@ -268,6 +276,13 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
         }
     }
 
+    public void onBackPressed()
+    {
+        Intent intent = new Intent();
+        setResult(0,intent);
+        finish();
+    }
+
     protected void onDestroy()
     {
         NIMClient.getService(MsgServiceObserve.class).observeMsgStatus(statusObserver, false);
@@ -280,7 +295,6 @@ public class TwzxingAct extends BasePhotoAct implements TwzxingAct_V,DoctorInfoA
     public void finishBillSuccess()
     {
         finish();
-
     }
 
     public void finishRefreshDoctorRatingInfo()

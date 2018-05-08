@@ -1,6 +1,8 @@
 package ufhealth.integratedmachine.client.network;
 
 import rx.Observable;
+
+import java.io.File;
 import java.util.Map;
 import java.util.List;
 import retrofit2.http.POST;
@@ -11,6 +13,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.FormUrlEncoded;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
+import ufhealth.integratedmachine.client.bean.main.WifiMacAddress;
 import ufhealth.integratedmachine.client.bean.zxzx.Billinfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.zxzx.PayResult;
@@ -24,11 +27,15 @@ public interface NetUrl
 {
     @POST("member/login")
     @FormUrlEncoded
-    Observable<BaseReturnData<UserInfo>> login(@Field("idCard") String idCard,@Field("name") String name,@Field("birthday") String birthday,@Field("gender") Integer gender,@Field("nation") String nation,@Field("address") String address);
+    Observable<BaseReturnData<UserInfo>> login(@Field("idCard") String idCard,@Field("name") String name,@Field("birthday") String birthday,@Field("gender") Integer gender,@Field("nation") String nation,@Field("address") String address,@Field("avatarByte") byte[] avatarByte);
 
     @POST("member/sendIdentifyingCode")
     @FormUrlEncoded
     Observable<BaseReturnData> getVerifiedCode(@Field("phone") String phoneNum);
+
+    @POST("general/device/getDeviceByCardRead")
+    @FormUrlEncoded
+    Observable<BaseReturnData<WifiMacAddress>> getWifiMacAddress(@Field("device_id") String wifiMacAddress);
 
     @POST("member/bindPhone")
     @FormUrlEncoded
@@ -68,6 +75,10 @@ public interface NetUrl
     @POST("zixun/video/orderVideoSave")
     @FormUrlEncoded
     Observable<BaseReturnData<Billinfo>> zxzxCreateVideoBill(@Field("doctor_id") String doctorId,@Field("timeMin") String timeMin);
+
+    @POST("zixun/zxorder/memberHangUp")
+    @FormUrlEncoded
+    Observable<BaseReturnData> hangUpConsultation(@Field("zxType") String zxType,@Field("order_id") String order_id,@Field("server_time") String server_time);
 
     @POST("zixun/imagetext/imageTextSave")
     @FormUrlEncoded

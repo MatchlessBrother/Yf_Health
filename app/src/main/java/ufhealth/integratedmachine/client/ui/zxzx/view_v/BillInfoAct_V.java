@@ -6,6 +6,7 @@ import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
 
 public interface BillInfoAct_V extends BaseMvp_View
 {
+    void createFressBillSuccess();
     void setDoctorBaseInfo(DoctorAllInfo.BaseinfoBean baseinfoBean);
     void startAudioPayActivity(Billinfo billinfo);
     void startVideoPayActivity(Billinfo billinfo);

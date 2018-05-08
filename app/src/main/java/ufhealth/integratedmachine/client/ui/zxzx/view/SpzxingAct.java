@@ -6,6 +6,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.TimerTask;
 import android.view.Surface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -92,6 +93,7 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
     private Observer<AVChatCalleeAckEvent> callAckObserver = null;
     private AVChatStateObserverLite aVChatStateObserverLite = null;
 
+    private long usedTimeForBill = 0;
     private SpzxingPresenter spzxingPresenter;
     private DoctorInfoPresenter doctorInfoPresenter;
 
@@ -104,6 +106,7 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
     {
         super.initWidgets(rootView);
         setTitleContent("视频咨询中");
+        ksTime = 0;
         orderId = getIntent().getStringExtra("orderid").trim();
         doctorId = getIntent().getStringExtra("doctorid").trim();
         chatObjAccId = getIntent().getStringExtra("accid").trim();
@@ -384,6 +387,8 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
                 finishAutoCalculationTime();
                 spzxingRightBottomLjstatus.setText("成功关闭视频咨询，谢谢使用！");
                 spzxingRightOthervedio.setBackgroundColor(Color.argb(0,0,0,0));
+                spzxingPresenter.endInMidwayZxBill(SpzxingAct.this,"SPZX",orderId,(ksTime - usedTimeForBill)+"");
+                usedTimeForBill = ksTime;
             }
 
             public void onFailed(int code)
@@ -537,7 +542,11 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
             case R.id.activity_title_back:
             {
                 if(rtcStatus == 1)
+                {
+                    Intent intent = new Intent();
+                    setResult(0,intent);
                     finish();
+                }
                 else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
                     finishVedioChat(avChatData);
                 break;
@@ -561,7 +570,11 @@ public class SpzxingAct extends BaseAct implements SpzxingAct_V,DoctorInfoAct_V,
     public   void   onBackPressed()
     {
         if(rtcStatus == 1)
+        {
+            Intent intent = new Intent();
+            setResult(0,intent);
             finish();
+        }
         else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
             finishVedioChat(avChatData);
     }

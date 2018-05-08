@@ -61,6 +61,7 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     private RelativeLayout doctorinfoRightTopSpAll;
     private RelativeLayout doctorinfoRightTopYyAll;
     private RelativeLayout doctorinfoRightTopTwAll;
+    private DoctorAllInfo.BaseinfoBean baseinfoBean;
     private DoctorInfoPresenter doctorInfoPresenter;
     private RecyclerView doctorinfoRightBottomRecyclerview;
     private DoctorInfoRatingAdapter doctorInfoRatingAdapter;
@@ -224,7 +225,10 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case R.id.doctorinfo_right_top_spall:
             {
                 TYPE = ZxzxAct.SPZX;
-                doctorinfoStartchat.setEnabled(true);
+                if(baseinfoBean.getIs_service() == 1)
+                    doctorinfoStartchat.setEnabled(true);
+                else
+                    doctorinfoStartchat.setEnabled(false);
                 doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.GONE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_gray));
@@ -241,7 +245,10 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case R.id.doctorinfo_right_top_yyall:
             {
                 TYPE = ZxzxAct.YYZX;
-                doctorinfoStartchat.setEnabled(true);
+                if(baseinfoBean.getIs_service() == 1)
+                    doctorinfoStartchat.setEnabled(true);
+                else
+                    doctorinfoStartchat.setEnabled(false);
                 doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.GONE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_gray));
@@ -258,7 +265,10 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             case R.id.doctorinfo_right_top_twall:
             {
                 TYPE = ZxzxAct.TWZX;
-                doctorinfoStartchat.setEnabled(true);
+                if(baseinfoBean.getIs_service() == 1)
+                    doctorinfoStartchat.setEnabled(true);
+                else
+                    doctorinfoStartchat.setEnabled(false);
                 doctorinfo_startnote.setVisibility(View.GONE);
                 doctorinfoRightTopTwline.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwimg.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.kszx_blue));
@@ -295,6 +305,7 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
     {
         if(null != baseinfoBean)
         {
+            this.baseinfoBean = baseinfoBean;
             useGlideLoadImg(doctorinfoImg,null != baseinfoBean.getAvatar() ? baseinfoBean.getAvatar().trim() : "");
             doctorinfoImgStatus.setText("在线");
             doctorinfoImgStatus.setVisibility(View.VISIBLE);
@@ -344,6 +355,13 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             {
                 doctorinfoRightTopTwAll.setVisibility(View.VISIBLE);
                 doctorinfoRightTopTwallline.setVisibility(View.VISIBLE);
+            }
+
+            if(baseinfoBean.getIs_service() == 0)
+            {
+                doctorinfoStartchat.setEnabled(false);
+                doctorinfoStartchat.setText("暂不提供服务");
+                doctorinfoStartchat.setBackgroundColor(Color.argb(255,204,204,204));
             }
         }
     }

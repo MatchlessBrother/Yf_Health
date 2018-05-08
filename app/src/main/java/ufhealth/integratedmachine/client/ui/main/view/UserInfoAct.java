@@ -52,7 +52,7 @@ public class UserInfoAct extends BaseAct implements UserInfoAct_V,View.OnClickLi
 
     protected void initDatas()
     {
-        if(getBaseApp().getIsLogged())
+        if(null != getBaseApp().getUserInfo())
             userInfo = getBaseApp().getUserInfo();
         userInfoPresenter = new UserInfoPresenter();
         userInfoPresenter.attachContextAndViewLayer(this,this);

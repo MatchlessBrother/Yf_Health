@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="info">
-				<img src="../../images/user/head5.png">
+				<img src="" id="tx" />
 				<ul>
 					<li>医生信息：<span class="c-333" id='doctor_info'></span></li>
 					<li>订单编号：<span class="c-333" id='ddbh'></span></li>
@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="box-default order-detail-box mg-t10" style="height:512px;">
+		<div class="box-default order-detail-box mg-t10" style="height:412px;">
 			<div class="title">问诊信息</div>
 			<div class="user">
 				<ul>
@@ -85,6 +85,7 @@
 					$("#service_type").html("图文咨询");
 					$("#wtms").html(orderInfo.textDescription);
 				}
+				$("#tx").attr('src',doctor.avatar);
 				$("#doctor_info").html(doctor.doctor_name+"  "+doctor.hospital_name+"  "+doctor.department_name);
 				$("#ddbh").html(orderInfo.orderNumber);
 				$("#xdsj").html(orderInfo.createTime);
@@ -104,7 +105,7 @@
 				}else if(orderInfo.status=='1000'){
 					$("#order_status").html("待支付");
 				}else if(orderInfo.status=='1003'){
-					$("#order_status").html("待评价");
+					$("#order_status").html("已完成");
 				}else if(orderInfo.status=='1004'){
 					$("#order_status").html("已完成");
 				}else if(orderInfo.status=='2000'){
@@ -126,7 +127,16 @@
  * zxtype 
  */
  function goToZiXun(zxtype,doctorId,accId,syTime,orderId){
-		androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+		if( zxtype=='SPZX' || zxtype=='YPZX' ){
+			if(syTime>0){
+				androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+			}else{
+				layer.msg("剩余时间已用完");
+			}
+		}else{
+			androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+		}
+		
  }
 </script>
 

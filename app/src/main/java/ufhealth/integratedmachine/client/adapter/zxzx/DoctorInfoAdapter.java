@@ -1,6 +1,8 @@
 package ufhealth.integratedmachine.client.adapter.zxzx;
 
 import java.util.List;
+
+import android.graphics.Color;
 import android.view.View;
 import java.util.ArrayList;
 import android.content.Intent;
@@ -86,6 +88,18 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 }
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels);
                 labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());
+                if(contentBean.getIs_service() == 0)
+                {
+                    helper.setText(R.id.doctorinfo_ljzx,"暂不提供服务");
+                    helper.itemView.findViewById(R.id.doctorinfo_ljzx).setEnabled(false);
+                    helper.itemView.findViewById(R.id.doctorinfo_ljzx).setBackgroundColor(Color.argb(255,204,204,204));
+                }
+                else
+                {
+                    helper.setText(R.id.doctorinfo_ljzx,"立即咨询");
+                    helper.itemView.findViewById(R.id.doctorinfo_ljzx).setEnabled(true);
+                    helper.itemView.findViewById(R.id.doctorinfo_ljzx).setBackgroundColor(Color.argb(255,0,147,221));
+                }
 
                 helper.itemView.findViewById(R.id.doctorinfo_ljzx).setOnClickListener(new View.OnClickListener()
                 {
@@ -151,26 +165,64 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 {
                     case KSZX:
                     {
-                        helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
-                        helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
+                        if(contentBean.getIs_service() == 1)
+                        {
+                            ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+                            {
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean selected)
+                                {
+                                    contentBean.setSelected(selected);
+                                }
+                            });
+                            helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
+                            helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
+                            helper.itemView.findViewById(R.id.doctorinfo_checkbox).setEnabled(true);
+                            helper.setTextColor(R.id.doctorinfo_checkbox,Color.argb(255,255,0,0));
+                            CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
+                        }
+                        else
+                        {
+                            ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(null);
+                            helper.setText(R.id.doctorinfo_checkbox,"暂不提供服务");
+                            helper.setChecked(R.id.doctorinfo_checkbox,false);
+                            helper.itemView.findViewById(R.id.doctorinfo_checkbox).setEnabled(false);
+                            helper.setTextColor(R.id.doctorinfo_checkbox,Color.argb(255,204,204,204));
+                            CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,0,0,3);
+                        }
                         break;
                     }
                     case BGJD:
                     {
-                        helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
-                        helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
+                        if(contentBean.getIs_service() == 1)
+                        {
+                            ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+                            {
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean selected)
+                                {
+                                    contentBean.setSelected(selected);
+                                }
+                            });
+                            helper.setText(R.id.doctorinfo_checkbox,"¥" + contentBean.getT_cost() + " / 次");
+                            helper.setChecked(R.id.doctorinfo_checkbox,contentBean.isSelected());
+                            helper.itemView.findViewById(R.id.doctorinfo_checkbox).setEnabled(true);
+                            helper.setTextColor(R.id.doctorinfo_checkbox,Color.argb(255,255,0,0));
+                            CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
+
+                        }
+                        else
+                        {
+                            ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(null);
+                            helper.setText(R.id.doctorinfo_checkbox,"暂不提供服务");
+                            helper.setChecked(R.id.doctorinfo_checkbox,false);
+                            helper.itemView.findViewById(R.id.doctorinfo_checkbox).setEnabled(false);
+                            helper.setTextColor(R.id.doctorinfo_checkbox,Color.argb(255,204,204,204));
+                            CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,0,0,3);
+                        }
                         break;
                     }
                 }
                 LabelsView labelsView = helper.itemView.findViewById(R.id.doctorinfo_labels_checkbox);
                 labelsView.setLabels(null != contentBean.getLabels() && contentBean.getLabels().size() != 0 ? contentBean.getLabels() : new ArrayList<String>());
-                ((CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-                {
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean selected)
-                    {
-                        contentBean.setSelected(selected);
-                    }
-                });
                 break;
             }
         }

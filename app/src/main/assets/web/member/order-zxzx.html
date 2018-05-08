@@ -14,7 +14,7 @@
 		<div class="menu">
 			<ul>
 				<li class="current"><a href="javascript:void(0);"><i class="iconfont">&#xe645;</i>在线咨询</a><i class="iconfont arrow">&#xe64d;</i></li>
-				<li><a href="order-bjjy-list.html"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
+				<li><a href="order-bjjy.html"><i class="iconfont">&#xe63e;</i>便捷就医</a><i class="iconfont arrow">&#xe64d;</i></li>
 			</ul>
 		</div>
 	</div>
@@ -23,9 +23,13 @@
 			<ul>
 				<li class="current" id="1000"><a href="javascript:void(0);"  onclick="loadData(1000)">待付款<span id="dzf"></span></a></li>
 				<li id="1002"><a href="javascript:void(0);"  onclick="loadData(1002)">待咨询<span id="dzx"></span></a></li>
+			    <!--  
 			    <li id="2000"><a href="javascript:void(0);"  onclick="loadData(2000)">进行中<span id="jxz"></span></a></li>
-				<li id="1003"><a href="javascript:void(0);"  onclick="loadData(1003)">待评价<span id="dpj"></span></a></li>
+			    -->
+				<li id="1003"><a href="javascript:void(0);"  onclick="loadData(1003)">已完成<span id="dpj"></span></a></li>
+				<!-- 
 				<li id="1004"><a href="javascript:void(0);"  onclick="loadData(1004)">已完成<span id="ywc"></span></a></li>
+				    -->
 				<li id="0"><a href="javascript:void(0);"  onclick="loadData(0)">全部<span id="all"></span></a></li>
 			</ul>
 		</div>
@@ -74,7 +78,7 @@ function loadData(status){
 					}else if(dataList[i].status=='1002'){
 						html+= "<span class='c-red'>待咨询</span>";
 					}else if(dataList[i].status=='1003'){
-						html+= "<span class='c-red'>待评价</span>";
+						html+= "<span class='c-red'>已完成</span>";
 					}else if(dataList[i].status=='1004'){
 						html+= "<span class='c-red'>已完成</span>";
 					}else if(dataList[i].status=='2000'){
@@ -85,7 +89,7 @@ function loadData(status){
 					html+= "</dt>";
 					html+= "<dd><div class='info'>";
 					html+= "<a href='javascript:void(0);'  onclick=goToDetail(\'"+dataList[i].order_id+"\',\'"+dataList[i].zxtype+"\')>";
-					html+= "<img src='../../images/user/head5.png'>";
+					html+= "<img src='"+dataList[i].avatar+"'>";
 					html+= "<ul>"
 					html+= "<li>医生信息：<span class='c-333'>"+dataList[i].doc_name+"   "+dataList[i].hospital_name+" "+dataList[i].depart_name+"</span></li>";
 					html+= "<li>订单编号：<span class='c-333'>"+dataList[i].order_number+" </span></li>";
@@ -102,7 +106,7 @@ function loadData(status){
 					}else if(dataList[i].status=='1001' || dataList[i].status=='1002'){
 						html+= "<a href='javascript:void(0);' class='button'   onclick=goToZiXun(\'"+dataList[i].zxtype+"\',"+dataList[i].doctor_id+",\'"+dataList[i].accid+"\',"+dataList[i].syTime+",\'"+dataList[i].order_id+"\')>去咨询</a>";
 					}else if(dataList[i].status=='1003'){
-						html+= "<a href='javascript:void(0);' class='button'   onclick=goToPingJia(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去评价</a>";
+						//html+= "<a href='javascript:void(0);' class='button'   onclick=goToPingJia(\'"+dataList[i].order_number+"\',\'"+dataList[i].zxtype+"\')>去评价</a>";
 					}
 					html+= "</dd>";
 					html+= "</dl>";
@@ -132,7 +136,15 @@ function goToPingJia(){
  * zxtype 
  */
 function goToZiXun(zxtype,doctorId,accId,syTime,orderId){
+	if( zxtype=='SPZX' || zxtype=='YPZX' ){
+		if(syTime>0){
+			androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+		}else{
+			layer.msg("剩余时间已用完");
+		}
+	}else{
 		androidjs.startZxActWithDialog(zxtype,doctorId,accId,syTime,orderId);
+	}
 }
 /**
  * 查询详情

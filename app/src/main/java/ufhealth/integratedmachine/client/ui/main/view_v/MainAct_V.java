@@ -22,6 +22,7 @@ public interface MainAct_V extends BaseMvp_View
       void getVerifiedCodeSuccess();
       void clickMain_slide_xxtz_num();
       void bindIdCardSuccess(String phone);
-      void logging(UserInfo.UserInfoBean userInfo);
+      void logged(UserInfo.UserInfoBean userInfo);
+      void setWifiMacAddress(String wifiMacAddress);
       void showBindIdCardDialog(String name,String idCard);
 }

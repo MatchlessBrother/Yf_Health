@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.util.Log;
 import android.view.View;
 import rx.functions.Func1;
 import com.invs.InvsConst;
@@ -9,12 +10,13 @@ import android.os.SystemClock;
 import android.content.Intent;
 import android.content.Context;
 import android.widget.TextView;
-import com.invs.BtReaderClient;
 import rx.schedulers.Schedulers;
 import com.invs.IClientCallBack;
+import android.net.wifi.WifiInfo;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.widget.RelativeLayout;
 import static com.invs.InvsConst.msg;
 import com.netease.nimlib.sdk.Observer;
@@ -32,46 +34,65 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import ufhealth.integratedmachine.client.BtReaderClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.ui.bjjy.view.BjjyAct;
 import ufhealth.integratedmachine.client.ui.jkda.view.JkdaAct;
 import ufhealth.integratedmachine.client.ui.jkjc.view.JkjcAct;
-import ufhealth.integratedmachine.client.ui.tjfw.view.TjfwAct;
-import ufhealth.integratedmachine.client.ui.yyfw.view.YyfwAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.util.BindingCellPhoneDialog;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
 import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
 
 public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,IClientCallBack
 {
     private TextView mainLogin;
-    private Toolbar mainToolbar;
-    private ImageButton mainExit;
     private RelativeLayout zxzx;
     private RelativeLayout bjjy;
     private RelativeLayout tjfw;
     private RelativeLayout yyfw;
     private RelativeLayout jkjc;
     private RelativeLayout jkda;
+    private Toolbar mainToolbar;
+    private ImageButton mainExit;
+    private String BleMacAddress;
     private TextView mainCountdown;
     private TextView mainSlideName;
+    private TextView mainUfLogoMac;
     private TextView mainSlideXxtzNum;
     private LinearLayout mainSlideGrzl;
     private LinearLayout mainSlideXxtz;
     private LinearLayout mainSlideWddd;
     private LinearLayout mainSlideWdda;
     private LinearLayout mainSlideGybj;
+    private String deviceWifiMacAddress;
     private MainPresenter mainPresenter;
     private CircleImageView mainSlideImg;
     private DrawerLayout mainDrawerlayout;
     private BaseProgressDialog progressDialog;
-
-    private Observer imOnLineObserver;
-    private ReadThread mReadThread = null;
-    private BtReaderClient mBtReaderClient;
     private BindingCellPhoneDialog cellPhoneDialog;
+
+    /***********IM状态监听***********/
+    private Observer imOnLineObserver;
+    private IntentFilter intentFilter;
+    private static boolean isStartReadIdCard;
+    private static boolean isNeenConnectIdCard;
+    /*********************身份证识别设备返回读取的数据*******************/
     private final BroadcastReceiver mBltReceiver = new BroadcastReceiver()
     {
         public void onReceive(Context context, Intent intent)
@@ -82,23 +103,37 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
                 if (intent.getBooleanExtra("tag", false))
                 {
                     InvsIdCard invsIdCard = (InvsIdCard) intent.getSerializableExtra("InvsIdCard");
-                    if((!getBaseApp().getIsLogged()) && null != invsIdCard && null != invsIdCard.idNo && !"".equals(invsIdCard.idNo))
+                    if(null == getBaseApp().getUserInfo() && null != invsIdCard && null != invsIdCard.idNo && !"".equals(invsIdCard.idNo))
                     {
-                        mainPresenter.logging(MainAct.this,invsIdCard.idNo.trim(),invsIdCard.name.trim(),invsIdCard.birth,(invsIdCard.sex.trim().equals("男") ? 1 : 2),invsIdCard.nation.trim(),invsIdCard.address.trim());
+                        mainPresenter.logging(MainAct.this,invsIdCard.idNo.trim(),invsIdCard.name.trim(),invsIdCard.birth,(invsIdCard.sex.trim().equals("男") ? 1 : 2),invsIdCard.nation.trim(),invsIdCard.address.trim(),new byte[]{});
                     }
                 }
-                else
-                {
-                    //读卡失败
-                }
+                //读卡失败
+                else{}
             }
         }
     };
 
-    protected int setLayoutResID()
+    /****************更新已登录后的Ui界面**************/
+    public void loggedUi(UserInfo.UserInfoBean userInfo)
     {
-        return R.layout.activity_main;
+        mainExit.setVisibility(View.VISIBLE);
+        mainToolbar.setVisibility(View.VISIBLE);
+        mainCountdown.setVisibility(View.VISIBLE);
+        mainLogin.setText("欢迎您，" + ((null != userInfo && null != userInfo.getName() && !"".equals(userInfo.getName().trim())) ?
+                userInfo.getName().trim() : "未命名") + "（" + userInfo.getPapersNumber().trim() + "）");
+        if(mainDrawerlayout.isShown())
+            mainDrawerlayout.closeDrawers();
+        mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
 
+    /****************更新已登录后的逻辑****************/
+    public void logged(UserInfo.UserInfoBean userInfo)
+    {
+        stopReadIdCard();
+        loggedUi(userInfo);
+        useGlideLoadImg(mainSlideImg,null != userInfo.getAvatar() ? userInfo.getAvatar().trim().toString() : "");
+        mainSlideName.setText(null != userInfo.getName() ? userInfo.getName().trim().toString() : "无名氏");
     }
 
     protected void initWidgets(View rootView)
@@ -114,6 +149,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         mainToolbar = rootView.findViewById(R.id.main_toolbar);
         mainCountdown = rootView.findViewById(R.id.main_countdown);
         mainSlideImg = rootView.findViewById(R.id.main_slide_img);
+        mainUfLogoMac = rootView.findViewById(R.id.main_uflogomac);
         mainSlideName = rootView.findViewById(R.id.main_slide_name);
         mainSlideGrzl = rootView.findViewById(R.id.main_slide_grzl);
         mainSlideXxtz = rootView.findViewById(R.id.main_slide_xxtz);
@@ -122,37 +158,10 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         mainSlideGybj = rootView.findViewById(R.id.main_slide_gybj);
         mainDrawerlayout = rootView.findViewById(R.id.main_drawerlayout);
         mainSlideXxtzNum = rootView.findViewById(R.id.main_slide_xxtz_num);
+        deviceWifiMacAddress = getAdresseMAC(this);
+        mainUfLogoMac.setText("设备号：" + deviceWifiMacAddress.trim());
 
-        mBtReaderClient = new BtReaderClient(this);
-        mBtReaderClient.setCallBack(this);
-        rx.Observable.just("").map(new Func1<String, String>()
-        {
-            public String call(String s)
-            {
-                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                if(!btAdapter.isEnabled())
-                    btAdapter.enable();
-                while(true)
-                {
-                    if(mBtReaderClient.connectBt("00:0E:0B:00:02:33"))
-                        break;
-                }
-                return s;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>()
-        {
-            public void call(String s)
-            {
-                startThreadReadCard();
-                //4、开启循环读卡（业务中应该放在点击登录的时候，开启循环读卡；登录成功后，关闭循环读卡）
-                //startThreadReadCard();  //开启循环读卡
-                //stopThreadReadCard(); //关闭循环读卡
-                //5、注册BroadcastReceiver，用于接收蓝牙传回的消息
-            }
-        });
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(msg);
-        registerReceiver(mBltReceiver, intentFilter);
+        /***************IM状态监听模块**************/
         imOnLineObserver = new Observer<StatusCode>()
         {
             //被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
@@ -170,6 +179,14 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
             }
         };
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, true);
+
+        /*********************身份证模块*******************/
+        initStartReadIdCard();
+        /*****************身份证信息回调模块****************/
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(msg);
+        registerReceiver(mBltReceiver, intentFilter);
+
         zxzx.setOnClickListener(this);
         bjjy.setOnClickListener(this);
         tjfw.setOnClickListener(this);
@@ -187,10 +204,17 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         mainSlideXxtzNum.setOnClickListener(this);
     }
 
+    protected int setLayoutResID()
+    {
+        return R.layout.activity_main;
+
+    }
+
     protected void initDatas()
     {
         mainPresenter = new MainPresenter();
         mainPresenter.attachContextAndViewLayer(this,this);
+        mainPresenter.getBleMacAddress(this,deviceWifiMacAddress);
     }
 
     protected void initLogic()
@@ -199,42 +223,42 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainDrawerlayout, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mainDrawerlayout.setDrawerListener(toggle);toggle.syncState();
         if(mainDrawerlayout.isShown()) mainDrawerlayout.closeDrawers();
-        if(getBaseApp().getIsLogged()) logged(getBaseApp().getUserInfo());
-        else notLogged();
+        /************************根据逻辑更新界面*********************/
+        if(null != getBaseApp().getUserInfo())
+            loggedUi(getBaseApp().getUserInfo());
+        else
+            logOutUi();
     }
 
-    /*******已登录*****/
-    public void logged(UserInfo.UserInfoBean userInfo)
+    /**更新登出后的Ui界面***/
+    public void logOutUi()
     {
-        getBaseApp().setIsLogged(true);
-        mainExit.setVisibility(View.VISIBLE);
-        mainToolbar.setVisibility(View.VISIBLE);
-        mainCountdown.setVisibility(View.VISIBLE);
-        mainLogin.setText("欢迎您，" + ((null != userInfo && null != userInfo.getName() && !"".equals(userInfo.getName().trim())) ?
-                userInfo.getName().trim() : "未命名") + "（" + userInfo.getPapersNumber().trim() + "）");
-        if(mainDrawerlayout.isShown())
-            mainDrawerlayout.closeDrawers();
-        mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    /********未登录*******/
-    public void notLogged()
-    {
-        getBaseApp().setIsLogged(false);
         mainExit.setVisibility(View.INVISIBLE);
         mainToolbar.setVisibility(View.INVISIBLE);
         mainCountdown.setVisibility(View.INVISIBLE);
-        mainLogin.setText("请刷身份证进行登录操作...");
         if(mainDrawerlayout.isShown())
             mainDrawerlayout.closeDrawers();
         mainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
+    /***更新登出后的逻辑***/
+    public void logOut()
+    {
+        logOutUi();
+        isNeenConnectIdCard = false;
+        mainLogin.setText("正在连接身份证读取设备，请稍等...");
+        startReadIdCard();
+        mainSlideName.setText("用户姓名");
+        useGlideLoadImg(mainSlideImg,R.mipmap.defaultheadimg);
+        if(getBaseApp().getImIsLogined())
+            NIMClient.getService(AuthService.class).logout();
+    }
+
     public void onClick(View view)
     {
-        if(getBaseApp().getIsLogged())
+        if(null != getBaseApp().getUserInfo())
         {
-            if(null != getBaseApp().getUserInfo() && null != getBaseApp().getUserInfo().getMobilePhone() && !"".equals(getBaseApp().getUserInfo().getMobilePhone().trim()))
+            if(null != getBaseApp().getUserInfo().getMobilePhone() && !"".equals(getBaseApp().getUserInfo().getMobilePhone().trim()))
             {
                 if(mainDrawerlayout.isShown()) mainDrawerlayout.closeDrawers();
                 switch(view.getId())
@@ -263,6 +287,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
                     mainPresenter.logOut(this);
                     return;
                 }
+                if(null != cellPhoneDialog)
+                   cellPhoneDialog.dismissDialog();
                 showBindIdCardDialog(getBaseApp().getUserInfo().getName().trim(),getBaseApp().getUserInfo().getPapersNumber().trim());
             }
         }
@@ -270,55 +296,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
             showToast("请刷身份证进行登录操\n作,否则无法操作哟...",28);
     }
 
-    /**********************************************************************************************/
-    /********************************************VIEW层********************************************/
-    /**********************************************************************************************/
-
-    /********进行登录操作********/
-    public void logging(UserInfo.UserInfoBean userInfo)
-    {
-        logged(userInfo);
-        stopThreadReadCard();
-        useGlideLoadImg(mainSlideImg,null != userInfo.getAvatar() ? userInfo.getAvatar().trim().toString() : "");
-        mainSlideName.setText(null != userInfo.getName() ? userInfo.getName().trim().toString() : "无名氏");
-    }
-
-    /********进行登出操作********/
-    public void logOut()
-    {
-        if(getBaseApp().getImIsLogined())
-            NIMClient.getService(AuthService.class).logout();
-        useGlideLoadImg(mainSlideImg,R.mipmap.defaultheadimg);
-        mainSlideName.setText("用户姓名");
-        notLogged();
-        rx.Observable.just("").map(new Func1<String, String>()
-        {
-            public String call(String s)
-            {
-                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                if(!btAdapter.isEnabled())
-                    btAdapter.enable();
-                while(true)
-                {
-                    if(mBtReaderClient.connectBt("00:0E:0B:00:02:33"))
-                        break;
-                }
-                return s;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>()
-        {
-            public void call(String s)
-            {
-                startThreadReadCard();
-                //4、开启循环读卡（业务中应该放在点击登录的时候，开启循环读卡；登录成功后，关闭循环读卡）
-                //startThreadReadCard();  //开启循环读卡
-                //stopThreadReadCard(); //关闭循环读卡
-                //5、注册BroadcastReceiver，用于接收蓝牙传回的消息
-            }
-        });
-    }
-
-    protected void onDestroy()
+    protected   void   onDestroy()
     {
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(imOnLineObserver, false);
         mainPresenter.detachContextAndViewLayout();
@@ -424,13 +402,31 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
     @Subscribe
     public void receiveCountDownFinish(Boolean isFinish)
     {
-        if(isFinish) mainPresenter.logOut(this);
-         if(null != getBaseApp().getImIsLogined()) NIMClient.getService(AuthService.class).logout();
+        if(isFinish)
+            mainPresenter.logOut(this);
+         if(null != getBaseApp().getImIsLogined())
+             NIMClient.getService(AuthService.class).logout();
     }
-
 
     /**********************************************************/
     /**********************绑定身份证模块**********************/
+    public void getVerifiedCodeSuccess()
+    {
+        if(null != cellPhoneDialog)
+        {
+            cellPhoneDialog.startCountDownTime();
+        }
+    }
+
+    public  void  bindIdCardSuccess(String phone)
+    {
+        if(null != cellPhoneDialog)
+        {
+            cellPhoneDialog.dismissDialog();
+            getBaseApp().getUserInfo().setMobilePhone(phone.trim());
+        }
+    }
+
     public void showBindIdCardDialog(String name, String idCard)
     {
         cellPhoneDialog = BindingCellPhoneDialog.getInstance(this);
@@ -449,37 +445,81 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
         cellPhoneDialog.showDialog(this,name,idCard,true,null,onClickSureListener);
     }
 
-    public void getVerifiedCodeSuccess()
-    {
-        if(null != cellPhoneDialog)
-        {
-            cellPhoneDialog.startCountDownTime();
-        }
-    }
-
-    public  void  bindIdCardSuccess(String phone)
-    {
-        if(null != cellPhoneDialog)
-        {
-            cellPhoneDialog.dismissDialog();
-            getBaseApp().getUserInfo().setMobilePhone(phone.trim());
-        }
-    }
-
     /***********************************************************/
     /**************************蓝牙模块*************************/
+    private ReadThread mReadThread = null;
+    private BtReaderClient mBtReaderClient = null;
+
+    public void startReadIdCard()
+    {
+        mBtReaderClient = new BtReaderClient(this);
+        mBtReaderClient.setCallBack(this);
+        rx.Observable.just("").map(new Func1<String, String>()
+        {
+            public String call(String s)
+            {
+                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(!btAdapter.isEnabled())
+                    btAdapter.enable();
+                while(true)
+                {
+                    if(mBtReaderClient.connectBt(BleMacAddress))
+                    {
+                        isNeenConnectIdCard = true;
+                        break;
+                    }
+                }
+                return s;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>()
+        {
+            public void call(String s)
+            {
+                startThreadReadCard();
+            }
+        });
+    }
+
+    public  void  stopReadIdCard()
+    {
+        if(stopThreadReadCard() && null != mBtReaderClient)
+        {
+            unregisterReceiver(mBtReaderClient.getmBltReceiver());
+            mBtReaderClient.setCallBack(null);
+            mBtReaderClient.disconnectBt();
+            mBtReaderClient = null;
+        }
+    }
+
+    public void initStartReadIdCard()
+    {
+        if(null != BleMacAddress && !"".equals(BleMacAddress))
+        {
+            if(!isStartReadIdCard)
+            {
+                isNeenConnectIdCard = false;
+                isStartReadIdCard = true;
+                startReadIdCard();
+            }
+        }
+    }
+
     public void startThreadReadCard()
     {
         mReadThread = new ReadThread();
         mReadThread.start();
     }
 
-    public void stopThreadReadCard()
+    public boolean stopThreadReadCard()
     {
-        if (mReadThread != null && mReadThread.isAlive()){
+        if (mReadThread != null && mReadThread.isAlive())
+        {
             mReadThread.over();
             mReadThread = null;
+            return true;
         }
+        else
+            return true;
     }
 
     public class BaseThread extends Thread
@@ -582,30 +622,161 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener,I
 
     public void onBtState(final boolean isConnect)
     {
-        if(getBaseApp().getUserInfo() != null)
-        {
-            getBaseApp().setIsLogged(true);
-            mainExit.setVisibility(View.VISIBLE);
-            mainToolbar.setVisibility(View.VISIBLE);
-            mainCountdown.setVisibility(View.VISIBLE);
-            mainLogin.setText("欢迎您，" + ((null != getBaseApp().getUserInfo() && null != getBaseApp().getUserInfo().getName() && !"".equals(getBaseApp().getUserInfo().getName().trim())) ?
-                    getBaseApp().getUserInfo().getName().trim() : "未命名") + "（" + getBaseApp().getUserInfo().getPapersNumber().trim() + "）");
-        }
+        if(null != getBaseApp().getUserInfo())
+            logged(getBaseApp().getUserInfo());
         else
         {
-            if (isConnect)
+            if(isConnect)
                 mainLogin.setText("请刷身份证进行登录操作...");
             else
-                mainLogin.setText("正在连接身份证读取设备，请稍等...");
+            {
+                if(isNeenConnectIdCard)
+                {
+                    isNeenConnectIdCard = false;
+                    new Thread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            while(true)
+                            {
+                                if(mBtReaderClient.connectBt(BleMacAddress))
+                                {
+                                    startThreadReadCard();
+                                    isNeenConnectIdCard = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }).start();
+                    mainLogin.setText("正在连接身份证读取设备，请稍等...");
+                }
+            }
         }
     }
 
-    protected void onNewIntent(Intent intent)
+    /***********************************获取WifiMac地址**********************************/
+    private static final String marshmallowMacAddress = "02:00:00:00:00:00";
+    private static final String fileAddressMac = "/sys/class/net/wlan0/address";
+    public String getAdresseMAC(Context context)
     {
-        super.onNewIntent(intent);
-        if(getBaseApp().getIsLogged())
-            logged(getBaseApp().getUserInfo());
+        WifiManager wifiMan = (WifiManager)context.getSystemService(Context.WIFI_SERVICE) ;
+        WifiInfo wifiInf = wifiMan.getConnectionInfo();
+        if(wifiInf != null && marshmallowMacAddress.equals(wifiInf.getMacAddress()))
+        {
+            String result = null;
+            try
+            {
+                result= getAddressMacByInterface();
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    result = getAddressMacByFile(wifiMan);
+                    return result;
+                }
+            }
+            catch (IOException e)
+            {
+                Log.e("MobileAccess", "Erreur lecture propriete Adresse MAC");
+            }
+            catch (Exception e)
+            {
+                Log.e("MobileAcces", "Erreur lecture propriete Adresse MAC ");
+            }
+        }
         else
-            notLogged();
+        {
+            if (wifiInf != null && wifiInf.getMacAddress() != null)
+            {
+                return wifiInf.getMacAddress();
+            }
+            else
+            {
+                return "";
+            }
+        }
+        return marshmallowMacAddress;
+    }
+
+    public void setWifiMacAddress(String wifiMacAddress)
+    {
+        BleMacAddress = wifiMacAddress;
+        initStartReadIdCard();
+    }
+
+    private String getAddressMacByInterface()
+    {
+        try
+        {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all)
+            {
+                if (nif.getName().equalsIgnoreCase("wlan0"))
+                {
+                    byte[] macBytes = nif.getHardwareAddress();
+                    if (macBytes == null)
+                    {
+                        return "";
+                    }
+                    StringBuilder res1 = new StringBuilder();
+                    for (byte b : macBytes)
+                    {
+                        res1.append(String.format("%02X:",b));
+                    }
+                    if (res1.length() > 0)
+                    {
+                        res1.deleteCharAt(res1.length() - 1);
+                    }
+                    return res1.toString();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e("MobileAcces", "Erreur lecture propriete Adresse MAC ");
+        }
+        return null;
+    }
+
+    private String getAddressMacByFile(WifiManager wifiMan) throws Exception
+    {
+        String ret;
+        int wifiState = wifiMan.getWifiState();
+        wifiMan.setWifiEnabled(true);
+        File fl = new File(fileAddressMac);
+        FileInputStream fin = new FileInputStream(fl);
+        ret = crunchifyGetStringFromStream(fin);
+        fin.close();
+        boolean enabled = WifiManager.WIFI_STATE_ENABLED == wifiState;
+        wifiMan.setWifiEnabled(enabled); return ret;
+    }
+
+    private String crunchifyGetStringFromStream(InputStream crunchifyStream) throws IOException
+    {
+        if (crunchifyStream != null)
+        {
+            Writer crunchifyWriter = new StringWriter();
+            char[] crunchifyBuffer = new char[2048];
+            try
+            {
+                Reader crunchifyReader = new BufferedReader(new InputStreamReader(crunchifyStream, "UTF-8"));
+                int counter;
+                while ((counter = crunchifyReader.read(crunchifyBuffer)) != -1)
+                {
+                    crunchifyWriter.write(crunchifyBuffer, 0, counter);
+                }
+            }
+            finally
+            {
+                crunchifyStream.close();
+            }
+            return crunchifyWriter.toString();
+        }
+        else
+        {
+            return "No Contents";
+        }
     }
 }

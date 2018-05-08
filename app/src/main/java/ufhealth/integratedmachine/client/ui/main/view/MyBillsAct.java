@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.main.view;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.KeyEvent;
 import android.graphics.Color;
@@ -101,5 +102,21 @@ public class MyBillsAct extends BaseAct implements MyBillsAct_V,View.OnClickList
     {
         super.receiveCountDownTime(countDownTime);
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(null != data)
+        {
+            switch (requestCode)
+            {
+                case 66:
+                {
+                    agentWeb.clearWebCache();
+                    agentWeb.getWebCreator().getWebView().loadUrl("file:///android_asset/web/member/order-zxzx.html");
+                }
+            }
+        }
     }
 }

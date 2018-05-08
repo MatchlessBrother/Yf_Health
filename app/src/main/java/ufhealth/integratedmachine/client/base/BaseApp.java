@@ -10,13 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.netease.nimlib.sdk.NIMClient;
 import android.support.multidex.MultiDex;
-
-import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.SDKOptions;
 import ufhealth.integratedmachine.client.R;
-
-import com.netease.nimlib.sdk.StatusCode;
-import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yuan.devlibrary._1App.BaseApplication;
@@ -32,10 +27,9 @@ import ufhealth.integratedmachine.client.ui.main.view.MyBillsAct;
 public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
-    private Boolean mIsLogged;
+    private UserInfoBean mUserInfo;
 
     private Boolean mImIsLogined;
-    private UserInfoBean mUserInfo;
     private ImUserInfo mImUserInfo;
     private LoginInfo mImLoginInfo;
 
@@ -56,7 +50,6 @@ public class BaseApp extends BaseApplication
         mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1920,1080);
         mUiHelper.performSchemeForApp();
         /***************************************计时器操作*****************************************/
-        mIsLogged = false;
         mCountDownUtil = new CountDownUtil(COUNTDOWN_TIME)
         {
             public void onFinish()
@@ -82,9 +75,15 @@ public class BaseApp extends BaseApplication
         }
     }
 
-    public Boolean getIsLogged()
+    public void startCountDown()
     {
-        return mIsLogged;
+        mCountDownUtil.start();
+
+    }
+
+    public void cancelCountDown()
+    {
+        mCountDownUtil.cancel();
 
     }
 
@@ -94,26 +93,9 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public void setCountDownTime(Long time)
-    {
-        mCountDownUtil.setmMillisInFuture(null != time ? time : 0);
-    }
-
     public Boolean getImIsLogined()
     {
-        return this.mImIsLogined;
-
-    }
-
-    public void setImIsLogined(Boolean mImIsLogined)
-    {
-        this.mImIsLogined = mImIsLogined;
-
-    }
-
-    public void setIsLogged(Boolean isLogged)
-    {
-        mIsLogged = isLogged;
+        return mImIsLogined;
 
     }
 
@@ -123,16 +105,21 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public void setImUserInfo(ImUserInfo imUserInfo)
-    {
-        mImUserInfo = imUserInfo;
-
-    }
-
     public UserInfoBean getUserInfo()
     {
         return mUserInfo;
 
+    }
+
+    public LoginInfo getIMLoginInfo()
+    {
+        return mImLoginInfo;
+
+    }
+
+    public void setCountDownTime(Long time)
+    {
+        mCountDownUtil.setmMillisInFuture(null != time ? time : 0);
     }
 
     public void setUserInfo(UserInfoBean userInfo)
@@ -141,17 +128,25 @@ public class BaseApp extends BaseApplication
 
     }
 
-    public void startCountDown()
+    public void setImIsLogined(Boolean mImIsLogined)
     {
-        mCountDownUtil.start();
+        this.mImIsLogined = mImIsLogined;
+
     }
 
-    public void cancelCountDown()
+    public void setImUserInfo(ImUserInfo imUserInfo)
     {
-        mCountDownUtil.cancel();
+        mImUserInfo = imUserInfo;
+
     }
 
-    // 如果返回值为 null，则全部使用默认参数。
+    public void setIMLoginInfo(LoginInfo imLoginInfo)
+    {
+        mImLoginInfo = imLoginInfo;
+
+    }
+
+    //如果返回值为 null，则全部使用默认参数
     private SDKOptions options()
     {
         SDKOptions options = new SDKOptions();
@@ -219,7 +214,7 @@ public class BaseApp extends BaseApplication
         return options;
     }
 
-    // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
+    //如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo loginInfo()
     {
         return null;
@@ -249,15 +244,5 @@ public class BaseApp extends BaseApplication
             storageRootPath = Environment.getExternalStorageDirectory() + "/" + context.getPackageName();
         }
         return storageRootPath;
-    }
-
-    public LoginInfo getIMLoginInfo()
-    {
-        return mImLoginInfo;
-    }
-
-    public void setIMLoginInfo(LoginInfo imLoginInfo)
-    {
-        mImLoginInfo = imLoginInfo;
     }
 }

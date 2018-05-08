@@ -138,7 +138,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
-        if(getBaseApp().getIsLogged())
+        if(null != getBaseApp().getUserInfo())
         {
             switch(ev.getAction())
             {

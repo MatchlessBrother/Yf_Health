@@ -6,6 +6,7 @@ import android.content.Context;
 import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import ufhealth.integratedmachine.client.bean.main.WifiMacAddress;
 import ufhealth.integratedmachine.client.ui.main.model.LoginModel;
 import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
@@ -19,11 +20,11 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 
     }
 
-    public void logging(final Context context, final String idCard,final String name,final String birthday,final Integer gender,final String nation,final String address)
+    public void logging(final Context context, final String idCard,final String name,final String birthday,final Integer gender,final String nation,final String address,final byte[] avatarByte)
     {
         if(isAttachContextAndViewLayer())
         {
-            LoginModel.login(context,idCard,name,birthday,gender,nation,address,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            LoginModel.login(context,idCard,name,birthday,gender,nation,address,avatarByte,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfo> returnUserInfo)
                 {
@@ -40,7 +41,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                                 interceptor.setToken(NetClient.getInstance(context.getApplicationContext()).getRetrofit().baseUrl().host().trim(), returnUserInfo.getData().getToken().getToken().trim());
                                 getViewLayer().getBaseApp().setImUserInfo(returnUserInfo.getData().getYunXinUserInfo());
                                 getViewLayer().getBaseApp().setUserInfo(returnUserInfo.getData().getUserInfo());
-                                getViewLayer().logging(returnUserInfo.getData().getUserInfo());
+                                getViewLayer().logged(returnUserInfo.getData().getUserInfo());
                                 getViewLayer().getBaseApp().setCountDownTime();
                                 getViewLayer().getBaseApp().startCountDown();
                                 return;
@@ -85,6 +86,39 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                     {
                         getViewLayer().getVerifiedCodeSuccess();
                         getViewLayer().showToast("成功获取短信验证码");
+                    }
+                }
+            });
+        }
+    }
+
+    public void getBleMacAddress(final Context context,final String wifiMacAddress)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            LoginModel.getWifiMacAddress(context,wifiMacAddress,new BaseMvp_LocalCallBack<BaseReturnData<WifiMacAddress>>(this)
+            {
+                public void onSuccess(BaseReturnData<WifiMacAddress> returnWifiMacAddress)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().setWifiMacAddress(returnWifiMacAddress.getData().getCardReaderId().trim());
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().showToast("获取设备标识码失败，请确保连接网络并重启应用！");
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().showToast("获取设备标识码失败，请确保连接网络并重启应用！");
                     }
                 }
             });

@@ -3,6 +3,7 @@ package ufhealth.integratedmachine.client.ui.main.model;
 import android.content.Context;
 import rx.schedulers.Schedulers;
 import rx.android.schedulers.AndroidSchedulers;
+import ufhealth.integratedmachine.client.bean.main.WifiMacAddress;
 import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
@@ -11,10 +12,10 @@ import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
 public class LoginModel
 {
-    public static void login(Context context,String idCard,String name,String birthday,Integer gender,String nation,String address, BaseMvp_LocalCallBack<BaseReturnData<UserInfo>> netCallBack)
+    public static void login(Context context,String idCard,String name,String birthday,Integer gender,String nation,String address,byte[] avatarByte, BaseMvp_LocalCallBack<BaseReturnData<UserInfo>> netCallBack)
     {
         netCallBack.onStart();
-        NetClient.getInstance(context).getNetUrl().login(idCard,name,birthday,gender,nation,address).
+        NetClient.getInstance(context).getNetUrl().login(idCard,name,birthday,gender,nation,address,avatarByte).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new BaseMvp_NetCallBack(context,netCallBack));
     }
@@ -23,6 +24,14 @@ public class LoginModel
     {
         netCallBack.onStart();
         NetClient.getInstance(context).getNetUrl().getVerifiedCode(phoneNum).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new BaseMvp_NetCallBack(context,netCallBack));
+    }
+
+    public static void getWifiMacAddress(Context context,String wifiMacAddress, BaseMvp_LocalCallBack<BaseReturnData<WifiMacAddress>> netCallBack)
+    {
+        netCallBack.onStart();
+        NetClient.getInstance(context).getNetUrl().getWifiMacAddress(wifiMacAddress).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new BaseMvp_NetCallBack(context,netCallBack));
     }

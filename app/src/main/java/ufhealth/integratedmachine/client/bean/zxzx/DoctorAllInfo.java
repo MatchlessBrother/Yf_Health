@@ -72,6 +72,15 @@ public class DoctorAllInfo implements Parcelable
         private String is_support_video;
         private String is_support_audio;
         private String is_support_tw;
+        private int is_service;
+
+        public int getIs_service() {
+            return this.is_service;
+        }
+
+        public void setIs_service(int is_service) {
+            this.is_service = is_service;
+        }
 
         public String getComment_count() {
             return comment_count;
@@ -290,6 +299,7 @@ public class DoctorAllInfo implements Parcelable
             dest.writeString(this.is_support_video);
             dest.writeString(this.is_support_audio);
             dest.writeString(this.is_support_tw);
+            dest.writeInt(this.is_service);
         }
 
         public BaseinfoBean() {
@@ -319,6 +329,7 @@ public class DoctorAllInfo implements Parcelable
             this.is_support_video = in.readString();
             this.is_support_audio = in.readString();
             this.is_support_tw = in.readString();
+            this.is_service = in.readInt();
         }
 
         public static final Creator<BaseinfoBean> CREATOR = new Creator<BaseinfoBean>() {

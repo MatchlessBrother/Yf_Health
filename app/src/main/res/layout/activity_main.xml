@@ -387,6 +387,7 @@
                     android:src="@mipmap/main_logo"
                     android:visibility="invisible" />
 
+
                 <ImageView
                     android:id="@+id/main_uflogoright"
                     android:layout_width="150pt"
@@ -399,6 +400,7 @@
                     android:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/main_uflogotext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -412,6 +414,24 @@
                     android:text="成都优服健康管理有限公司 | 联系电话：028-83100000"
                     android:textColor="@color/default_font_gray"
                     android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/main_uflogomac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/main_uflogotext"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="25sp"
+                    android:layout_marginLeft="12pt"
+                    android:layout_marginRight="12pt"
+                    android:layout_toLeftOf="@id/main_uflogoright"
+                    android:layout_toRightOf="@id/main_uflogoleft"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="设备号：00.12.11.25.2b.66"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="27sp" />
+
             </RelativeLayout>
         </LinearLayout>
 

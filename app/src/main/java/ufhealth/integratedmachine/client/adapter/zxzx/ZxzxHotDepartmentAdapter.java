@@ -25,7 +25,7 @@ public class ZxzxHotDepartmentAdapter extends BaseQuickAdapter<HotDepartment, Ba
     protected void convert(BaseViewHolder helper, HotDepartment data)
     {
         View rootView = helper.itemView;
-        Glide.with(mContext).load(data.getImgPath()).placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
+        Glide.with(mContext).load(data.getImg_url()).placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
           diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView)rootView.findViewById(R.id.hotdepartment_img));
         helper.setText(R.id.hotdepartment_name,null != data.getName() ? data.getName().trim() : "未知");
     }

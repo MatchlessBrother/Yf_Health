@@ -5,6 +5,7 @@ import java.util.Timer;
 import android.view.View;
 import java.util.TimerTask;
 import java.util.ArrayList;
+import android.content.Intent;
 import android.graphics.Color;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatResCode;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
-import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
 import com.netease.nimlib.sdk.avchat.model.AVChatCommonEvent;
 import ufhealth.integratedmachine.client.widget.RippleLayout;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -80,6 +80,7 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     private TextView yyzxingRightBottomTime;
     private TextView yyzxingRightBottomLjstatus;
 
+    private long usedTimeForBill = 0;
     private YyzxingPresenter yyzxingPresenter;
     private DoctorInfoPresenter doctorInfoPresenter;
 
@@ -283,7 +284,11 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
             case R.id.activity_title_back:
             {
                 if(rtcStatus == 1)
+                {
+                    Intent intent = new Intent();
+                    setResult(0,intent);
                     finish();
+                }
                 else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
                     finishAudioChat(avChatData);
                 break;
@@ -307,7 +312,11 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
     public void onBackPressed()
     {
         if(rtcStatus == 1)
+        {
+            Intent intent = new Intent();
+            setResult(0,intent);
             finish();
+        }
         else if((rtcStatus == 2 ||rtcStatus == 3) && null != avChatData)
             finishAudioChat(avChatData);
     }
@@ -445,6 +454,8 @@ public class YyzxingAct extends BaseAct implements YyzxingAct_V,DoctorInfoAct_V,
                 finishAutoCalculationTime();
                 rippleView.stopRippleAnimation();
                 yyzxingRightBottomLjstatus.setText("成功关闭语音咨询，谢谢使用！");
+                yyzxingPresenter.endInMidwayZxBill(YyzxingAct.this,"YPZX",orderId,(ksTime - usedTimeForBill)+"");
+                usedTimeForBill = ksTime;
             }
 
             public void onFailed(int code)

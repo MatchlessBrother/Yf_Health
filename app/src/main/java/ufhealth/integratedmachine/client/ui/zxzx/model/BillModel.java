@@ -44,4 +44,12 @@ public class BillModel
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new BaseMvp_NetCallBack(context,netCallBack));
     }
+
+    public static void hangUpConsultation(Context context,String zxType,String order_id,String server_time,BaseMvp_LocalCallBack<BaseReturnData> netCallBack)
+    {
+        netCallBack.onStart();
+        NetClient.getInstance(context).getNetUrl().hangUpConsultation(zxType,order_id,server_time).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new BaseMvp_NetCallBack(context,netCallBack));
+    }
 }

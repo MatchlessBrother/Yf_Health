@@ -75,7 +75,7 @@ public class ProvideActionForWebiew
             intent.putExtra("sytime",Long.valueOf(syTime));
             intent.putExtra("orderid",orderId);
             intent.putExtra("doctorid",doctorId);
-            baseAct.startActivity(intent);
+            baseAct.startActivityForResult(intent,66);
         }
         else
         {
@@ -101,7 +101,7 @@ public class ProvideActionForWebiew
                         intent.putExtra("sytime",Long.valueOf(syTime));
                         intent.putExtra("orderid",orderId);
                         intent.putExtra("doctorid",doctorId);
-                        baseAct.startActivity(intent);
+                        baseAct.startActivityForResult(intent,66);
                     }
 
                     public void onFailed(int code)

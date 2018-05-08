@@ -5,5 +5,6 @@ import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 
 public interface BillsInfoAct_V extends BaseMvp_View
 {
+    void createFressBillSuccess();
     void startImageTextPayActivity(Billinfo billinfo);
 }

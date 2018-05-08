@@ -83,7 +83,7 @@ public class BillsInfoPresenter extends BaseMvp_Presenter<BillsInfoAct_V>
                                 !"".equals(billinfo.getPayOrderNumber().trim()) && !"".equals(billinfo.getPayQrcodeUrl().trim()) && !"".equals(billinfo.getTotalPrice().trim()))
                             getViewLayer().startImageTextPayActivity(returnBillInfo.getData());
                         else
-                            getViewLayer().showToast("服务器忙！请稍后重新发起咨询请求...谢谢！");
+                            getViewLayer().createFressBillSuccess();
                     }
                 }
 

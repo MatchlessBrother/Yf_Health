@@ -13,6 +13,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.bean.zxzx.Billinfo;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorAllInfo;
+import ufhealth.integratedmachine.client.ui.main.view.MainAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.BillInfoAct_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.BillInfoPresenter;
 
@@ -39,6 +40,7 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
     private TextView doctorbillinfoTotalvalue;
     private TextView doctorbillinfoStartpay;
     private BillInfoPresenter billInfoPresenter;
+    private DoctorAllInfo.BaseinfoBean baseinfoBean;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     protected int setLayoutResID()
@@ -133,6 +135,14 @@ public class BillInfoAct extends BaseAct implements BillInfoAct_V,View.OnClickLi
                 break;
             }
         }
+    }
+
+    public void createFressBillSuccess()
+    {
+        showToast("该订单无需支付，请在订单管理中发起咨询请求，谢谢！");
+        Intent intent = new Intent(this, MainAct.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     @Subscribe
