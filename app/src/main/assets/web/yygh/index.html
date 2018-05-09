@@ -216,7 +216,7 @@ $(function(){
 						layer.msg("请选择就诊卡交收方式");
 						return;
 					}
-					$("#patiend-card-input").val("需要办理");
+					$("#patiend-card-input").prop("disabled", "disabled").prop("placeholder", "需要办理");
 					layer.closeAll();
 				},
 				btn2: function(){
@@ -229,6 +229,7 @@ $(function(){
 					removeItem("certificateImage2Url");
 					removeItem("cardReceiveType");
 					$(".upload_imgs li").html('<form enctype="multipart/form-data"><input name="certificateImage" type="file"/><i class="iconfont">&#xe61a;</i></form>').addClass("add tc");
+					$("#patiend-card-input").prop("disabled", "").prop("placeholder", "请输入您的就诊卡号");
 					loadPatiendCard();
 					layer.closeAll();
 				}

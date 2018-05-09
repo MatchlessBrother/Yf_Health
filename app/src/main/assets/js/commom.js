@@ -1,7 +1,7 @@
 var token = androidjs.getToken();
 //var name = "";
 //var telephone = "";
-var apiUrl = "http://60.205.148.14:8000";
+var apiUrl = "http://dimdim215.imwork.net:53102";
 
 function ajax(url, postData, doSuccess, doFail, doComplete){
     var layerIndex;

@@ -10,9 +10,9 @@
 <body>
 
 <div class="pages">
-	<div class="pay-box box-default mg-t20">
+	<div class="pay-box box-default mg-t20"  style="height:800px;">
 		<h2 class="title"><img src="../../images/wepay.png">微信支付</h2>
-		<div class="row">
+		<div class="row" style="margin-top:100px;">
 			<span class="line"></span>
 			<div class="col-6">
 				<h3 class="tc fs28 pd-b30">请使用微信扫一扫进行支付下单</h3>
@@ -71,7 +71,7 @@ function queryPayResult(payOrderNumber) {
 			res = res.data;
 			if (res.payStatus == 2) {
 				setItem("serviceName", "在线咨询服务");
-				window.location.href = "../public/success.html";
+				window.location.href = "../public/zx_pay_success.html";
 			}
 			queryPayResult(payOrderNumber);
 		});

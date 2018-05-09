@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>健康小屋</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css?asdfasdf=asdafasd" />
+</head>
+<body>
+<div class="pages">
+	<div class="form-box box-default" style="width: 900px;height:700px;padding:100px 0;margin:0 auto">
+		<div class="tc">
+			<img src="../../images/success.png"><br/>
+			<h2 class="fs36 pd-t20">支付成功</h2>
+		</div>
+		<div id="description" class="fs24" style="width:750px;margin:0 auto;padding:80px 0;line-height: 36px;"></div>
+		<div class="tc"><a id="gotoHomeBtn" href="javascript:void(0);" class="button">返回首页</a></div>
+	</div>
+</div>
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/commom.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#description").html("尊敬的"+name+"用户，您的"+getItem("serviceName")+"订单已成功支付");
+		$("#gotoHomeBtn").click(function(){
+			window.location.href = "../member/order-zxzx.html";
+		});
+	});
+</script>
+</body>
+</html>
