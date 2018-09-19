@@ -1,6 +1,7 @@
 package com.yuan.devlibrary._2Activity;
 
 import java.io.File;
+import java.util.List;
 import java.util.Date;
 import android.net.Uri;
 import android.Manifest;
@@ -33,14 +34,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import android.content.ComponentName;
 import android.graphics.BitmapFactory;
-import me.iwf.photopicker.PhotoPicker;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import android.content.pm.PackageManager;
 import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.NonNull;
+import com.luck.picture.lib.PictureSelector;
 import android.support.v4.app.ActivityCompat;
+import com.luck.picture.lib.entity.LocalMedia;
 import android.support.v4.content.FileProvider;
+import com.luck.picture.lib.config.PictureConfig;
 import com.yuan.devlibrary._12_______Utils.MemoryUtils;
 import com.yuan.devlibrary._12_______Utils.StringUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,31 +51,51 @@ import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 
 public abstract class BasePhotoActivity extends BaseActivity
 {
-    /*************图片选择工具*************/
-    private PictureSelector pictureSelector;
-    /**************图片存储路径************/
+    /*****************图片选择工具*****************/
+    private PictureSelector mPictureSelector;
+    /*****************图片存储路径*****************/
     private String mPhotosCachePath;
-    /******从图库中选取图片的选择模式******/
+    /**************图片选择工具的样式**************/
+    private Integer mPictureSelectorTheme;
+    /************记录已经选取的图片集合************/
+    private List<LocalMedia> mSelectedMedias;
+    /**********从图库中选取图片的选择模式**********/
     private Integer mChoosePhotosMode;
-    /******从图库中选取图片的最大数量******/
+    /**********从图库中选取图片的最大数量**********/
     private Integer mChoosePhotosMaxSize;
-    /******从图库中选取图片的最小数量******/
+    /**********从图库中选取图片的最小数量**********/
     private Integer mChoosePhotosMinSize;
+    /***裁剪图片时所采用的形状样式(0方形，1圆形)***/
+    private Integer mCropShapeStyle;
+    /*************图库中是否显示Gif图片************/
+    private boolean mIsShowGif;
+    /*********从图库中选取图片时是否带音乐*********/
+    private boolean mEnableSound;
+    /**********从图库中选取图片后是否裁剪**********/
+    private boolean mEnableCrop;
+    /************裁剪图片时是否显示工具栏**********/
+    private boolean mIsShowCropControls;
+    /*********裁剪图片时是否可以移动裁剪框*********/
+    private boolean mIsDragCropBox;
+    /********裁剪图片时是否显示裁剪框的线条********/
+    private boolean mIsShowCropFrame;
+    /********裁剪图片时是否显示裁剪框的边框********/
+    private boolean mIsShowCropGrid;
+    /*****裁剪图片后保存图片时是否采用异步模式*****/
+    private boolean mIsCropActionAsy;
 
-
-
+    /**************************从图库中选取图片的选择模式：单选***********************/
+    private static final int CHOOSE_PHOTOS_MODE_SINGLE       = PictureConfig.SINGLE;
+    /**************************从图库中选取图片的选择模式：多选***********************/
+    private static final int CHOOSE_PHOTOS_MODE_MULTIPLE     = PictureConfig.MULTIPLE;
     /****************************获取相机权限的RequestCode值**************************/
     private static final int REQUEST_CODE_PERMISSION_CAMER                   = 0x0001;
+    /************************获取最终得到图片路径的RequestCode值**********************/
+    private static final int REQUEST_CODE_IMAGE_CAMERA                       = 0x0002;
     /******************获取访问手机外置内存权限的RequestCode值（相机）****************/
-    private static final int REQUEST_CODE_PERMISSION_CAMER_EXTERNALSTORAGE   = 0x0002;
+    private static final int REQUEST_CODE_PERMISSION_CAMER_EXTERNALSTORAGE   = 0x0003;
     /******************获取访问手机外置内存权限的RequestCode值（相册）****************/
-    private static final int REQUEST_CODE_PERMISSION_GALLERY_EXTERNALSTORAGE = 0x0003;
-    /**************************启动相机获取图片的RequestCode值************************/
-    private static final int REQUEST_CODE_IMAGE_CAMERA                       = 0x0004;
-    /**************************从图库中获取图片的RequestCode值************************/
-    private static final int REQUEST_CODE_IMAGE_GALLERY                      = 0x0005;
-    /*************************在裁剪之后获取图片的RequestCode值***********************/
-    private static final int REQUEST_CODE_IMAGE_CROPPER                      = 0x0006;
+    private static final int REQUEST_CODE_PERMISSION_GALLERY_EXTERNALSTORAGE = 0x0004;
 
     /*****************************************初始化基本数据***************************************/
     protected void onCreate(Bundle savedInstanceState)
@@ -87,6 +110,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         mCachePath =  MemoryUtils.getBestFilesPath(this) + File.separator + "photos";
         File PathFile = new File(mCachePath);
         if(!PathFile.exists()) PathFile.mkdirs();
+
     }
 
     /*************************************显示获取图片的方式选择框**********************************

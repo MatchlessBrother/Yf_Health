@@ -15,7 +15,7 @@ android {
         applicationId "ufhealth.integratedmachine.client"
         versionCode 1
         versionName "1.0.0"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 27
         flavorDimensions "default"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
