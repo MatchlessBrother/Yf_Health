@@ -7,9 +7,9 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import android.content.Context;
 import java.util.concurrent.TimeUnit;
-import com.yuan.devlibrary._12_______Utils.StringTools;
-import com.yuan.devlibrary._12_______Utils.MemoryTools;
-import com.yuan.devlibrary._12_______Utils.BuildVariantsTools;
+import com.yuan.devlibrary._12_______Utils.StringUtils;
+import com.yuan.devlibrary._12_______Utils.MemoryUtils;
+import com.yuan.devlibrary._12_______Utils.BuildVariantsUtils;
 import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.LogInterceptor;
 import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.RetrysInterceptor;
 
@@ -26,7 +26,7 @@ public class OkhttpClientFactory
         builder.connectTimeout(6, TimeUnit.SECONDS);
         /***************************设置OkHttpClient网络缓存的路径和大小***************************/
         String cachePath = null;
-        if(MemoryTools.whetherHasTheSDcard())
+        if(MemoryUtils.whetherHasTheSDcard())
             cachePath = context.getExternalFilesDir(context.getPackageName() + "_NetCache").toString();
         else
             cachePath = context.getFilesDir().toString() + File.separator + context.getPackageName() +"_NetCache";
@@ -36,7 +36,7 @@ public class OkhttpClientFactory
         /*******************************给OkHttpClient添加应用拦截器*******************************/
         builder.addInterceptor(new RetrysInterceptor(2,1000,2000));
         /*******************************给OkHttpClient添加网络拦截器*******************************/
-        if(BuildVariantsTools.isDebug(context))
+        if(BuildVariantsUtils.isDebug(context))
         {
             LogInterceptor logInterceptor = new LogInterceptor();
             logInterceptor.setLevel(LogInterceptor.Level.BODY);
@@ -54,9 +54,9 @@ public class OkhttpClientFactory
         builder.writeTimeout(writeTimeout > 0 ? writeTimeout : 8,TimeUnit.SECONDS);
         builder.connectTimeout(connectTimeout > 0 ? connectTimeout : 6, TimeUnit.SECONDS);
         /***************************设置OkHttpClient网络缓存的路径和大小***************************/
-        if(StringTools.isEmpty(cachePath.trim()))
+        if(StringUtils.isEmpty(cachePath.trim()))
         {
-            if(MemoryTools.whetherHasTheSDcard())
+            if(MemoryUtils.whetherHasTheSDcard())
                 cachePath = context.getExternalFilesDir(context.getPackageName() + "_NetCache").toString();
             else
                 cachePath = context.getFilesDir().toString() + File.separator + context.getPackageName() +"_NetCache";
@@ -74,7 +74,7 @@ public class OkhttpClientFactory
         else
             builder.addInterceptor(new RetrysInterceptor(2,1000,2000));
         /*******************************给OkHttpClient添加网络拦截器*******************************/
-        if(BuildVariantsTools.isDebug(context))
+        if(BuildVariantsUtils.isDebug(context))
         {
             if(null != netInterceptors && netInterceptors.size() > 0)
             {

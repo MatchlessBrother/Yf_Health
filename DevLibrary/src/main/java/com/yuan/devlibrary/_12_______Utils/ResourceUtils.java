@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.graphics.drawable.Drawable;
 
 /**快速获取系统资源的工具*/
-public class ResourceTools
+public class ResourceUtils
 {
     /**************根据Layout资源resID获取View***************/
     public static View generateView(Context context,int resID)

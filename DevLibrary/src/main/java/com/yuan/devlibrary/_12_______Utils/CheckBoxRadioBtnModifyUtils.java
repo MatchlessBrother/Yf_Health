@@ -5,7 +5,7 @@ import android.widget.CompoundButton;
 import android.graphics.drawable.Drawable;
 
 /**修改CheckBox,Radiobtn中自定义Btn大小的工具**/
-public class CheckBoxRadioBtnModifyTools
+public class CheckBoxRadioBtnModifyUtils
 {
     /******************Position表示自定义Btn位于View的那个方向,1左，2上，3右，4下******************/
     public static final void setHavedDrawbleView(Context context, CompoundButton compoundButton, Integer DrawableRes, Integer widthSize, Integer heightSize, Integer position)

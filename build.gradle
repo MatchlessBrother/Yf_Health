@@ -3,9 +3,10 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
@@ -20,13 +21,24 @@ allprojects {
     }
 }
 
+/*subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion '27.1.1'//改这个版本号到你想要的版本
+            }
+        }
+    }
+}*/
+
 ext {
-    versionCode = 1
-    versionName = "1.0.0"
-    minSdkVersion = 19
+    versionCode = 2
+    minSdkVersion = 15
+    versionName = "1.1.0"
     targetSdkVersion = 27
     compileSdkVersion = 27
-    buildToolsVersion = "27.0.2"
+    buildToolsVersion = "27.0.3"
 }
 
 wrapper {

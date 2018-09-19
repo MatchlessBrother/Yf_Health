@@ -16,7 +16,7 @@ import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import rx.android.schedulers.AndroidSchedulers;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import com.yuan.devlibrary._12_______Utils.QRCodeTools;
+import com.yuan.devlibrary._12_______Utils.QRCodeUtils;
 import ufhealth.integratedmachine.client.bean.zxzx.Billinfo;
 import ufhealth.integratedmachine.client.ui.main.view.MainAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.PayAct_V;
@@ -68,7 +68,7 @@ public class PayAct extends BaseAct implements PayAct_V,View.OnClickListener
         payValueOrdernum = (TextView) rootView.findViewById(R.id.pay_value_ordernum);
         payValueTime = (TextView) rootView.findViewById(R.id.pay_value_time);
 
-        payQrcImg.setImageBitmap(QRCodeTools.createQRCodeBitmap(billinfo.getPayQrcodeUrl(),340,"UTF-8","H", "3", Color.BLACK,Color.WHITE,null, BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher),0.2f));
+        payQrcImg.setImageBitmap(QRCodeUtils.createQRCodeBitmap(billinfo.getPayQrcodeUrl(),340,"UTF-8","H", "3", Color.BLACK,Color.WHITE,null, BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher),0.2f));
         switch (TYPE)
         {
             case ZxzxAct.SPZX:payType.setText("优服健康-视频咨询订单");break;

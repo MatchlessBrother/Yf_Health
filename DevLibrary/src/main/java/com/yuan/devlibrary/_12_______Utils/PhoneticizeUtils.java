@@ -12,7 +12,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 /***此类用于汉子转化成拼音***/
-public class PhoneticizeTools
+public class PhoneticizeUtils
 {
 	/*******************************************获取某一个汉字的首字母******************************************/
 	public static char getFirstLetterForChineseChar(char chineseChar)

@@ -2,23 +2,23 @@ package com.yuan.devlibrary._3Fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.app.Activity;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.support.v4.app.Fragment;
-import com.yuan.devlibrary._2Activity.BaseActivity;
-import com.yuan.devlibrary._12_______Utils.ResourceTools;
+import com.yuan.devlibrary._12_______Utils.ResourceUtils;
 
 public abstract class BaseFragment extends Fragment
 {
-    protected BaseActivity activity;
-    protected View        mRootView;
+    protected View mRootView = null;
+    protected Activity mActivity = getActivity();
 
     /***********************************Fragment初始化界面的部分***********************************/
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         if (mRootView == null)
         {
-            mRootView = ResourceTools.generateView(getActivity(),setLayoutResID());
+            mRootView = ResourceUtils.generateView(getActivity(),setLayoutResID());
             initWidgets(mRootView);
             initDatas();
             initLogic();

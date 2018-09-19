@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Arrays;
 
 /******集合与数组间的转换工具*****/
-public class ArraysetConvertedTools
+public class ArraysetConvertedUtils
 {
     /********************List集合转数组****************/
     public static Object[] SetToArray(List<Object> list)

@@ -8,7 +8,7 @@ import android.app.Application;
 import java.lang.reflect.Field;
 import android.util.DisplayMetrics;
 import android.content.res.Resources;
-import com.yuan.devlibrary._12_______Utils.ScreenInfosTools;
+import com.yuan.devlibrary._12_______Utils.ScreenInfosUtils;
 
 public class BaseUiAdapterHelper
 {
@@ -107,8 +107,8 @@ public class BaseUiAdapterHelper
         Resources resources = activity.getResources();
         resources.getDisplayMetrics().widthPixels = size.x;
         resources.getDisplayMetrics().heightPixels = size.y;
-        if(ScreenInfosTools.isShowStatusBar(activity))
-            size.y = size.y - ScreenInfosTools.getStatusBarHeightBeforeInit(activity);
+        if(ScreenInfosUtils.isShowStatusBar(activity))
+            size.y = size.y - ScreenInfosUtils.getStatusBarHeightBeforeInit(activity);
         if(designWidth != 0f) resources.getDisplayMetrics().xdpi = size.x / designWidth * 72f;
         if(designHeight != 0f) resources.getDisplayMetrics().scaledDensity = size.y / designHeight;
         DisplayMetrics metrics = getMetricsOnMiui(activity.getResources());

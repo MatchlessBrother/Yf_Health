@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 /****此类用于像素格式的转换*****/
-public class PixelConvertedTools
+public class PixelConvertedUtils
 {
 	/**********************dp转px***********************/
 	public final static int dpTpx(Context context,int dp)

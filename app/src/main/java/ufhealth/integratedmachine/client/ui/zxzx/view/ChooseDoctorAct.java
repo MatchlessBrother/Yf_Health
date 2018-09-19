@@ -16,7 +16,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import android.support.v4.widget.SwipeRefreshLayout;
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -108,7 +108,7 @@ public class ChooseDoctorAct extends BaseAct implements ChooseDoctorAct_V,View.O
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                if(NetTools.WhetherConnectNet(ChooseDoctorAct.this) && 0 != (((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()))
+                if(NetUtils.WhetherConnectNet(ChooseDoctorAct.this) && 0 != (((DoctorInfo.ContentBean)adapter.getItem(position)).getDoctor_id()))
                 {
                     Intent intent = new Intent(ChooseDoctorAct.this,DoctorInfoAct.class);
                     intent.putExtra("type",TYPE);

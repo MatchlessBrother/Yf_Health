@@ -9,7 +9,7 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
 /*****操作软键盘的工具类******/
-public class SoftKeyboardTools
+public class SoftKeyboardUtils
 {
     /*************判定当前界面是否显示了软键盘************/
     public static boolean isShowKeyboard(Activity activity)

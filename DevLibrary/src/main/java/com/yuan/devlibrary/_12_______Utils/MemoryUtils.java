@@ -13,7 +13,7 @@ import android.os.storage.StorageManager;
 import java.lang.reflect.InvocationTargetException;
 
 /**此类用于获得内置内存/外置内存的路径以及大小*/
-public class MemoryTools
+public class MemoryUtils
 {
 	public static final String KEY_ROM_MEMORY = "ANDROID_DATA";/*********运行内存********/
 	/**System.getenv()获取android系统内部的信息，比如关于内存卡，外存卡，运行内存的信息.*/
@@ -43,11 +43,11 @@ public class MemoryTools
 	public static final String getBestStoragePath(Context context)
 	{
 		String  bestStoragePath = getExternalSDcardPath(context);
-		if(!StringTools.isEmpty(bestStoragePath))
+		if(!StringUtils.isEmpty(bestStoragePath))
 			return bestStoragePath;
 
 		bestStoragePath = getInternalSDcardPath(context);
-		if(!StringTools.isEmpty(bestStoragePath))
+		if(!StringUtils.isEmpty(bestStoragePath))
 			return bestStoragePath;
 		return null;
 	}

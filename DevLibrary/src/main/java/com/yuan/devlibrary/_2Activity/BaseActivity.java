@@ -2,14 +2,15 @@ package com.yuan.devlibrary._2Activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import com.yuan.devlibrary._1App.BaseApplication;
-import com.yuan.devlibrary._12_______Utils.ResourceTools;
+import com.yuan.devlibrary._12_______Utils.ResourceUtils;
 
 public abstract class BaseActivity extends AppCompatActivity
 {
     protected View mRootView = null;
-    protected BaseActivity activity = this;
+    protected Activity mActivity = this;
 
     /*****巧妙的把每个Acivity添加进BaseApplication的Stack栈中,以便完全关闭应用或则实现其他功能*****/
     protected void onCreate(Bundle savedInstanceState)
@@ -18,8 +19,8 @@ public abstract class BaseActivity extends AppCompatActivity
         /***********也只有这样才能正确计算出Activity的显示高度***********/
         initStatusBarAddTitleBar();
         super.onCreate(savedInstanceState);
-        mRootView = ResourceTools.generateView(this,setLayoutResID());
-        BaseApplication.mApplication.addActivity(activity);
+        mRootView = ResourceUtils.generateView(this,setLayoutResID());
+        BaseApplication.mApplication.addActivity(mActivity);
         setContentView(mRootView);
         initWidgets(mRootView);
         initDatas();
@@ -41,17 +42,18 @@ public abstract class BaseActivity extends AppCompatActivity
     /******************初始化界面逻辑*****************/
     protected abstract void initLogic();
 
+    /******************获取BaseActivity本身*****************/
+    protected Activity getActivity()
+    {
+        return mActivity;
+
+    }
+
     /*****巧妙的把每个Acivity从BaseApplication的Stack栈中移除,以便完全关闭应用或则实现其他功能*****/
     protected void onDestroy()
     {
         if(BaseApplication.mApplication.hasActivity(this.getClass().getSimpleName()))
             BaseApplication.mApplication.removeActivity(this.getClass().getSimpleName());
         super.onDestroy();
-    }
-
-    /******************获取BaseActivity本身*****************/
-    protected BaseActivity getActivity()
-    {
-        return activity;
     }
 }

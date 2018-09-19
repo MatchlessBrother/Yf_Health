@@ -10,16 +10,16 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import android.view.Gravity;
 import java.io.StringWriter;
+import com.yuan.devlibrary.R;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import java.io.FileOutputStream;
 import android.view.WindowManager;
-import com.yuan.devlibrary.R;
 import java.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.util.DisplayMetrics;
 import java.io.FileNotFoundException;
-import com.yuan.devlibrary._12_______Utils.MemoryTools;
+import com.yuan.devlibrary._12_______Utils.MemoryUtils;
 
 public class BaseUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler
 {
@@ -43,7 +43,7 @@ public class BaseUncaughtExceptionHandler implements Thread.UncaughtExceptionHan
     {
         mApplication = application;
         Thread.setDefaultUncaughtExceptionHandler(mHandler);
-        mExceptionalFilesBestStorePath = MemoryTools.getBestFilesPath(mApplication) +  File.separator + "exceptionalLogs";
+        mExceptionalFilesBestStorePath = MemoryUtils.getBestFilesPath(mApplication) +  File.separator + "exceptionalLogs";
     }
 
     public void uncaughtException(Thread thread, Throwable ex)

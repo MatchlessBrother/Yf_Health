@@ -24,7 +24,7 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 /***弹出各样提示框的工具**/
-public class PromptBoxTools
+public class PromptBoxUtils
 {
     /**------------------------------------------------------------------------------------------**/
     /**------------------------------------------------------------------------------------------**/
@@ -45,8 +45,8 @@ public class PromptBoxTools
     public static void showToast(Context context,String str,float strSize,int strTypeValue,int gravity,int during)
     {
         Toast toast = new Toast(context);
-        View layout = ResourceTools.generateView(context,R.layout.inflater_toastviewdefault);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ScreenInfosTools.getScreenWidth(context), ScreenInfosTools.getScreenHeightWithoutNavigation(context));
+        View layout = ResourceUtils.generateView(context,R.layout.inflater_toastviewdefault);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ScreenInfosUtils.getScreenWidth(context), ScreenInfosUtils.getScreenHeightWithoutNavigation(context));
         layout.setLayoutParams(params);
         toast.setView(layout);
         toast.setGravity(gravity,0,12);
@@ -89,7 +89,7 @@ public class PromptBoxTools
         AnimationDrawable animation = null;
         if(themeStyleValue == 1)
         {
-            contentView = ResourceTools.generateView(context,R.layout.inflater_progressdialogdefault);
+            contentView = ResourceUtils.generateView(context,R.layout.inflater_progressdialogdefault);
             imageView = (ImageView) contentView.findViewById(R.id.defaultthemeimg);
             animation = new AnimationDrawable();
             animation.addFrame(context.getResources().getDrawable(R.drawable.progressdialogdefault1),45);
@@ -128,7 +128,7 @@ public class PromptBoxTools
         }
         else
         {
-            contentView = ResourceTools.generateView(context,R.layout.inflater_progressdialogplane);
+            contentView = ResourceUtils.generateView(context,R.layout.inflater_progressdialogplane);
             imageView = (ImageView) contentView.findViewById(R.id.planethemeimg);
             animation = new AnimationDrawable();
             animation.addFrame(context.getResources().getDrawable(R.drawable.progressdialogplane1),45);
@@ -176,8 +176,8 @@ public class PromptBoxTools
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = PixelConvertedTools.dpTpx(context,imgSize);
-        params.height = PixelConvertedTools.dpTpx(context,imgSize);
+        params.width = PixelConvertedUtils.dpTpx(context,imgSize);
+        params.height = PixelConvertedUtils.dpTpx(context,imgSize);
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return progressDialog;
@@ -195,7 +195,7 @@ public class PromptBoxTools
     /********************显示权限设置提示框,contentStr为提示内容,btnStr为按钮内容******************/
     public static BaseDialog showPermissionDialog(Context context,String contentStr,String btnStr,View.OnClickListener onClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return showPermissionDialog(context,contentStr, Color.argb(255,255,255,255),13,TypedValue.COMPLEX_UNIT_DIP,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),btnStr,Color.argb(255,216,80,126),14,TypedValue.COMPLEX_UNIT_DIP,ResourceTools.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),onClickListener,onClickOutsideListener);
+        return showPermissionDialog(context,contentStr, Color.argb(255,255,255,255),13,TypedValue.COMPLEX_UNIT_DIP, ResourceUtils.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),btnStr,Color.argb(255,216,80,126),14,TypedValue.COMPLEX_UNIT_DIP, ResourceUtils.getDrawableRes(context,R.drawable.shape_dialogdefaultblackbg),onClickListener,onClickOutsideListener);
     }
 
     /**显示权限设置提示框,contentStr为提示内容,contentStrColor为提示字体的颜色,contentStrSize为提***

@@ -14,7 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
-import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
+import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyUtils;
 import ufhealth.integratedmachine.client.adapter.zxzx.DoctorInfoAdapter;
 import ufhealth.integratedmachine.client.ui.zxzx.view_v.ChooseMultiDoctor_V;
 import ufhealth.integratedmachine.client.ui.zxzx.presenter.ChooseMultiDoctorPresenter;
@@ -54,7 +54,7 @@ public class ChooseMultiDoctorAct extends BaseAct implements ChooseMultiDoctor_V
         choosemultidoctorRecyclerview.setLayoutManager(linearLayoutManager);
         doctorInfoAdapter = DoctorInfoAdapter.getAdapter(this,TYPE,new ArrayList<DoctorInfo.ContentBean>());
         choosemultidoctorRecyclerview.setAdapter(doctorInfoAdapter);
-        CheckBoxRadioBtnModifyTools.setHavedDrawbleView(this,choosemultidoctorMfcb,R.drawable.checkbox_blue_no,60,60,3);
+        CheckBoxRadioBtnModifyUtils.setHavedDrawbleView(this,choosemultidoctorMfcb,R.drawable.checkbox_blue_no,60,60,3);
 
         chooseMultidoctorSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {

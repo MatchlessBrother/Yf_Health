@@ -3,7 +3,7 @@ package com.yuan.devlibrary._11___Widget.pullableView;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 
 /**设置刷新操作结果的回调接口**/
 public class PullableBRefreshListener
@@ -19,7 +19,7 @@ public class PullableBRefreshListener
 	/****有网络才能正确的刷新数据,所以可以刷新数据会返回true,否则返回false*****/
 	public Boolean onStartRefreshing(PullableARefreshLayout pullToRefreshLayout)
 	{
-		if(NetTools.WhetherConnectNet(context))
+		if(NetUtils.WhetherConnectNet(context))
 			return true;
 		else
 		{

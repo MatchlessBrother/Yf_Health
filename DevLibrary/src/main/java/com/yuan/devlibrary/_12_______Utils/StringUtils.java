@@ -1,7 +1,7 @@
 package com.yuan.devlibrary._12_______Utils;
 
 /**此类用于检索字符串属性**/
-public class StringTools
+public class StringUtils
 {
     /*************检索字符串内容是否为空**********/
     public final static boolean isEmpty(String str)

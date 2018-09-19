@@ -41,29 +41,25 @@ import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import com.yuan.devlibrary._12_______Utils.MemoryTools;
-import com.yuan.devlibrary._12_______Utils.StringTools;
+import com.yuan.devlibrary._12_______Utils.MemoryUtils;
+import com.yuan.devlibrary._12_______Utils.StringUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
+import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 
 public abstract class BasePhotoActivity extends BaseActivity
 {
-    /***********新图片的手机根路径***********/
-    private String mCachePath;
-    /************新图片的手机路径************/
-    private String mImgFilePath;
-    /********对图片采用的像素压缩类型********/
-    private Integer mCompressPixelStyle;
-    /******从图库中获取图片时限定的数量******/
-    private Integer mChooseBitmapMaxSize;
-    /*****对图片进行质量压缩时限定的大小*****/
-    private Double mResultBitmapQualitySize;
-    /******裁剪图片页面标题栏背景颜色值******/
-    private Integer mTitleBgColor;
-    /******裁剪图片页面标题栏字体颜色值******/
-    private Integer mTitleTextColor;
-    /******裁剪图片页面裁剪框是否是圆形******/
-    private Boolean mIsRoundCropper;
+    /*************图片选择工具*************/
+    private PictureSelector pictureSelector;
+    /**************图片存储路径************/
+    private String mPhotosCachePath;
+    /******从图库中选取图片的选择模式******/
+    private Integer mChoosePhotosMode;
+    /******从图库中选取图片的最大数量******/
+    private Integer mChoosePhotosMaxSize;
+    /******从图库中选取图片的最小数量******/
+    private Integer mChoosePhotosMinSize;
+
+
 
     /****************************获取相机权限的RequestCode值**************************/
     private static final int REQUEST_CODE_PERMISSION_CAMER                   = 0x0001;
@@ -88,7 +84,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         mResultBitmapQualitySize = 60d;
         mTitleTextColor = R.color.white;
         mTitleBgColor = R.color.cropperactivity_titlebg;
-        mCachePath =  MemoryTools.getBestFilesPath(this) + File.separator + "photos";
+        mCachePath =  MemoryUtils.getBestFilesPath(this) + File.separator + "photos";
         File PathFile = new File(mCachePath);
         if(!PathFile.exists()) PathFile.mkdirs();
     }
@@ -173,7 +169,6 @@ public abstract class BasePhotoActivity extends BaseActivity
             {
                 File PathFile = new File(mCachePath);
                 if(!PathFile.exists()) PathFile.mkdirs();
-
                 mImgFilePath = null;
                 if(isHeadImg)
                     mImgFilePath = mCachePath + File.separator + "headImg.jpg";
@@ -209,7 +204,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                             if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE))
                                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_PERMISSION_CAMER_EXTERNALSTORAGE);
                             else
-                               PromptBoxTools.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                               PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
                         }
                     }
                     else
@@ -217,17 +212,17 @@ public abstract class BasePhotoActivity extends BaseActivity
                        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA))
                             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUEST_CODE_PERMISSION_CAMER);
                        else
-                           PromptBoxTools.showPermissionDialog(this,"亲，当前操作行为缺少使用相机的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                           PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少使用相机的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
                     }
                 }
                 else
-                    PromptBoxTools.showToast(this,"亲，启动照相机失败了！\n因为无法创建图片文件哟！");
+                    PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为无法创建图片文件哟！");
             }
             else
-                PromptBoxTools.showToast(this,"亲，启动照相机失败了！\n因为摄像头缺少驱动哟！");
+                PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为摄像头缺少驱动哟！");
         }
         else
-            PromptBoxTools.showToast(this,"亲，启动照相机失败了！\n因为无可用的摄像头哟！");
+            PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为无可用的摄像头哟！");
     }
 
     /************启动图库获取图片*************/
@@ -262,11 +257,11 @@ public abstract class BasePhotoActivity extends BaseActivity
                 if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE))
                     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_PERMISSION_GALLERY_EXTERNALSTORAGE);
                 else
-                    PromptBoxTools.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                    PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
             }
         }
         else
-            PromptBoxTools.showToast(this,"亲，启动图库选择图片失败了！\n因为无法创建相关图片文件哟！");
+            PromptBoxUtils.showToast(this,"亲，启动图库选择图片失败了！\n因为无法创建相关图片文件哟！");
     }
 
     /******************动态申请应用权限的回调函数******************/
@@ -289,7 +284,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE))
                     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_PERMISSION_CAMER_EXTERNALSTORAGE);
                 else
-                    PromptBoxTools.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                    PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
             }
         }
         else if(REQUEST_CODE_PERMISSION_CAMER_EXTERNALSTORAGE == requestCode && null != grantResults && grantResults.length > 0 && PackageManager.PERMISSION_GRANTED == grantResults[0])
@@ -374,7 +369,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 bitmap = setImageRotatedDegree(bitmap,degree);
             else
             {
-                PromptBoxTools.showToast(this,"亲，无法获取相关图片！图片可能已经损坏了哟！");
+                PromptBoxUtils.showToast(this,"亲，无法获取相关图片！图片可能已经损坏了哟！");
                 return null;
             }
             try
@@ -435,7 +430,7 @@ public abstract class BasePhotoActivity extends BaseActivity
             }
         }
         else
-            PromptBoxTools.showToast(this,"亲，对图片进行的所有压缩操作失败了！因为在指定路径没有找到相关的图片哟！");
+            PromptBoxUtils.showToast(this,"亲，对图片进行的所有压缩操作失败了！因为在指定路径没有找到相关的图片哟！");
         return null;
     }
 
@@ -624,7 +619,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 e.printStackTrace();
             }
         }
-        PromptBoxTools.showToast(this,"亲，对图片进行的质量压缩操作失败了！因为在指定路径没有找到相关的图片哟！");
+        PromptBoxUtils.showToast(this,"亲，对图片进行的质量压缩操作失败了！因为在指定路径没有找到相关的图片哟！");
         return null;
     }
 
@@ -634,7 +629,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_IMAGE_CAMERA)
         {
             final String imgPath = compressImagePixel_AllAcion(mImgFilePath);
-            if(!StringTools.isEmpty(imgPath))
+            if(!StringUtils.isEmpty(imgPath))
             {
                 Intent intent = new Intent(this,PhotoCropperActivity.class);
                 intent.putExtra(PhotoCropperActivity.TITLECOLOR,mTitleBgColor);
@@ -644,7 +639,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 startActivityForResult(intent,REQUEST_CODE_IMAGE_CROPPER);
             }
             else
-                PromptBoxTools.showToast(this,"亲，获取拍照的图片失败了！\n因为在指定路径无法查找到图片哟！");
+                PromptBoxUtils.showToast(this,"亲，获取拍照的图片失败了！\n因为在指定路径无法查找到图片哟！");
         }
         else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_IMAGE_GALLERY && data != null)
         {
@@ -652,7 +647,7 @@ public abstract class BasePhotoActivity extends BaseActivity
             if(imgList.size() == 1)
             {
                 String imgPath = imgList.get(0);
-                if(!StringTools.isEmpty(imgPath))
+                if(!StringUtils.isEmpty(imgPath))
                 {
                     File bitmapFile = new File(imgPath);
                     /****为了不破坏原有图片,我们生成新图片来进行操作****/
@@ -686,7 +681,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                     startActivityForResult(intent, REQUEST_CODE_IMAGE_CROPPER);
                 }
                 else
-                    PromptBoxTools.showToast(this,"亲，获取选定的图片失败了！\n因为在指定路径无法查找到图片哟！");
+                    PromptBoxUtils.showToast(this,"亲，获取选定的图片失败了！\n因为在指定路径无法查找到图片哟！");
             }
             else
             {
@@ -724,7 +719,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         {
             String cropperBitmapPath = data.getStringExtra(PhotoCropperActivity.BITMAPPATH);
             File bitmapFile = new File(cropperBitmapPath);
-            if(!StringTools.isEmpty(cropperBitmapPath) && bitmapFile.exists())
+            if(!StringUtils.isEmpty(cropperBitmapPath) && bitmapFile.exists())
             {
                 /****************************************超过120KB的图片需要进行质量压缩处理****************************************/
                 if(bitmapFile.length() >= 120 * 1024)
@@ -733,7 +728,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 setOnNewImgPathListener(dataList);
             }
             else
-                PromptBoxTools.showToast(this,"亲，手机发生异常情况导致裁剪\n图片失败了哟！请您稍后重试！");
+                PromptBoxUtils.showToast(this,"亲，手机发生异常情况导致裁剪\n图片失败了哟！请您稍后重试！");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

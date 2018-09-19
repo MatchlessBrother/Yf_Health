@@ -14,8 +14,8 @@ import ufhealth.integratedmachine.client.R;
 import android.graphics.drawable.ColorDrawable;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yuan.devlibrary._2Activity.BasePhotoActivity;
-import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
-import com.yuan.devlibrary._12_______Utils.ScreenInfosTools;
+import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
+import com.yuan.devlibrary._12_______Utils.ScreenInfosUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 import ufhealth.integratedmachine.client.ui.main.view.MainAct;
@@ -36,15 +36,15 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     protected void initStatusBarAddTitleBar()
     {
-        if(!ScreenInfosTools.isShowTitleBar(this))
-            ScreenInfosTools.hideTitleBar(this);
+        if(!ScreenInfosUtils.isShowTitleBar(this))
+            ScreenInfosUtils.hideTitleBar(this);
     }
 
     protected void onResume()
     {
         super.onResume();
-        if(!ScreenInfosTools.ishideNavigationBarAndStatusBar(this))
-            ScreenInfosTools.hideNavigationBarAndStatusBar(this);
+        if(!ScreenInfosUtils.ishideNavigationBarAndStatusBar(this))
+            ScreenInfosUtils.hideNavigationBarAndStatusBar(this);
     }
 
     protected void initWidgets(View rootView)
@@ -194,7 +194,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void showToast(String str,float strSize)
     {
-        PromptBoxTools.showToast(this,str,strSize, TypedValue.COMPLEX_UNIT_SP, Gravity.CENTER,0);
+        PromptBoxUtils.showToast(this,str,strSize, TypedValue.COMPLEX_UNIT_SP, Gravity.CENTER,0);
     }
 
     /**********************************************************************************************/
@@ -202,17 +202,17 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseProgressDialog showLoadingDialog()
     {
-        return PromptBoxTools.showLoadingDialog(this,"请稍等",1,80,false,null);
+        return PromptBoxUtils.showLoadingDialog(this,"请稍等",1,80,false,null);
     }
 
     public void dismissLoadingDialog(BaseProgressDialog progressDialog)
     {
-        PromptBoxTools.dismissLoadingDialog(progressDialog);
+        PromptBoxUtils.dismissLoadingDialog(progressDialog);
     }
 
     public BaseProgressDialog showLoadingDialog(boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxTools.showLoadingDialog(this,"请稍等",1,80,isCanceledOnTouchOutside,onClickOutsideListener);
+        return PromptBoxUtils.showLoadingDialog(this,"请稍等",1,80,isCanceledOnTouchOutside,onClickOutsideListener);
     }
 
     /**********************************************************************************************/
@@ -220,7 +220,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void dismissPromptDialog(BaseDialog baseDialog)
     {
-        PromptBoxTools.dismissPromptDialog(baseDialog);
+        PromptBoxUtils.dismissPromptDialog(baseDialog);
     }
 
     public BaseDialog showPromptDialog(String titleStr,String contentStr,String falseStr,String trueStr)
@@ -230,7 +230,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public BaseDialog showPromptDialog(String titleStr,String contentStr,String falseStr,String trueStr,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxTools.showPromptDialog(this,titleStr,Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
+        return PromptBoxUtils.showPromptDialog(this,titleStr,Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
                 contentStr, Color.argb(255,102,102,102),30,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),
                 falseStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,
                 trueStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_SP,new ColorDrawable(0xffffffff),View.VISIBLE,

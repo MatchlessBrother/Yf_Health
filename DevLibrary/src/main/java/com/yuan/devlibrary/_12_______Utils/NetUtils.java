@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 /****网络请求工具****/
-public class NetTools
+public class NetUtils
 {
     /*************判断当前手机是否有正确连接网络***********/
     public static boolean WhetherConnectNet(Context context)

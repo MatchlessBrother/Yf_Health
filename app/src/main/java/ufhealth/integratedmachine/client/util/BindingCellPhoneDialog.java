@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.support.annotation.NonNull;
 import ufhealth.integratedmachine.client.R;
-import com.yuan.devlibrary._12_______Utils.PromptBoxTools;
+import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 
 public class BindingCellPhoneDialog extends BaseDialog
@@ -51,7 +51,7 @@ public class BindingCellPhoneDialog extends BaseDialog
             public void onClick(View view)
             {
                 if(!bindingcellphonePhone.getText().toString().trim().equals(""))
-                    PromptBoxTools.showToast(getContext(),"请输入有效的手机号之后再获取验证码");
+                    PromptBoxUtils.showToast(getContext(),"请输入有效的手机号之后再获取验证码");
                 else
                 {
                     //调用获取手机验证码接口并根据逻辑进行倒计时操作
@@ -70,7 +70,7 @@ public class BindingCellPhoneDialog extends BaseDialog
                     onClickSureListener.onClickSure(bindingcellphonePhone.getText().toString().trim(),bindingcellphoneCode.getText().toString().trim());
                 }
                 else
-                    PromptBoxTools.showToast(getContext(),"请输入有效的手机号与验证码，否则不能无法进行绑定操作！");
+                    PromptBoxUtils.showToast(getContext(),"请输入有效的手机号与验证码，否则不能无法进行绑定操作！");
             }
         });
 

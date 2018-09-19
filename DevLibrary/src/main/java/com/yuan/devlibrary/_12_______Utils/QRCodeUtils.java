@@ -14,7 +14,7 @@ import android.support.annotation.ColorInt;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 /**生成二维码的工具类**/
-public class QRCodeTools
+public class QRCodeUtils
 {
     /**
      * 创建二维码位图 (自定义黑、白色块颜色)

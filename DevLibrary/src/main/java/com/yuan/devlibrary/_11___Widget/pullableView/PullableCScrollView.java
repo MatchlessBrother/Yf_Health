@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.yuan.devlibrary.R;
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 import com.yuan.devlibrary._11___Widget.indicator.IndicatorView;
 
 /************此控件只支持嵌套LinearLayout布局,不支持RelativeLayout布局,因为***************/
@@ -169,7 +169,7 @@ public class PullableCScrollView extends ScrollView implements Pullable
 		}
 
 		/********是否拥有可用网络！有网络且当前内容不满一页，控件则自动加载新内容填满一页*******/
-		if(NetTools.WhetherConnectNet(context))
+		if(NetUtils.WhetherConnectNet(context))
 		{
 			/***当内容不满一页时,控件自动加载新内容直到填满一页！排除没有新数据可以加载的情况***/
 			if (getHeight() >= computeVerticalScrollRange() - footViewHeight)

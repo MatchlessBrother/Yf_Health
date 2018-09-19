@@ -13,7 +13,7 @@ import ufhealth.integratedmachine.client.R;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
@@ -200,7 +200,7 @@ public class DoctorInfoAct extends BaseAct implements DoctorInfoAct_V,View.OnCli
             {
                 if(TYPE == ZxzxAct.SPZX || TYPE == ZxzxAct.YYZX || TYPE == ZxzxAct.TWZX)
                 {
-                    if(NetTools.WhetherConnectNet(this) && doctorInfoPresenter.doctorIsValid())
+                    if(NetUtils.WhetherConnectNet(this) && doctorInfoPresenter.doctorIsValid())
                     {
                         Intent intent = new Intent(this, BillInfoAct.class);
                         intent.putExtra("type",TYPE);

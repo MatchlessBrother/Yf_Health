@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
 /**判定安装包的BuildVariants值*/
-public class BuildVariantsTools
+public class BuildVariantsUtils
 {
     /**判定当前运行的软件是Debug模式还是Release模式,true为Debug,false为Release**/
     public static boolean isDebug(Context context)

@@ -12,14 +12,14 @@ import android.widget.CompoundButton;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import android.support.annotation.Nullable;
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.ui.zxzx.view.ZxzxAct;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
 import ufhealth.integratedmachine.client.ui.zxzx.view.BillInfoAct;
-import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyTools;
+import com.yuan.devlibrary._12_______Utils.CheckBoxRadioBtnModifyUtils;
 
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo.ContentBean;
 
@@ -92,7 +92,7 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 {
                     public void onClick(View view)
                     {
-                        if(NetTools.WhetherConnectNet(mContext) && 0 != contentBean.getDoctor_id())
+                        if(NetUtils.WhetherConnectNet(mContext) && 0 != contentBean.getDoctor_id())
                         {
                             Intent intent = new Intent(mContext, BillInfoAct.class);
                             switch (mTypeValue)
@@ -144,7 +144,7 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
                 helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_departmentname,(null != contentBean.getDepartment_name() ? contentBean.getDepartment_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_specialize,(null != contentBean.getBe_good_at() ? "擅长：" + contentBean.getBe_good_at().trim() : "擅长：未知"));
-                CheckBoxRadioBtnModifyTools.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
+                CheckBoxRadioBtnModifyUtils.setHavedDrawbleView(mContext,(CheckBox)helper.itemView.findViewById(R.id.doctorinfo_checkbox),R.drawable.checkbox_blue_no,60,60,3);
                 switch (mTypeValue)
                 {
                     case KSZX:

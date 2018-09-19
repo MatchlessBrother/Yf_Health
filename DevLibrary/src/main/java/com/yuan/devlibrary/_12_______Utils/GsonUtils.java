@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
 /**Gson解析工具常用的解析功能**/
-public class GsonTools
+public class GsonUtils
 {
     /******************将一个Object对象转成相应的Json字符串***************/
     public static String objectToGsonString(Object object)

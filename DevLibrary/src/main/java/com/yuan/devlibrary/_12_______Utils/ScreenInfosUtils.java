@@ -16,7 +16,7 @@ import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 
 /*******获取屏幕宽高度*******/
-public class ScreenInfosTools
+public class ScreenInfosUtils
 {
     /***************************获取屏幕宽度**************************/
     public static int getScreenWidth(Context context)

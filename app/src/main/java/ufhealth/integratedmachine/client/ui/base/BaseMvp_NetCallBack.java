@@ -6,7 +6,7 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
 import retrofit2.adapter.rxjava.HttpException;
-import com.yuan.devlibrary._12_______Utils.NetTools;
+import com.yuan.devlibrary._12_______Utils.NetUtils;
 import ufhealth.integratedmachine.client.network.NetFlags;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 
@@ -29,7 +29,7 @@ public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T
 
     public void onError(Throwable e)
     {
-        if (!NetTools.WhetherConnectNet(mContext))
+        if (!NetUtils.WhetherConnectNet(mContext))
         {
             mBaseMvpLocalCallBack.onError("网络不可用,请稍后再试...");
         }
