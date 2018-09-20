@@ -5,6 +5,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import android.widget.LinearLayout;
 import ufhealth.integratedmachine.client.R;
+
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ufhealth.integratedmachine.client.base.BaseAct;
@@ -58,8 +61,11 @@ public class UserInfoAct extends BaseAct implements UserInfoAct_V,View.OnClickLi
     {
         if(null != userInfo)
         {
-            Glide.with(this).load(null != userInfo.getAvatar() ? userInfo.getAvatar().trim() : "").
-                    placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).into(userinfoImg);
+            RequestOptions options = new RequestOptions();
+            options.error(R.mipmap.defaultimage);
+            options.placeholder(R.mipmap.defaultimage);
+            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            Glide.with(this).load(null != userInfo.getAvatar() ? userInfo.getAvatar().trim() : "").apply(options).into(userinfoImg);
             userinfoName.setText(null != userInfo.getName() ? userInfo.getName().trim() : "未知");
             userinfoIdcard.setText("身份证号：" + (null != userInfo.getPapersNumber() ? userInfo.getPapersNumber().trim() : "未知"));
             userinfoGender.setText("所属性别：" + (userInfo.getGender() == 1 ? "男" : "女"));

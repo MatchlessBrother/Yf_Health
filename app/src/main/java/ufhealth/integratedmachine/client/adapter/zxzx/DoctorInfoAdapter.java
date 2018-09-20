@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import android.widget.CompoundButton;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.donkingliang.labels.LabelsView;
 import ufhealth.integratedmachine.client.R;
 import android.support.annotation.Nullable;
@@ -71,9 +73,11 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
             case SPZX:
             case YYZX:
             {
-                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
-                        placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
-                        into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
+
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.defaultimage);
+                options.error(R.mipmap.defaultimage);
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").apply(options).into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
                 helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
@@ -116,9 +120,10 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
             case MYYZ:
             case SEARCH:
             {
-                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
-                        placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
-                        into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.defaultimage);
+                options.error(R.mipmap.defaultimage);
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").apply(options).into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
                 helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));
@@ -136,9 +141,10 @@ public class DoctorInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,B
             case KSZX:
             case BGJD:
             {
-                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
-                        placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
-                        into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.defaultimage);
+                options.error(R.mipmap.defaultimage);
+                Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").apply(options).into((ImageView) helper.itemView.findViewById(R.id.doctorinfo_img));
                 helper.setText(R.id.doctorinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
                 helper.setText(R.id.doctorinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));

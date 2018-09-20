@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import android.support.annotation.Nullable;
 import ufhealth.integratedmachine.client.R;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,13 +32,19 @@ public class TwzxPictureAdapter extends BaseQuickAdapter<String,BaseViewHolder>
             View rootView = helper.itemView;
             if(null != imagePath && imagePath.equals(""))
             {
-                Glide.with(mContext).load(R.mipmap.addimgicon).placeholder(R.mipmap.addimgicon).error(R.mipmap.addimgicon).
-                        diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView)rootView.findViewById(R.id.twzxpicture_img));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.addimgicon);
+                options.error(R.mipmap.addimgicon);
+                options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(mContext).load(R.mipmap.addimgicon).apply(options).into((ImageView) helper.itemView.findViewById(R.id.twzxpicture_img));
             }
             else
             {
-                Glide.with(mContext).load(imagePath).placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
-                        diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView)rootView.findViewById(R.id.twzxpicture_img));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.defaultimage);
+                options.error(R.mipmap.defaultimage);
+                options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(mContext).load(imagePath).apply(options).into((ImageView) helper.itemView.findViewById(R.id.twzxpicture_img));
             }
         }
     }

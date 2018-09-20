@@ -65,7 +65,7 @@ public class TwzxAct extends BasePhotoAct implements TwzxAct_V,View.OnClickListe
                    /* showSelectPhotoDialog(26f, TypedValue.COMPLEX_UNIT_SP,Color.argb(255,0,147,221), false,
                             maxPictureNum + 1 - twzxPictureAdapter.getData().size(),false,
                             Color.argb(255,255,255,255),Color.argb(255,0,147,221));*/
-                    startGallery(false, maxPictureNum + 1 - twzxPictureAdapter.getData().size());
+                    readyStartGallery();
                 }
             }
         });

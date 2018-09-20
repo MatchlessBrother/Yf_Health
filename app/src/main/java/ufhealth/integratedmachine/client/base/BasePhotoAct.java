@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Gravity;
 import android.graphics.Color;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.hwangjr.rxbus.RxBus;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -119,12 +121,20 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void useGlideLoadImg(ImageView imageView, int drawable)
     {
-        Glide.with(this).load(drawable).placeholder(R.mipmap.defaultheadimg).error(R.mipmap.defaultheadimg).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+        RequestOptions options = new RequestOptions();
+        options.error(R.mipmap.defaultheadimg);
+        options.placeholder(R.mipmap.defaultheadimg);
+        options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        Glide.with(this).load(drawable).apply(options).into(imageView);
     }
 
     public void useGlideLoadImg(ImageView imageView, String imgPath)
     {
-        Glide.with(this).load(imgPath).placeholder(R.mipmap.defaultheadimg).error(R.mipmap.defaultheadimg).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+        RequestOptions options = new RequestOptions();
+        options.error(R.mipmap.defaultheadimg);
+        options.placeholder(R.mipmap.defaultheadimg);
+        options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        Glide.with(this).load(imgPath).apply(options).into(imageView);
     }
 
     /**********************************************************************************************/
@@ -179,7 +189,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void receiveCountDownFinish(Boolean isFinish)
     {
-        if(isFinish && !(getActivity() instanceof MainAct))
+        if(isFinish && !(mActivity instanceof MainAct))
             finish();
     }
 

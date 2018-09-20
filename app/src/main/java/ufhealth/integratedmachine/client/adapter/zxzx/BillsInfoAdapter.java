@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide;
 import android.widget.ImageView;
 import android.support.annotation.Nullable;
 import ufhealth.integratedmachine.client.R;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.zxzx.DoctorInfo;
@@ -22,9 +23,10 @@ public class BillsInfoAdapter extends BaseQuickAdapter<DoctorInfo.ContentBean,Ba
 
     protected void convert(BaseViewHolder helper, DoctorInfo.ContentBean contentBean)
     {
-        Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").
-                placeholder(R.mipmap.defaultimage).error(R.mipmap.defaultimage).
-                into((ImageView) helper.itemView.findViewById(R.id.billsinfo_img));
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.defaultimage);
+        options.error(R.mipmap.defaultimage);
+        Glide.with(mContext).load(null != contentBean.getAvatar() ? contentBean.getAvatar().trim() : "").apply(options).into((ImageView) helper.itemView.findViewById(R.id.billsinfo_img));
         helper.setText(R.id.billsinfo_name,(null != contentBean.getDoctor_name() ? contentBean.getDoctor_name().trim() : "未知"));
         helper.setText(R.id.billsinfo_position,(null != contentBean.getJob_name() ? contentBean.getJob_name().trim() : "未知"));
         helper.setText(R.id.billsinfo_hospitalname,(null != contentBean.getHospital_name() ? contentBean.getHospital_name().trim() : "未知"));

@@ -28,10 +28,10 @@
         <activity
             android:name=".ui.main.view.MainAct"
             android:screenOrientation="landscape">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity
@@ -133,5 +133,15 @@
             android:name=".ui.bjjy.view.BjjyDbjzkAct"
             android:hardwareAccelerated="true"
             android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".ui.main.view.PicturesAct"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
