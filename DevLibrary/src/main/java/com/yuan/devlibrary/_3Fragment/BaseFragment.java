@@ -40,4 +40,11 @@ public abstract class BaseFragment extends Fragment
 
     /**********************************初始化Fragment界面逻辑的函数********************************/
     protected abstract void initLogic();
+
+    /************************************Fragment销毁界面的部分************************************/
+    public void onDestroyView()
+    {
+        mRootView = null;
+        super.onDestroyView();
+    }
 }
