@@ -64,7 +64,18 @@ public abstract class BasePhotoActivity extends BaseActivity
     protected boolean mIsCropActionAsy;
     /**用户本次的操作对象是相机还是图库(true相机,false图库)**/
     private boolean mIsUserOperateCamera;
-
+    /********************************************************/
+    /*******表示用户在读写外置内存权限中缺少的具体权限*******/
+    private String mCurrentLackPermission;
+    /***********用户是否完全获取读写外置内存的权限***********/
+    private boolean mIsGetStoragePermissions;
+    /************读写外置内存权限所包含的具体权限************/
+    private String[] mStoragePermissions = new String[]
+    {
+          Manifest.permission.READ_EXTERNAL_STORAGE,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    /*********************************************************************************/
     /**************************从图库中选取图片的选择模式：单选***********************/
     protected static final int CHOOSE_PICTURES_MODE_SINGLE   = PictureConfig.SINGLE;
     /**************************从图库中选取图片的选择模式：多选***********************/
@@ -79,6 +90,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     private static final int REQUEST_CODE_PERMISSION_CAMER                   = 0x0002;
     /************************获取外置内存读写权限的RequestCode值**********************/
     private static final int REQUEST_CODE_PERMISSION_MEMORY                  = 0x0003;
+
 
     /*****************************************初始化基本数据***************************************/
     protected void onCreate(Bundle savedInstanceState)
@@ -95,6 +107,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         mIsShowCropControls = true;
         mChoosePicturesMinSize = 1;
         mIsUserOperateCamera = true;
+        mIsGetStoragePermissions = false;
         mChoosePicturesMaxSize = Integer.MAX_VALUE;
         mCropShapeStyle = CROP_PICTURES_SHAPE_SQUARE;
         mPicturesSelector = PictureSelector.create(this);
@@ -103,6 +116,174 @@ public abstract class BasePhotoActivity extends BaseActivity
         mPicturesCachePath = MemoryUtils.getBestFilesPath(this) + File.separator + "pictures";
         File cachePathFile = new File(mPicturesCachePath);if(!cachePathFile.exists()) cachePathFile.mkdirs();
     }
+
+    /**************************************准备启动照相机获取图片**********************************/
+    protected void readyStartCamera()
+    {
+        PackageManager packageManager = getPackageManager();
+        /*******************判定手机是否含有可用的摄像头**********************/
+        if (packageManager.hasSystemFeature(packageManager.FEATURE_CAMERA))
+        {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            ComponentName componentName = intent.resolveActivity(packageManager);
+            /*****************判定手机是否含有摄像头驱动软件******************/
+            if(componentName != null)
+            {
+                /**************判断应用是否正确获取了照相的权限***************/
+                int cameraPermissionState = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
+                if(cameraPermissionState == PackageManager.PERMISSION_GRANTED)
+                {
+                    /*********判断应用是否正确获取了读写外置内存的权限**********/
+                    for(int index = 0;index < mStoragePermissions.length;index++)
+                    {
+                        if(ActivityCompat.checkSelfPermission(getApplicationContext(), mStoragePermissions[index]) == PackageManager.PERMISSION_DENIED)
+                        {
+                            mCurrentLackPermission = mStoragePermissions[index];
+                            mIsGetStoragePermissions = false;
+                            break;
+                        }
+                        if(index == mStoragePermissions.length - 1)
+                        {
+                            mIsGetStoragePermissions = true;
+                            mCurrentLackPermission = "";
+                            break;
+                        }
+                    }
+                    if(mIsGetStoragePermissions)
+                    {
+                        /*********************启动照相机**********************/
+                        /*******************/startCamera();/******************/
+                        /*********************启动照相机**********************/
+                    }
+                    else
+                    {
+                        if(ActivityCompat.shouldShowRequestPermissionRationale(this,mCurrentLackPermission))
+                            ActivityCompat.requestPermissions(this,mStoragePermissions,REQUEST_CODE_PERMISSION_MEMORY);
+                        else
+                            PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                    }
+                }
+                else
+                {
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA))
+                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUEST_CODE_PERMISSION_CAMER);
+                    else
+                        PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少使用相机的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+                }
+            }
+            else
+                PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为摄像头缺少驱动哟！");
+        }
+        else
+            PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为无可用的摄像头哟！");
+    }
+
+    /**************************************正式启动照相机获取图片**********************************/
+    protected void startCamera()
+    {
+        mPicturesSelector.openCamera(PictureMimeType.ofImage())
+                .isCamera(true).compress(true).videoQuality(0)
+                .isZoomAnim(true).previewEggs(true).videoMaxSecond(0)
+                .imageSpanCount(4).isGif(mIsShowGif).isDragFrame(false)
+                .scaleEnabled(true).previewImage(true).previewVideo(false)
+                .rotateEnabled(true).sizeMultiplier(0.5f).recordVideoSecond(0)
+                .enableCrop(mEnableCrop).cropCompressQuality(88).minimumCompressSize(100)
+                .enablePreviewAudio(false).synOrAsy(!mIsCropActionAsy).theme(mPictureSelectorTheme)
+                .openClickSound(mEnableSound).showCropGrid(mIsShowCropGrid).selectionMedia(mSelectedMedias)
+                .showCropFrame(mIsShowCropFrame).videoMinSecond(Integer.MAX_VALUE).imageFormat(PictureMimeType.JPEG)
+                .selectionMode(mChoosePicturesMode).maxSelectNum(mChoosePicturesMaxSize).minSelectNum(mChoosePicturesMinSize)
+                .compressSavePath(mPicturesCachePath).freeStyleCropEnabled(mIsDragCropBox).setOutputCameraPath(mPicturesCachePath)
+                .hideBottomControls(!mIsShowCropControls).circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false).forResult(REQUEST_CODE_PICTURES_PATH);
+    }
+
+    /***************************************准备启动图库获取图片***********************************/
+    protected void readyStartGallery()
+    {
+        /*********判断应用是否正确获取了读写外置内存的权限**********/
+        for(int index = 0;index < mStoragePermissions.length;index++)
+        {
+            if(ActivityCompat.checkSelfPermission(getApplicationContext(), mStoragePermissions[index]) == PackageManager.PERMISSION_DENIED)
+            {
+                mCurrentLackPermission = mStoragePermissions[index];
+                mIsGetStoragePermissions = false;
+                break;
+            }
+            if(index == mStoragePermissions.length - 1)
+            {
+                mIsGetStoragePermissions = true;
+                mCurrentLackPermission = "";
+                break;
+            }
+        }
+        if(mIsGetStoragePermissions)
+        {
+            /********************启动图库选择图片******************/
+            /*******************/startGallery();/******************/
+            /********************启动图库选择图片******************/
+        }
+        else
+        {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,mCurrentLackPermission))
+                ActivityCompat.requestPermissions(this,mStoragePermissions,REQUEST_CODE_PERMISSION_MEMORY);
+            else
+                PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
+        }
+    }
+
+    /***************************************正式启动图库获取图片***********************************/
+    protected void startGallery()
+    {
+        mPicturesSelector.openGallery(PictureMimeType.ofImage())
+                    .compress(true).videoQuality(0).isZoomAnim(true)
+                    .previewEggs(true).videoMaxSecond(0).imageSpanCount(4)
+                    .isGif(mIsShowGif).isDragFrame(false).scaleEnabled(true)
+                    .previewImage(true).previewVideo(false).rotateEnabled(true)
+                    .sizeMultiplier(0.5f).recordVideoSecond(0).enableCrop(mEnableCrop)
+                    .cropCompressQuality(88).minimumCompressSize(100).enablePreviewAudio(false)
+                    .synOrAsy(!mIsCropActionAsy).theme(mPictureSelectorTheme).openClickSound(mEnableSound)
+                    .showCropGrid(mIsShowCropGrid).selectionMedia(mSelectedMedias).showCropFrame(mIsShowCropFrame)
+                    .videoMinSecond(Integer.MAX_VALUE).imageFormat(PictureMimeType.JPEG).selectionMode(mChoosePicturesMode)
+                    .maxSelectNum(mChoosePicturesMaxSize).minSelectNum(mChoosePicturesMinSize).compressSavePath(mPicturesCachePath)
+                    .freeStyleCropEnabled(mIsDragCropBox).setOutputCameraPath(mPicturesCachePath).hideBottomControls(!mIsShowCropControls)
+                    .isCamera(ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED?true:false)
+                    .circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false).forResult(REQUEST_CODE_PICTURES_PATH);/***与照相略有不同***/
+    }
+
+    /*******************************清除裁剪和压缩过程中产生的图片缓存*****************************/
+    protected void onDestroy()
+    {
+        PictureFileUtils.deleteCacheDirFile(this);
+        mStoragePermissions = null;
+        mPicturesSelector = null;
+        mSelectedMedias = null;
+        super.onDestroy();
+    }
+
+    /****************************************获取最终图片的路径************************************/
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICTURES_PATH && null != data)
+        {
+            List<LocalMedia> selectedMedias = PictureSelector.obtainMultipleResult(data);
+            LinkedList<String> selectedMediasPath = new LinkedList<String>();
+            for(LocalMedia media : selectedMedias)
+            {
+                if(media.isCut() && media.isCompressed())
+                    selectedMediasPath.add(media.getCompressPath().trim());
+                else if(media.isCompressed())
+                    selectedMediasPath.add(media.getCompressPath().trim());
+                else if(media.isCut())
+                    selectedMediasPath.add(media.getCutPath().trim());
+                else
+                    selectedMediasPath.add(media.getPath().trim());
+            }
+            setOnNewImgPathListener(selectedMediasPath);
+        }
+    }
+
+    /***********************通过此回调函数:把新获取的照片路径返回给相关的Activity******************/
+    protected abstract void setOnNewImgPathListener(LinkedList<String> bitmapPaths);
 
     /*************************************显示获取图片方式的选择框**********************************
      ****************************fontTextSize：描述获取图片方式文字的大小***************************
@@ -163,180 +344,71 @@ public abstract class BasePhotoActivity extends BaseActivity
         window.setAttributes(params);
     }
 
-    /**************************************准备启动照相机获取图片**********************************/
-    protected void readyStartCamera()
-    {
-        PackageManager packageManager = getPackageManager();
-        /*******************判定手机是否含有可用的摄像头**********************/
-        if (packageManager.hasSystemFeature(packageManager.FEATURE_CAMERA))
-        {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            ComponentName componentName = intent.resolveActivity(packageManager);
-            /*****************判定手机是否含有摄像头驱动软件******************/
-            if(componentName != null)
-            {
-                /**************判断应用是否正确获取了照相的权限***************/
-                int cameraPermissionState = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
-                if(cameraPermissionState == PackageManager.PERMISSION_GRANTED)
-                {
-                    /********判断应用是否正确获取了读写外置内存的权限*********/
-                    int storagePermissionState = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission_group.STORAGE);
-                    if(storagePermissionState == PackageManager.PERMISSION_GRANTED)
-                    {
-                        /*********************启动照相机**********************/
-                        /*******************/startCamera();/******************/
-                        /*********************启动照相机**********************/
-                    }
-                    else
-                    {
-                        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission_group.STORAGE))
-                            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_PERMISSION_MEMORY);
-                        else
-                            PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
-                    }
-                }
-                else
-                {
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA))
-                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUEST_CODE_PERMISSION_CAMER);
-                    else
-                        PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少使用相机的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
-                }
-            }
-            else
-                PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为摄像头缺少驱动哟！");
-        }
-        else
-            PromptBoxUtils.showToast(this,"亲，启动照相机失败了！\n因为无可用的摄像头哟！");
-    }
-
-    /**************************************正式启动照相机获取图片**********************************/
-    protected void startCamera()
-    {
-        mPicturesSelector.openCamera(PictureMimeType.ofImage())
-                .isCamera(true).compress(true).videoQuality(0)
-                .isZoomAnim(true).previewEggs(true).videoMaxSecond(0)
-                .imageSpanCount(4).isGif(mIsShowGif).isDragFrame(false)
-                .scaleEnabled(true).previewImage(true).previewVideo(false)
-                .rotateEnabled(true).sizeMultiplier(0.5f).recordVideoSecond(0)
-                .enableCrop(mEnableCrop).cropCompressQuality(88).minimumCompressSize(100)
-                .enablePreviewAudio(false).synOrAsy(!mIsCropActionAsy).theme(mPictureSelectorTheme)
-                .openClickSound(mEnableSound).showCropGrid(mIsShowCropGrid).selectionMedia(mSelectedMedias)
-                .showCropFrame(mIsShowCropFrame).videoMinSecond(Integer.MAX_VALUE).imageFormat(PictureMimeType.JPEG)
-                .selectionMode(mChoosePicturesMode).maxSelectNum(mChoosePicturesMaxSize).minSelectNum(mChoosePicturesMinSize)
-                .compressSavePath(mPicturesCachePath).freeStyleCropEnabled(mIsDragCropBox).setOutputCameraPath(mPicturesCachePath)
-                .hideBottomControls(mIsShowCropControls).circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false).forResult(REQUEST_CODE_PICTURES_PATH);
-    }
-
-    /***************************************准备启动图库获取图片***********************************/
-    protected void readyStartGallery()
-    {
-        /*********判断应用是否正确获取了读写外置内存的权限*********/
-        int storagePermissionState = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission_group.STORAGE);
-        if(storagePermissionState == PackageManager.PERMISSION_GRANTED)
-        {
-            /********************启动图库选择图片******************/
-            /*******************/startGallery();/******************/
-            /********************启动图库选择图片******************/
-        }
-        else
-        {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission_group.STORAGE))
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_PERMISSION_MEMORY);
-            else
-                PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
-        }
-    }
-
-    /***************************************正式启动图库获取图片***********************************/
-    protected void startGallery()
-    {
-        mPicturesSelector.openGallery(PictureMimeType.ofImage())
-                    .compress(true).videoQuality(0).isZoomAnim(true)
-                    .previewEggs(true).videoMaxSecond(0).imageSpanCount(4)
-                    .isGif(mIsShowGif).isDragFrame(false).scaleEnabled(true)
-                    .previewImage(true).previewVideo(false).rotateEnabled(true)
-                    .sizeMultiplier(0.5f).recordVideoSecond(0).enableCrop(mEnableCrop)
-                    .cropCompressQuality(88).minimumCompressSize(100).enablePreviewAudio(false)
-                    .synOrAsy(!mIsCropActionAsy).theme(mPictureSelectorTheme).openClickSound(mEnableSound)
-                    .showCropGrid(mIsShowCropGrid).selectionMedia(mSelectedMedias).showCropFrame(mIsShowCropFrame)
-                    .videoMinSecond(Integer.MAX_VALUE).imageFormat(PictureMimeType.JPEG).selectionMode(mChoosePicturesMode)
-                    .maxSelectNum(mChoosePicturesMaxSize).minSelectNum(mChoosePicturesMinSize).compressSavePath(mPicturesCachePath)
-                    .freeStyleCropEnabled(mIsDragCropBox).setOutputCameraPath(mPicturesCachePath).hideBottomControls(mIsShowCropControls)
-                    .isCamera(ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED?true:false)
-                    .circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false).forResult(REQUEST_CODE_PICTURES_PATH);/***与照相略有不同***/
-    }
-
-    /*******************************清除裁剪和压缩过程中产生的图片缓存*****************************/
-    protected void onDestroy()
-    {
-        PictureFileUtils.deleteCacheDirFile(this);
-        mPicturesSelector = null;
-        mSelectedMedias = null;
-        super.onDestroy();
-    }
-
-    /****************************************获取最终图片的路径************************************/
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICTURES_PATH && null != data)
-        {
-            List<LocalMedia> selectedMedias = PictureSelector.obtainMultipleResult(data);
-            LinkedList<String> selectedMediasPath = new LinkedList<String>();
-            for(LocalMedia media : selectedMedias)
-            {
-                if(media.isCut() && media.isCompressed())
-                    selectedMediasPath.add(media.getCompressPath().trim());
-                else if(media.isCompressed())
-                    selectedMediasPath.add(media.getCompressPath().trim());
-                else if(media.isCut())
-                    selectedMediasPath.add(media.getCutPath().trim());
-                else
-                    selectedMediasPath.add(media.getPath().trim());
-            }
-            setOnNewImgPathListener(selectedMediasPath);
-        }
-    }
-
-    /***********************通过此回调函数:把新获取的照片路径返回给相关的Activity******************/
-    protected abstract void setOnNewImgPathListener(LinkedList<String> bitmapPaths);
-
     /************************************动态申请应用权限的回调函数********************************/
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(REQUEST_CODE_PERMISSION_CAMER == requestCode && null != grantResults && grantResults.length > 0 && PackageManager.PERMISSION_GRANTED == grantResults[0])
         {
-            /*******判断应用是否正确获取了读写外置内存的权限*******/
-            int storagePermissionState = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission_group.STORAGE);
-            if(storagePermissionState == PackageManager.PERMISSION_GRANTED)
+            /*********判断应用是否正确获取了读写外置内存的权限**********/
+            for(int index = 0;index < mStoragePermissions.length;index++)
             {
-                /********************启动照相机********************/
-                /******************/startCamera();/****************/
-                /********************启动照相机********************/
+                if(ActivityCompat.checkSelfPermission(getApplicationContext(), mStoragePermissions[index]) == PackageManager.PERMISSION_DENIED)
+                {
+                    mCurrentLackPermission = mStoragePermissions[index];
+                    mIsGetStoragePermissions = false;
+                    break;
+                }
+                if(index == mStoragePermissions.length - 1)
+                {
+                    mIsGetStoragePermissions = true;
+                    mCurrentLackPermission = "";
+                    break;
+                }
+            }
+            if(mIsGetStoragePermissions)
+            {
+                /*********************启动照相机**********************/
+                /*******************/startCamera();/******************/
+                /*********************启动照相机**********************/
             }
             else
             {
-                if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission_group.STORAGE))
-                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_PERMISSION_MEMORY);
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this,mCurrentLackPermission))
+                    ActivityCompat.requestPermissions(this,mStoragePermissions,REQUEST_CODE_PERMISSION_MEMORY);
                 else
                     PromptBoxUtils.showPermissionDialog(this,"亲，当前操作行为缺少读写系统内存的权限哟！请进入系统设置页面后查看并修改当前应用的相关权限后再继续使用，谢谢！","去设置",null,null);
             }
         }
-        else if(REQUEST_CODE_PERMISSION_MEMORY == requestCode && null != grantResults && grantResults.length > 0 && PackageManager.PERMISSION_GRANTED == grantResults[0])
+        else if(REQUEST_CODE_PERMISSION_MEMORY == requestCode && null != grantResults && grantResults.length > 0)
         {
-            if(mIsUserOperateCamera)
+            for(int index = 0;index < grantResults.length;index++)
             {
-                /********************启动照相机********************/
-                /******************/startCamera();/****************/
-                /********************启动照相机********************/
+                if(PackageManager.PERMISSION_DENIED == grantResults[index])
+                {
+                    mIsGetStoragePermissions = false;
+                    break;
+                }
+                if(index == grantResults.length - 1)
+                {
+                    mIsGetStoragePermissions = true;
+                    break;
+                }
             }
-            else
+            if(mIsGetStoragePermissions)
             {
-                /******************启动图库选择图片****************/
-                /*****************/startGallery();/****************/
-                /******************启动图库选择图片****************/
+                if(mIsUserOperateCamera)
+                {
+                    /********************启动照相机********************/
+                    /******************/startCamera();/****************/
+                    /********************启动照相机********************/
+                }
+                else
+                {
+                    /******************启动图库选择图片****************/
+                    /*****************/startGallery();/****************/
+                    /******************启动图库选择图片****************/
+                }
             }
         }
     }
