@@ -44,7 +44,6 @@ public class PicturesAct extends BasePhotoAct implements View.OnClickListener
     protected void onResume()
     {
         super.onResume();
-
         Log.i("mmssgg","dp:" + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,1.0f,this.getResources().getDisplayMetrics()));
         Log.i("mmssgg","pt:" + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT,1.0f,this.getResources().getDisplayMetrics()));
         Log.i("mmssgg","sp:" + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,1.0f,this.getResources().getDisplayMetrics()));
