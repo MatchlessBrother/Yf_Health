@@ -47,10 +47,12 @@ public class BaseUiAdapterHelper
             public void onActivityCreated(Activity activity, Bundle savedInstanceState)
             {
                 setLengthWidthRatio(activity,mDesignWidth,mDesignHeight);
+                activity.getWindow().getDecorView().invalidate();
             }
             public void onActivityResumed(Activity activity)
             {
                 setLengthWidthRatio(activity,mDesignWidth,mDesignHeight);
+                activity.getWindow().getDecorView().invalidate();
             }
             public void onActivityPaused(Activity activity)
             {

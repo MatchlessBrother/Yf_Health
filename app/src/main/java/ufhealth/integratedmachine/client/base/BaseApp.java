@@ -27,7 +27,7 @@ public class BaseApp extends BaseApplication
     {
         super.onCreate();
         mBaseApp  = this;
-        mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1920,1080);
+        mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1080,1920);
         mUiHelper.performSchemeForApp();
         /***************************************计时器操作*****************************************/
         mIsLogged = false;
