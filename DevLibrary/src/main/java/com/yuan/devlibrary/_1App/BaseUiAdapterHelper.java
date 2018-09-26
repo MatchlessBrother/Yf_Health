@@ -1,6 +1,7 @@
 package com.yuan.devlibrary._1App;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import android.app.Activity;
 import android.graphics.Point;
@@ -51,6 +52,9 @@ public class BaseUiAdapterHelper
             }
             public void onActivityResumed(Activity activity)
             {
+                Log.i("mmssgg","StatusBarHeight:" + ScreenInfosUtils.getStatusBarHeightBeforeInit(activity));
+                if(ScreenInfosUtils.isShowNavigationBar(activity))
+                    Log.i("mmssgg","NavigationBarHeight:" + ScreenInfosUtils.getNavigationBarHeight(activity));
                 setLengthWidthRatio(activity,mDesignWidth,mDesignHeight);
                 activity.getWindow().getDecorView().invalidate();
             }

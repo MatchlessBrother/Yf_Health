@@ -38,15 +38,15 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     protected void initStatusBarAddTitleBar()
     {
-        if(!ScreenInfosUtils.isShowTitleBar(this))
-            ScreenInfosUtils.hideTitleBar(this);
+       /* if(!ScreenInfosUtils.isShowTitleBar(this))
+            ScreenInfosUtils.hideTitleBar(this);*/
     }
 
     protected void onResume()
     {
         super.onResume();
-        if(!ScreenInfosUtils.ishideNavigationBarAndStatusBar(this))
-            ScreenInfosUtils.hideNavigationBarAndStatusBar(this);
+     /*   if(!ScreenInfosUtils.ishideNavigationBarAndStatusBar(this))
+            ScreenInfosUtils.hideNavigationBarAndStatusBar(this);*/
     }
 
     protected void initWidgets(View rootView)

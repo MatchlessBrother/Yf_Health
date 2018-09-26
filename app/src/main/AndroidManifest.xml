@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:label="${APP_NAME}"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme.NoActionBar"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         android:roundIcon="@mipmap/ic_launcher_round"
         tools:replace="android:allowBackup,icon,theme,label">
 

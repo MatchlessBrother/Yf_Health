@@ -1,7 +1,6 @@
 package com.yuan.devlibrary._12_______Utils;
 
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.app.Activity;
@@ -10,6 +9,7 @@ import android.view.KeyEvent;
 import android.graphics.Point;
 import android.content.Context;
 import android.view.WindowManager;
+import android.util.DisplayMetrics;
 import android.view.KeyCharacterMap;
 import android.view.ViewConfiguration;
 import android.content.res.Configuration;

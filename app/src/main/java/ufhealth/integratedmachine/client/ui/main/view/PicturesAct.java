@@ -10,6 +10,9 @@ import android.util.TypedValue;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
+
+import com.yuan.devlibrary._12_______Utils.ScreenInfosUtils;
+
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
 import ufhealth.integratedmachine.client.adapter.PicturesAdapter;
 
@@ -39,7 +42,6 @@ public class PicturesAct extends BasePhotoAct implements View.OnClickListener
         adapter = new PicturesAdapter(this,new ArrayList<String>());
         recyclerview.setAdapter(adapter);
     }
-
 
     protected void onResume()
     {
