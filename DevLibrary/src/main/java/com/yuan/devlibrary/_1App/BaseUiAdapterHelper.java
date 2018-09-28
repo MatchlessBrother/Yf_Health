@@ -1,5 +1,6 @@
 package com.yuan.devlibrary._1App;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -109,7 +110,10 @@ public class BaseUiAdapterHelper
     {
         if(activity == null) return;
         Point size = new Point();
-        activity.getWindowManager().getDefaultDisplay().getSize(size);
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+            activity.getWindowManager().getDefaultDisplay().getSize(size);
+        else
+            activity.getWindowManager().getDefaultDisplay().getRealSize(size);
         Resources resources = activity.getResources();
         resources.getDisplayMetrics().widthPixels = size.x;
         resources.getDisplayMetrics().heightPixels = size.y;
