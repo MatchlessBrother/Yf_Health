@@ -4,7 +4,7 @@ import android.content.Context;
 import com.hwangjr.rxbus.RxBus;
 import android.support.multidex.MultiDex;
 import com.yuan.devlibrary._1App.BaseApplication;
-import com.yuan.devlibrary._1App.BaseUiAdapterHelper;
+
 import ufhealth.integratedmachine.client.util.CountDownUtil;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 
@@ -13,7 +13,7 @@ public class BaseApp extends BaseApplication
     private BaseApp mBaseApp;
     private Boolean mIsLogged;
     private CountDownUtil mCountDownUtil;
-    private BaseUiAdapterHelper mUiHelper;
+  /*  private BaseUiAdapterHelper mUiHelper;*/
     private UserInfo.UserInfoBean mUserInfo;
     private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
 
@@ -27,8 +27,8 @@ public class BaseApp extends BaseApplication
     {
         super.onCreate();
         mBaseApp  = this;
-        mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1080,1920);
-        mUiHelper.performSchemeForApp();
+     /*   mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1080,1920);
+        mUiHelper.performSchemeForApp();*/
         /***************************************计时器操作*****************************************/
         mIsLogged = false;
         mCountDownUtil = new CountDownUtil(COUNTDOWN_TIME)
