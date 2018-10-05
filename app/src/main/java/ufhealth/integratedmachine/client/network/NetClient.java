@@ -10,40 +10,38 @@ import ufhealth.integratedmachine.client.BuildConfig;
 import com.yuan.devlibrary._9__Network.retrofit.Http1BaseConfig.RetrofitFactory;
 import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.RetrysInterceptor;
 import com.yuan.devlibrary._9__Network.okhttp.Http1BasicConfig.OkhttpClientFactory;
-import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenInterceptor_UnPersistentStore;
+import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenInterceptor_PersistentStore;
 
 public class NetClient
 {
     private NetUrl mNetUrl;
-    private Context mContext;
-    public static NetClient mNetClient;
+    private static NetClient mNetClient;
     private volatile Retrofit mRetrofit;
     private volatile OkHttpClient mOkHttpClient;
-
-    public NetUrl getNetUrl()
-    {
-        if(null == mNetUrl && null != mRetrofit)
-            mNetUrl = mRetrofit.create(NetUrl.class);
-        return mNetUrl;
-    }
-
-    private NetClient(Context context)
-    {
-        mContext = context;
-        List<Interceptor> appInterceptorList = new ArrayList<Interceptor>();
-        appInterceptorList.add(new RetrysInterceptor(2,1000,2000));
-        TokenInterceptor_UnPersistentStore tokenInterceptor_unPersistentStore = TokenInterceptor_UnPersistentStore.getInstance();
-        tokenInterceptor_unPersistentStore.setMaxNumOfTryOn(0);
-        appInterceptorList.add(tokenInterceptor_unPersistentStore);
-        mOkHttpClient = OkhttpClientFactory.create(context,30,30,30,"",0,appInterceptorList,null);
-        mRetrofit = RetrofitFactory.create(mOkHttpClient, BuildConfig.SERVICE_URL);
-    }
 
     public synchronized static NetClient getInstance(Context context)
     {
         if(null == mNetClient)
             mNetClient = new NetClient(context);
         return mNetClient;
+    }
+
+    private NetClient(Context context)
+    {
+        List<Interceptor> appInterceptorList = new ArrayList<Interceptor>();
+        appInterceptorList.add(new RetrysInterceptor(2,1000,2000));
+        TokenInterceptor_PersistentStore tokenInterceptorPersistentStore = TokenInterceptor_PersistentStore.getInstance(context);
+        tokenInterceptorPersistentStore.setMaxNumOfTryOn(0);
+        appInterceptorList.add(tokenInterceptorPersistentStore);
+        mOkHttpClient = OkhttpClientFactory.create(context,30,30,30,"",0,appInterceptorList,null);
+        mRetrofit = RetrofitFactory.create(mOkHttpClient, BuildConfig.SERVICE_URL);
+    }
+
+    public NetUrl getNetUrl()
+    {
+        if(null == mNetUrl)
+            mNetUrl = mRetrofit.create(NetUrl.class);
+        return mNetUrl;
     }
 
     public Retrofit getRetrofit()

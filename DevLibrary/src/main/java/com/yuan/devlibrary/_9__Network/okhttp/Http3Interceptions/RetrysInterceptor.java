@@ -22,11 +22,13 @@ public class RetrysInterceptor implements Interceptor
     public RetrysInterceptor(Integer mMaxNum)
     {
        this(mMaxNum,0);
+
     }
 
     public RetrysInterceptor(Integer mMaxNum, long mDelayTime)
     {
         this(mMaxNum,mDelayTime,0);
+
     }
 
     public RetrysInterceptor(Integer mMaxNum, long mDelayTime, long mIncreaseDelayTime)

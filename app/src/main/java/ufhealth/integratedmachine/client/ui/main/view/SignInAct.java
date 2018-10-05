@@ -3,16 +3,16 @@ package ufhealth.integratedmachine.client.ui.main.view;
 import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import ufhealth.integratedmachine.client.base.BaseAct;
-import ufhealth.integratedmachine.client.ui.main.view_v.MainAct_V;
-import ufhealth.integratedmachine.client.ui.main.presenter.MainPresenter;
+import ufhealth.integratedmachine.client.ui.main.view_v.SignInAct_V;
+import ufhealth.integratedmachine.client.ui.main.presenter.SignInPresenter;
 
-public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
+public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListener
 {
-    private MainPresenter mMainPresenter;
+    private SignInPresenter mSignInPresenter;
 
     protected int setLayoutResID()
     {
-        return R.layout.activity_main;
+        return R.layout.activity_signin;
 
     }
 
@@ -23,8 +23,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     protected void initDatas()
     {
-        mMainPresenter = new MainPresenter();
-        mMainPresenter.attachContextAndViewLayer(this,this);
+        mSignInPresenter = new SignInPresenter();
+        mSignInPresenter.attachContextAndViewLayer(this,this);
     }
 
     protected void initLogic()
@@ -43,7 +43,7 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     protected void onDestroy()
     {
-        mMainPresenter.detachContextAndViewLayout();
+        mSignInPresenter.detachContextAndViewLayout();
         super.onDestroy();
     }
 }

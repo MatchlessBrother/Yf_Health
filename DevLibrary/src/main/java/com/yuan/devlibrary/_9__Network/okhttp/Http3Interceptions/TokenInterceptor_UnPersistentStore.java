@@ -45,31 +45,13 @@ public class TokenInterceptor_UnPersistentStore implements Interceptor
         mDataMap = new ConcurrentHashMap<String,String>();
     }
 
-    /**********************设置Token失效时自动获取新Token并重新发起请求的最大次数******************/
-    public void setMaxNumOfTryOn(Integer maxNumOfTryOn)
-    {
-        mMaxNumOfTryOn = maxNumOfTryOn;
-
-    }
-
+    /**********************************************************************************************/
+    /**********************************************************************************************/
     /***********************得到Token失效时自动获取新Token并重新发起请求的最大次数*****************/
     public Integer getMaxNumOfTryOn()
     {
         return mMaxNumOfTryOn;
-    }
 
-    /******************************设置更新Token时所使用的具体逻辑类*******************************/
-    public void setUpdateTokenImp(TokenInterceptor_UpdateTokenInterface updateTokenImp)
-    {
-        mUpdateTokenImp = updateTokenImp;
-    }
-
-    /******************************将Token存储在运行缓存（mDataMap）里面***************************/
-    public void setToken(String url,String token)
-    {
-        url = null != url ? url.trim() : "";
-        token = null != token ? token.trim() : "";
-        mDataMap.put(url,token);
     }
 
     /******************************将Token从运行缓存（mDataMap）中取出*****************************/
@@ -78,6 +60,28 @@ public class TokenInterceptor_UnPersistentStore implements Interceptor
         return mDataMap.containsKey(url) ? mDataMap.get(url) : "";
     }
 
+    /**************************************更新Token的缓存数据*************************************/
+    public void updateToken(String host,String token)
+    {
+        setToken(host.trim(),token.trim());
+
+    }
+
+    /**********************设置Token失效时自动获取新Token并重新发起请求的最大次数******************/
+    public void setMaxNumOfTryOn(Integer maxNumOfTryOn)
+    {
+        mMaxNumOfTryOn = maxNumOfTryOn;
+
+    }
+
+    /******************************设置更新Token时所使用的具体逻辑类*******************************/
+    public void setUpdateTokenImp(TokenInterceptor_UpdateTokenInterface updateTokenImp)
+    {
+        mUpdateTokenImp = updateTokenImp;
+    }
+
+    /**********************************************************************************************/
+    /**********************************************************************************************/
     /**************************************更新Token的缓存数据*************************************/
     private void updateToken(Response response)
     {
@@ -88,6 +92,14 @@ public class TokenInterceptor_UnPersistentStore implements Interceptor
             if(headerName.toLowerCase().equals("Token".toLowerCase()))
                 setToken(response.request().url().host(),headers.value(index));
         }
+    }
+
+    /******************************将Token存储在运行缓存（mDataMap）里面***************************/
+    private void setToken(String url,String token)
+    {
+        url = null != url ? url.trim() : "";
+        token = null != token ? token.trim() : "";
+        mDataMap.put(url,token);
     }
 
     @Override

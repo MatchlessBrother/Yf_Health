@@ -176,8 +176,8 @@ public class PromptBoxUtils
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = PixelConvertedUtils.dpTpx(context,imgSize);
-        params.height = PixelConvertedUtils.dpTpx(context,imgSize);
+        params.width = (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,imgSize,displayMetrics) + 0.5f);
+        params.height = (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,imgSize,displayMetrics) + 0.5f);
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
         return progressDialog;

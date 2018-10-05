@@ -21,122 +21,19 @@
         android:supportsRtl="true"
         android:label="${APP_NAME}"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:allowBackup,icon,theme,label">
 
-        <activity
-            android:name=".ui.main.view.MainAct"
-            android:screenOrientation="landscape">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="1080"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="1920"/>
 
         <activity
-            android:name=".ui.main.view.UserInfoAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.main.view.MsgNotifiesAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.main.view.MyBillsAct"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.main.view.MyArchivesAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.main.view.AboutAppAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.ZxzxAct"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <activity
-            android:name=".ui.bjjy.view.BjjyAct"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize"/>
-
-        <activity
-            android:name=".ui.tjfw.view.TjfwAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.yyfw.view.YyfwAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.jkjc.view.JkjcAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.jkda.view.JkdaAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.TwzxAct"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <activity
-            android:name=".ui.zxzx.view.ChooseDoctorAct"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <activity
-            android:name=".ui.zxzx.view.DoctorInfoAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.TwzxingAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.YyzxingAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.SpzxingAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.PayAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.ChooseMultiDoctorAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.BillsInfoAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.zxzx.view.BillInfoAct"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.bjjy.view.BjjyBghAct"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.bjjy.view.BjjyDbjzkAct"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="landscape"/>
-
-        <activity
-            android:name=".ui.main.view.PicturesAct"
-            android:hardwareAccelerated="true"
+            android:name=".ui.main.view.SignInAct"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,10 +1,11 @@
 package ufhealth.integratedmachine.client.ui.base;
 
-import rx.Observer;
+import io.reactivex.Observer;
 import android.content.Context;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
+import io.reactivex.disposables.Disposable;
 import retrofit2.adapter.rxjava.HttpException;
 import com.yuan.devlibrary._12_______Utils.NetUtils;
 import ufhealth.integratedmachine.client.network.NetFlags;
@@ -13,18 +14,32 @@ import ufhealth.integratedmachine.client.bean.BaseReturnData;
 public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T>
 {
     private Context mContext;
+    private Disposable mDisposable;
     private BaseMvp_LocalCallBack mBaseMvpLocalCallBack;
 
     public BaseMvp_NetCallBack(Context context, BaseMvp_LocalCallBack<T> baseMvpLocalCallBack)
     {
         mContext = context;
+        mDisposable = null;
         mBaseMvpLocalCallBack = baseMvpLocalCallBack;
     }
 
-    public void onCompleted()
+    public void onSubscribe(Disposable disposable)
     {
-        mBaseMvpLocalCallBack.onFinish();
+        mDisposable = disposable;
 
+    }
+
+    public void onNext(T baseReturnData)
+    {
+        if (NetFlags.RequestFail.equals(baseReturnData.getCode()))
+        {
+            mBaseMvpLocalCallBack.onFailure(baseReturnData.getMsg());
+        }
+        else if(NetFlags.RequestSuccess.equals(baseReturnData.getCode()))
+        {
+            mBaseMvpLocalCallBack.onSuccess(baseReturnData);
+        }
     }
 
     public void onError(Throwable e)
@@ -56,15 +71,9 @@ public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T
         mBaseMvpLocalCallBack.onFinish();
     }
 
-    public void onNext(T returnDatas)
+    public void onComplete()
     {
-        if (NetFlags.RequestFail.equals(returnDatas.getCode()))
-        {
-            mBaseMvpLocalCallBack.onFailure(returnDatas.getMsg());
-        }
-        else if(NetFlags.RequestSuccess.equals(returnDatas.getCode()))
-        {
-            mBaseMvpLocalCallBack.onSuccess(returnDatas);
-        }
+        mBaseMvpLocalCallBack.onFinish();
+
     }
 }

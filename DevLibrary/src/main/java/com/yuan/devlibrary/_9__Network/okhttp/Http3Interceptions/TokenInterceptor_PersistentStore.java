@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /************App关闭后Token永不消失,App卸载之后才会消失************/
 public class TokenInterceptor_PersistentStore implements Interceptor
 {
-    /**********************************************************************************************/
     private Context mContext;
     private static final String NAME_SP = "tokeninterceptor_sharedpreferences";
     /**********************************************************************************************/
@@ -57,37 +56,13 @@ public class TokenInterceptor_PersistentStore implements Interceptor
         /*****************************************************************************************/
     }
 
+    /**********************************************************************************************/
+    /**********************************************************************************************/
     /********************得到Token失效时自动获取新Token并重新发起请求的最大次数********************/
     public Integer getMaxNumOfTryOn()
     {
-
         return mMaxNumOfTryOn;
-    }
 
-    /********************设置Token失效时自动获取新Token并重新发起请求的最大次数********************/
-    public void setMaxNumOfTryOn(Integer maxNumOfTryOn)
-    {
-
-        mMaxNumOfTryOn = maxNumOfTryOn;
-    }
-
-    /*****************************设置更新Token时所使用的具体逻辑类********************************/
-    public void setUpdateTokenImp(TokenInterceptor_UpdateTokenInterface updateTokenImp)
-    {
-        mUpdateTokenImp = updateTokenImp;
-    }
-
-    /**********************将Token存储在Sharepreference和运行缓存（mDataMap）里面******************/
-    public void setToken(String url,String token)
-    {
-        url = null != url ? url.trim() : "";
-        token = null != token ? token.trim() : "";
-        mDataMap.put(url,token);
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(NAME_SP,Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        if(sharedPreferences.contains(url))
-            sharedPreferencesEditor.remove(url);
-        sharedPreferencesEditor.putString(url,token).apply();
     }
 
     /*******************************将Token从运行缓存（mDataMap）中取出****************************/
@@ -96,6 +71,28 @@ public class TokenInterceptor_PersistentStore implements Interceptor
         return mDataMap.containsKey(url) ? mDataMap.get(url) : "";
     }
 
+    /*************************************更新Token的缓存数据**************************************/
+    public void updateToken(String host,String token)
+    {
+        setToken(host.trim(),token.trim());
+
+    }
+
+    /********************设置Token失效时自动获取新Token并重新发起请求的最大次数********************/
+    public void setMaxNumOfTryOn(Integer maxNumOfTryOn)
+    {
+        mMaxNumOfTryOn = maxNumOfTryOn;
+
+    }
+
+    /*****************************设置更新Token时所使用的具体逻辑类********************************/
+    public void setUpdateTokenImp(TokenInterceptor_UpdateTokenInterface updateTokenImp)
+    {
+        mUpdateTokenImp = updateTokenImp;
+    }
+
+    /**********************************************************************************************/
+    /**********************************************************************************************/
     /*************************************更新Token的缓存数据**************************************/
     private void updateToken(Response response)
     {
@@ -110,7 +107,19 @@ public class TokenInterceptor_PersistentStore implements Interceptor
         }
     }
 
-    @Override
+    /**********************将Token存储在Sharepreference和运行缓存（mDataMap）里面******************/
+    private void setToken(String url,String token)
+    {
+        url = null != url ? url.trim() : "";
+        token = null != token ? token.trim() : "";
+        mDataMap.put(url,token);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(NAME_SP,Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        if(sharedPreferences.contains(url))
+            sharedPreferencesEditor.remove(url);
+        sharedPreferencesEditor.putString(url,token).apply();
+    }
+
     public Response intercept(Chain chain) throws IOException
     {
         Response response = null;
@@ -125,20 +134,20 @@ public class TokenInterceptor_PersistentStore implements Interceptor
         return response;
     }
 
-    /************************************************更新Token缓存数据的具体流程*********************************************/
+    /********************************更新Token缓存数据的具体流程***********************************/
     private Response updateTokenProcess(Chain chain, Request request ,Response response,Integer tryOnMaxNum) throws IOException
     {
         if(!response.isSuccessful())
         {
             if(mUpdateTokenImp.whetherTheTokenIsExpired(response) && tryOnMaxNum > 0)
             {
-                /********从服务器获取最新Token字符串的过程必须与当前线程同步,否则后续逻辑无法串联********/
+                /*****从服务器获取最新Token字符串的过程必须与当前线程同步,否则后续逻辑无法串联*****/
                 String newestToken = mUpdateTokenImp.getNewestTokenStr();
                 if(null == newestToken || newestToken.trim().equals(""))
                     return response;
                 setToken(response.request().url().host(),newestToken);
                 response = chain.proceed(request.newBuilder().header("Token",newestToken.trim()).build());
-                /*******************使用递归的方式在请求头里添加Token并重新发起网络请求******************/
+                /****************使用递归的方式在请求头里添加Token并重新发起网络请求***************/
                 response = updateTokenProcess(chain,request,response,--tryOnMaxNum);
             }
             else

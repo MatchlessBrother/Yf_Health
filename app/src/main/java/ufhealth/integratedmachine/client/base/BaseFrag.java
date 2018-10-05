@@ -5,13 +5,13 @@ import android.view.Gravity;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.graphics.drawable.ColorDrawable;
-import com.yuan.devlibrary._3Fragment.BasePhotoFragment;
+import com.yuan.devlibrary._3Fragment.BaseFragment;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
-public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp_View
+public abstract class BaseFrag extends BaseFragment implements BaseMvp_View
 {
     /**********************************************************************************************/
     /**********************************************************************************************/
@@ -58,9 +58,9 @@ public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp
         return showPromptDialog(titleStr,contentStr,falseStr,trueStr,true,null,null,null);
     }
 
-    public BaseDialog showPromptDialog(String titleStr, String contentStr, String falseStr, String trueStr, boolean isCanceledOnTouchOutside, View.OnClickListener trueOnClickListener, View.OnClickListener falseOnClickListener, BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public BaseDialog showPromptDialog(String titleStr,String contentStr,String falseStr,String trueStr,boolean isCanceledOnTouchOutside,View.OnClickListener trueOnClickListener,View.OnClickListener falseOnClickListener,BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxUtils.showPromptDialog(mActivity,titleStr, Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_MM,new ColorDrawable(0xffffffff),View.VISIBLE,
+        return PromptBoxUtils.showPromptDialog(mActivity,titleStr,Color.argb(255,51,51,51), 36,TypedValue.COMPLEX_UNIT_MM,new ColorDrawable(0xffffffff),View.VISIBLE,
                 contentStr, Color.argb(255,102,102,102),30,TypedValue.COMPLEX_UNIT_MM,new ColorDrawable(0xffffffff),
                 falseStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_MM,new ColorDrawable(0xffffffff),View.VISIBLE,
                 trueStr,Color.argb(255,51,51,51),36,TypedValue.COMPLEX_UNIT_MM,new ColorDrawable(0xffffffff),View.VISIBLE,

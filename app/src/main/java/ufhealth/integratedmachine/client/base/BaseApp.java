@@ -1,21 +1,18 @@
 package ufhealth.integratedmachine.client.base;
 
 import android.content.Context;
-import com.hwangjr.rxbus.RxBus;
+import me.jessyan.autosize.AutoSize;
 import android.support.multidex.MultiDex;
-import com.yuan.devlibrary._1App.BaseApplication;
+import me.jessyan.autosize.unit.Subunits;
+import me.jessyan.autosize.AutoSizeConfig;
+import ufhealth.integratedmachine.client.bean.main.UserInfos;
 
-import ufhealth.integratedmachine.client.util.CountDownUtil;
-import ufhealth.integratedmachine.client.bean.main.UserInfo;
+import com.yuan.devlibrary._1App.BaseApplication;
 
 public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
-    private Boolean mIsLogged;
-    private CountDownUtil mCountDownUtil;
-  /*  private BaseUiAdapterHelper mUiHelper;*/
-    private UserInfo.UserInfoBean mUserInfo;
-    private static final Integer COUNTDOWN_TIME = 180000;//以秒为单位
+    private UserInfos mUserInfos;
 
     protected void attachBaseContext(Context base)
     {
@@ -27,68 +24,26 @@ public class BaseApp extends BaseApplication
     {
         super.onCreate();
         mBaseApp  = this;
-     /*   mUiHelper = BaseUiAdapterHelper.getInstances(mBaseApp,1080,1920);
-        mUiHelper.performSchemeForApp();*/
-        /***************************************计时器操作*****************************************/
-        mIsLogged = false;
-        mCountDownUtil = new CountDownUtil(COUNTDOWN_TIME)
-        {
-            public void onFinish()
-            {
-                mCountDownUtil.cancel();
-                RxBus.get().post(true);
-                mCountDownUtil.setmMillisInFuture(COUNTDOWN_TIME);
-            }
-
-            public void onTick(long millisUntilFinished)
-            {
-                RxBus.get().post(millisUntilFinished);
-            }
-        };
+        adapterExternalUi();
+        AutoSize.initCompatMultiProcess(this);
+        AutoSizeConfig.getInstance().setLog(true).setBaseOnWidth(true).
+                       setUseDeviceSize(false).setCustomFragment(true);
+        AutoSizeConfig.getInstance().getUnitsManager().setSupportDP(false).
+                        setSupportSP(true).setSupportSubunits(Subunits.MM);
     }
 
-    public Boolean getIsLogged()
+    public void adapterExternalUi()
     {
-        return mIsLogged;
-
+        //AutoSizeConfig.getInstance().getExternalAdaptManager().addExternalAdaptInfoOfActivity();
     }
 
-    public void setCountDownTime()
+    public UserInfos getUserInfos()
     {
-        mCountDownUtil.setmMillisInFuture(COUNTDOWN_TIME);
-
+        return mUserInfos;
     }
 
-    public void setCountDownTime(Long time)
+    public void setUserInfos(UserInfos userInfos)
     {
-        mCountDownUtil.setmMillisInFuture(null != time ? time : 0);
-    }
-
-    public void setIsLogged(Boolean isLogged)
-    {
-        mIsLogged = isLogged;
-
-    }
-
-    public UserInfo.UserInfoBean getUserInfo()
-    {
-        return mUserInfo;
-
-    }
-
-    public void setUserInfo(UserInfo.UserInfoBean userInfo)
-    {
-        mUserInfo = userInfo;
-
-    }
-
-    public void startCountDown()
-    {
-        mCountDownUtil.start();
-    }
-
-    public void cancelCountDown()
-    {
-        mCountDownUtil.cancel();
+        mUserInfos = userInfos;
     }
 }
