@@ -3,6 +3,7 @@ package ufhealth.integratedmachine.client.ui.base;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
+/********查询可用数据(包含网络数据和本地数据)最终的回调处理类*******/
 public abstract class BaseMvp_LocalCallBack<V extends BaseReturnData>
 {
     private BaseProgressDialog mProgressDialog;

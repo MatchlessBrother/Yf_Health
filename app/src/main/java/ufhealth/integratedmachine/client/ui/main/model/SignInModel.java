@@ -4,16 +4,21 @@ import android.content.Context;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import ufhealth.integratedmachine.client.network.NetClient;
-import ufhealth.integratedmachine.client.bean.BaseReturnData;
-import ufhealth.integratedmachine.client.bean.main.UserInfos;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_PVModel;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_NetCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
-public class SignInModel
+public class SignInModel extends BaseMvp_PVModel
 {
-    public static void signIn(Context context, String account, String password, BaseMvp_LocalCallBack<BaseReturnData<UserInfos>> localCallBack)
+    public void executeOfNet(Context context, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
-        NetClient.getInstance(context).getNetUrl().signIn(account,password).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));
+        NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));
+    }
+
+    public void executeOfLocal(Context context, BaseMvp_LocalCallBack localCallBack)
+    {
+        localCallBack.onStart();
+        localCallBack.onFinish();
     }
 }

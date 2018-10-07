@@ -9,6 +9,7 @@ import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import ufhealth.integratedmachine.client.ui.main.model.SignInModel;
 import ufhealth.integratedmachine.client.ui.main.view_v.SignInAct_V;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
 import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenInterceptor_PersistentStore;
 
 public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
@@ -17,7 +18,8 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
     {
         if(isAttachContextAndViewLayer())
         {
-            SignInModel.signIn(getContext(),account,password,new BaseMvp_LocalCallBack<BaseReturnData<UserInfos>>(this)
+            BaseMvp_EntranceOfModel.requestDatas(SignInModel.class).
+            putForm("account",account).putForm("password",password).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<UserInfos>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfos> userInfos)
                 {

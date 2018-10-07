@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
-        android:name=".base.BaseApp"
+        android:name="ufhealth.integratedmachine.client.base.BaseApp"
         android:allowBackup="true"
         android:supportsRtl="true"
         android:label="${APP_NAME}"
@@ -27,13 +27,13 @@
 
         <meta-data
             android:name="design_width_in_dp"
-            android:value="1080"/>
+            android:value="720"/>
         <meta-data
             android:name="design_height_in_dp"
-            android:value="1920"/>
+            android:value="1280"/>
 
         <activity
-            android:name=".ui.main.view.SignInAct"
+            android:name="ufhealth.integratedmachine.client.ui.main.view.SignInAct"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

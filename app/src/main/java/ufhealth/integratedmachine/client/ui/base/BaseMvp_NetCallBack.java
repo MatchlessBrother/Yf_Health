@@ -11,6 +11,7 @@ import com.yuan.devlibrary._12_______Utils.NetUtils;
 import ufhealth.integratedmachine.client.network.NetFlags;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 
+/****************************查询网络数据回调的处理类***************************/
 public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T>
 {
     private Context mContext;
