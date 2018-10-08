@@ -1,66 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="96mm"
+    android:id="@+id/activity_titlebar"
     android:layout_width="match_parent"
-    android:layout_height="66mm"
-    android:background="@color/mainColor">
+    android:background="@color/colorPrimary">
 
-    <ImageButton
-        android:id="@+id/activity_title_back"
-        android:layout_width="44mm"
-        android:layout_height="44mm"
-        android:layout_centerVertical="true"
+    <LinearLayout
+        android:layout_width="120mm"
+        android:orientation="horizontal"
         android:layout_marginLeft="12mm"
         android:layout_marginRight="12mm"
-        android:background="@color/transparent"
-        android:maxHeight="66mm"
-        android:maxWidth="96mm"
-        android:scaleType="fitXY"
-        android:src="@mipmap/title_back" />
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|left">
+
+        <ImageButton
+            android:id="@+id/activity_titlebar_back"
+            android:scaleType="fitXY"
+            android:layout_width="44mm"
+            android:layout_height="44mm"
+            android:src="@mipmap/title_back"
+            android:background="@color/transparent"/>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/activity_title_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="120mm"
-        android:layout_marginRight="120mm"
+        android:id="@+id/activity_titlebar_content"
+        android:text="标题"
+        android:textSize="38sp"
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/white"
-        android:textSize="44sp"
-        tools:text="标题" />
+        android:layout_marginLeft="144mm"
+        android:layout_marginRight="144mm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <TextView
-        android:id="@+id/activity_title_morefont"
-        android:layout_width="wrap_content"
-        android:layout_height="44mm"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+    <LinearLayout
+        android:layout_width="120mm"
+        android:orientation="horizontal"
         android:layout_marginLeft="12mm"
         android:layout_marginRight="12mm"
-        android:gravity="center_vertical"
-        android:maxHeight="66mm"
-        android:maxWidth="96mm"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="36sp"
-        android:visibility="gone"
-        tools:text="完成" />
-
-    <ImageButton
-        android:id="@+id/activity_title_moreicon"
-        android:layout_width="44mm"
-        android:layout_height="44mm"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="12mm"
-        android:layout_marginRight="12mm"
-        android:background="@color/transparent"
-        android:maxHeight="66mm"
-        android:maxWidth="96mm"
-        android:scaleType="fitXY"
-        android:src="@mipmap/slide"
-        android:visibility="gone" />
+        android:gravity="center_vertical|right">
 
+        <TextView
+            android:id="@+id/activity_titlebar_morefont"
+            android:text="完成"
+            android:textSize="30sp"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:layout_height="44mm"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"/>
+
+        <ImageButton
+            android:id="@+id/activity_titlebar_moreicon"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            android:src="@mipmap/slide"
+            android:layout_width="44mm"
+            android:layout_height="44mm"
+            android:background="@color/transparent"/>
+    </LinearLayout>
 </RelativeLayout>

@@ -9,24 +9,32 @@ import android.util.TypedValue;
 import android.widget.TextView;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.BarHide;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.graphics.BitmapFactory;
+import com.gyf.barlibrary.ImmersionBar;
 import ufhealth.integratedmachine.client.R;
+import com.gyf.barlibrary.OnKeyboardListener;
 import android.graphics.drawable.ColorDrawable;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yuan.devlibrary._2Activity.BasePhotoActivity;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_View,View.OnClickListener
 {
+    private View mTitleBar;
     private TextView mTitleContent;
     private TextView mTitleMoreFont;
     private ImageButton mTitleBackBtn;
     private ImageButton mTitleMoreIcon;
+    private BaseMvp_Presenter mPresenter;
+    protected ImmersionBar mImmersionBar;
     private static final String LOG_TAG = BasePhotoAct.class.getSimpleName();
 
     protected void initStatusBarAddTitleBar()
@@ -37,19 +45,44 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     protected void initWidgets(View rootView)
     {
-        if (null != rootView.findViewById(R.id.activity_title_back) &&
-                null != rootView.findViewById(R.id.activity_title_content) &&
-                null != rootView.findViewById(R.id.activity_title_moreicon) &&
-                null != rootView.findViewById(R.id.activity_title_morefont))
+        mImmersionBar = ImmersionBar.with(this);
+        if(null != rootView.findViewById(R.id.activity_titlebar) &&
+                null != rootView.findViewById(R.id.activity_titlebar_back) &&
+                null != rootView.findViewById(R.id.activity_titlebar_content) &&
+                null != rootView.findViewById(R.id.activity_titlebar_morefont) &&
+                null != rootView.findViewById(R.id.activity_titlebar_moreicon))
         {
-            mTitleContent = (TextView) rootView.findViewById(R.id.activity_title_content);
-            mTitleBackBtn = (ImageButton) rootView.findViewById(R.id.activity_title_back);
-            mTitleMoreFont = (TextView) rootView.findViewById(R.id.activity_title_morefont);
-            mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.activity_title_moreicon);
+            mTitleBar = (View)rootView.findViewById(R.id.activity_titlebar);
+            mTitleBackBtn = (ImageButton) rootView.findViewById(R.id.activity_titlebar_back);
+            mTitleContent = (TextView) rootView.findViewById(R.id.activity_titlebar_content);
+            mTitleMoreFont = (TextView) rootView.findViewById(R.id.activity_titlebar_morefont);
+            mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.activity_titlebar_moreicon);
+            mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.transparent).navigationBarAlpha(0f)
+                    .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
+                    .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(true).keyboardEnable(true)
+                    .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
+            {
+                public void onKeyboardChange(boolean status,int keyboardHeight)
+                {
+                    if(status)
+                        Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+                    else
+                        Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+                }
+            }).init();
             mTitleBackBtn.setOnClickListener(this);
             mTitleMoreFont.setOnClickListener(this);
             mTitleMoreIcon.setOnClickListener(this);
         }
+    }
+
+    protected void onDestroy()
+    {
+        if(null != mPresenter)
+            mPresenter.detachContextAndViewLayout();
+        if(null != mImmersionBar)
+            mImmersionBar.destroy();
+        super.onDestroy();
     }
 
     public BaseApp getBaseApp()
@@ -60,11 +93,14 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     public void onClick(View view)
     {
-        switch (view.getId())
+        if(isUseDefaultTitleLine())
         {
-            case R.id.activity_title_back:onTitleBackClick();break;
-            case R.id.activity_title_morefont:onTitleMoreFontClick();break;
-            case R.id.activity_title_moreicon:onTitleMoreIconClick();break;
+            switch (view.getId())
+            {
+                case R.id.activity_titlebar_back:onTitleBackClick();break;
+                case R.id.activity_titlebar_morefont:onTitleMoreFontClick();break;
+                case R.id.activity_titlebar_moreicon:onTitleMoreIconClick();break;
+            }
         }
     }
 
@@ -86,7 +122,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
 
     protected boolean isUseDefaultTitleLine()
     {
-        return null != mTitleBackBtn && null != mTitleContent && null !=mTitleMoreFont  && null != mTitleMoreIcon ? true : false;
+        return null != mTitleBar && null != mTitleBackBtn && null != mTitleContent && null !=mTitleMoreFont  && null != mTitleMoreIcon ? true : false;
     }
 
     protected void setTitleBack(int resource)
@@ -113,22 +149,6 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
             Log.i(LOG_TAG,"因未使用自定义标题栏,所以隐藏/显示返回按钮失败！");
     }
 
-    protected void setTitleMoreIcon(int resource)
-    {
-        if(isUseDefaultTitleLine())
-            mTitleMoreIcon.setImageBitmap(BitmapFactory.decodeResource(getResources(),resource));
-        else
-            Log.i(LOG_TAG,"因未使用自定义标题栏,所以设置更多按钮图标失败！");
-    }
-
-    protected void setTitleMoreIconVisible(int value)
-    {
-        if(isUseDefaultTitleLine())
-            mTitleMoreIcon.setVisibility(value);
-        else
-            Log.i(LOG_TAG,"因未使用自定义标题栏,所以隐藏/显示更多按钮失败！");
-    }
-
     protected void setTitleMoreFont(String text)
     {
         if(isUseDefaultTitleLine())
@@ -143,6 +163,22 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
             mTitleMoreFont.setVisibility(value);
         else
             Log.i(LOG_TAG,"因未使用自定义标题栏,所以隐藏/显示更多文字内容失败！");
+    }
+
+    protected void setTitleMoreIcon(int resource)
+    {
+        if(isUseDefaultTitleLine())
+            mTitleMoreIcon.setImageBitmap(BitmapFactory.decodeResource(getResources(),resource));
+        else
+            Log.i(LOG_TAG,"因未使用自定义标题栏,所以设置更多按钮图标失败！");
+    }
+
+    protected void setTitleMoreIconVisible(int value)
+    {
+        if(isUseDefaultTitleLine())
+            mTitleMoreIcon.setVisibility(value);
+        else
+            Log.i(LOG_TAG,"因未使用自定义标题栏,所以隐藏/显示更多按钮失败！");
     }
 
     public void useGlideLoadImg(ImageView imageView, int drawable)
@@ -179,6 +215,15 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
         options.placeholder(R.mipmap.defaultheadimg);
         options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(this).load(imgPath).apply(options).into(imageView);
+    }
+
+    protected void bindBaseMvpPresenter(BaseMvp_Presenter baseMvpPresenter)
+    {
+        if(null != baseMvpPresenter)
+        {
+            mPresenter = baseMvpPresenter;
+            mPresenter.attachContextAndViewLayer(this,this);
+        }
     }
 
     /**********************************************************************************************/

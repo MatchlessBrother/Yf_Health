@@ -18,13 +18,14 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
 
     protected void initWidgets(View rootView)
     {
+        super.initWidgets(rootView);
 
     }
 
     protected void initDatas()
     {
         mSignInPresenter = new SignInPresenter();
-        mSignInPresenter.attachContextAndViewLayer(this,this);
+        bindBaseMvpPresenter(mSignInPresenter);
     }
 
     protected void initLogic()
@@ -39,11 +40,5 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
         {
 
         }
-    }
-
-    protected void onDestroy()
-    {
-        mSignInPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 }

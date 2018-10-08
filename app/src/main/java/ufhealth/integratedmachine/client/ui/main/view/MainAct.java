@@ -18,13 +18,14 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
 
     protected void initWidgets(View rootView)
     {
+        super.initWidgets(rootView);
 
     }
 
     protected void initDatas()
     {
         mMainPresenter = new MainPresenter();
-        mMainPresenter.attachContextAndViewLayer(this,this);
+        bindBaseMvpPresenter(mMainPresenter);
     }
 
     protected void initLogic()
@@ -39,11 +40,5 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         {
 
         }
-    }
-
-    protected void onDestroy()
-    {
-        mMainPresenter.detachContextAndViewLayout();
-        super.onDestroy();
     }
 }
