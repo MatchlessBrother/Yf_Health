@@ -1,10 +1,10 @@
-package ufhealth.integratedmachine.client.ui.main.model;
+package ufhealth.integratedmachine.client.ui.main.fragment.model;
 
 import android.content.Context;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_PVModel;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
-public class MainModel extends BaseMvp_PVModel
+public class MainHzModel extends BaseMvp_PVModel
 {
     public void executeOfNet(Context context, BaseMvp_LocalCallBack localCallBack)
     {

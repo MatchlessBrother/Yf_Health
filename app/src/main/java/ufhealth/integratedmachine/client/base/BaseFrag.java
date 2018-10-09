@@ -13,12 +13,18 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BaseFrag extends BaseFragment implements BaseMvp_View
 {
+    public BaseApp getBaseApp()
+    {
+        return (BaseApp)getActivity().getApplication();
+
+    }
+
     /**********************************************************************************************/
     /**********************************************************************************************/
 
     public void showToast(String str)
     {
-        showToast(str,22);
+        showToast(str,24);
 
     }
 
@@ -32,7 +38,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View
 
     public BaseProgressDialog showLoadingDialog()
     {
-        return PromptBoxUtils.showLoadingDialog(mActivity,"请稍等",1,80,false,null);
+        return PromptBoxUtils.showLoadingDialog(mActivity,"请稍等",1,15,false,null);
     }
 
     public void dismissLoadingDialog(BaseProgressDialog progressDialog)
@@ -42,7 +48,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View
 
     public BaseProgressDialog showLoadingDialog(boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
     {
-        return PromptBoxUtils.showLoadingDialog(mActivity,"请稍等",1,80,isCanceledOnTouchOutside,onClickOutsideListener);
+        return PromptBoxUtils.showLoadingDialog(mActivity,"请稍等",1,15,isCanceledOnTouchOutside,onClickOutsideListener);
     }
 
     /**********************************************************************************************/

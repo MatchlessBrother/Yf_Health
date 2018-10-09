@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.ui.main.presenter;
+package ufhealth.integratedmachine.client.ui.main.activity.presenter;
 
 import java.util.List;
 import okhttp3.Interceptor;
@@ -6,10 +6,10 @@ import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfos;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
-import ufhealth.integratedmachine.client.ui.main.model.SignInModel;
-import ufhealth.integratedmachine.client.ui.main.view_v.SignInAct_V;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
+import ufhealth.integratedmachine.client.ui.main.activity.model.SignInModel;
+import ufhealth.integratedmachine.client.ui.main.activity.view_v.SignInAct_V;
 import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenInterceptor_PersistentStore;
 
 public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
@@ -33,6 +33,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                                 TokenInterceptor_PersistentStore interceptor = (TokenInterceptor_PersistentStore) interceptorList.get(index);
                                 interceptor.updateToken(NetClient.getInstance(getContext().getApplicationContext()).getRetrofit().baseUrl().host().trim(), userInfos.getData().getToken().trim());
                                 getViewLayer().getBaseApp().setUserInfos(userInfos.getData());
+                                getViewLayer().signInSuccess();
                                 return;
                             }
                             if(index == interceptorList.size() -1)
@@ -48,7 +49,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                     super.onFailure(msg);
                     if(isAttachContextAndViewLayer())
                     {
-
+                        getViewLayer().signInFailure();
                     }
                 }
 
@@ -57,7 +58,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                     super.onError(msg);
                     if(isAttachContextAndViewLayer())
                     {
-
+                        getViewLayer().signInFailure();
                     }
                 }
             });

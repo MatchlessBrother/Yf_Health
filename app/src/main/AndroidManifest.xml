@@ -39,7 +39,7 @@
             android:value="1280"/>
 
         <activity
-            android:name="ufhealth.integratedmachine.client.ui.main.view.SignInAct"
+            android:name=".ui.main.activity.view.SignInAct"
             android:theme="@style/AppTheme.FirstPage"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -47,5 +47,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.main.activity.view.MainAct"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 </manifest>

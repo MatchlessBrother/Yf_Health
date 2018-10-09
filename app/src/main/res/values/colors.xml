@@ -3,9 +3,9 @@
    <!-- <color name="colorPrimaryDark">#FF199EE0</color>
     <color name="colorPrimary">#FF199EE0</color>
     <color name="colorAccent">#FF0093DD</color>-->
-    <color name="colorPrimaryDark">#FF5EB9F8</color>
-    <color name="colorPrimary">#FF5EB9F8</color>
-    <color name="colorAccent">#FF5d8df7</color>
+    <color name="colorPrimaryDark">#FF3B6DB9</color>
+    <color name="colorPrimary">#FF3B6DB9</color>
+    <color name="colorAccent">#3B6DB9</color>
     <!-- ***************************************** -->
     <color name="default_font_black">#FF333333</color>
     <color name="default_font_gray">#FF666666</color>

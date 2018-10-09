@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.ui.main.view_v;
+package ufhealth.integratedmachine.client.ui.main.activity.view_v;
 
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_View;
 
