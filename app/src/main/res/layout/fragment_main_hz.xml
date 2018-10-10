@@ -1,11 +1,348 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/red">
+    android:orientation="vertical">
 
+    <include layout="@layout/layout_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="20mm"
+        android:paddingRight="20mm">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20mm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text="监测设备"
+                android:textColor="@color/default_font_gray"
+                android:textSize="26sp" />
+
+            <TextView
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="数据通信"
+                android:textColor="@color/default_font_gray"
+                android:textSize="26sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36mm"
+            android:layout_marginBottom="36mm"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12mm"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="120mm"
+                    android:layout_height="100mm"
+                    android:background="@drawable/shape_rect_round_orange"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48mm"
+                        android:layout_height="48mm"
+                        android:contentDescription=""
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/bj" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3mm"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="超高报警"
+                        android:textColor="@color/white"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mainhzfrag_bj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4mm"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="7"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12mm"
+                android:layout_marginRight="12mm"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="120mm"
+                    android:layout_height="100mm"
+                    android:background="@drawable/shape_rect_round_yellow"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48mm"
+                        android:layout_height="48mm"
+                        android:contentDescription=""
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/yj" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3mm"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="预警"
+                        android:textColor="@color/white"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mainhzfrag_yj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4mm"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="17"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0mm"
+                android:layout_height="0mm"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12mm"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="120mm"
+                    android:layout_height="100mm"
+                    android:background="@drawable/shape_rect_round_yellow"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48mm"
+                        android:layout_height="48mm"
+                        android:contentDescription=""
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/sjtx" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3mm"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="数据异常"
+                        android:textColor="@color/white"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mainhzfrag_sj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4mm"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="24"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20mm"
+        android:background="#FFEDEDED" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="20mm"
+        android:paddingRight="20mm">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20mm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text="报警处置"
+                android:textColor="@color/default_font_gray"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36mm"
+            android:layout_marginBottom="36mm"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12mm"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="140mm"
+                    android:layout_height="120mm"
+                    android:background="@drawable/shape_rect_round_orange"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48mm"
+                        android:layout_height="48mm"
+                        android:contentDescription=""
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/bj" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5mm"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="尚未处置"
+                        android:textColor="@color/white"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mainhzfrag_swcz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4mm"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="7"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12mm"
+                android:layout_marginRight="12mm"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="140mm"
+                    android:layout_height="120mm"
+                    android:background="@drawable/shape_rect_round_green"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48mm"
+                        android:layout_height="48mm"
+                        android:contentDescription=""
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/zc" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3mm"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="妥善处置"
+                        android:textColor="@color/white"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mainhzfrag_tscz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4mm"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="17"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20mm"
+        android:background="#FFEDEDED" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="20mm"
+        android:paddingRight="20mm">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20mm"
+            android:layout_marginBottom="36mm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text="近6月报警监测数据图"
+                android:textColor="@color/default_font_gray"
+                android:textSize="26sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
