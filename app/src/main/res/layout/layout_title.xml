@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="96mm"
-    android:id="@+id/activity_titlebar"
+    android:id="@+id/titlebar"
     android:layout_width="match_parent"
     android:background="@color/colorPrimary">
 
@@ -17,7 +17,7 @@
         android:gravity="center_vertical|left">
 
         <ImageButton
-            android:id="@+id/activity_titlebar_back"
+            android:id="@+id/titlebar_back"
             android:scaleType="fitXY"
             android:layout_width="44mm"
             android:layout_height="44mm"
@@ -26,7 +26,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/activity_titlebar_content"
+        android:id="@+id/titlebar_content"
         android:text="标题"
         android:textSize="38sp"
         android:gravity="center"
@@ -47,7 +47,7 @@
         android:gravity="center_vertical|right">
 
         <TextView
-            android:id="@+id/activity_titlebar_morefont"
+            android:id="@+id/titlebar_morefont"
             android:text="完成"
             android:textSize="30sp"
             android:singleLine="true"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"/>
 
         <ImageButton
-            android:id="@+id/activity_titlebar_moreicon"
+            android:id="@+id/titlebar_moreicon"
             android:visibility="visible"
             android:scaleType="fitXY"
             android:src="@mipmap/slide"

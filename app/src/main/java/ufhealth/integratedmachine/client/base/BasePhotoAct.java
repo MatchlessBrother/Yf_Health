@@ -46,17 +46,17 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
     protected void initWidgets(View rootView)
     {
         mImmersionBar = ImmersionBar.with(this);
-        if(null != rootView.findViewById(R.id.activity_titlebar) &&
-                null != rootView.findViewById(R.id.activity_titlebar_back) &&
-                null != rootView.findViewById(R.id.activity_titlebar_content) &&
-                null != rootView.findViewById(R.id.activity_titlebar_morefont) &&
-                null != rootView.findViewById(R.id.activity_titlebar_moreicon))
+        if(null != rootView.findViewById(R.id.titlebar) &&
+                null != rootView.findViewById(R.id.titlebar_back) &&
+                null != rootView.findViewById(R.id.titlebar_content) &&
+                null != rootView.findViewById(R.id.titlebar_morefont) &&
+                null != rootView.findViewById(R.id.titlebar_moreicon))
         {
-            mTitleBar = (View)rootView.findViewById(R.id.activity_titlebar);
-            mTitleBackBtn = (ImageButton) rootView.findViewById(R.id.activity_titlebar_back);
-            mTitleContent = (TextView) rootView.findViewById(R.id.activity_titlebar_content);
-            mTitleMoreFont = (TextView) rootView.findViewById(R.id.activity_titlebar_morefont);
-            mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.activity_titlebar_moreicon);
+            mTitleBar = (View)rootView.findViewById(R.id.titlebar);
+            mTitleBackBtn = (ImageButton) rootView.findViewById(R.id.titlebar_back);
+            mTitleContent = (TextView) rootView.findViewById(R.id.titlebar_content);
+            mTitleMoreFont = (TextView) rootView.findViewById(R.id.titlebar_morefont);
+            mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.titlebar_moreicon);
             mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.transparent).navigationBarAlpha(0f)
                     .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
                     .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(true).keyboardEnable(true)
@@ -97,9 +97,9 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
         {
             switch (view.getId())
             {
-                case R.id.activity_titlebar_back:onTitleBackClick();break;
-                case R.id.activity_titlebar_morefont:onTitleMoreFontClick();break;
-                case R.id.activity_titlebar_moreicon:onTitleMoreIconClick();break;
+                case R.id.titlebar_back:onTitleBackClick();break;
+                case R.id.titlebar_morefont:onTitleMoreFontClick();break;
+                case R.id.titlebar_moreicon:onTitleMoreIconClick();break;
             }
         }
     }
