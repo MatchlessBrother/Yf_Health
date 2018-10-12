@@ -26,6 +26,7 @@ public class MainHzFrag extends BaseFrag implements View.OnClickListener
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        setTitleContent("汇总统计");
         setTitleBack(R.mipmap.usericon);
         mMainhzfragBj = (TextView)rootView.findViewById(R.id.mainhzfrag_bj);
         mMainhzfragYj = (TextView)rootView.findViewById(R.id.mainhzfrag_yj);
@@ -80,9 +81,9 @@ public class MainHzFrag extends BaseFrag implements View.OnClickListener
     protected void onTitleBackClick()
     {
         BasePopupWindow basePopupWindow = new BasePopupWindow(mActivity);
-        basePopupWindow.setContentView(null);
+        basePopupWindow.setContentView(getLayoutInflater().inflate(R.layout.dialog_signin_exit,null));
         basePopupWindow.setOutsideTouchable(true);
-        basePopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("CC000000")));
+        basePopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#CC000000")));
         if(isUseDefaultTitleLine())
             basePopupWindow.showAsDropDown(mTitleBackBtn,12,6);
     }

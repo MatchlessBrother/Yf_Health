@@ -31,6 +31,7 @@ public class MainJcFrag extends BaseFrag implements View.OnClickListener
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        setTitleContent("实时监测");
         setTitleBack(R.mipmap.usericon);
         setTitleMoreIcon(R.mipmap.searchicon);
         setTitleMoreIconVisible(View.VISIBLE);

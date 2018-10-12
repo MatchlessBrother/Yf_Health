@@ -11,14 +11,15 @@ import com.yuan.devlibrary._12_______Utils.ResourceUtils;
 public abstract class BaseFragment extends Fragment
 {
     protected View mRootView = null;
-    protected Activity mActivity = getActivity();
+    protected Activity mActivity = null;
 
     /***********************************Fragment初始化界面的部分***********************************/
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        if (mRootView == null)
+        mActivity = getActivity();
+        if(mRootView   ==    null)
         {
-            mRootView = ResourceUtils.generateView(getActivity(),setLayoutResID());
+            mRootView = ResourceUtils.generateView(mActivity,setLayoutResID());
             initWidgets(mRootView);
             initDatas();
             initLogic();
