@@ -27,13 +27,13 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View.OnClickListener
 {
-    private View mTitleBar;
-    private TextView mTitleContent;
-    private TextView mTitleMoreFont;
-    private ImageButton mTitleBackBtn;
-    private ImageButton mTitleMoreIcon;
-    private BaseMvp_Presenter mPresenter;
+    protected View mTitleBar;
+    protected TextView mTitleContent;
+    protected TextView mTitleMoreFont;
+    protected ImageButton mTitleBackBtn;
     protected ImmersionBar mImmersionBar;
+    protected ImageButton mTitleMoreIcon;
+    protected BaseMvp_Presenter mPresenter;
     private static final String LOG_TAG = BaseFrag.class.getSimpleName();
 
     protected void initWidgets(View rootView)
@@ -80,7 +80,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
 
     public BaseApp getBaseApp()
     {
-        return (BaseApp)getActivity().getApplication();
+        return (BaseApp)mActivity.getApplication();
 
     }
 
@@ -99,7 +99,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
 
     protected void onTitleBackClick()
     {
-        getActivity().finish();
+        mActivity.finish();
 
     }
 
@@ -215,7 +215,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
         if(null != baseMvpPresenter)
         {
             mPresenter = baseMvpPresenter;
-            mPresenter.attachContextAndViewLayer(getActivity(),this);
+            mPresenter.attachContextAndViewLayer(mActivity,this);
         }
     }
 

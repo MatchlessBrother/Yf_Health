@@ -28,13 +28,13 @@ import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.OnClickListener
 {
-    private View mTitleBar;
-    private TextView mTitleContent;
-    private TextView mTitleMoreFont;
-    private ImageButton mTitleBackBtn;
-    private ImageButton mTitleMoreIcon;
-    private BaseMvp_Presenter mPresenter;
+    protected View mTitleBar;
+    protected TextView mTitleContent;
+    protected TextView mTitleMoreFont;
+    protected ImageButton mTitleBackBtn;
+    protected ImageButton mTitleMoreIcon;
     protected ImmersionBar mImmersionBar;
+    protected BaseMvp_Presenter mPresenter;
     private static final String LOG_TAG = BaseAct.class.getSimpleName();
 
     protected void initStatusBarAddTitleBar()

@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12mm"
-        android:layout_marginBottom="12mm"
         android:orientation="horizontal"
         android:paddingLeft="20mm"
         android:paddingRight="20mm">
@@ -118,6 +117,12 @@
                 android:textSize="26sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20mm"
+        android:layout_marginTop="12mm"
+        android:background="#FFF2F2F2" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/mainjcfrag_swiperefreshlayout"

@@ -4,7 +4,7 @@ import android.view.View;
 import ufhealth.integratedmachine.client.R;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 
-public class MainBjFrag extends BaseFrag
+public class MainBjFrag extends BaseFrag implements View.OnClickListener
 {
     protected int setLayoutResID()
     {
