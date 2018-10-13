@@ -22,12 +22,7 @@ public class BasePopupWindow extends PopupWindow
     public Context getContext()
     {
         return mContext;
-    }
 
-    public BasePopupWindow(Context context)
-    {
-        mContext = context;
-        initPopupWindow();
     }
 
     /***初始化BasePopupWindow***/
@@ -35,10 +30,16 @@ public class BasePopupWindow extends PopupWindow
     {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setFocusable(false);
+        setFocusable(true);
         setOutsideTouchable(false);
         setBackgroundDrawable(null);
         setAnimationStyle(android.R.style.Animation_Dialog);
+    }
+
+    public BasePopupWindow(Context context)
+    {
+        mContext = context;
+        initPopupWindow();
     }
 
     /******为BasePopupWindow设置显示内容*******/
@@ -76,55 +77,15 @@ public class BasePopupWindow extends PopupWindow
     /**************为BasePopupWindow设置背景*************/
     public void setBackgroundDrawable(Drawable background)
     {
-        mBackgroundDrawable = background;
-        setOutsideTouchable(isOutsideTouchable());
-    }
-
-    /************为BasePopupWindow设置背景***********/
-    public void setOutsideTouchable(boolean touchable)
-    {
-        super.setOutsideTouchable(touchable);
-        if(touchable)
-        {
-            if(mBackgroundDrawable == null)
-                mBackgroundDrawable = new ColorDrawable(0x00000000);
-            super.setBackgroundDrawable(mBackgroundDrawable);
-        }
+        if(null  != background)
+            mBackgroundDrawable = background;
         else
-        {
-            super.setBackgroundDrawable(null);
-        }
+            mBackgroundDrawable = new ColorDrawable(0x00000000);
+        super.setBackgroundDrawable(mBackgroundDrawable);
     }
 
-    public void dismiss()
-    {
-        super.dismiss();
-        dismissAnimator().start();
-    }
-
-    public void showAsDropDown(View anchor)
-    {
-        super.showAsDropDown(anchor);
-        showAnimator().start();
-    }
-
-    public void showAsDropDown(View anchor, int xoff, int yoff)
-    {
-        super.showAsDropDown(anchor, xoff, yoff);
-        showAnimator().start();
-    }
-
-    public void showAsDropDown(View anchor, int xoff, int yoff, int gravity)
-    {
-        super.showAsDropDown(anchor, xoff, yoff, gravity);
-        showAnimator().start();
-    }
-
-    public void showAtLocation(View parent, int gravity, int x, int y)
-    {
-        super.showAtLocation(parent, gravity, x, y);
-        showAnimator().start();
-    }
+    /**********************************************************************************************/
+    /**********************************************************************************************/
 
     /*****************显示PopupWindow时伴随的黑色背景动画************/
     private ValueAnimator showAnimator()
@@ -158,7 +119,7 @@ public class BasePopupWindow extends PopupWindow
         return animator;
     }
 
-    /**********设置PopupWindow的黑色背景透明度*******/
+    /******************设置PopupWindow的黑色背景透明度***************/
     private void setWindowBackgroundAlpha(float alpha)
     {
         Window window = ((Activity)getContext()).getWindow();
@@ -166,4 +127,40 @@ public class BasePopupWindow extends PopupWindow
         layoutParams.alpha = alpha;
         window.setAttributes(layoutParams);
     }
+
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+
+    public void dismiss()
+    {
+        super.dismiss();
+        dismissAnimator().start();
+    }
+
+    public void showAsDropDown(View anchor)
+    {
+        super.showAsDropDown(anchor);
+        showAnimator().start();
+    }
+
+    public void showAsDropDown(View anchor, int xoff, int yoff)
+    {
+        super.showAsDropDown(anchor, xoff, yoff);
+        showAnimator().start();
+    }
+
+    public void showAtLocation(View parent, int gravity, int x, int y)
+    {
+        super.showAtLocation(parent, gravity, x, y);
+        showAnimator().start();
+    }
+
+    public void showAsDropDown(View anchor, int xoff, int yoff, int gravity)
+    {
+        super.showAsDropDown(anchor, xoff, yoff, gravity);
+        showAnimator().start();
+    }
+
+    /**********************************************************************************************/
+    /**********************************************************************************************/
 }

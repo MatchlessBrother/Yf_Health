@@ -1,5 +1,5 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.view;
-
+/*setTitleContent("实时监测");*/
 import android.view.View;
 import android.graphics.Color;
 import android.widget.TextView;
@@ -31,7 +31,6 @@ public class MainJcFrag extends BaseFrag implements View.OnClickListener
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleContent("实时监测");
         setTitleBack(R.mipmap.usericon);
         setTitleMoreIcon(R.mipmap.searchicon);
         setTitleMoreIconVisible(View.VISIBLE);
@@ -80,9 +79,9 @@ public class MainJcFrag extends BaseFrag implements View.OnClickListener
     protected void onTitleBackClick()
     {
         BasePopupWindow basePopupWindow = new BasePopupWindow(mActivity);
-        basePopupWindow.setContentView(null);
+        basePopupWindow.setContentView(getLayoutInflater().inflate(R.layout.dialog_signin_exit,null));
         basePopupWindow.setOutsideTouchable(true);
-        basePopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("CC000000")));
+        basePopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         if(isUseDefaultTitleLine())
             basePopupWindow.showAsDropDown(mTitleBackBtn,12,6);
     }
