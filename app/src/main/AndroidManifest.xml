@@ -53,5 +53,15 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.main.activity.view.ModifyPasswordAct"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".ui.thirdtab.activity.view.BjczHistroyAct"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 </manifest>

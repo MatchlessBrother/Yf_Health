@@ -1,7 +1,9 @@
 package ufhealth.integratedmachine.client.base;
 
+import java.util.List;
 import android.util.Log;
 import android.view.View;
+import java.util.ArrayList;
 import android.view.Gravity;
 import android.graphics.Color;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp
     protected ImageButton mTitleBackBtn;
     protected ImageButton mTitleMoreIcon;
     protected ImmersionBar mImmersionBar;
-    protected BaseMvp_Presenter mPresenter;
+    private List<BaseMvp_Presenter> mPresenters = new ArrayList<>();
     private static final String LOG_TAG = BasePhotoFrag.class.getSimpleName();
 
     protected void initWidgets(View rootView)
@@ -71,8 +73,9 @@ public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp
 
     public void onDestroy()
     {
-        if(null != mPresenter)
-            mPresenter.detachContextAndViewLayout();
+        if(null != mPresenters && mPresenters.size() > 0)
+            for(BaseMvp_Presenter presenter : mPresenters)
+                presenter.detachContextAndViewLayout();
         if(null != mImmersionBar)
             mImmersionBar.destroy();
         super.onDestroy();
@@ -214,8 +217,8 @@ public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp
     {
         if(null != baseMvpPresenter)
         {
-            mPresenter = baseMvpPresenter;
-            mPresenter.attachContextAndViewLayer(mActivity,this);
+            mPresenters.add(baseMvpPresenter);
+            baseMvpPresenter.attachContextAndViewLayer(mActivity,this);
         }
     }
 

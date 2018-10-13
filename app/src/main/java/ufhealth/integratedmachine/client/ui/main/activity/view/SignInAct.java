@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import ufhealth.integratedmachine.client.R;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.SignInAct_V;
 import ufhealth.integratedmachine.client.ui.main.activity.presenter.SignInPresenter;
 
@@ -31,18 +32,25 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
         mSigninVersion = (TextView)rootView.findViewById(R.id.signin_version);
         mSigninAccount = (EditText)rootView.findViewById(R.id.signin_account);
         mSigninPassword = (EditText)rootView.findViewById(R.id.signin_password);
-        mSigninLogin.setOnClickListener(this);
     }
 
     protected void initDatas()
     {
-
+        mSignInPresenter = new SignInPresenter();
+        bindBaseMvpPresenter(mSignInPresenter);
     }
 
     protected void initLogic()
     {
-        mSignInPresenter = new SignInPresenter();
-        bindBaseMvpPresenter(mSignInPresenter);
+        mSigninLogin.setOnClickListener(this);
+        if(null != SharepreferenceUtils.extractObject(this,"password",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"password",String.class)) &&
+                null != SharepreferenceUtils.extractObject(this,"account",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"account",String.class)))
+        {
+            Intent intent = new Intent(this,MainAct.class);
+            intent.putExtra("islogined",false);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void onClick(View view)
@@ -57,6 +65,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     public void signInSuccess()
     {
         Intent intent = new Intent(this,MainAct.class);
+        intent.putExtra("islogined",true);
         startActivity(intent);
         finish();
     }
@@ -64,5 +73,15 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     public void signInFailure()
     {
 
+    }
+
+    public static void quitCrrentAccount(BaseAct baseAct,String noteStr)
+    {
+        SharepreferenceUtils.storageObject(baseAct,"password","");
+        SharepreferenceUtils.storageObject(baseAct,"account","");
+        Intent intent = new Intent(baseAct,SignInAct.class);
+        baseAct.getBaseApp().finishAllActivity();
+        baseAct.startActivity(intent);
+        baseAct.showToast(noteStr);
     }
 }

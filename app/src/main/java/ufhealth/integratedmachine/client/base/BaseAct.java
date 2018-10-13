@@ -1,7 +1,9 @@
 package ufhealth.integratedmachine.client.base;
 
+import java.util.List;
 import android.util.Log;
 import android.view.View;
+import java.util.ArrayList;
 import android.view.Window;
 import android.view.Gravity;
 import android.graphics.Color;
@@ -34,7 +36,7 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
     protected ImageButton mTitleBackBtn;
     protected ImageButton mTitleMoreIcon;
     protected ImmersionBar mImmersionBar;
-    protected BaseMvp_Presenter mPresenter;
+    private List<BaseMvp_Presenter> mPresenters = new ArrayList<>();
     private static final String LOG_TAG = BaseAct.class.getSimpleName();
 
     protected void initStatusBarAddTitleBar()
@@ -78,8 +80,9 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
 
     protected void onDestroy()
     {
-        if(null != mPresenter)
-            mPresenter.detachContextAndViewLayout();
+        if(null != mPresenters && mPresenters.size() > 0)
+            for(BaseMvp_Presenter presenter : mPresenters)
+                presenter.detachContextAndViewLayout();
         if(null != mImmersionBar)
             mImmersionBar.destroy();
         super.onDestroy();
@@ -221,8 +224,8 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
     {
         if(null != baseMvpPresenter)
         {
-            mPresenter = baseMvpPresenter;
-            mPresenter.attachContextAndViewLayer(this,this);
+            mPresenters.add(baseMvpPresenter);
+            baseMvpPresenter.attachContextAndViewLayer(this,this);
         }
     }
 

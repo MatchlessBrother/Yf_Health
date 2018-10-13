@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/default_background_gray"
     android:orientation="vertical">
 
     <include layout="@layout/layout_title" />
@@ -46,8 +47,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36mm"
             android:layout_marginBottom="36mm"
+            android:layout_marginTop="36mm"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -190,7 +191,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20mm"
-        android:background="#FFEDEDED" />
+        android:background="@color/default_background_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -221,8 +222,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36mm"
             android:layout_marginBottom="36mm"
+            android:layout_marginTop="36mm"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -317,7 +318,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20mm"
-        android:background="#FFEDEDED" />
+        android:background="@color/default_background_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -330,8 +331,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20mm"
             android:layout_marginBottom="36mm"
+            android:layout_marginTop="20mm"
             android:orientation="horizontal">
 
             <TextView

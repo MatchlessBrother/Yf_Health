@@ -11,16 +11,20 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentPagerAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import ufhealth.integratedmachine.client.ui.main.fragment.view.MainBjFrag;
 import ufhealth.integratedmachine.client.ui.main.fragment.view.MainHzFrag;
 import ufhealth.integratedmachine.client.ui.main.fragment.view.MainJcFrag;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.MainAct_V;
+import ufhealth.integratedmachine.client.ui.main.activity.view_v.SignInAct_V;
 import ufhealth.integratedmachine.client.ui.main.activity.presenter.MainPresenter;
+import ufhealth.integratedmachine.client.ui.main.activity.presenter.SignInPresenter;
 
-public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
+public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnClickListener
 {
     private ViewPager mViewPager;
     private MainPresenter mMainPresenter;
+    private SignInPresenter mSignInPresenter;
     private FragmentTabHost mFragmentTabHost;
     private String mTabSpecTv[] = { "汇总统计", "实时监测","报警处置"};
     private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class, MainBjFrag.class};
@@ -61,7 +65,9 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
     protected void initDatas()
     {
         mMainPresenter = new MainPresenter();
+        mSignInPresenter = new SignInPresenter();
         bindBaseMvpPresenter(mMainPresenter);
+        bindBaseMvpPresenter(mSignInPresenter);
     }
 
     protected void initLogic()
@@ -107,6 +113,8 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
                 mViewPager.setCurrentItem(mFragmentTabHost.getCurrentTab());
             }
         });
+        if(!getIntent().getBooleanExtra("islogined",false))
+            mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"account",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
     }
 
     public void onClick(View view)
@@ -116,5 +124,16 @@ public class MainAct extends BaseAct implements MainAct_V,View.OnClickListener
         {
 
         }
+    }
+
+    public void signInSuccess()
+    {
+
+    }
+
+    public void signInFailure()
+    {
+        SignInAct.quitCrrentAccount(this,"账号发生异常，请重新登录！");
+
     }
 }

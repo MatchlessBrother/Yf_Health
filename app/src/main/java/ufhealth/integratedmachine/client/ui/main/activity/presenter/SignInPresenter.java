@@ -5,6 +5,7 @@ import okhttp3.Interceptor;
 import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.main.UserInfos;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
@@ -14,7 +15,7 @@ import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenIntercepto
 
 public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
 {
-    public void signIn(String account,String password)
+    public void signIn(final String account,final String password)
     {
         if(isAttachContextAndViewLayer())
         {
@@ -32,6 +33,8 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                             {
                                 TokenInterceptor_PersistentStore interceptor = (TokenInterceptor_PersistentStore) interceptorList.get(index);
                                 interceptor.updateToken(NetClient.getInstance(getContext().getApplicationContext()).getRetrofit().baseUrl().host().trim(), userInfos.getData().getToken().trim());
+                                SharepreferenceUtils.storageObject(getContext(),"password",password);
+                                SharepreferenceUtils.storageObject(getContext(),"account",account);
                                 getViewLayer().getBaseApp().setUserInfos(userInfos.getData());
                                 getViewLayer().signInSuccess();
                                 return;

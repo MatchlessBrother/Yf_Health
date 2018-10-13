@@ -17,7 +17,6 @@ public class BasePopupWindow extends PopupWindow
 {
     private Context mContext;
     private float mAlpha = 0.66f;
-    private Drawable mBackgroundDrawable;
 
     public Context getContext()
     {
@@ -25,24 +24,24 @@ public class BasePopupWindow extends PopupWindow
 
     }
 
-    /***初始化BasePopupWindow***/
+    /**********************初始化BasePopupWindow*********************/
     private void initPopupWindow()
     {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setFocusable(true);
-        setOutsideTouchable(false);
+        setOutsideTouchable(true);
         setBackgroundDrawable(null);
         setAnimationStyle(android.R.style.Animation_Dialog);
     }
-
+    /**********************实例化BasePopupWindow*********************/
     public BasePopupWindow(Context context)
     {
         mContext = context;
         initPopupWindow();
     }
 
-    /******为BasePopupWindow设置显示内容*******/
+    /******************为BasePopupWindow设置显示内容*****************/
     public void setContentView(View contentView)
     {
         if(contentView != null)
@@ -53,7 +52,7 @@ public class BasePopupWindow extends PopupWindow
         }
     }
 
-    /********为PopupWindow增加回退事件的监听*******/
+    /*****************为PopupWindow增加回退事件的监听****************/
     private void addOnBackListener(View contentView)
     {
         if(contentView != null)
@@ -74,14 +73,20 @@ public class BasePopupWindow extends PopupWindow
         }
     }
 
-    /**************为BasePopupWindow设置背景*************/
+    /**************设置PopupWindow能否点击外围来取消显示*************/
+    public void setOutsideTouchable(boolean touchable)
+    {
+        super.setTouchable(touchable);
+        setFocusable(true);
+    }
+
+    /********************为BasePopupWindow设置背景*******************/
     public void setBackgroundDrawable(Drawable background)
     {
-        if(null  != background)
-            mBackgroundDrawable = background;
+        if(null != background)
+            super.setBackgroundDrawable(background);
         else
-            mBackgroundDrawable = new ColorDrawable(0x00000000);
-        super.setBackgroundDrawable(mBackgroundDrawable);
+            super.setBackgroundDrawable(new ColorDrawable(0x00000000));
     }
 
     /**********************************************************************************************/

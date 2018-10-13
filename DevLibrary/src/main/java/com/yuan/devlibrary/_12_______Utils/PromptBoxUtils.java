@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.Gravity;
 import android.widget.Toast;
+import android.view.KeyEvent;
 import com.yuan.devlibrary.R;
 import android.graphics.Color;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.AnimationDrawable;
@@ -77,7 +79,7 @@ public class PromptBoxUtils
     }
 
     /****与服务器开始通讯时默认弹出的对话框1：代表的是圆圈旋转进度框,2：代表的是飞机飞行进度框*****/
-    public static BaseProgressDialog showLoadingDialog(Context context,String msg,int themeStyleValue,int imgSize/**Dp*/,boolean isCanceledOnTouchOutside,BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseProgressDialog showLoadingDialog(Context context, String msg, int themeStyleValue, int imgSize/**Dp*/, final boolean isCanceledOnTouchOutside, BaseProgressDialog.OnClickOutsideListener onClickOutsideListener)
     {
         BaseProgressDialog progressDialog = new BaseProgressDialog(context);
         progressDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
@@ -170,6 +172,21 @@ public class PromptBoxUtils
         progressDialog.setContentView(contentView);
         if(null != onClickOutsideListener)
             progressDialog.setOnClickOutsideListener(onClickOutsideListener);
+        progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
+        {
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+            {
+                if(keyCode == KeyEvent.KEYCODE_BACK)
+                {
+                    if(isCanceledOnTouchOutside)
+                        return false;
+                    else
+                        return true;
+                }
+                return false;
+            }
+        });
+
         Window window = progressDialog.getWindow();
         window.getDecorView().setPadding(0,0,0,0);
         window.getDecorView().setBackgroundResource(R.color.transparent);
@@ -287,7 +304,7 @@ public class PromptBoxUtils
 
     /**显示默认提示框，参数含义自己根据名字看，字体大小值默认以DPS为准，颜色属性值默认以动态Color生*
      ********成法为准,背景属性值默认以动态ColorDrawable生成法为准,其余则按照普通情况使用即可*******/
-    public static BaseDialog showPromptDialog(Context context, String titleStr, int titleStrColor, int titleStrSize, int titleStrSizeType, Drawable titleStrBackground, int titleStrVisible, String contentStr, int contentStrColor, int contentStrSize, int contentStrSizeType, Drawable contentStrBackground, String falseStr, int falseStrColor, int falseStrSize, int falseStrSizeType, Drawable falseStrBackground, int falseStrVisible, String trueStr, int trueStrColor, int trueStrSize, int trueStrSizeType, Drawable trueStrBackground, int trueStrVisible, boolean isCanceledOnTouchOutside, final View.OnClickListener onClickTrueBtnListener, final View.OnClickListener onClickFalseBtnListener, BaseDialog.OnClickOutsideListener onClickOutsideListener)
+    public static BaseDialog showPromptDialog(Context context, String titleStr, int titleStrColor, int titleStrSize, int titleStrSizeType, Drawable titleStrBackground, int titleStrVisible, String contentStr, int contentStrColor, int contentStrSize, int contentStrSizeType, Drawable contentStrBackground, String falseStr, int falseStrColor, int falseStrSize, int falseStrSizeType, Drawable falseStrBackground, int falseStrVisible, String trueStr, int trueStrColor, int trueStrSize, int trueStrSizeType, Drawable trueStrBackground, int trueStrVisible,final boolean isCanceledOnTouchOutside, final View.OnClickListener onClickTrueBtnListener, final View.OnClickListener onClickFalseBtnListener, BaseDialog.OnClickOutsideListener onClickOutsideListener)
     {
         final BaseDialog promptDialog = new BaseDialog(context);
         promptDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
@@ -340,9 +357,23 @@ public class PromptBoxUtils
                     onClickFalseBtnListener.onClick(view);
             }
         });
-
         if(null != onClickOutsideListener)
             promptDialog.setOnClickOutsideListener(onClickOutsideListener);
+        promptDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
+        {
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+            {
+                if(keyCode == KeyEvent.KEYCODE_BACK)
+                {
+                    if(isCanceledOnTouchOutside)
+                        return false;
+                    else
+                        return true;
+                }
+                return false;
+            }
+        });
+
         Window window = promptDialog.getWindow();
         window.getDecorView().setPadding(0,0,0,0);
         window.getDecorView().setBackgroundResource(R.color.transparent);
