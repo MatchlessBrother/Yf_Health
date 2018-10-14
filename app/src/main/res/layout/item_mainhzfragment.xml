@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="20mm"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_mainhzfragment_bg"
+        android:layout_width="120mm"
+        android:layout_height="100mm"
+        android:background="@drawable/shape_rect_round_yellow"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_mainhzfragment_img"
+            android:layout_width="48mm"
+            android:layout_height="48mm"
+            android:contentDescription=""
+            android:scaleType="fitXY"
+            android:src="@mipmap/yj" />
+
+        <TextView
+            android:id="@+id/item_mainhzfragment_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3mm"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="预警"
+            android:textColor="@color/white"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_mainhzfragment_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4mm"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="17"
+        android:textColor="@color/default_font_black"
+        android:textSize="28sp" />
+</LinearLayout>
