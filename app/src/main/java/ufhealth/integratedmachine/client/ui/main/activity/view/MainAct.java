@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.main.activity.view;
 
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
 
     protected void initLogic()
     {
-        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager())
         {
             public Fragment getItem(int position)
             {

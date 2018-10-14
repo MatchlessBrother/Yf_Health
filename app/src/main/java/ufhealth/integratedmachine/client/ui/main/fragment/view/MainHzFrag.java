@@ -1,35 +1,50 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.view;
 
+import java.util.List;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.View;
+import java.util.ArrayList;
 import android.content.Intent;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.GridLayoutManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
+import ufhealth.integratedmachine.client.bean.main.BjTypeInfos;
+
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
+import ufhealth.integratedmachine.client.adapter.main.BjTypeAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainHzPresenter;
 
+import static com.github.mikephil.charting.components.YAxis.YAxisLabelPosition.OUTSIDE_CHART;
+
 public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickListener
 {
     private XAxis mXAxis;
-    private YAxis mYAxis;
+    private YAxis mYAxisLeft;
+    private YAxis mYAxisRight;
     private TextView mMainhzfragSj;
     private TextView mMainhzfragSwcz;
     private TextView mMainhzfragTscz;
     private RecyclerView mRecyclerView;
     private BarChart mMainhzfragBarchart;
-    private TextView mainhzfragBarchartText;
+    private BjTypeAdapter mBjTypeAdapter;
+    private TextView mMainhzfragBarchartText;
     private MainHzPresenter mMainHzPresenter;
-    private NestedScrollView mNestedScrollView;
 
     protected int setLayoutResID()
     {
@@ -46,45 +61,60 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragTscz = (TextView)rootView.findViewById(R.id.mainhzfrag_tscz);
         mMainhzfragBarchart = (BarChart)rootView.findViewById(R.id.mainhzfrag_barchart);
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.mainhzfrag_recyclerview);
-        mainhzfragBarchartText = (TextView)rootView.findViewById(R.id.mainhzfrag_barchart_text);
-        mNestedScrollView = (NestedScrollView)rootView.findViewById(R.id.mainhzfrag_nestedscrollview);
-
+        mMainhzfragBarchartText = (TextView)rootView.findViewById(R.id.mainhzfrag_barchart_text);
+        mBjTypeAdapter = new BjTypeAdapter(mActivity,new ArrayList<BjTypeInfos>());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,3);
+        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setFocusableInTouchMode(false);
+        mRecyclerView.setAdapter(mBjTypeAdapter);
+        /******************************************************************************************/
+        /*************************************初始化柱状图控件*************************************/
+        /******************************************************************************************/
+        mMainhzfragBarchart.setPinchZoom(false);
+        mMainhzfragBarchart.setDragEnabled(false);
+        mMainhzfragBarchart.setTouchEnabled(false);
+        mMainhzfragBarchart.setScaleXEnabled(false);
+        mMainhzfragBarchart.setScaleYEnabled(false);
         mMainhzfragBarchart.setDrawBarShadow(false);
         mMainhzfragBarchart.setDrawValueAboveBar(true);
-        mMainhzfragBarchart.setMaxVisibleValueCount(72);
+        mMainhzfragBarchart.setMaxVisibleValueCount(60);
         mMainhzfragBarchart.setDrawGridBackground(false);
         mMainhzfragBarchart.getDescription().setEnabled(false);
-        mMainhzfragBarchart.getXAxis().setLabelRotationAngle(0);
+        mMainhzfragBarchart.setDragDecelerationFrictionCoef(0.3f);
+        mMainhzfragBarchart.setNoDataText("报警监测数据图无可显示的数据！");
+
+        mYAxisRight = mMainhzfragBarchart.getAxisRight();
+        mYAxisRight.setEnabled(false);
+        mYAxisLeft = mMainhzfragBarchart.getAxisLeft();
+        mYAxisLeft.setSpaceTop(10f);
+        mYAxisLeft.setEnabled(true);
+        mYAxisLeft.setTextSize(12f);
+        mYAxisLeft.setDrawLabels(true);
+        mYAxisLeft.setAxisLineWidth(2);
+        mYAxisLeft.setZeroLineWidth(6f);
+        mYAxisLeft.setDrawAxisLine(true);
+        mYAxisLeft.setDrawZeroLine(true);
+        mYAxisLeft.setDrawGridLines(false);
+        mYAxisLeft.setPosition(OUTSIDE_CHART);
+        mYAxisLeft.setLabelCount(6,false);/***********/
+        mYAxisLeft.setZeroLineColor(Color.BLACK);/***/
+        mYAxisLeft.setTypeface(Typeface.DEFAULT_BOLD);
+        mYAxisLeft.setTextColor(getResources().getColor(R.color.default_font_black));
+        mYAxisLeft.setAxisLineColor(getResources().getColor(R.color.default_font_black));
 
         mXAxis = mMainhzfragBarchart.getXAxis();
-        mXAxis.setLabelCount(7);
+        mXAxis.setXOffset(0);
+        mXAxis.setTextSize(10f);
+        mXAxis.setLabelCount(10);
         mXAxis.setGranularity(1f);
-        mXAxis.setAxisMaximum(6f);
-        mXAxis.setAxisMinimum(0.5f);
         mXAxis.setDrawAxisLine(true);
         mXAxis.setDrawGridLines(false);
-        mXAxis.setXOffset(0);
+        mXAxis.setLabelRotationAngle(0f);
+        mXAxis.setTextColor(Color.BLACK);
         mXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        mMainhzfragBarchart.getAxisLeft().setDrawAxisLine(false);
-
-        mYAxis = mMainhzfragBarchart.getAxisLeft();
-        //设置Y左边轴显示的值 label 数量
-        mYAxis.setLabelCount(8, false);
-        //设置值显示的位置，我们这里设置为显示在Y轴外面
-        mYAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        //设置Y轴 与值的空间空隙 这里设置30f意为30%空隙，默认是10%
-        mYAxis.setSpaceTop(30f);
-        //设置Y轴最小坐标和最大坐标
-        mYAxis.setAxisMinimum(0f);
-        mYAxis.setAxisMaximum(80f);
-        mYAxis.setAxisMinValue(0f);
-        //Y轴右边轴的设置，跟左边轴类似
-        YAxis rightAxis = mMainhzfragBarchart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setSpaceTop(30f);
-        rightAxis.setAxisMinimum(0f);
-        rightAxis.setAxisMaximum(80f);
+        //mAxis.setValueFormatter(new MyCustomFormatter());
     }
 
     protected void initDatas()
@@ -98,7 +128,73 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragSj.setOnClickListener(this);
         mMainhzfragSwcz.setOnClickListener(this);
         mMainhzfragTscz.setOnClickListener(this);
-        mainhzfragBarchartText.setOnClickListener(this);
+        mMainhzfragBarchartText.setOnClickListener(this);
+        /***************************************************/
+        /*********************模拟网络数据******************/
+        /***************************************************/
+        List<BjTypeInfos> bjTypeInfosList = new ArrayList<>();
+        for(int index = 0;index < 8;index++)
+        {
+            BjTypeInfos bjTypeInfos = new BjTypeInfos();
+            if(index % 4 == 0)
+            {
+                bjTypeInfos.setIconType(0);
+                bjTypeInfos.setNoteStr("报警");
+                bjTypeInfos.setAppearNumbers(6);
+                bjTypeInfos.setBackgroundColor("ff0000");
+            }
+            else if(index % 4 == 1)
+            {
+                bjTypeInfos.setIconType(1);
+                bjTypeInfos.setNoteStr("预警");
+                bjTypeInfos.setAppearNumbers(8);
+                bjTypeInfos.setBackgroundColor("00ff00");
+            }
+            else if(index % 4 == 2)
+            {
+                bjTypeInfos.setIconType(1);
+                bjTypeInfos.setNoteStr("警告");
+                bjTypeInfos.setAppearNumbers(12);
+                bjTypeInfos.setBackgroundColor("0000FF");
+            }
+            else if(index % 4 == 3)
+            {
+                bjTypeInfos.setIconType(0);
+                bjTypeInfos.setNoteStr("无所谓");
+                bjTypeInfos.setAppearNumbers(18);
+                bjTypeInfos.setBackgroundColor("FFA800");
+            }
+
+            bjTypeInfosList.add(bjTypeInfos);
+        }
+        mBjTypeAdapter.getData().addAll(bjTypeInfosList);
+        mBjTypeAdapter.notifyDataSetChanged();
+
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+        List<BarEntry> entries2 = new ArrayList<BarEntry>();
+        for (int i = 0; i < 20; i++)
+        {
+            entries.add(new BarEntry(i, 20 * i));
+            entries2.add(new BarEntry(i,10 * i));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "BarDataSet1"); // add entries to dataset
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        BarDataSet dataSet2 = new BarDataSet(entries2, "BarDataSet2"); // add entries to dataset
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        dataSet2.setColor(Color.RED);
+        dataSet2.setBarBorderColor(Color.BLUE);
+
+        List<IBarDataSet> dataSets=new ArrayList<IBarDataSet>();
+        dataSets.add(dataSet);
+        dataSets.add(dataSet2);
+        //柱状图数据集
+        BarData data = new BarData(dataSets);
+        //设置柱子宽度
+        data.setBarWidth(0.9f);
+        mMainhzfragBarchart.setData(data);//装载数据
+        mMainhzfragBarchart.setFitBars(true); //X轴自适应所有柱形图
+        mMainhzfragBarchart.invalidate();//刷新
     }
 
     public void onClick(View view)
