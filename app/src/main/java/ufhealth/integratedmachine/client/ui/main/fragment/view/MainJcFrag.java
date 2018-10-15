@@ -12,13 +12,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import android.support.v7.widget.LinearLayoutManager;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import ufhealth.integratedmachine.client.bean.main.JcType;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import ufhealth.integratedmachine.client.bean.main.JcStatus;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
+import ufhealth.integratedmachine.client.bean.main.JcChildCondition;
+import ufhealth.integratedmachine.client.bean.main.JcParentCondition;
+import ufhealth.integratedmachine.client.adapter.main.JcConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
@@ -31,15 +37,21 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     private TextView mainjcfragZt;
     private TextView mainjcfragLs;
     private List<JcStatus> mZtList;
+    private LinearLayout mainjcfragAll;
     private LinearLayout mainjcfragLxAll;
     private LinearLayout mainjcfragZtAll;
-    private RecyclerView mainjcfragRecycler;
     private MainJcPresenter mMainJcPresenter;
     private int mCurrentSelectedLsItemOfIndex;
     private int mCurrentSelectedZtItemOfIndex;
     private OptionsPickerView mLsOptionsPickerView;
     private OptionsPickerView mZtOptionsPickerView;
+    /******************************************************/
+    private RecyclerView mainjcfragRecycler;
     private SwipeRefreshLayout mainjcfragSwiperefreshlayout;
+    /******************************************************/
+    private JcConditionAdapter mJcConditionAdapter;
+    private RecyclerView mainjcfragRecyclerConditions;
+    /******************************************************/
 
     protected int setLayoutResID()
     {
@@ -56,13 +68,27 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         mainjcfragLx = (TextView)rootView.findViewById(R.id.mainjcfrag_lx);
         mainjcfragZt = (TextView)rootView.findViewById(R.id.mainjcfrag_zt);
         mainjcfragLs = (TextView)rootView.findViewById(R.id.mainjcfrag_ls);
+        mainjcfragAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_all);
         mainjcfragLxAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_lx_all);
         mainjcfragZtAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_zt_all);
         mainjcfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainjcfrag_recycler);
+        mainjcfragRecyclerConditions = (RecyclerView)rootView.findViewById(R.id.mainjcfrag_recycler_conditions);
         mainjcfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainjcfrag_swiperefreshlayout);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mainjcfragRecycler.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mainjcfragRecyclerConditions.setLayoutManager(linearLayoutManager);
+        mJcConditionAdapter = new JcConditionAdapter(mActivity,new ArrayList<MultiItemEntity>())
+        {
+            public void selectedCondtionForComplete()
+            {
+                mainjcfragRecyclerConditions.setVisibility(View.GONE);
+            }
+        };
+        mJcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mainjcfragRecyclerConditions.setAdapter(mJcConditionAdapter);
         /******************************************************************************************/
         /******************************************************************************************/
         mLsOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener()
@@ -129,6 +155,18 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         mZtList.add(new JcStatus(6,"准备结束"));
         mZtList.add(new JcStatus(7,"已结束"));
         mZtOptionsPickerView.setNPicker(mZtList,null,null);
+
+        List<MultiItemEntity> conditions = new ArrayList<>();
+        for (int parentIndex = 1; parentIndex <= 6; parentIndex++)
+        {
+            JcParentCondition parentCondition = new JcParentCondition(parentIndex,false,"部门" + parentIndex);
+            for (int childIndex = 1; childIndex <= 6; childIndex++)
+            {
+                JcChildCondition childCondition = new JcChildCondition(childIndex,false,"区域" + childIndex);
+                parentCondition.addSubItem(childCondition);
+            }
+            conditions.add(parentCondition);
+        }mJcConditionAdapter.setNewData(conditions);
     }
 
     protected void initLogic()
@@ -141,6 +179,8 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     public void onClick(View view)
     {
         super.onClick(view);
+        if(view.getId() != R.id.titlebar_moreicon)
+            mainjcfragRecyclerConditions.setVisibility(View.GONE);
         switch (view.getId())
         {
             case R.id.mainjcfrag_lx_all:
@@ -204,6 +244,10 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     protected void onTitleMoreIconClick()
     {
         super.onTitleMoreIconClick();
-        showToast("开启搜索条件啊！");
+        if(mainjcfragRecyclerConditions.getVisibility() == View.GONE)
+            mainjcfragRecyclerConditions.setVisibility(View.VISIBLE);
+        else
+            mainjcfragRecyclerConditions.setVisibility(View.GONE);
+        mJcConditionAdapter.notifyDataSetChanged();
     }
 }
