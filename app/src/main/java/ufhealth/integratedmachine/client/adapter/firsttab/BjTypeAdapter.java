@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.adapter.main;
+package ufhealth.integratedmachine.client.adapter.firsttab;
 
 import java.util.List;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import ufhealth.integratedmachine.client.R;
 import android.graphics.drawable.GradientDrawable;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import ufhealth.integratedmachine.client.bean.main.BjTypeInfos;
+import ufhealth.integratedmachine.client.bean.firsttab.BjTypeInfos;
 
 public class BjTypeAdapter extends BaseQuickAdapter<BjTypeInfos,BaseViewHolder>
 {

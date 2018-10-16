@@ -1,21 +1,20 @@
-package ufhealth.integratedmachine.client.bean.main;
+package ufhealth.integratedmachine.client.bean.secondtab;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.chad.library.adapter.base.entity.AbstractExpandableItem;
-import ufhealth.integratedmachine.client.adapter.main.JcConditionAdapter;
+import ufhealth.integratedmachine.client.adapter.secondtab.JcConditionAdapter;
 
-public class JcParentCondition extends AbstractExpandableItem<JcChildCondition> implements MultiItemEntity,Parcelable
+public class JcChildCondition implements MultiItemEntity,Parcelable
 {
     private int conditionCode;
     private boolean isSelected;
     private String conditionName;
 
-    public JcParentCondition() {
+    public JcChildCondition() {
     }
 
-    public JcParentCondition(int conditionCode, boolean isSelected, String conditionName) {
+    public JcChildCondition(int conditionCode, boolean isSelected, String conditionName) {
         this.conditionCode = conditionCode;
         this.isSelected = isSelected;
         this.conditionName = conditionName;
@@ -46,13 +45,8 @@ public class JcParentCondition extends AbstractExpandableItem<JcChildCondition> 
     }
 
     @Override
-    public int getLevel() {
-        return 0;
-    }
-
-    @Override
     public int getItemType() {
-        return JcConditionAdapter.TYPE_PARENT;
+        return JcConditionAdapter.TYPE_CHILD;
     }
 
     @Override
@@ -67,21 +61,21 @@ public class JcParentCondition extends AbstractExpandableItem<JcChildCondition> 
         dest.writeString(this.conditionName);
     }
 
-    protected JcParentCondition(Parcel in) {
+    protected JcChildCondition(Parcel in) {
         this.conditionCode = in.readInt();
         this.isSelected = in.readByte() != 0;
         this.conditionName = in.readString();
     }
 
-    public static final Creator<JcParentCondition> CREATOR = new Creator<JcParentCondition>() {
+    public static final Creator<JcChildCondition> CREATOR = new Creator<JcChildCondition>() {
         @Override
-        public JcParentCondition createFromParcel(Parcel source) {
-            return new JcParentCondition(source);
+        public JcChildCondition createFromParcel(Parcel source) {
+            return new JcChildCondition(source);
         }
 
         @Override
-        public JcParentCondition[] newArray(int size) {
-            return new JcParentCondition[size];
+        public JcChildCondition[] newArray(int size) {
+            return new JcChildCondition[size];
         }
     };
 }

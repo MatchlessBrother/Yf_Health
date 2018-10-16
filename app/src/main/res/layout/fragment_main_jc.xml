@@ -16,10 +16,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:paddingBottom="12mm"
         android:paddingLeft="20mm"
+        android:paddingTop="12mm"
         android:paddingRight="20mm"
-        android:paddingTop="12mm">
+        android:paddingBottom="12mm">
 
         <LinearLayout
             android:id="@+id/mainjcfrag_lx_all"
@@ -111,10 +111,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_rect_round_blue"
                 android:gravity="center"
-                android:paddingBottom="14mm"
                 android:paddingLeft="10mm"
-                android:paddingRight="10mm"
                 android:paddingTop="14mm"
+                android:paddingRight="10mm"
+                android:paddingBottom="14mm"
                 android:singleLine="true"
                 android:text="历史报警"
                 android:textColor="@color/white"
@@ -144,6 +144,7 @@
             android:layout_width="360mm"
             android:layout_height="match_parent"
             android:layout_gravity="right"
+            android:background="@color/white"
             android:fadingEdgeLength="0mm"
             android:requiresFadingEdge="vertical"
             android:visibility="gone" />

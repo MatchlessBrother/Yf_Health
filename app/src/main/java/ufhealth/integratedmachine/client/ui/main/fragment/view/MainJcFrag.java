@@ -1,8 +1,11 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.view;
 
+import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 import android.view.View;
 import java.util.ArrayList;
+
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -16,15 +19,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
-import ufhealth.integratedmachine.client.bean.main.JcType;
+import ufhealth.integratedmachine.client.bean.secondtab.JcType;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import ufhealth.integratedmachine.client.bean.main.JcStatus;
+import ufhealth.integratedmachine.client.bean.secondtab.JcStatus;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.bean.main.JcChildCondition;
-import ufhealth.integratedmachine.client.bean.main.JcParentCondition;
-import ufhealth.integratedmachine.client.adapter.main.JcConditionAdapter;
+import ufhealth.integratedmachine.client.bean.secondtab.JcChildCondition;
+import ufhealth.integratedmachine.client.bean.secondtab.JcParentCondition;
+import ufhealth.integratedmachine.client.adapter.secondtab.JcConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
@@ -32,26 +35,26 @@ import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainJcPresen
 
 public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickListener
 {
-    private List<JcType> mLsList;
     private TextView mainjcfragLx;
     private TextView mainjcfragZt;
     private TextView mainjcfragLs;
-    private List<JcStatus> mZtList;
     private LinearLayout mainjcfragAll;
     private LinearLayout mainjcfragLxAll;
     private LinearLayout mainjcfragZtAll;
+    private RecyclerView mainjcfragRecycler;
+    private JcConditionAdapter jcConditionAdapter;
+    private RecyclerView mainjcfragRecyclerConditions;
+    private SwipeRefreshLayout mainjcfragSwiperefreshlayout;
+    /******************************************************/
+    /******************************************************/
+    private List<JcType> mLsList;
+    private List<JcStatus> mZtList;
     private MainJcPresenter mMainJcPresenter;
     private int mCurrentSelectedLsItemOfIndex;
     private int mCurrentSelectedZtItemOfIndex;
+    private Map<String,String> mConditionsMap;
     private OptionsPickerView mLsOptionsPickerView;
     private OptionsPickerView mZtOptionsPickerView;
-    /******************************************************/
-    private RecyclerView mainjcfragRecycler;
-    private SwipeRefreshLayout mainjcfragSwiperefreshlayout;
-    /******************************************************/
-    private JcConditionAdapter mJcConditionAdapter;
-    private RecyclerView mainjcfragRecyclerConditions;
-    /******************************************************/
 
     protected int setLayoutResID()
     {
@@ -80,22 +83,22 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mainjcfragRecyclerConditions.setLayoutManager(linearLayoutManager);
-        mJcConditionAdapter = new JcConditionAdapter(mActivity,new ArrayList<MultiItemEntity>())
+        jcConditionAdapter = new JcConditionAdapter(mActivity,new ArrayList<MultiItemEntity>())
         {
             public void selectedCondtionForComplete()
             {
                 mainjcfragRecyclerConditions.setVisibility(View.GONE);
             }
         };
-        mJcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mainjcfragRecyclerConditions.setAdapter(mJcConditionAdapter);
+        jcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mainjcfragRecyclerConditions.setAdapter(jcConditionAdapter);
         /******************************************************************************************/
         /******************************************************************************************/
         mLsOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener()
         {
             public void onOptionsSelect(int options1Index, int options2Index, int options3Index, View view)
             {
-                mCurrentSelectedLsItemOfIndex  = options1Index;
+                mCurrentSelectedLsItemOfIndex = options1Index;
                 mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
                 mainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
             }
@@ -136,8 +139,14 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 
     protected void initDatas()
     {
+        mConditionsMap = new HashMap<>();
+        mCurrentSelectedLsItemOfIndex = -1;
+        mCurrentSelectedZtItemOfIndex = -1;
         mMainJcPresenter = new MainJcPresenter();
         bindBaseMvpPresenter(mMainJcPresenter);
+        /***************************************************/
+        /*********************模拟网络数据******************/
+        /***************************************************/
         mLsList = new ArrayList<>();
         mLsList.add(new JcType(1,"高危"));
         mLsList.add(new JcType(2,"危险"));
@@ -166,7 +175,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
                 parentCondition.addSubItem(childCondition);
             }
             conditions.add(parentCondition);
-        }mJcConditionAdapter.setNewData(conditions);
+        }jcConditionAdapter.setNewData(conditions);
     }
 
     protected void initLogic()
@@ -207,7 +216,11 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             }
             case R.id.mainjcfrag_ls:
             {
-                break;
+                updateConditionsMap();
+                StringBuffer stringBuffer  = new StringBuffer();
+                for(Map.Entry<String,String> entry :mConditionsMap.entrySet())
+                    stringBuffer.append(entry.getKey() + "：" + entry.getValue() + "\r\n");
+                showToast(stringBuffer.toString());
             }
         }
     }
@@ -241,6 +254,21 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             basePopupWindow.showAsDropDown(mTitleBackBtn,12,6);
     }
 
+    protected void updateConditionsMap()
+    {
+        if(null == mConditionsMap)
+            mConditionsMap = new HashMap<>();
+        if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())
+            mConditionsMap.put("type",String.valueOf(mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeCode()));
+        if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())
+            mConditionsMap.put("status",String.valueOf(mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusCode()));
+        mConditionsMap.put("partmentId",String.valueOf(jcConditionAdapter.getmSelectedParentCode()));
+        if(jcConditionAdapter.isSelectedChildCondition())
+            mConditionsMap.put("areaId",String.valueOf(jcConditionAdapter.getmSelectedChildCode()));
+        else
+            if(mConditionsMap.containsKey("areaId"))mConditionsMap.remove("areaId");
+    }
+
     protected void onTitleMoreIconClick()
     {
         super.onTitleMoreIconClick();
@@ -248,6 +276,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             mainjcfragRecyclerConditions.setVisibility(View.VISIBLE);
         else
             mainjcfragRecyclerConditions.setVisibility(View.GONE);
-        mJcConditionAdapter.notifyDataSetChanged();
+        jcConditionAdapter.notifyDataSetChanged();
     }
 }

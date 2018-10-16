@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.adapter.main;
+package ufhealth.integratedmachine.client.adapter.secondtab;
 
 import java.util.List;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.support.v4.content.ContextCompat;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import ufhealth.integratedmachine.client.bean.main.JcChildCondition;
-import ufhealth.integratedmachine.client.bean.main.JcParentCondition;
+import ufhealth.integratedmachine.client.bean.secondtab.JcChildCondition;
+import ufhealth.integratedmachine.client.bean.secondtab.JcParentCondition;
 
 public abstract class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>
 {
@@ -41,6 +41,7 @@ public abstract class JcConditionAdapter extends BaseMultiItemQuickAdapter<Multi
                 helper.setText(R.id.item_mainjcfragment_condition_parent_tv,null != parentCondition.getConditionName() ? parentCondition.getConditionName().trim() : "");
                 helper.setImageResource(R.id.item_mainjcfragment_condition_parent_img,parentCondition.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
                 helper.setTextColor(R.id.item_mainjcfragment_condition_parent_tv,parentCondition.isSelected() ? ContextCompat.getColor(mContext,R.color.colorPrimary) :ContextCompat.getColor(mContext,R.color.default_font_black));
+                helper.setGone(R.id.item_mainjcfragment_condition_parent_img,(null != parentCondition.getConditionName() && (parentCondition.getConditionName().trim().contains("所有") || parentCondition.getConditionName().trim().contains("全部")))? false : true);
                 helper.itemView.findViewById(R.id.item_mainjcfragment_condition_parent_tv).setOnClickListener(new View.OnClickListener()/*******************选择父类*********************/
                 {
                     public void onClick(View v)

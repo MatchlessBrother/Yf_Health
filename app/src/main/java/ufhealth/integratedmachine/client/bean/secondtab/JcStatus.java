@@ -1,4 +1,4 @@
-package ufhealth.integratedmachine.client.bean.main;
+package ufhealth.integratedmachine.client.bean.secondtab;
 
 import android.os.Parcel;
 import android.os.Parcelable;
