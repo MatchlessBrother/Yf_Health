@@ -59,7 +59,7 @@
         </activity>
 
         <activity
-            android:name=".ui.thirdtab.activity.view.BjczHistroyAct"
+            android:name=".ui.fourth.activity.view.BjczHistroyAct"
             android:screenOrientation="portrait">
         </activity>
 

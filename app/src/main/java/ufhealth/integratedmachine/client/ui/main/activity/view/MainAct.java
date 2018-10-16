@@ -1,6 +1,5 @@
 package ufhealth.integratedmachine.client.ui.main.activity.view;
 
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import ufhealth.integratedmachine.client.ui.main.fragment.view.MainHzFrag;
 import ufhealth.integratedmachine.client.ui.main.fragment.view.MainJcFrag;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.MainAct_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.SignInAct_V;
+import ufhealth.integratedmachine.client.ui.main.fragment.view.MainBjHistroyFrag;
 import ufhealth.integratedmachine.client.ui.main.activity.presenter.MainPresenter;
 import ufhealth.integratedmachine.client.ui.main.activity.presenter.SignInPresenter;
 
@@ -27,10 +27,10 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     private MainPresenter mMainPresenter;
     private SignInPresenter mSignInPresenter;
     private FragmentTabHost mFragmentTabHost;
-    private String mTabSpecTv[] = { "汇总统计", "实时监测","报警处置"};
-    private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class, MainBjFrag.class};
-    private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjFrag()};
-    private int[] mTabSpecImg= { R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bj };
+    private String mTabSpecTv[] = { "汇总统计", "实时监测","历史报警","报警处置"};
+    private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class, MainBjHistroyFrag.class,MainBjFrag.class};
+    private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjHistroyFrag(),new MainBjFrag()};
+    private int[] mTabSpecImg= { R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bjhistroy,R.drawable.selector_tabspec_bj };
 
     protected int setLayoutResID()
     {
@@ -73,7 +73,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
 
     protected void initLogic()
     {
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager())
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager())
         {
             public Fragment getItem(int position)
             {

@@ -43,9 +43,9 @@ public abstract class BaseFragment extends Fragment
     protected abstract void initLogic();
 
     /************************************Fragment销毁界面的部分************************************/
-    public void onDestroyView()
+    public void onDetach()
     {
         mRootView = null;
-        super.onDestroyView();
+        super.onDetach();
     }
 }

@@ -11,5 +11,5 @@
     <color name="default_font_black">#FF333333</color>
     <color name="default_font_gray">#FF666666</color>
     <color name="default_font_hint">#FFBBBBBB</color>
-    <color name="default_divide_line">#88EEEEEE</color>
+    <color name="default_divide_line">#CCEDEDED</color>
 </resources>

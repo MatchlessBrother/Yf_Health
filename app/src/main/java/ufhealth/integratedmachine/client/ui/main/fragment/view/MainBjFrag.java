@@ -7,20 +7,21 @@ import android.view.LayoutInflater;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
+import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczHistroyAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
-import ufhealth.integratedmachine.client.ui.thirdtab.activity.view.BjczHistroyAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjPresenter;
 
 public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickListener
 {
-    private RecyclerView mainbjfragRecycler;
+    private RecyclerView mMainbjfragRecycler;
     private MainBjPresenter mMainBjPresenter;
-    private SwipeRefreshLayout mainbjfragSwiperefreshlayout;
+    private SwipeRefreshLayout mMainbjfragSwiperefreshlayout;
 
     protected int setLayoutResID()
     {
@@ -34,8 +35,11 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         setTitleContent("报警处置");
         setTitleBack(R.mipmap.usericon);
         setTitleMoreFontVisible(View.VISIBLE);
-        mainbjfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjfrag_recycler);
-        mainbjfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjfrag_swiperefreshlayout);
+        mMainbjfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjfrag_swiperefreshlayout);
+        mMainbjfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjfrag_recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mMainbjfragRecycler.setLayoutManager(linearLayoutManager);
     }
 
     protected void initDatas()
@@ -90,7 +94,6 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
     protected void onTitleMoreFontClick()
     {
         super.onTitleMoreFontClick();
-        Intent intent = new Intent(mActivity, BjczHistroyAct.class);
-        startActivity(intent);
+        startActivity(new Intent(mActivity, BjczHistroyAct.class));
     }
 }
