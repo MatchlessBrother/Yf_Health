@@ -5,14 +5,14 @@ import me.jessyan.autosize.AutoSize;
 import android.support.multidex.MultiDex;
 import me.jessyan.autosize.unit.Subunits;
 import me.jessyan.autosize.AutoSizeConfig;
-import ufhealth.integratedmachine.client.bean.main.UserInfos;
+import ufhealth.integratedmachine.client.bean.main.UserInfo;
 
 import com.yuan.devlibrary._1App.BaseApplication;
 
 public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
-    private UserInfos mUserInfos;
+    private UserInfo mUserInfo;
 
     protected void attachBaseContext(Context base)
     {
@@ -37,13 +37,13 @@ public class BaseApp extends BaseApplication
         //AutoSizeConfig.getInstance().getExternalAdaptManager().addExternalAdaptInfoOfActivity();
     }
 
-    public UserInfos getUserInfos()
+    public UserInfo getUserInfos()
     {
-        return mUserInfos;
+        return mUserInfo;
     }
 
-    public void setUserInfos(UserInfos userInfos)
+    public void setUserInfos(UserInfo userInfo)
     {
-        mUserInfos = userInfos;
+        mUserInfo = userInfo;
     }
 }

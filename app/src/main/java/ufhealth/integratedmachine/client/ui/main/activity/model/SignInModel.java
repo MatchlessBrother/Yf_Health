@@ -6,8 +6,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
-import ufhealth.integratedmachine.client.bean.main.UserInfos;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_PVModel;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
@@ -19,24 +19,24 @@ public class SignInModel extends BaseMvp_PVModel
         /*NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));*/
         if(getForms().get("account").toString().trim().equals("admin") && getForms().get("password").toString().trim().equals("123456"))
         {
-            Observable.just("start").map(new Function<String,UserInfos>()
+            Observable.just("start").map(new Function<String, UserInfo>()
             {
-                public UserInfos apply(String s) throws Exception
+                public UserInfo apply(String s) throws Exception
                 {
                     Thread.sleep(3000);
-                    UserInfos userInfos = new UserInfos();
-                    userInfos.setToken("hyu896tyghus875sii");
-                    userInfos.setName("admin");
-                    return userInfos;
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setToken("hyu896tyghus875sii");
+                    userInfo.setName("admin");
+                    return userInfo;
                 }
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<UserInfos>()
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<UserInfo>()
             {
-                public void accept(UserInfos userInfos) throws Exception
+                public void accept(UserInfo userInfo) throws Exception
                 {
-                    BaseReturnData<UserInfos> baseReturnData = new BaseReturnData<>();
+                    BaseReturnData<UserInfo> baseReturnData = new BaseReturnData<>();
                     baseReturnData.setCode("1");
                     baseReturnData.setMsg("请求成功");
-                    baseReturnData.setData(userInfos);
+                    baseReturnData.setData(userInfo);
                     localCallBack.onSuccess(baseReturnData);
                     localCallBack.onFinish();
                 }

@@ -3,7 +3,7 @@ package ufhealth.integratedmachine.client.bean.main;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class UserInfos implements Parcelable
+public class UserInfo implements Parcelable
 {
     private String name;
     private String token;
@@ -34,23 +34,23 @@ public class UserInfos implements Parcelable
         dest.writeString(this.token);
     }
 
-    public UserInfos() {
+    public UserInfo() {
     }
 
-    protected UserInfos(Parcel in) {
+    protected UserInfo(Parcel in) {
         this.name = in.readString();
         this.token = in.readString();
     }
 
-    public static final Creator<UserInfos> CREATOR = new Creator<UserInfos>() {
+    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
         @Override
-        public UserInfos createFromParcel(Parcel source) {
-            return new UserInfos(source);
+        public UserInfo createFromParcel(Parcel source) {
+            return new UserInfo(source);
         }
 
         @Override
-        public UserInfos[] newArray(int size) {
-            return new UserInfos[size];
+        public UserInfo[] newArray(int size) {
+            return new UserInfo[size];
         }
     };
 }

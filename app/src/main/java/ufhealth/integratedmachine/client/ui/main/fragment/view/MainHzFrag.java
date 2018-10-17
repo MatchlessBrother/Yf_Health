@@ -17,7 +17,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
-import ufhealth.integratedmachine.client.bean.first.BjTypeInfos;
+import ufhealth.integratedmachine.client.bean.first.BjTypeInfo;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -62,7 +62,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragBarchart = (BarChart)rootView.findViewById(R.id.mainhzfrag_barchart);
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.mainhzfrag_recyclerview);
         mMainhzfragBarchartText = (TextView)rootView.findViewById(R.id.mainhzfrag_barchart_text);
-        mBjTypeAdapter = new BjTypeAdapter(mActivity,new ArrayList<BjTypeInfos>());
+        mBjTypeAdapter = new BjTypeAdapter(mActivity,new ArrayList<BjTypeInfo>());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,3);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -132,42 +132,42 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         /***************************************************/
         /*********************模拟网络数据******************/
         /***************************************************/
-        List<BjTypeInfos> bjTypeInfosList = new ArrayList<>();
+        List<BjTypeInfo> bjTypeInfoList = new ArrayList<>();
         for(int index = 0;index < 8;index++)
         {
-            BjTypeInfos bjTypeInfos = new BjTypeInfos();
+            BjTypeInfo bjTypeInfo = new BjTypeInfo();
             if(index % 4 == 0)
             {
-                bjTypeInfos.setIconType(0);
-                bjTypeInfos.setNoteStr("报警");
-                bjTypeInfos.setAppearNumbers(6);
-                bjTypeInfos.setBackgroundColor("ff0000");
+                bjTypeInfo.setIconType(0);
+                bjTypeInfo.setNoteStr("报警");
+                bjTypeInfo.setAppearNumbers(6);
+                bjTypeInfo.setBackgroundColor("ff0000");
             }
             else if(index % 4 == 1)
             {
-                bjTypeInfos.setIconType(1);
-                bjTypeInfos.setNoteStr("预警");
-                bjTypeInfos.setAppearNumbers(8);
-                bjTypeInfos.setBackgroundColor("00ff00");
+                bjTypeInfo.setIconType(1);
+                bjTypeInfo.setNoteStr("预警");
+                bjTypeInfo.setAppearNumbers(8);
+                bjTypeInfo.setBackgroundColor("00ff00");
             }
             else if(index % 4 == 2)
             {
-                bjTypeInfos.setIconType(1);
-                bjTypeInfos.setNoteStr("警告");
-                bjTypeInfos.setAppearNumbers(12);
-                bjTypeInfos.setBackgroundColor("0000FF");
+                bjTypeInfo.setIconType(1);
+                bjTypeInfo.setNoteStr("警告");
+                bjTypeInfo.setAppearNumbers(12);
+                bjTypeInfo.setBackgroundColor("0000FF");
             }
             else if(index % 4 == 3)
             {
-                bjTypeInfos.setIconType(0);
-                bjTypeInfos.setNoteStr("无所谓");
-                bjTypeInfos.setAppearNumbers(18);
-                bjTypeInfos.setBackgroundColor("FFA800");
+                bjTypeInfo.setIconType(0);
+                bjTypeInfo.setNoteStr("无所谓");
+                bjTypeInfo.setAppearNumbers(18);
+                bjTypeInfo.setBackgroundColor("FFA800");
             }
 
-            bjTypeInfosList.add(bjTypeInfos);
+            bjTypeInfoList.add(bjTypeInfo);
         }
-        mBjTypeAdapter.getData().addAll(bjTypeInfosList);
+        mBjTypeAdapter.getData().addAll(bjTypeInfoList);
         mBjTypeAdapter.notifyDataSetChanged();
 
         List<BarEntry> entries = new ArrayList<BarEntry>();

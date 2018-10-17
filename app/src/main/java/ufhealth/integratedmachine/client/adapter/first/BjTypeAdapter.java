@@ -8,21 +8,21 @@ import ufhealth.integratedmachine.client.R;
 import android.graphics.drawable.GradientDrawable;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import ufhealth.integratedmachine.client.bean.first.BjTypeInfos;
+import ufhealth.integratedmachine.client.bean.first.BjTypeInfo;
 
-public class BjTypeAdapter extends BaseQuickAdapter<BjTypeInfos,BaseViewHolder>
+public class BjTypeAdapter extends BaseQuickAdapter<BjTypeInfo,BaseViewHolder>
 {
     private Context mContext;
 
-    public BjTypeAdapter(Context context, List<BjTypeInfos> bjTypeInfosList)
+    public BjTypeAdapter(Context context, List<BjTypeInfo> bjTypeInfoList)
     {
-        super(R.layout.item_mainhzfragment,bjTypeInfosList);
+        super(R.layout.item_mainhzfragment, bjTypeInfoList);
         mContext = context;
     }
 
-    protected void convert(BaseViewHolder viewHolder, BjTypeInfos bjTypeInfos)
+    protected void convert(BaseViewHolder viewHolder, BjTypeInfo bjTypeInfo)
     {
-        switch(bjTypeInfos.getIconType())
+        switch(bjTypeInfo.getIconType())
         {
             case 0:viewHolder.setBackgroundRes(R.id.item_mainhzfragment_img,R.mipmap.bj);break;
             case 1:viewHolder.setBackgroundRes(R.id.item_mainhzfragment_img,R.mipmap.yj);break;
@@ -30,9 +30,9 @@ public class BjTypeAdapter extends BaseQuickAdapter<BjTypeInfos,BaseViewHolder>
         }
         GradientDrawable backgroundDrawable=new GradientDrawable();
         backgroundDrawable.setShape(GradientDrawable.RECTANGLE);
-        viewHolder.setText(R.id.item_mainhzfragment_tv, bjTypeInfos.getNoteStr().trim());
-        backgroundDrawable.setColor(Color.parseColor("#" + bjTypeInfos.getBackgroundColor()));
-        viewHolder.setText(R.id.item_mainhzfragment_number,String.valueOf(bjTypeInfos.getAppearNumbers()));
+        viewHolder.setText(R.id.item_mainhzfragment_tv, bjTypeInfo.getNoteStr().trim());
+        backgroundDrawable.setColor(Color.parseColor("#" + bjTypeInfo.getBackgroundColor()));
+        viewHolder.setText(R.id.item_mainhzfragment_number,String.valueOf(bjTypeInfo.getAppearNumbers()));
         backgroundDrawable.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,6,mContext.getResources().getDisplayMetrics()));
         viewHolder.getView(R.id.item_mainhzfragment_bg).setBackgroundDrawable(backgroundDrawable);
     }

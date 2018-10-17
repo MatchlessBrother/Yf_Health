@@ -3,7 +3,7 @@ package ufhealth.integratedmachine.client.bean.first;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BjTypeInfos implements Parcelable
+public class BjTypeInfo implements Parcelable
 {
     private int iconType;
     private String noteStr;
@@ -55,25 +55,25 @@ public class BjTypeInfos implements Parcelable
         dest.writeString(this.backgroundColor);
     }
 
-    public BjTypeInfos() {
+    public BjTypeInfo() {
     }
 
-    protected BjTypeInfos(Parcel in) {
+    protected BjTypeInfo(Parcel in) {
         this.iconType = in.readInt();
         this.noteStr = in.readString();
         this.appearNumbers = in.readInt();
         this.backgroundColor = in.readString();
     }
 
-    public static final Creator<BjTypeInfos> CREATOR = new Creator<BjTypeInfos>() {
+    public static final Creator<BjTypeInfo> CREATOR = new Creator<BjTypeInfo>() {
         @Override
-        public BjTypeInfos createFromParcel(Parcel source) {
-            return new BjTypeInfos(source);
+        public BjTypeInfo createFromParcel(Parcel source) {
+            return new BjTypeInfo(source);
         }
 
         @Override
-        public BjTypeInfos[] newArray(int size) {
-            return new BjTypeInfos[size];
+        public BjTypeInfo[] newArray(int size) {
+            return new BjTypeInfo[size];
         }
     };
 }

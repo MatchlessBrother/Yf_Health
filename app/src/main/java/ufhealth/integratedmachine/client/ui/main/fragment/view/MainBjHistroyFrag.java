@@ -1,6 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.view;
 
 import android.view.View;
+import java.util.ArrayList;
 import android.content.Intent;
 import android.widget.TextView;
 import android.view.LayoutInflater;
@@ -9,8 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import ufhealth.integratedmachine.client.base.BaseAct;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
+import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
+import ufhealth.integratedmachine.client.adapter.third.BjHistroyAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjHistroyFrag_V;
@@ -18,6 +22,7 @@ import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjHistro
 
 public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,View.OnClickListener
 {
+    private BjHistroyAdapter mBjHistroyAdapter;
     private RecyclerView mMainbjhistroyfragRecycler;
     private MainBjHistroyPresenter mMainBjHistroyPresenter;
     private SwipeRefreshLayout mMainbjhistroyfragSwiperefreshlayout;
@@ -36,9 +41,13 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         setTitleMoreIconVisible(View.VISIBLE);
         mMainbjhistroyfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjhistroyfrag_swiperefreshlayout);
         mMainbjhistroyfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjhistroyfrag_recycler);
+        mBjHistroyAdapter = new BjHistroyAdapter(mActivity,new ArrayList<BjHistroyPageInfo.BjHistroyInfo>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainbjhistroyfragRecycler.setLayoutManager(linearLayoutManager);
+        mMainbjhistroyfragRecycler.setAdapter(mBjHistroyAdapter);
+        mMainbjhistroyfragSwiperefreshlayout.setEnabled(true);
+        mBjHistroyAdapter.setEnableLoadMore(true);
     }
 
     protected void initDatas()
@@ -49,6 +58,33 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
 
     protected void initLogic()
     {
+        mMainBjHistroyPresenter.refreshDatas();
+        mMainbjhistroyfragSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            public void onRefresh()
+            {
+                mMainBjHistroyPresenter.refreshDatas();
+            }
+        });
+
+        mBjHistroyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener()
+        {
+            public void onLoadMoreRequested()
+            {
+                mMainBjHistroyPresenter.loadMoreDatas();
+            }
+        },mMainbjhistroyfragRecycler);
+    }
+
+    public void finishRefresh()
+    {
+        mMainbjhistroyfragSwiperefreshlayout.setRefreshing(false);
+
+    }
+
+    public void finishLoadMore()
+    {
+        mBjHistroyAdapter.loadMoreComplete();
 
     }
 
@@ -59,6 +95,25 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         {
 
         }
+    }
+
+    public void refreshDatas(BjHistroyPageInfo bjHistroyPageInfo)
+    {
+        mBjHistroyAdapter.setNewData(bjHistroyPageInfo.getBjHistroyInfoList());
+        if(bjHistroyPageInfo.getBjHistroyInfoList().size() < bjHistroyPageInfo.getMaxSizeOfPerPage())
+            mBjHistroyAdapter.setEnableLoadMore(false);
+        else
+            mBjHistroyAdapter.setEnableLoadMore(true);
+    }
+
+    public void loadMoreDatas(BjHistroyPageInfo bjHistroyPageInfo)
+    {
+        mBjHistroyAdapter.addData(bjHistroyPageInfo.getBjHistroyInfoList());
+        mBjHistroyAdapter.notifyDataSetChanged();
+        if(bjHistroyPageInfo.getBjHistroyInfoList().size() < bjHistroyPageInfo.getMaxSizeOfPerPage())
+            mBjHistroyAdapter.setEnableLoadMore(false);
+        else
+            mBjHistroyAdapter.setEnableLoadMore(true);
     }
 
     protected void onTitleBackClick()
