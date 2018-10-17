@@ -31,5 +31,6 @@ public class BjczAdapter extends BaseQuickAdapter<BjczPageInfo.BjczInfo,BaseView
         helper.setText(R.id.item_mainbjczfragment_threeline_left,"报警值 : " + (null != bjczInfo.getFirstWarning() && !"".equals(bjczInfo.getFirstWarning().trim()) ? bjczInfo.getFirstWarning().trim() : "未知"));
         helper.setText(R.id.item_mainbjczfragment_threeline_right,"实时值 : " + (null != bjczInfo.getSecondWarning() && !"".equals(bjczInfo.getSecondWarning().trim()) ? bjczInfo.getSecondWarning().trim() : "未知"));
         helper.setText(R.id.item_mainbjczfragment_time,"报警时间 : " + (null != bjczInfo.getTime() && !"".equals(bjczInfo.getTime().trim()) ? mTimeFormat.format(new Date(Long.valueOf(bjczInfo.getTime().trim()))) : "未知"));
+        helper.addOnClickListener(R.id.item_mainbjczfragment_cancel).addOnClickListener(R.id.item_mainbjczfragment_process);
     }
 }

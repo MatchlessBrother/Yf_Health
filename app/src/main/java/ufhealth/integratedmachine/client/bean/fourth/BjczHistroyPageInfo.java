@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class BjczHistroyPageInfo implements Parcelable
 {
     private int maxSizeOfPerPage;
-    private List<BjczHistroyInfo> bjHistroyInfoList;
+    private List<BjczHistroyInfo> bjczHistroyInfoList;
 
     public int getMaxSizeOfPerPage() {
         return maxSizeOfPerPage;
@@ -17,12 +17,12 @@ public class BjczHistroyPageInfo implements Parcelable
         this.maxSizeOfPerPage = maxSizeOfPerPage;
     }
 
-    public List<BjczHistroyInfo> getBjHistroyInfoList() {
-        return bjHistroyInfoList;
+    public List<BjczHistroyInfo> getBjczHistroyInfoList() {
+        return bjczHistroyInfoList;
     }
 
-    public void setBjHistroyInfoList(List<BjczHistroyInfo> bjHistroyInfoList) {
-        this.bjHistroyInfoList = bjHistroyInfoList;
+    public void setBjczHistroyInfoList(List<BjczHistroyInfo> bjczHistroyInfoList) {
+        this.bjczHistroyInfoList = bjczHistroyInfoList;
     }
 
     public static class BjczHistroyInfo implements Parcelable
@@ -151,7 +151,7 @@ public class BjczHistroyPageInfo implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.maxSizeOfPerPage);
-        dest.writeTypedList(this.bjHistroyInfoList);
+        dest.writeTypedList(this.bjczHistroyInfoList);
     }
 
     public BjczHistroyPageInfo() {
@@ -159,7 +159,7 @@ public class BjczHistroyPageInfo implements Parcelable
 
     protected BjczHistroyPageInfo(Parcel in) {
         this.maxSizeOfPerPage = in.readInt();
-        this.bjHistroyInfoList = in.createTypedArrayList(BjczHistroyInfo.CREATOR);
+        this.bjczHistroyInfoList = in.createTypedArrayList(BjczHistroyInfo.CREATOR);
     }
 
     public static final Creator<BjczHistroyPageInfo> CREATOR = new Creator<BjczHistroyPageInfo>() {

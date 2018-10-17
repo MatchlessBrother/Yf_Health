@@ -1,6 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.view;
 
 import android.view.View;
+import java.util.ArrayList;
 import android.content.Intent;
 import android.widget.TextView;
 import android.view.LayoutInflater;
@@ -8,9 +9,13 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
+import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
+import ufhealth.integratedmachine.client.adapter.fourth.BjczAdapter;
+import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
 import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczHistroyAct;
@@ -19,6 +24,7 @@ import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjPresen
 
 public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickListener
 {
+    private BjczAdapter mBjczAdapter;
     private RecyclerView mMainbjfragRecycler;
     private MainBjPresenter mMainBjPresenter;
     private SwipeRefreshLayout mMainbjfragSwiperefreshlayout;
@@ -37,9 +43,13 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         setTitleMoreFontVisible(View.VISIBLE);
         mMainbjfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjfrag_swiperefreshlayout);
         mMainbjfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjfrag_recycler);
+        mBjczAdapter = new BjczAdapter(mActivity,new ArrayList<BjczPageInfo.BjczInfo>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainbjfragRecycler.setLayoutManager(linearLayoutManager);
+        mMainbjfragRecycler.setAdapter(mBjczAdapter);
+        mMainbjfragSwiperefreshlayout.setEnabled(true);
+        mBjczAdapter.setEnableLoadMore(true);
     }
 
     protected void initDatas()
@@ -50,6 +60,61 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
 
     protected void initLogic()
     {
+        mMainBjPresenter.refreshDatas();
+        mMainbjfragSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            public void onRefresh()
+            {
+                mMainBjPresenter.refreshDatas();
+            }
+        });
+
+        mBjczAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener()
+        {
+            public void onLoadMoreRequested()
+            {
+                mMainBjPresenter.loadMoreDatas();
+            }
+        },mMainbjfragRecycler);
+
+        mBjczAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+            }
+        });
+
+        mBjczAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener()
+        {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                switch(view.getId())
+                {
+                    case R.id.item_mainbjczfragment_cancel:
+                    {
+                        break;
+                    }
+                    case R.id.item_mainbjczfragment_process:
+                    {
+                        Intent intent = new Intent(mActivity,BjczAct.class);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    public void finishRefresh()
+    {
+        mMainbjfragSwiperefreshlayout.setRefreshing(false);
+
+    }
+
+    public void finishLoadMore()
+    {
+        mBjczAdapter.loadMoreComplete();
 
     }
 
@@ -60,6 +125,25 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         {
 
         }
+    }
+
+    public void refreshDatas(BjczPageInfo bjczPageInfo)
+    {
+        mBjczAdapter.setNewData(bjczPageInfo.getBjczInfoList());
+        if(bjczPageInfo.getBjczInfoList().size() < bjczPageInfo.getMaxSizeOfPerPage())
+            mBjczAdapter.setEnableLoadMore(false);
+        else
+            mBjczAdapter.setEnableLoadMore(true);
+    }
+
+    public void loadMoreDatas(BjczPageInfo bjczPageInfo)
+    {
+        mBjczAdapter.addData(bjczPageInfo.getBjczInfoList());
+        mBjczAdapter.notifyDataSetChanged();
+        if(bjczPageInfo.getBjczInfoList().size() < bjczPageInfo.getMaxSizeOfPerPage())
+            mBjczAdapter.setEnableLoadMore(false);
+        else
+            mBjczAdapter.setEnableLoadMore(true);
     }
 
     protected void onTitleBackClick()

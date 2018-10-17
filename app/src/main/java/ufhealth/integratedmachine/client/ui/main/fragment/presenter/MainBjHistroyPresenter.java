@@ -31,8 +31,8 @@ public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_
                     if(isAttachContextAndViewLayer())
                     {
                         currentPageOfIndex++;
-                        getViewLayer().refreshDatas(bjHistroyPageInfo.getData());
                         getViewLayer().finishRefresh();
+                        getViewLayer().refreshDatas(bjHistroyPageInfo.getData());
                     }
                 }
 
@@ -62,16 +62,15 @@ public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(MainBjHistroyModel.class).
-                    putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
+            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjHistroyPageInfo> bjHistroyPageInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
                         currentPageOfIndex++;
-                        getViewLayer().loadMoreDatas(bjHistroyPageInfo.getData());
                         getViewLayer().finishLoadMore();
-
+                        getViewLayer().loadMoreDatas(bjHistroyPageInfo.getData());
                     }
                 }
 

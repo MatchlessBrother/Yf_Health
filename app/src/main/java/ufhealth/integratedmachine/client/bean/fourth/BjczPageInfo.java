@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class BjczPageInfo implements Parcelable
 {
     private int maxSizeOfPerPage;
-    private List<BjczInfo> bjInfoList;
+    private List<BjczInfo> bjczInfoList;
 
     public int getMaxSizeOfPerPage() {
         return maxSizeOfPerPage;
@@ -17,12 +17,12 @@ public class BjczPageInfo implements Parcelable
         this.maxSizeOfPerPage = maxSizeOfPerPage;
     }
 
-    public List<BjczInfo> getBjInfoList() {
-        return bjInfoList;
+    public List<BjczInfo> getBjczInfoList() {
+        return bjczInfoList;
     }
 
-    public void setBjInfoList(List<BjczInfo> bjInfoList) {
-        this.bjInfoList = bjInfoList;
+    public void setBjczInfoList(List<BjczInfo> bjczInfoList) {
+        this.bjczInfoList = bjczInfoList;
     }
 
     public static class BjczInfo implements Parcelable
@@ -151,7 +151,7 @@ public class BjczPageInfo implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.maxSizeOfPerPage);
-        dest.writeTypedList(this.bjInfoList);
+        dest.writeTypedList(this.bjczInfoList);
     }
 
     public BjczPageInfo() {
@@ -159,7 +159,7 @@ public class BjczPageInfo implements Parcelable
 
     protected BjczPageInfo(Parcel in) {
         this.maxSizeOfPerPage = in.readInt();
-        this.bjInfoList = in.createTypedArrayList(BjczInfo.CREATOR);
+        this.bjczInfoList = in.createTypedArrayList(BjczInfo.CREATOR);
     }
 
     public static final Creator<BjczPageInfo> CREATOR = new Creator<BjczPageInfo>() {

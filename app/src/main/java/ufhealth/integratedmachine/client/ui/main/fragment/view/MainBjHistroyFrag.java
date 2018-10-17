@@ -74,6 +74,14 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
                 mMainBjHistroyPresenter.loadMoreDatas();
             }
         },mMainbjhistroyfragRecycler);
+
+        mBjHistroyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+            }
+        });
     }
 
     public void finishRefresh()

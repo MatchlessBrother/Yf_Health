@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20mm"
+        android:layout_marginLeft="20mm"
+        android:layout_marginRight="20mm"
+        android:layout_marginTop="20mm"
+        android:gravity="center_vertical|left"
+        android:singleLine="true"
+        android:text="处置内容"
+        android:textColor="@color/default_font_gray"
+        android:textSize="30sp" />
+
+    <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+        android:id="@+id/extended_edit_text"
+        android:layout_width="match_parent"
+        android:gravity="top|left"
+        android:layout_height="350mm"
+        android:padding="12mm"
+        android:layout_marginBottom="20mm"
+        android:layout_marginLeft="20mm"
+        android:layout_marginRight="20mm"
+        android:layout_marginTop="0mm"
+        android:background="@drawable/shape_rect_round_white"
+        android:hint="请输入内容文字"
+        android:textColorHint="@color/default_font_hint"
+        android:textSize="28sp"
+        app:enabled="true"
+        app:maxCharacters="20"
+        app:minCharacters="0"/>
+
+</LinearLayout>

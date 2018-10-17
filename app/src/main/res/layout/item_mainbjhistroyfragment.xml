@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20mm"
-        android:layout_marginTop="20mm"
         android:layout_marginRight="20mm"
+        android:layout_marginTop="20mm"
         android:background="@drawable/shape_rect_round_white"
         android:orientation="vertical"
         android:paddingLeft="20mm"
@@ -23,8 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20mm"
             android:layout_marginBottom="20mm"
+            android:layout_marginTop="20mm"
             android:orientation="horizontal">
 
             <TextView
@@ -58,8 +57,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20mm"
             android:layout_marginBottom="12mm"
+            android:layout_marginTop="20mm"
             android:orientation="horizontal">
 
             <TextView
@@ -141,6 +140,51 @@
                 android:text="实时值 : ≥60vol%"
                 android:textColor="@color/default_font_black"
                 android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_mainbjhistroyfragment_cancel_process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1mm"
+                android:background="@color/default_divide_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="20mm"
+                android:paddingTop="20mm">
+
+                <TextView
+                    android:id="@+id/item_mainbjhistroyfragment_cancel"
+                    android:layout_width="130mm"
+                    android:layout_height="60mm"
+                    android:layout_marginRight="30mm"
+                    android:background="@drawable/shape_rect_round_yellow"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="误报"
+                    android:textColor="@color/white"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/item_mainbjhistroyfragment_process"
+                    android:layout_width="130mm"
+                    android:layout_height="60mm"
+                    android:layout_marginLeft="30mm"
+                    android:background="@drawable/shape_rect_round_blue"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="立即处置"
+                    android:textColor="@color/white"
+                    android:textSize="26sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
