@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,35 +10,93 @@
 
     <include layout="@layout/layout_title" />
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20mm"
+            android:layout_marginTop="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginBottom="20mm"
+            android:gravity="center_vertical|left"
+            android:singleLine="true"
+            android:text="处置内容"
+            android:textColor="@color/default_font_gray"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/bjcz_et"
+            android:layout_width="match_parent"
+            android:layout_height="350mm"
+            android:layout_marginLeft="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginBottom="20mm"
+            android:background="@drawable/shape_rect_round_white"
+            android:gravity="top|left"
+            android:hint="请输入内容文字"
+            android:paddingLeft="12mm"
+            android:paddingTop="12mm"
+            android:paddingRight="12mm"
+            android:paddingBottom="12mm"
+            android:text="外地接噢iwjdoiawj"
+            android:textColor="@color/default_font_black"
+            android:textColorHint="@color/default_font_hint"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20mm"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20mm"
+            android:layout_marginTop="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginBottom="20mm"
+            android:gravity="center_vertical|left"
+            android:singleLine="true"
+            android:text="处置照片"
+            android:textColor="@color/default_font_gray"
+            android:textSize="30sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bjcz_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginBottom="20mm"
+            android:fadingEdgeLength="0mm"
+            android:requiresFadingEdge="vertical" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0mm"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/bjcz_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20mm"
-        android:layout_marginLeft="20mm"
-        android:layout_marginRight="20mm"
-        android:layout_marginTop="20mm"
-        android:gravity="center_vertical|left"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:paddingTop="24mm"
+        android:paddingBottom="24mm"
         android:singleLine="true"
-        android:text="处置内容"
-        android:textColor="@color/default_font_gray"
-        android:textSize="30sp" />
-
-    <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-        android:id="@+id/extended_edit_text"
-        android:layout_width="match_parent"
-        android:gravity="top|left"
-        android:layout_height="350mm"
-        android:padding="12mm"
-        android:layout_marginBottom="20mm"
-        android:layout_marginLeft="20mm"
-        android:layout_marginRight="20mm"
-        android:layout_marginTop="0mm"
-        android:background="@drawable/shape_rect_round_white"
-        android:hint="请输入内容文字"
-        android:textColorHint="@color/default_font_hint"
-        android:textSize="28sp"
-        app:enabled="true"
-        app:maxCharacters="20"
-        app:minCharacters="0"/>
-
+        android:text="处置完成"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
 </LinearLayout>
