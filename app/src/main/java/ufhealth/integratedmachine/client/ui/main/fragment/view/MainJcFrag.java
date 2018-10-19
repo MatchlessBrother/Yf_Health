@@ -36,7 +36,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 {
     private TextView mainjcfragLx;
     private TextView mainjcfragZt;
-    private TextView mainjcfragLs;
     private LinearLayout mainjcfragAll;
     private LinearLayout mainjcfragLxAll;
     private LinearLayout mainjcfragZtAll;
@@ -69,7 +68,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         setTitleMoreIconVisible(View.VISIBLE);
         mainjcfragLx = (TextView)rootView.findViewById(R.id.mainjcfrag_lx);
         mainjcfragZt = (TextView)rootView.findViewById(R.id.mainjcfrag_zt);
-        mainjcfragLs = (TextView)rootView.findViewById(R.id.mainjcfrag_ls);
         mainjcfragAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_all);
         mainjcfragLxAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_lx_all);
         mainjcfragZtAll = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_zt_all);
@@ -179,7 +177,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 
     protected void initLogic()
     {
-        mainjcfragLs.setOnClickListener(this);
         mainjcfragLxAll.setOnClickListener(this);
         mainjcfragZtAll.setOnClickListener(this);
     }
@@ -212,14 +209,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
                 else
                     showToast("没有可以选择的内容！");
                 break;
-            }
-            case R.id.mainjcfrag_ls:
-            {
-                updateConditionsMap();
-                StringBuffer stringBuffer  = new StringBuffer();
-                for(Map.Entry<String,String> entry :mConditionsMap.entrySet())
-                    stringBuffer.append(entry.getKey() + "：" + entry.getValue() + "\r\n");
-                showToast(stringBuffer.toString());
             }
         }
     }
