@@ -33,9 +33,9 @@ public class BjczImgAdapter extends BaseQuickAdapter<String,BaseViewHolder>
             RequestOptions options = new RequestOptions();
             options.error(R.mipmap.defaultimage);
             options.placeholder(R.mipmap.defaultimage);
+            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             helper.setGone(R.id.item_bjczimg_bigimg,true);
             helper.setGone(R.id.item_bjczimg_smallimg,false);
-            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             Glide.with(mContext).load(imgPath).apply(options).into((ImageView) helper.getView(R.id.item_bjczimg_bigimg));
         }
     }

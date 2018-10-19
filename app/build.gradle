@@ -92,6 +92,7 @@ dependencies {
     implementation 'me.jessyan:autosize:0.9.5'
     implementation 'com.android.support:multidex:1.0.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.4'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'

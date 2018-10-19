@@ -68,5 +68,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.fourth.activity.view.BjczPreviewPhotoAct"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 </manifest>

@@ -5,11 +5,17 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import android.widget.Button;
+import android.content.Intent;
+import android.graphics.Color;
 import android.widget.EditText;
+import android.util.TypedValue;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
 import ufhealth.integratedmachine.client.adapter.fourth.BjczImgAdapter;
 import ufhealth.integratedmachine.client.ui.fourth.activity.view_v.BjczAct_V;
@@ -17,10 +23,10 @@ import ufhealth.integratedmachine.client.ui.fourth.activity.presenter.BjczPresen
 
 public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListener
 {
-    private Button bjczBtn;
-    private EditText bjczEt;
+    private Button mBjczBtn;
+    private EditText mBjczEt;
     private BjczPresenter mBjczPresenter;
-    private RecyclerView bjczRecyclerview;
+    private RecyclerView mBjczRecyclerview;
     private BjczImgAdapter mBjczImgAdapter;
 
     protected int setLayoutResID()
@@ -32,18 +38,17 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
     {
         super.initWidgets(rootView);
         setTitleContent("报警处置");
-        bjczEt = (EditText)rootView.findViewById(R.id.bjcz_et);
-        bjczBtn = (Button)rootView.findViewById(R.id.bjcz_btn);
+        mBjczEt = (EditText)rootView.findViewById(R.id.bjcz_et);
+        mBjczBtn = (Button)rootView.findViewById(R.id.bjcz_btn);
         List dataList = new ArrayList<String>();dataList.add("");
-        dataList.add("");
-        dataList.add("");
-        dataList.add("");
         mBjczImgAdapter =  new BjczImgAdapter(mActivity,dataList);
-        bjczRecyclerview = (RecyclerView)rootView.findViewById(R.id.bjcz_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,3);
+        mBjczRecyclerview = (RecyclerView)rootView.findViewById(R.id.bjcz_recyclerview);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        bjczRecyclerview.setLayoutManager(gridLayoutManager);
-        bjczRecyclerview.setAdapter(mBjczImgAdapter);
+        mBjczRecyclerview.setLayoutManager(gridLayoutManager);
+        mBjczRecyclerview.setNestedScrollingEnabled(false);
+        mBjczRecyclerview.setFocusableInTouchMode(false);
+        mBjczRecyclerview.setAdapter(mBjczImgAdapter);
     }
 
     protected void initDatas()
@@ -54,7 +59,64 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
 
     protected void initLogic()
     {
-        bjczBtn.setOnClickListener(this);
+        mBjczBtn.setOnClickListener(this);
+        mBjczImgAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                if(null != mBjczImgAdapter.getData().get(position) && "".equals(mBjczImgAdapter.getData().get(position).trim()))
+                {
+                    showSelectPicturesDialog(30f, TypedValue.COMPLEX_UNIT_SP,R.color.colorPrimary);
+                }
+                else if(null != mBjczImgAdapter.getData().get(position) && !"".equals(mBjczImgAdapter.getData().get(position).trim()))
+                {
+                    Intent intent = new Intent(BjczAct.this,BjczPreviewPhotoAct.class);
+                    intent.putExtra("imgPath",mBjczImgAdapter.getData().get(position).trim());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mBjczImgAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener()
+        {
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position)
+            {
+                if(null != mBjczImgAdapter.getData().get(position) && "".equals(mBjczImgAdapter.getData().get(position).trim()))
+                {
+                    showSelectPicturesDialog(30f, TypedValue.COMPLEX_UNIT_SP,R.color.colorPrimary);
+                }
+                else if(null != mBjczImgAdapter.getData().get(position) && !"".equals(mBjczImgAdapter.getData().get(position).trim()))
+                {
+                     PromptBoxUtils.showPromptDialog(BjczAct.this,"删除提示：",Color.parseColor("#FF333333"),30,TypedValue.COMPLEX_UNIT_SP, new ColorDrawable(0xffffffff), View.VISIBLE,
+                             "确定要删除这张照片吗？",Color.parseColor("#FF666666"), 26, TypedValue.COMPLEX_UNIT_SP, new ColorDrawable(0xffffffff),
+                             "我想想", Color.parseColor("#FF3B6DB9"),28, TypedValue.COMPLEX_UNIT_SP, new ColorDrawable(0xffffffff), View.VISIBLE,
+                             "是的！", Color.parseColor("#FFFF0000"), 28, TypedValue.COMPLEX_UNIT_SP, new ColorDrawable(0xffffffff), View.VISIBLE,
+                             true, new View.OnClickListener()
+                             {
+                                 public void onClick(View v)
+                                 {
+                                     mBjczImgAdapter.remove(position);
+                                     if(mBjczImgAdapter.getData().size() < 9)
+                                     {
+                                         for(int index = mBjczImgAdapter.getData().size() - 1;index >= 0;index--)
+                                         {
+                                             if(null != mBjczImgAdapter.getData().get(index) && "".equals(mBjczImgAdapter.getData().get(index).trim()))
+                                             {
+                                                 break;
+                                             }
+                                             if(index == 0)
+                                             {
+                                                 mBjczImgAdapter.getData().add("");
+                                             }
+                                         }
+                                     }
+                                     mBjczImgAdapter.notifyDataSetChanged();
+                                 }
+                             },null,null);
+                }
+                return false;
+            }
+        });
     }
 
     public void onClick(View view)
@@ -64,13 +126,41 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
         {
             case R.id.bjcz_btn:
             {
+                mBjczPresenter.disposeAlarm(mBjczEt.getText().toString().trim(),mBjczImgAdapter.getData());
                 break;
             }
         }
     }
 
+    public void failOfUploadDatas()
+    {
+        showToast("上传数据失败，请稍后再试！");
+
+    }
+
+    public void successOfUploadDatas()
+    {
+        showToast("上传数据成功！");
+        finish();
+    }
+
     protected void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
     {
-
+        if(null != bitmapPaths && bitmapPaths.size() > 0 && null != bitmapPaths.get(0) && !"".equals(bitmapPaths.get(0).trim()))
+        {
+            mBjczImgAdapter.addData(0,bitmapPaths.get(0).trim());
+            if(mBjczImgAdapter.getData().size() > 9)
+            {
+                for(int index = mBjczImgAdapter.getData().size() - 1;index >= 0;index--)
+                {
+                    if(null != mBjczImgAdapter.getData().get(index) && "".equals(mBjczImgAdapter.getData().get(index).trim()))
+                    {
+                        mBjczImgAdapter.getData().remove(index);
+                        break;
+                    }
+                }
+            }
+            mBjczImgAdapter.notifyDataSetChanged();
+        }
     }
 }
