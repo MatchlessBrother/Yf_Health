@@ -1,31 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_drawerlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_viewpager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <View
-        android:layout_height="1mm"
-        android:layout_width="match_parent"
-        android:background="@color/default_font_gray"/>
-
-    <android.support.v4.app.FragmentTabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#EEF8F8F8">
-
-        <FrameLayout
-            android:id="@android:id/tabcontent"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
-    </android.support.v4.app.FragmentTabHost>
-</LinearLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1mm"
+            android:background="@color/default_font_gray" />
+
+        <android.support.v4.app.FragmentTabHost
+            android:id="@android:id/tabhost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEF8F8F8">
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+        </android.support.v4.app.FragmentTabHost>
+    </LinearLayout>
+
+    <LinearLayout
+        android:clickable="true"
+        android:layout_width="648mm"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/mainjcfrag_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_width="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:fadingEdgeLength="0mm"
+                    android:layout_marginTop="20mm"
+                    android:layout_height="match_parent"
+                    android:requiresFadingEdge="vertical"
+                    android:id="@+id/mainjcfrag_conditions_recycler"/>
+
+                <View
+                    android:layout_width="1mm"
+                    android:layout_height="match_parent"
+                    android:background="@color/default_divide_line"/>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:orientation="vertical"
+                    android:layout_marginTop="46mm"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="监测类型"
+                        android:textSize="30sp"
+                        android:singleLine="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/default_font_gray"/>
+
+                    <LinearLayout
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="56mm"
+                        android:layout_marginTop="12mm"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:id="@+id/mainjcfrag_conditions_lx_all"
+                        android:background="@drawable/shape_rect_round_gray">
+
+                        <TextView
+                            tools:text="全部"
+                            android:textSize="30sp"
+                            android:singleLine="true"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mainjcfrag_conditions_lx"
+                            android:textColor="@color/default_font_black"/>
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:src="@mipmap/downicon"
+                            android:layout_marginLeft="6mm"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:text="当前状态"
+                        android:textSize="30sp"
+                        android:singleLine="true"
+                        android:layout_marginTop="30mm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/default_font_gray"/>
+
+                    <LinearLayout
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="56mm"
+                        android:layout_marginTop="12mm"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:id="@+id/mainjcfrag_conditions_zt_all"
+                        android:background="@drawable/shape_rect_round_gray">
+
+                        <TextView
+                            tools:text="全部"
+                            android:textSize="30sp"
+                            android:singleLine="true"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mainjcfrag_conditions_zt"
+                            android:textColor="@color/default_font_black"/>
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:src="@mipmap/downicon"
+                            android:layout_marginLeft="6mm"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:text="查看日期"
+                        android:textSize="30sp"
+                        android:singleLine="true"
+                        android:layout_marginTop="30mm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/default_font_gray"/>
+
+                    <LinearLayout
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="56mm"
+                        android:layout_marginTop="12mm"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/shape_rect_round_gray"
+                        android:id="@+id/mainjcfrag_conditions_starttime_all">
+
+                        <TextView
+                            android:hint="开始日期"
+                            android:textSize="30sp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/default_font_black"
+                            android:id="@+id/mainjcfrag_conditions_starttime" />
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:src="@mipmap/downicon"
+                            android:layout_marginLeft="6mm"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="56mm"
+                        android:layout_marginTop="12mm"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:id="@+id/mainjcfrag_conditions_endtime_all"
+                        android:background="@drawable/shape_rect_round_gray">
+
+                        <TextView
+                            android:hint="结束日期"
+                            android:textSize="30sp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/default_font_black"
+                            android:id="@+id/mainjcfrag_conditions_endtime"/>
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:src="@mipmap/downicon"
+                            android:layout_marginLeft="6mm"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_height="1mm"
+                android:layout_width="match_parent"
+                android:background="@color/default_divide_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:text="重置"
+                    android:textSize="32sp"
+                    android:gravity="center"
+                    android:paddingTop="30mm"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:paddingBottom="30mm"
+                    android:background="#FFF9F9F9"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mainjcfrag_conditions_reset"
+                    android:textColor="@color/default_font_gray"/>
+
+                <Button
+                    android:text="确定"
+                    android:textSize="32sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:paddingTop="30mm"
+                    android:singleLine="true"
+                    android:paddingBottom="30mm"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/mainjcfrag_conditions_sure"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainbjhistroyfrag_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+    </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

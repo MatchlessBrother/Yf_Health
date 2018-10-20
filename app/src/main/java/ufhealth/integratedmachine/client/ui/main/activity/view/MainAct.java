@@ -1,14 +1,17 @@
 package ufhealth.integratedmachine.client.ui.main.activity.view;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import ufhealth.integratedmachine.client.R;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import ufhealth.integratedmachine.client.base.BaseAct;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
@@ -25,8 +28,11 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
 {
     private ViewPager mViewPager;
     private MainPresenter mMainPresenter;
+    private DrawerLayout mMainDrawerlayout;
     private SignInPresenter mSignInPresenter;
     private FragmentTabHost mFragmentTabHost;
+    private LinearLayout mMainjcfragConditions;
+    private LinearLayout mMainbjhistroyfragConditions;
     private String mTabSpecTv[] = { "汇总统计", "实时监测","历史报警","报警处置"};
     private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class, MainBjHistroyFrag.class,MainBjFrag.class};
     private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjHistroyFrag(),new MainBjFrag()};
@@ -35,16 +41,26 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     protected int setLayoutResID()
     {
         return R.layout.activity_main;
+    }
 
+    public View getRootView()
+    {
+        return mRootView;
     }
 
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        mViewPager          =  (ViewPager)        rootView.findViewById(R.id.main_viewpager);
+        mViewPager = (ViewPager)rootView.findViewById(R.id.main_viewpager);
         mFragmentTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
+        mMainDrawerlayout = (DrawerLayout)rootView.findViewById(R.id.main_drawerlayout);
+        mMainjcfragConditions = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_conditions);
+        mMainbjhistroyfragConditions = (LinearLayout)rootView.findViewById(R.id.mainbjhistroyfrag_conditions);
+        /****************************************************************************************************/
         mFragmentTabHost.setup(this,getSupportFragmentManager(),R.id.main_viewpager);
+        mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mFragmentTabHost.getTabWidget().setDividerDrawable(null);
+        mViewPager.setOffscreenPageLimit(1);
         for(int index = 0;index < mTabSpecTv.length;index++)
         {
             TabHost.TabSpec tabSpec = mFragmentTabHost.newTabSpec(mTabSpecTv[index]).setIndicator(getTabSpecView(index));
@@ -112,6 +128,27 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
             public void onTabChanged(String tabId)
             {
                 mViewPager.setCurrentItem(mFragmentTabHost.getCurrentTab());
+                if(mFragmentTabHost.getCurrentTab() == 1)
+                {
+                    mMainjcfragConditions.setVisibility(View.VISIBLE);
+                    mMainbjhistroyfragConditions.setVisibility(View.GONE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+                else if(mFragmentTabHost.getCurrentTab() == 2)
+                {
+                   /*mMainjcfragConditions.setVisibility(View.GONE);
+                    mMainbjhistroyfragConditions.setVisibility(View.VISIBLE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);*/
+                    mMainjcfragConditions.setVisibility(View.GONE);
+                    mMainbjhistroyfragConditions.setVisibility(View.GONE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+                else
+                {
+                    mMainjcfragConditions.setVisibility(View.GONE);
+                    mMainbjhistroyfragConditions.setVisibility(View.GONE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
         });
         if(!getIntent().getBooleanExtra("islogined",false))
@@ -136,5 +173,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     {
         SignInAct.quitCrrentAccount(this,"账号发生异常，请重新登录！");
 
+    }
+
+    public void onBackPressed()
+    {
+        if(null != mMainDrawerlayout && mMainDrawerlayout.isDrawerOpen(Gravity.END))
+            mMainDrawerlayout.closeDrawers();
+        else
+            super.onBackPressed();
     }
 }
