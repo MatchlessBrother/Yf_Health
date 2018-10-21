@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.adapter.first.BjTypeAdapter;
+import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
@@ -243,7 +244,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             public void onClick(View v)
             {
                 if(basePopupWindow.isShowing()) basePopupWindow.dismiss();
-                SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
+                    ((MainAct)mActivity).signOutAction();
             }
         });
         if(isUseDefaultTitleLine())

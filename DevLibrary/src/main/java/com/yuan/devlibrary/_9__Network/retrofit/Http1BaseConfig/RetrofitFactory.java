@@ -6,7 +6,7 @@ import retrofit2.Converter;
 import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**快捷创建Retrofit的工厂**/
 public class RetrofitFactory
@@ -24,7 +24,7 @@ public class RetrofitFactory
         /***************************设置Retrofit响应数据的转换工厂************************/
         builder.addConverterFactory(GsonConverterFactory.create());
         /****************************设置Retrofit可支持的编码工厂*************************/
-        builder.addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         return builder.build();
     }
 
@@ -53,7 +53,7 @@ public class RetrofitFactory
                 builder.addCallAdapterFactory(factory);
         }
         else
-            builder.addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+            builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         return builder.build();
     }
 }

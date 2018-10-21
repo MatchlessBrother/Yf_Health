@@ -10,13 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.adapter.fourth.BjczAdapter;
+import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczAct;
-import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
 import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczHistroyAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
@@ -43,7 +42,7 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         setTitleMoreFontVisible(View.VISIBLE);
         mMainbjfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjfrag_swiperefreshlayout);
         mMainbjfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjfrag_recycler);
-        mBjczAdapter = new BjczAdapter(mActivity,new ArrayList<BjczPageInfo.BjczInfo>());
+        mBjczAdapter = new BjczAdapter(mActivity,new ArrayList<BjczPageInfo.ContentBean>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainbjfragRecycler.setLayoutManager(linearLayoutManager);
@@ -129,8 +128,8 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
 
     public void refreshDatas(BjczPageInfo bjczPageInfo)
     {
-        mBjczAdapter.setNewData(bjczPageInfo.getBjczInfoList());
-        if(bjczPageInfo.getBjczInfoList().size() < bjczPageInfo.getMaxSizeOfPerPage())
+        mBjczAdapter.setNewData(bjczPageInfo.getContent());
+        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
             mBjczAdapter.setEnableLoadMore(false);
         else
             mBjczAdapter.setEnableLoadMore(true);
@@ -138,9 +137,9 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
 
     public void loadMoreDatas(BjczPageInfo bjczPageInfo)
     {
-        mBjczAdapter.addData(bjczPageInfo.getBjczInfoList());
+        mBjczAdapter.addData(bjczPageInfo.getContent());
         mBjczAdapter.notifyDataSetChanged();
-        if(bjczPageInfo.getBjczInfoList().size() < bjczPageInfo.getMaxSizeOfPerPage())
+        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
             mBjczAdapter.setEnableLoadMore(false);
         else
             mBjczAdapter.setEnableLoadMore(true);
@@ -168,7 +167,7 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
             public void onClick(View v)
             {
                 if(basePopupWindow.isShowing()) basePopupWindow.dismiss();
-                SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
+                ((MainAct)mActivity).signOutAction();
             }
         });
         if(isUseDefaultTitleLine())

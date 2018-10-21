@@ -382,7 +382,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             public void onClick(View v)
             {
                 if(basePopupWindow.isShowing()) basePopupWindow.dismiss();
-                SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
+                    ((MainAct)mActivity).signOutAction();
             }
         });
         if(isUseDefaultTitleLine())

@@ -15,6 +15,7 @@ import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
 import ufhealth.integratedmachine.client.adapter.third.BjHistroyAdapter;
+import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjHistroyFrag_V;
@@ -146,7 +147,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             public void onClick(View v)
             {
                 if(basePopupWindow.isShowing()) basePopupWindow.dismiss();
-                SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
+                    ((MainAct)mActivity).signOutAction();
             }
         });
         if(isUseDefaultTitleLine())

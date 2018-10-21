@@ -1,7 +1,8 @@
 package ufhealth.integratedmachine.client.ui.main.activity.view;
 
-import android.view.Gravity;
 import android.view.View;
+import android.view.Gravity;
+import android.content.Intent;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -152,7 +153,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
             }
         });
         if(!getIntent().getBooleanExtra("islogined",false))
-            mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"account",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
+            mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"username",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
     }
 
     public void onClick(View view)
@@ -172,6 +173,25 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     public void signInFailure()
     {
         SignInAct.quitCrrentAccount(this,"账号发生异常，请重新登录！");
+        Intent intent = new Intent(this,SignInAct.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void signOutAction()
+    {
+        mMainPresenter.signOut();
+
+    }
+
+    public void signOutSuccess()
+    {
+        SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
+
+    }
+
+    public void signOutFailure()
+    {
 
     }
 

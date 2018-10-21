@@ -14,7 +14,7 @@ public class ModifyPasswordPresenter extends BaseMvp_Presenter<ModifyPasswordAct
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(ModifyPasswordModel.class).
-            putForm("oldpassword",oldPassword).putForm("newpassword",newPassword).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            putForm("oldPassword",oldPassword).putForm("newPassword",newPassword).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData>(this)
             {
                 public void onSuccess(BaseReturnData baseReturnData)
                 {

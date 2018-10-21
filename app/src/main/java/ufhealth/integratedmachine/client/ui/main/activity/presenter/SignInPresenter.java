@@ -15,12 +15,12 @@ import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenIntercepto
 
 public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
 {
-    public void signIn(final String account,final String password)
+    public void signIn(final String username,final String password)
     {
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(SignInModel.class).
-            putForm("account",account).putForm("password",password).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfo> userInfo)
                 {
@@ -34,7 +34,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                                 TokenInterceptor_PersistentStore interceptor = (TokenInterceptor_PersistentStore) interceptorList.get(index);
                                 interceptor.updateToken(NetClient.getInstance(getContext().getApplicationContext()).getRetrofit().baseUrl().host().trim(), userInfo.getData().getToken().trim());
                                 SharepreferenceUtils.storageObject(getContext(),"password",password);
-                                SharepreferenceUtils.storageObject(getContext(),"account",account);
+                                SharepreferenceUtils.storageObject(getContext(),"username",username);
                                 getViewLayer().getBaseApp().setUserInfos(userInfo.getData());
                                 getViewLayer().signInSuccess();
                                 return;

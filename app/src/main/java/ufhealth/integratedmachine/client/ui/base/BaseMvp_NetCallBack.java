@@ -1,12 +1,12 @@
 package ufhealth.integratedmachine.client.ui.base;
 
 import io.reactivex.Observer;
+import retrofit2.HttpException;
 import android.content.Context;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.net.SocketTimeoutException;
 import io.reactivex.disposables.Disposable;
-import retrofit2.adapter.rxjava.HttpException;
 import com.yuan.devlibrary._12_______Utils.NetUtils;
 import ufhealth.integratedmachine.client.network.NetFlags;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;

@@ -76,6 +76,7 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
     public void successOfModifyPassword()
     {
         /****************退出当前账号****************/
-        SignInAct.quitCrrentAccount(this,"修改密码成功！请重新登陆！");
+        showToast("修改密码成功！");
+        //SignInAct.quitCrrentAccount(this,"修改密码成功！请重新登陆！");
     }
 }
