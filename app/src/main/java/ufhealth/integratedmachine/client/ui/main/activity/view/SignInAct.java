@@ -41,7 +41,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     {
         mSignInPresenter = new SignInPresenter();
         bindBaseMvpPresenter(mSignInPresenter);
-        mSigninAccount.setText(SharepreferenceUtils.extractObject(this,"username",String.class).trim());
+        mSigninAccount.setText(null != SharepreferenceUtils.extractObject(this,"username",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"username",String.class).trim()) ? SharepreferenceUtils.extractObject(this,"username",String.class).trim() : "");
     }
 
     protected void initLogic()

@@ -11,27 +11,28 @@ import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjHistroyFr
 public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_V>
 {
     private int currentPageOfIndex;
+    private int currentPageOfMaxSize;
 
     public MainBjHistroyPresenter()
     {
-        currentPageOfIndex = 1;
-
+        currentPageOfIndex = 0;
+        currentPageOfMaxSize = 20;
     }
 
     public void refreshDatas()
     {
         if(isAttachContextAndViewLayer())
         {
-            currentPageOfIndex = 1;
+            currentPageOfIndex = 0;
             BaseMvp_EntranceOfModel.requestDatas(MainBjHistroyModel.class).
-            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjHistroyPageInfo> bjHistroyPageInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        currentPageOfIndex++;
                         getViewLayer().finishRefresh();
+                        currentPageOfIndex = currentPageOfMaxSize;
                         getViewLayer().refreshDatas(bjHistroyPageInfo.getData());
                     }
                 }
@@ -62,14 +63,14 @@ public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(MainBjHistroyModel.class).
-            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjHistroyPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjHistroyPageInfo> bjHistroyPageInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        currentPageOfIndex++;
                         getViewLayer().finishLoadMore();
+                        currentPageOfIndex += currentPageOfMaxSize;
                         getViewLayer().loadMoreDatas(bjHistroyPageInfo.getData());
                     }
                 }

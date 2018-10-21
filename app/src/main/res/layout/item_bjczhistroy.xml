@@ -34,7 +34,7 @@
                 android:singleLine="true"
                 android:text="报警时间 : 2018-10-18 20:19:18"
                 android:textColor="@color/default_font_gray"
-                android:textSize="28sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/item_bjczhistroy_status"
@@ -45,7 +45,7 @@
                 android:singleLine="true"
                 android:text="未处置"
                 android:textColor="@color/red"
-                android:textSize="30sp"
+                android:textSize="27sp"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -61,27 +61,57 @@
             android:layout_marginTop="20mm"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_oneline_left"
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="部门 : 炼油运行一部"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginRight="6mm"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_oneline_right"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+
+                    android:text="部门 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_oneline_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="炼油运行一部"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="设备 : 常减压装置"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginLeft="6mm"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+
+                    android:text="区域 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_oneline_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="2#常减压装置"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -90,56 +120,169 @@
             android:layout_marginBottom="12mm"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_twoline_left"
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="位置 : 成品泵403南"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginRight="6mm"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_twoline_right"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="位号 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_twoline_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="A1A003"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="类型 : 可燃气体"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginLeft="6mm"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="位置 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_twoline_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="成品泵403南"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30mm"
+            android:layout_marginBottom="12mm"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_threeline_left"
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="报警值 : ≥40vol%"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginRight="6mm"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/item_bjczhistroy_threeline_right"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="检查种类 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_threeline_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="氢气"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0mm"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:singleLine="true"
-                android:text="实时值 : ≥60vol%"
-                android:textColor="@color/default_font_black"
-                android:textSize="30sp" />
+                android:layout_marginLeft="6mm"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="报警条件 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_threeline_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="≥50%LLE/PPM"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20mm"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6mm"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="报警值 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_fourline_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="50%LLA/PPM"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0mm"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6mm"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:text="连续报警次数 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/item_bjczhistroy_fourline_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="1"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="27sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -171,19 +314,20 @@
                     android:singleLine="true"
                     android:text="误报"
                     android:textColor="@color/white"
-                    android:textSize="26sp" />
+                    android:textSize="26sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/item_bjczhistroy_process"
-                    android:layout_width="130mm"
-                    android:layout_height="60mm"
-                    android:layout_marginLeft="30mm"
+                    android:layout_width="140mm"
+                    android:layout_height="70mm"
                     android:background="@drawable/shape_rect_round_blue"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="立即处置"
                     android:textColor="@color/white"
-                    android:textSize="26sp" />
+                    android:textSize="28sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

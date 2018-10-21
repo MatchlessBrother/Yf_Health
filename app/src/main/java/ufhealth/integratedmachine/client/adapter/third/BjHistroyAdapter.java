@@ -11,31 +11,36 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
 
-public class BjHistroyAdapter extends BaseQuickAdapter<BjHistroyPageInfo.BjHistroyInfo, BaseViewHolder>
+public class BjHistroyAdapter extends BaseQuickAdapter<BjHistroyPageInfo.ContentBean, BaseViewHolder>
 {
     private Context mContext;
     private SimpleDateFormat mTimeFormat;
 
-    public BjHistroyAdapter(Context context,@Nullable List<BjHistroyPageInfo.BjHistroyInfo> data)
+    public BjHistroyAdapter(Context context,@Nullable List<BjHistroyPageInfo.ContentBean> data)
     {
         super(R.layout.item_mainbjhistroyfragment,data);
         mTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mContext = context;
     }
 
-    protected void convert(BaseViewHolder helper, BjHistroyPageInfo.BjHistroyInfo bjHistroyInfo)
+    protected void convert(BaseViewHolder helper, BjHistroyPageInfo.ContentBean bjHistroyInfo)
     {
-        switch(bjHistroyInfo.getStatusCode())
+        switch(bjHistroyInfo.getHandleStatus())
         {
-            case 0:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.red));break;
-            case 1:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.colorPrimary));break;
-        }helper.setText(R.id.item_mainbjhistroyfragment_status,null != bjHistroyInfo.getStatus() && !"".equals(bjHistroyInfo.getStatus().trim()) ? bjHistroyInfo.getStatus().trim() : "未知");
-        helper.setText(R.id.item_mainbjhistroyfragment_twoline_right,"类型 : " + (null != bjHistroyInfo.getType() && !"".equals(bjHistroyInfo.getType().trim()) ? bjHistroyInfo.getType().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_oneline_left,"部门 : " + (null != bjHistroyInfo.getPartment() && !"".equals(bjHistroyInfo.getPartment().trim()) ? bjHistroyInfo.getPartment().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_twoline_left,"位置 : " + (null != bjHistroyInfo.getPosition() && !"".equals(bjHistroyInfo.getPosition().trim()) ? bjHistroyInfo.getPosition().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_oneline_right,"设备 : " + (null != bjHistroyInfo.getEquipment() && !"".equals(bjHistroyInfo.getEquipment().trim()) ? bjHistroyInfo.getEquipment().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_threeline_left,"报警值 : " + (null != bjHistroyInfo.getFirstWarning() && !"".equals(bjHistroyInfo.getFirstWarning().trim()) ? bjHistroyInfo.getFirstWarning().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_threeline_right,"实时值 : " + (null != bjHistroyInfo.getSecondWarning() && !"".equals(bjHistroyInfo.getSecondWarning().trim()) ? bjHistroyInfo.getSecondWarning().trim() : "未知"));
-        helper.setText(R.id.item_mainbjhistroyfragment_time,"报警时间 : " + (null != bjHistroyInfo.getTime() && !"".equals(bjHistroyInfo.getTime().trim()) ? mTimeFormat.format(new Date(Long.valueOf(bjHistroyInfo.getTime().trim()))) : "未知"));
+            case 1:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.red));break;
+            case 2:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.colorPrimary));break;
+        }helper.setText(R.id.item_mainbjhistroyfragment_status,null != bjHistroyInfo.getHandleStatusDescription() && !"".equals(bjHistroyInfo.getHandleStatusDescription().trim()) ? bjHistroyInfo.getHandleStatusDescription().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_twoline_right,null != bjHistroyInfo.getAddress() && !"".equals(bjHistroyInfo.getAddress().trim()) ? bjHistroyInfo.getAddress().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_twoline_left,null != bjHistroyInfo.getSensorName() && !"".equals(bjHistroyInfo.getSensorName().trim()) ? bjHistroyInfo.getSensorName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_oneline_left,null != bjHistroyInfo.getDepartmentName() && !"".equals(bjHistroyInfo.getDepartmentName().trim()) ? bjHistroyInfo.getDepartmentName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_oneline_right,null != bjHistroyInfo.getDeviceAreaName() && !"".equals(bjHistroyInfo.getDeviceAreaName().trim()) ? bjHistroyInfo.getDeviceAreaName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_threeline_right,null != bjHistroyInfo.getAlarmSettingDescription() && !"".equals(bjHistroyInfo.getAlarmSettingDescription().trim()) ? bjHistroyInfo.getAlarmSettingDescription().trim() : "");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(null != bjHistroyInfo.getParentCategoryName() && !"".equals(bjHistroyInfo.getParentCategoryName().trim()) ? bjHistroyInfo.getParentCategoryName().trim() + "-": "");
+        stringBuffer.append(null != bjHistroyInfo.getChildCategoryName() && !"".equals(bjHistroyInfo.getChildCategoryName().trim()) ? bjHistroyInfo.getChildCategoryName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_threeline_left,stringBuffer.toString().trim());
+        helper.setText(R.id.item_mainbjhistroyfragment_fourline_right,bjHistroyInfo.getAlarmNumber() + "");
+        helper.setText(R.id.item_mainbjhistroyfragment_fourline_left,bjHistroyInfo.getAlarmValue() + bjHistroyInfo.getUnit().trim());
+        helper.setText(R.id.item_mainbjhistroyfragment_time,"报警时间 : " +  mTimeFormat.format(new Date(Long.valueOf(null != bjHistroyInfo.getAlarmStartTime() && !"".equals(bjHistroyInfo.getAlarmStartTime().trim()) ? bjHistroyInfo.getAlarmStartTime().trim() : String.valueOf(new Date().getTime())))));
     }
 }

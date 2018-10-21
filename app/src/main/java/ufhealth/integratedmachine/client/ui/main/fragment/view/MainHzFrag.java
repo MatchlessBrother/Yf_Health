@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
 import java.util.ArrayList;
 import android.content.Intent;
@@ -57,6 +58,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         super.initWidgets(rootView);
         setTitleContent("汇总统计");
         setTitleBack(R.mipmap.usericon);
+        setTitleMoreIcon(R.mipmap.searchicon);
+        setTitleMoreIconVisible(View.VISIBLE);
         mMainhzfragSj = (TextView)rootView.findViewById(R.id.mainhzfrag_sj);
         mMainhzfragSwcz = (TextView)rootView.findViewById(R.id.mainhzfrag_swcz);
         mMainhzfragTscz = (TextView)rootView.findViewById(R.id.mainhzfrag_tscz);
@@ -249,5 +252,12 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         });
         if(isUseDefaultTitleLine())
             basePopupWindow.showAsDropDown(mTitleBackBtn,12,6);
+    }
+
+    protected void onTitleMoreIconClick()
+    {
+        super.onTitleMoreIconClick();
+       /*if(!mDrawerLayout.isDrawerOpen(Gravity.END))
+            mDrawerLayout.openDrawer(Gravity.END);*/
     }
 }

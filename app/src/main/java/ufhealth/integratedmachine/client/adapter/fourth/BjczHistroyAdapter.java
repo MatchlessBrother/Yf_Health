@@ -10,26 +10,31 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.fourth.BjczHistroyPageInfo;
 
-public class BjczHistroyAdapter extends BaseQuickAdapter<BjczHistroyPageInfo.BjczHistroyInfo,BaseViewHolder>
+public class BjczHistroyAdapter extends BaseQuickAdapter<BjczHistroyPageInfo.ContentBean,BaseViewHolder>
 {
     private Context mContext;
     private SimpleDateFormat mTimeFormat;
 
-    public BjczHistroyAdapter(Context context,@Nullable List<BjczHistroyPageInfo.BjczHistroyInfo> data)
+    public BjczHistroyAdapter(Context context,@Nullable List<BjczHistroyPageInfo.ContentBean> data)
     {
         super(R.layout.item_bjczhistroy,data);
         mTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mContext = context;
     }
 
-    protected void convert(BaseViewHolder helper,BjczHistroyPageInfo.BjczHistroyInfo bjczHistroyInfo)
+    protected void convert(BaseViewHolder helper,BjczHistroyPageInfo.ContentBean bjczHistroyInfo)
     {
-        helper.setText(R.id.item_bjczhistroy_twoline_right,"类型 : " + (null != bjczHistroyInfo.getType() && !"".equals(bjczHistroyInfo.getType().trim()) ? bjczHistroyInfo.getType().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_oneline_left,"部门 : " + (null != bjczHistroyInfo.getPartment() && !"".equals(bjczHistroyInfo.getPartment().trim()) ? bjczHistroyInfo.getPartment().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_twoline_left,"位置 : " + (null != bjczHistroyInfo.getPosition() && !"".equals(bjczHistroyInfo.getPosition().trim()) ? bjczHistroyInfo.getPosition().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_oneline_right,"设备 : " + (null != bjczHistroyInfo.getEquipment() && !"".equals(bjczHistroyInfo.getEquipment().trim()) ? bjczHistroyInfo.getEquipment().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_threeline_left,"报警值 : " + (null != bjczHistroyInfo.getFirstWarning() && !"".equals(bjczHistroyInfo.getFirstWarning().trim()) ? bjczHistroyInfo.getFirstWarning().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_threeline_right,"实时值 : " + (null != bjczHistroyInfo.getSecondWarning() && !"".equals(bjczHistroyInfo.getSecondWarning().trim()) ? bjczHistroyInfo.getSecondWarning().trim() : "未知"));
-        helper.setText(R.id.item_bjczhistroy_time,"报警时间 : " + (null != bjczHistroyInfo.getTime() && !"".equals(bjczHistroyInfo.getTime().trim()) ? mTimeFormat.format(new Date(Long.valueOf(bjczHistroyInfo.getTime().trim()))) : "未知"));
+        helper.setText(R.id.item_bjczhistroy_twoline_right,null != bjczHistroyInfo.getAddress() && !"".equals(bjczHistroyInfo.getAddress().trim()) ? bjczHistroyInfo.getAddress().trim() : "");
+        helper.setText(R.id.item_bjczhistroy_twoline_left,null != bjczHistroyInfo.getSensorName() && !"".equals(bjczHistroyInfo.getSensorName().trim()) ? bjczHistroyInfo.getSensorName().trim() : "");
+        helper.setText(R.id.item_bjczhistroy_oneline_left,null != bjczHistroyInfo.getDepartmentName() && !"".equals(bjczHistroyInfo.getDepartmentName().trim()) ? bjczHistroyInfo.getDepartmentName().trim() : "");
+        helper.setText(R.id.item_bjczhistroy_oneline_right,null != bjczHistroyInfo.getDeviceAreaName() && !"".equals(bjczHistroyInfo.getDeviceAreaName().trim()) ? bjczHistroyInfo.getDeviceAreaName().trim() : "");
+        helper.setText(R.id.item_bjczhistroy_threeline_right,null != bjczHistroyInfo.getAlarmSettingDescription() && !"".equals(bjczHistroyInfo.getAlarmSettingDescription().trim()) ? bjczHistroyInfo.getAlarmSettingDescription().trim() : "");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(null != bjczHistroyInfo.getParentCategoryName() && !"".equals(bjczHistroyInfo.getParentCategoryName().trim()) ? bjczHistroyInfo.getParentCategoryName().trim() + "-": "");
+        stringBuffer.append(null != bjczHistroyInfo.getChildCategoryName() && !"".equals(bjczHistroyInfo.getChildCategoryName().trim()) ? bjczHistroyInfo.getChildCategoryName().trim() : "");
+        helper.setText(R.id.item_bjczhistroy_threeline_left,stringBuffer.toString().trim());
+        helper.setText(R.id.item_bjczhistroy_fourline_right,bjczHistroyInfo.getAlarmNumber() + "");
+        helper.setText(R.id.item_bjczhistroy_fourline_left,bjczHistroyInfo.getAlarmValue() + bjczHistroyInfo.getUnit().trim());
+        helper.setText(R.id.item_bjczhistroy_time,"报警时间 : " +  mTimeFormat.format(new Date(Long.valueOf(null != bjczHistroyInfo.getAlarmStartTime() && !"".equals(bjczHistroyInfo.getAlarmStartTime().trim()) ? bjczHistroyInfo.getAlarmStartTime().trim() : String.valueOf(new Date().getTime())))));
     }
 }

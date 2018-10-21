@@ -32,12 +32,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     private DrawerLayout mMainDrawerlayout;
     private SignInPresenter mSignInPresenter;
     private FragmentTabHost mFragmentTabHost;
+    private LinearLayout mMainhzfragConditions;
     private LinearLayout mMainjcfragConditions;
     private LinearLayout mMainbjhistroyfragConditions;
-    private String mTabSpecTv[] = { "汇总统计", "实时监测","历史报警","报警处置"};
-    private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class, MainBjHistroyFrag.class,MainBjFrag.class};
-    private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjHistroyFrag(),new MainBjFrag()};
-    private int[] mTabSpecImg= { R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bjhistroy,R.drawable.selector_tabspec_bj };
+    private String mTabSpecTv[] = { "汇总统计", "实时监测","报警处置","历史报警"};
+    private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class,MainBjFrag.class,MainBjHistroyFrag.class};
+    private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjFrag(),new MainBjHistroyFrag()};
+    private int[] mTabSpecImg= { R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bj,R.drawable.selector_tabspec_bjhistroy};
 
     protected int setLayoutResID()
     {
@@ -55,6 +56,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
         mViewPager = (ViewPager)rootView.findViewById(R.id.main_viewpager);
         mFragmentTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mMainDrawerlayout = (DrawerLayout)rootView.findViewById(R.id.main_drawerlayout);
+        mMainhzfragConditions = (LinearLayout)rootView.findViewById(R.id.mainhzfrag_conditions);
         mMainjcfragConditions = (LinearLayout)rootView.findViewById(R.id.mainjcfrag_conditions);
         mMainbjhistroyfragConditions = (LinearLayout)rootView.findViewById(R.id.mainbjhistroyfrag_conditions);
         /****************************************************************************************************/
@@ -129,23 +131,30 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
             public void onTabChanged(String tabId)
             {
                 mViewPager.setCurrentItem(mFragmentTabHost.getCurrentTab());
-                if(mFragmentTabHost.getCurrentTab() == 1)
+                if(mFragmentTabHost.getCurrentTab() == 0)
                 {
-                    mMainjcfragConditions.setVisibility(View.VISIBLE);
-                    mMainbjhistroyfragConditions.setVisibility(View.GONE);
-                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
-                else if(mFragmentTabHost.getCurrentTab() == 2)
-                {
-                   /*mMainjcfragConditions.setVisibility(View.GONE);
-                    mMainbjhistroyfragConditions.setVisibility(View.VISIBLE);
-                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);*/
+                    mMainhzfragConditions.setVisibility(View.VISIBLE);
                     mMainjcfragConditions.setVisibility(View.GONE);
                     mMainbjhistroyfragConditions.setVisibility(View.GONE);
                     mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
+                else if(mFragmentTabHost.getCurrentTab() == 1)
+                {
+                    mMainhzfragConditions.setVisibility(View.GONE);
+                    mMainjcfragConditions.setVisibility(View.VISIBLE);
+                    mMainbjhistroyfragConditions.setVisibility(View.GONE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+                else if(mFragmentTabHost.getCurrentTab() == 3)
+                {
+                    mMainhzfragConditions.setVisibility(View.GONE);
+                    mMainjcfragConditions.setVisibility(View.GONE);
+                    mMainbjhistroyfragConditions.setVisibility(View.VISIBLE);
+                    mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
                 else
                 {
+                    mMainhzfragConditions.setVisibility(View.GONE);
                     mMainjcfragConditions.setVisibility(View.GONE);
                     mMainbjhistroyfragConditions.setVisibility(View.GONE);
                     mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

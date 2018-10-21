@@ -9,14 +9,12 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import ufhealth.integratedmachine.client.base.BaseAct;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
-import ufhealth.integratedmachine.client.adapter.third.BjHistroyAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
-import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
+import ufhealth.integratedmachine.client.adapter.third.BjHistroyAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjHistroyFrag_V;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjHistroyPresenter;
@@ -42,7 +40,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         setTitleMoreIconVisible(View.VISIBLE);
         mMainbjhistroyfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainbjhistroyfrag_swiperefreshlayout);
         mMainbjhistroyfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainbjhistroyfrag_recycler);
-        mBjHistroyAdapter = new BjHistroyAdapter(mActivity,new ArrayList<BjHistroyPageInfo.BjHistroyInfo>());
+        mBjHistroyAdapter = new BjHistroyAdapter(mActivity,new ArrayList<BjHistroyPageInfo.ContentBean>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainbjhistroyfragRecycler.setLayoutManager(linearLayoutManager);
@@ -108,8 +106,8 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
 
     public void refreshDatas(BjHistroyPageInfo bjHistroyPageInfo)
     {
-        mBjHistroyAdapter.setNewData(bjHistroyPageInfo.getBjHistroyInfoList());
-        if(bjHistroyPageInfo.getBjHistroyInfoList().size() < bjHistroyPageInfo.getMaxSizeOfPerPage())
+        mBjHistroyAdapter.setNewData(bjHistroyPageInfo.getContent());
+        if(bjHistroyPageInfo.getContent().size() < bjHistroyPageInfo.getPageSize())
             mBjHistroyAdapter.setEnableLoadMore(false);
         else
             mBjHistroyAdapter.setEnableLoadMore(true);
@@ -117,9 +115,9 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
 
     public void loadMoreDatas(BjHistroyPageInfo bjHistroyPageInfo)
     {
-        mBjHistroyAdapter.addData(bjHistroyPageInfo.getBjHistroyInfoList());
+        mBjHistroyAdapter.addData(bjHistroyPageInfo.getContent());
         mBjHistroyAdapter.notifyDataSetChanged();
-        if(bjHistroyPageInfo.getBjHistroyInfoList().size() < bjHistroyPageInfo.getMaxSizeOfPerPage())
+        if(bjHistroyPageInfo.getContent().size() < bjHistroyPageInfo.getPageSize())
             mBjHistroyAdapter.setEnableLoadMore(false);
         else
             mBjHistroyAdapter.setEnableLoadMore(true);

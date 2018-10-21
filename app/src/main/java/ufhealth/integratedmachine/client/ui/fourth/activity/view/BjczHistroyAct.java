@@ -30,7 +30,7 @@ public class BjczHistroyAct extends BaseAct implements BjczHistroyAct_V,View.OnC
         super.initWidgets(rootView);
         setTitleContent("报警处置历史");
         mBjczHistroySwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.bjczhistroy_swiperefreshlayout);
-        mBjczHistroyAdapter = new BjczHistroyAdapter(mActivity,new ArrayList<BjczHistroyPageInfo.BjczHistroyInfo>());
+        mBjczHistroyAdapter = new BjczHistroyAdapter(mActivity,new ArrayList<BjczHistroyPageInfo.ContentBean>());
         mBjczHistroyRecycler = (RecyclerView)rootView.findViewById(R.id.bjczhistroy_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -97,8 +97,8 @@ public class BjczHistroyAct extends BaseAct implements BjczHistroyAct_V,View.OnC
 
     public void refreshDatas(BjczHistroyPageInfo bjczHistroyPageInfo)
     {
-        mBjczHistroyAdapter.setNewData(bjczHistroyPageInfo.getBjczHistroyInfoList());
-        if(bjczHistroyPageInfo.getBjczHistroyInfoList().size() < bjczHistroyPageInfo.getMaxSizeOfPerPage())
+        mBjczHistroyAdapter.setNewData(bjczHistroyPageInfo.getContent());
+        if(bjczHistroyPageInfo.getContent().size() < bjczHistroyPageInfo.getPageSize())
             mBjczHistroyAdapter.setEnableLoadMore(false);
         else
             mBjczHistroyAdapter.setEnableLoadMore(true);
@@ -106,9 +106,9 @@ public class BjczHistroyAct extends BaseAct implements BjczHistroyAct_V,View.OnC
 
     public void loadMoreDatas(BjczHistroyPageInfo bjczHistroyPageInfo)
     {
-        mBjczHistroyAdapter.addData(bjczHistroyPageInfo.getBjczHistroyInfoList());
+        mBjczHistroyAdapter.addData(bjczHistroyPageInfo.getContent());
         mBjczHistroyAdapter.notifyDataSetChanged();
-        if(bjczHistroyPageInfo.getBjczHistroyInfoList().size() < bjczHistroyPageInfo.getMaxSizeOfPerPage())
+        if(bjczHistroyPageInfo.getContent().size() < bjczHistroyPageInfo.getPageSize())
             mBjczHistroyAdapter.setEnableLoadMore(false);
         else
             mBjczHistroyAdapter.setEnableLoadMore(true);

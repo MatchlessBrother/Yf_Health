@@ -11,27 +11,28 @@ import ufhealth.integratedmachine.client.ui.fourth.activity.view_v.BjczHistroyAc
 public class BjczHistroyPresenter extends BaseMvp_Presenter<BjczHistroyAct_V>
 {
     private int currentPageOfIndex;
+    private int currentPageOfMaxSize;
 
     public BjczHistroyPresenter()
     {
-        currentPageOfIndex = 1;
-
+        currentPageOfIndex = 0;
+        currentPageOfMaxSize = 20;
     }
 
     public void refreshDatas()
     {
         if(isAttachContextAndViewLayer())
         {
-            currentPageOfIndex = 1;
+            currentPageOfIndex = 0;
             BaseMvp_EntranceOfModel.requestDatas(BjczHistroyModel.class).
-            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjczHistroyPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize+"").putForm("handleStatus","2").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjczHistroyPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjczHistroyPageInfo> bjczHistroyPageInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        currentPageOfIndex++;
                         getViewLayer().finishRefresh();
+                        currentPageOfIndex = currentPageOfMaxSize;
                         getViewLayer().refreshDatas(bjczHistroyPageInfo.getData());
                     }
                 }
@@ -62,14 +63,14 @@ public class BjczHistroyPresenter extends BaseMvp_Presenter<BjczHistroyAct_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(BjczHistroyModel.class).
-            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjczHistroyPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").putForm("handleStatus","2").convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<BjczHistroyPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjczHistroyPageInfo> bjczHistroyPageInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        currentPageOfIndex++;
                         getViewLayer().finishLoadMore();
+                        currentPageOfIndex += currentPageOfMaxSize;
                         getViewLayer().loadMoreDatas(bjczHistroyPageInfo.getData());
                     }
                 }

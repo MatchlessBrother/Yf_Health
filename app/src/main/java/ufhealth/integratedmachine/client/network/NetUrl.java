@@ -9,6 +9,8 @@ import retrofit2.http.Multipart;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
+import ufhealth.integratedmachine.client.bean.fourth.BjczHistroyPageInfo;
+import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
 
 public interface NetUrl
 {
@@ -26,4 +28,12 @@ public interface NetUrl
     @POST("/cgqkshbj/record/list.app")
     @Multipart
     Observable<BaseReturnData<BjczPageInfo>> requestAlarmDatas(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cgqkshbj/record/list.app")
+    @Multipart
+    Observable<BaseReturnData<BjHistroyPageInfo>> requestHistroyAlarmDatas(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cgqkshbj/record/list.app")
+    @Multipart
+    Observable<BaseReturnData<BjczHistroyPageInfo>> requestAlarmHistroyDatas(@PartMap Map<String, RequestBody> params);
 }
