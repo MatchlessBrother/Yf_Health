@@ -9,8 +9,9 @@ import retrofit2.http.Multipart;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
-import ufhealth.integratedmachine.client.bean.bjcz.BjczHistroyPageInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyPageInfo;
+import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyCondition;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczHistroyPageInfo;
 
 public interface NetUrl
 {
@@ -24,6 +25,9 @@ public interface NetUrl
     @POST("/auth/login.app")
     @Multipart
     Observable<BaseReturnData<UserInfo>> signIn(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cgqkshbj/record/loadCondition.app")
+    Observable<BaseReturnData<BjHistroyCondition>> requestHistroyAlarmOfCondition();
 
     @POST("/cgqkshbj/record/list.app")
     @Multipart

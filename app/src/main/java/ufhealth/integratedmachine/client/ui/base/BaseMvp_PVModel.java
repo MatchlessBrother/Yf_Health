@@ -299,7 +299,7 @@ public abstract class BaseMvp_PVModel<T>
     /**********************************************************************************************/
     /****************************************开始请求数据******************************************/
     /**********************************************************************************************/
-    public abstract void executeOfNet(Context context,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
+    public abstract void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
 
-    public abstract void executeOfLocal(Context context,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
+    public abstract void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
 }

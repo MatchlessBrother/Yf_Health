@@ -23,9 +23,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+
+import ufhealth.integratedmachine.client.adapter.lsbj.BjConditionAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+
+import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyCondition;
 import ufhealth.integratedmachine.client.bean.ssjc.JcType;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import ufhealth.integratedmachine.client.bean.ssjc.JcStatus;
@@ -61,23 +65,24 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
     private LinearLayout mMainbjhistroyfragZtAll;
     private LinearLayout mMainbjhistroyfragEtAll;
     private LinearLayout mMainbjhistroyfragStAll;
-    private JcConditionAdapter mJcConditionAdapter;
+    private BjConditionAdapter mBjConditionAdapter;
     private RecyclerView mMainbjhistroyfragRecyclerConditions;
     /******************************************************/
     /******************************************************/
     private Date mEndTimeDate;
     private Date mStartTimeDate;
-    private List<JcType> mLsList;
-    private List<JcStatus> mZtList;
     private int mCurrentSelectedLsItemOfIndex;
     private int mCurrentSelectedZtItemOfIndex;
     private Map<String,String> mConditionsMap;
     private TimePickerView mEndTimePickerView;
     private SimpleDateFormat mSimpleDateFormat;
     private TimePickerView mStartTimePickerView;
+    private BjHistroyCondition bjHistroyCondition;
     private OptionsPickerView mLsOptionsPickerView;
     private OptionsPickerView mZtOptionsPickerView;
+    private List<BjHistroyCondition.CategoryBean> mLsList;
     private MainBjHistroyPresenter mMainBjHistroyPresenter;
+    private List<BjHistroyCondition.AlarmLevelBean> mZtList;
 
     protected int setLayoutResID()
     {
@@ -114,12 +119,12 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         mMainbjhistroyfragZt = (TextView)((MainAct)mActivity).getRootView().findViewById(R.id.mainbjhistroyfrag_conditions_zt);
         mMainbjhistroyfragLx = (TextView)((MainAct)mActivity).getRootView().findViewById(R.id.mainbjhistroyfrag_conditions_lx);
         mDrawerLayout = (DrawerLayout)((MainAct)mActivity).getRootView().findViewById(R.id.main_drawerlayout);
-        mJcConditionAdapter = new JcConditionAdapter(mActivity,new ArrayList<MultiItemEntity>());
+        mBjConditionAdapter = new BjConditionAdapter(mActivity,new ArrayList<MultiItemEntity>());
         LinearLayoutManager linearLayoutManagerConditions = new LinearLayoutManager(mActivity);
         linearLayoutManagerConditions.setOrientation(LinearLayoutManager.VERTICAL);
         mMainbjhistroyfragRecyclerConditions.setLayoutManager(linearLayoutManagerConditions);
-        mJcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mMainbjhistroyfragRecyclerConditions.setAdapter(mJcConditionAdapter);
+        mBjConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mMainbjhistroyfragRecyclerConditions.setAdapter(mBjConditionAdapter);
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         /**********************************控件初始化第三部分**************************************/
         mLsOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener()
@@ -128,7 +133,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             {
                 mCurrentSelectedLsItemOfIndex = options1Index;
                 mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-                mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
+                mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
             }
         }) .setTitleText("类型选择").setLabels("","","").setTitleSize(33)
                 .setSubmitText("确定") .setCancelText("取消")
@@ -149,7 +154,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             {
                 mCurrentSelectedZtItemOfIndex = options1Index;
                 mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-                mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
+                mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
             }
         }) .setTitleText("状态选择").setLabels("","","").setTitleSize(33)
                 .setSubmitText("确定") .setCancelText("取消")
@@ -223,48 +228,6 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         mCurrentSelectedZtItemOfIndex = -1;
         mMainBjHistroyPresenter = new MainBjHistroyPresenter();
         bindBaseMvpPresenter(mMainBjHistroyPresenter);
-        /*************************************************
-         ********************模拟网络数据*****************
-         *************************************************/
-        mLsList = new ArrayList<>();
-        mLsList.add(new JcType(1,"高危"));
-        mLsList.add(new JcType(2,"危险"));
-        mLsList.add(new JcType(3,"警告"));
-        mLsList.add(new JcType(4,"预警"));
-        mLsList.add(new JcType(5,"注意"));
-        mLsOptionsPickerView.setNPicker(mLsList,null,null);
-        mCurrentSelectedLsItemOfIndex = 0;
-        mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-        mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
-
-        mZtList = new ArrayList<>();
-        mZtList.add(new JcStatus(1,"未开始"));
-        mZtList.add(new JcStatus(2,"准备开始"));
-        mZtList.add(new JcStatus(3,"已开始"));
-        mZtList.add(new JcStatus(4,"进行中"));
-        mZtList.add(new JcStatus(5,"已完成"));
-        mZtList.add(new JcStatus(6,"准备结束"));
-        mZtList.add(new JcStatus(7,"已结束"));
-        mZtOptionsPickerView.setNPicker(mZtList,null,null);
-        mCurrentSelectedZtItemOfIndex = 0;
-        mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-        mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
-
-        JcParentCondition jcParentCondition  = new JcParentCondition(0,false,"全部");
-        List<MultiItemEntity> conditions = new ArrayList<>();
-        conditions.add(jcParentCondition);
-        for (int parentIndex = 1; parentIndex <= 6; parentIndex++)
-        {
-            JcParentCondition parentCondition = new JcParentCondition(parentIndex,false,"部门" + parentIndex);
-            for (int childIndex = 1; childIndex <= 6; childIndex++)
-            {
-                JcChildCondition childCondition = new JcChildCondition(childIndex,false,"区域" + childIndex);
-                parentCondition.addSubItem(childCondition);
-            }
-            conditions.add(parentCondition);
-        }
-        mJcConditionAdapter.initAdapterConfigure(jcParentCondition);
-        mJcConditionAdapter.setNewData(conditions);
     }
 
     protected void initLogic()
@@ -276,6 +239,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         mMainbjhistroyfrag_SureBtn.setOnClickListener(this);
         mMainbjhistroyfrag_ResetBtn.setOnClickListener(this);
         mMainBjHistroyPresenter.refreshDatas();
+        mMainBjHistroyPresenter.getDatasOfCondition();
         mMainbjhistroyfragSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             public void onRefresh()
@@ -352,17 +316,23 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             }
             case R.id.mainbjhistroyfrag_conditions_reset:
             {
-                mJcConditionAdapter.initAdapterConfigure((JcParentCondition) mJcConditionAdapter.getData().get(0));
-                mJcConditionAdapter.notifyDataSetChanged();
-
-                mCurrentSelectedLsItemOfIndex = 0;
-                mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-                mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
-
-                mCurrentSelectedZtItemOfIndex = 0;
-                mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-                mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
-
+                if(mBjConditionAdapter.getData().size() > 0)
+                {
+                    mBjConditionAdapter.initAdapterConfigure((BjHistroyCondition.DepartmentBean) mBjConditionAdapter.getData().get(0));
+                    mBjConditionAdapter.notifyDataSetChanged();
+                }
+                if(mLsList.size() > 0)
+                {
+                    mCurrentSelectedLsItemOfIndex = 0;
+                    mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
+                    mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
+                }
+                if(mZtList.size() > 0)
+                {
+                    mCurrentSelectedZtItemOfIndex = 0;
+                    mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
+                    mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
+                }
                 mEndTimeDate = null;
                 mStartTimeDate = null;
                 mMainbjhistroyfragEt.setText("");
@@ -417,6 +387,67 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             mBjHistroyAdapter.setEnableLoadMore(true);
     }
 
+    public void getSuccessOfCondition(BjHistroyCondition bjHistroyCondition)
+    {
+        /*************************************************
+         ********************模拟网络数据*****************
+         *************************************************/
+       /* mLsList = new ArrayList<>();
+        mLsList.add(new JcType(1,"高危"));
+        mLsList.add(new JcType(2,"危险"));
+        mLsList.add(new JcType(3,"警告"));
+        mLsList.add(new JcType(4,"预警"));
+        mLsList.add(new JcType(5,"注意"));*/
+
+        mLsList = new ArrayList<>();
+        mCurrentSelectedLsItemOfIndex = 0;
+        mLsList.addAll(bjHistroyCondition.getCategory());
+        mLsOptionsPickerView.setNPicker(mLsList,null,null);
+        mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
+        mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getName().trim() : "");
+
+
+       /* mZtList = new ArrayList<>();
+        mZtList.add(new JcStatus(1,"未开始"));
+        mZtList.add(new JcStatus(2,"准备开始"));
+        mZtList.add(new JcStatus(3,"已开始"));
+        mZtList.add(new JcStatus(4,"进行中"));
+        mZtList.add(new JcStatus(5,"已完成"));
+        mZtList.add(new JcStatus(6,"准备结束"));
+        mZtList.add(new JcStatus(7,"已结束"));*/
+        mZtList = new ArrayList<>();
+        mCurrentSelectedZtItemOfIndex = 0;
+        mZtList.addAll(bjHistroyCondition.getAlarmLevel());
+        mZtOptionsPickerView.setNPicker(mZtList,null,null);
+        mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
+        mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getName().trim() : "");
+
+
+        //JcParentCondition jcParentCondition  = new JcParentCondition(0,false,"全部");
+        /*conditions.add(jcParentCondition);
+        for (int parentIndex = 1; parentIndex <= 6; parentIndex++)
+        {
+            JcParentCondition parentCondition = new JcParentCondition(parentIndex,false,"部门" + parentIndex);
+            for (int childIndex = 1; childIndex <= 6; childIndex++)
+            {
+                JcChildCondition childCondition = new JcChildCondition(childIndex,false,"区域" + childIndex);
+                parentCondition.addSubItem(childCondition);
+            }
+            conditions.add(parentCondition);
+        }*/
+        for(int parrentIndex = 0;parrentIndex < bjHistroyCondition.getDepartment().size();parrentIndex++)
+        {
+            for(int childIndex = 0;childIndex < bjHistroyCondition.getDepartment().get(parrentIndex).getDeviceAreaList().size();childIndex++)
+            {
+                bjHistroyCondition.getDepartment().get(parrentIndex).addSubItem(bjHistroyCondition.getDepartment().get(parrentIndex).getDeviceAreaList().get(childIndex));
+            }
+        }
+        List<MultiItemEntity> conditions = new ArrayList<>();
+        conditions.addAll(bjHistroyCondition.getDepartment());
+        mBjConditionAdapter.initAdapterConfigure(null != bjHistroyCondition.getDepartment() && bjHistroyCondition.getDepartment().size() > 0 ? bjHistroyCondition.getDepartment().get(0) : null);
+        mBjConditionAdapter.setNewData(conditions);
+    }
+
     protected void onTitleBackClick()
     {
         final View basePopupWindowContent = LayoutInflater.from(mActivity).inflate(R.layout.dialog_signin_exit,null);
@@ -465,20 +496,20 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
 
 
         if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())
-            mConditionsMap.put("type",String.valueOf(mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeCode()));
+            mConditionsMap.put("type",String.valueOf(mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText()));
         else
             mConditionsMap.put("type","");
 
 
         if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())
-            mConditionsMap.put("status",String.valueOf(mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusCode()));
+            mConditionsMap.put("status",String.valueOf(mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText()));
         else
             mConditionsMap.put("status","");
 
 
-        mConditionsMap.put("partmentId",String.valueOf(mJcConditionAdapter.getmSelectedParentCode()));
-        if(mJcConditionAdapter.isSelectedChildCondition())
-            mConditionsMap.put("areaId",String.valueOf(mJcConditionAdapter.getmSelectedChildCode()));
+        mConditionsMap.put("partmentId",String.valueOf(mBjConditionAdapter.getmSelectedParentCode()));
+        if(mBjConditionAdapter.isSelectedChildCondition())
+            mConditionsMap.put("areaId",String.valueOf(mBjConditionAdapter.getmSelectedChildCode()));
         else
         {
             if(mConditionsMap.containsKey("areaId"))

@@ -15,7 +15,7 @@ public class BjczPresenter extends BaseMvp_Presenter<BjczAct_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(BjczModel.class).
-            putForm("content",disposeAlarmOfDiscription).putFilesPath(disposeAlarmOfImgs).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            putForm("content",disposeAlarmOfDiscription).putFilesPath(disposeAlarmOfImgs).convertForms().executeOfNet(getContext(),BjczModel.UploadData,new BaseMvp_LocalCallBack<BaseReturnData>(this)
             {
                 public void onSuccess(BaseReturnData baseReturnData)
                 {

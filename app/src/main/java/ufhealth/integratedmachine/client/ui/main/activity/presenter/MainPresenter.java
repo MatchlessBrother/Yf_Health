@@ -17,7 +17,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
     {
         if(isAttachContextAndViewLayer())
         {
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.SignOut,new BaseMvp_LocalCallBack<BaseReturnData>(this)
             {
                 public void onSuccess(BaseReturnData baseReturnData)
                 {

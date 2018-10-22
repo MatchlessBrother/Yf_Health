@@ -6,13 +6,13 @@ import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
 public class MainHzModel extends BaseMvp_PVModel
 {
-    public void executeOfNet(Context context, BaseMvp_LocalCallBack localCallBack)
+    public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
         localCallBack.onFinish();
     }
 
-    public void executeOfLocal(Context context, BaseMvp_LocalCallBack localCallBack)
+    public void executeOfLocal(Context context, int localRequestCode, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
         localCallBack.onFinish();

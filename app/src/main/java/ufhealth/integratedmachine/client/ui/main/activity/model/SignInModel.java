@@ -10,13 +10,18 @@ import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
 public class SignInModel extends BaseMvp_PVModel
 {
-    public void executeOfNet(Context context,final BaseMvp_LocalCallBack localCallBack)
+    public static final int SignIn = 0x0001;
+
+    public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
-        NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));
+        switch(netRequestCode)
+        {
+            case SignIn:NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
+        }
     }
 
-    public void executeOfLocal(Context context, BaseMvp_LocalCallBack localCallBack)
+    public void executeOfLocal(Context context, int localRequestCode, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
         localCallBack.onFinish();

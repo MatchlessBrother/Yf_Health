@@ -20,7 +20,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(SignInModel.class).
-            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),SignInModel.SignIn,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfo> userInfo)
                 {
