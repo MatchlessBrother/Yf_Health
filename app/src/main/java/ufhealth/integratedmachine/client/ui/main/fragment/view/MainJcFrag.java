@@ -23,21 +23,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import ufhealth.integratedmachine.client.base.BaseAct;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import ufhealth.integratedmachine.client.bean.ssjc.JcType;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import ufhealth.integratedmachine.client.bean.second.JcType;
-import ufhealth.integratedmachine.client.bean.second.JcStatus;
+import ufhealth.integratedmachine.client.bean.ssjc.JcStatus;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.bean.second.JcChildCondition;
-import ufhealth.integratedmachine.client.bean.second.JcParentCondition;
+import ufhealth.integratedmachine.client.bean.ssjc.JcChildCondition;
+import ufhealth.integratedmachine.client.bean.ssjc.JcParentCondition;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
-import ufhealth.integratedmachine.client.ui.main.activity.view.SignInAct;
-import ufhealth.integratedmachine.client.adapter.second.JcConditionAdapter;
+import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainJcPresenter;
@@ -220,7 +218,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         mMainJcPresenter = new MainJcPresenter();
         bindBaseMvpPresenter(mMainJcPresenter);
         /*************************************************
-        ********************模拟网络数据*****************
+        *********************模拟网络数据*****************
         *************************************************/
         mLsList = new ArrayList<>();
         mLsList.add(new JcType(1,"高危"));
@@ -331,20 +329,18 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
                 mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
                 mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
 
-
                 mCurrentSelectedZtItemOfIndex = 0;
                 mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
                 mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
 
-
+                mEndTimeDate = null;
+                mStartTimeDate = null;
+                mMainjcfragEt.setText("");
+                mMainjcfragSt.setText("");
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                mStartTimeDate = new Date();
-                mEndTimeDate = new Date();
-                mEndTimePickerView.setDate(calendar);
+                calendar.setTime(new Date());/**********/
                 mStartTimePickerView.setDate(calendar);
-                mMainjcfragEt.setText(mSimpleDateFormat.format(mEndTimeDate));
-                mMainjcfragSt.setText(mSimpleDateFormat.format(mStartTimeDate));
+                mEndTimePickerView.setDate(calendar);
                 break;
             }
             case R.id.mainjcfrag_conditions_sure:

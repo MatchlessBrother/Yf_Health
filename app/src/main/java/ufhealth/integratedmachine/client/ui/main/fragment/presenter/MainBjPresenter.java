@@ -1,7 +1,7 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.presenter;
 
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
-import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;

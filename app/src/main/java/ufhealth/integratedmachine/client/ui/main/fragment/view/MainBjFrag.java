@@ -11,13 +11,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
-import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.adapter.fourth.BjczAdapter;
+import ufhealth.integratedmachine.client.adapter.bjcz.BjczAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
-import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczAct;
+import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
-import ufhealth.integratedmachine.client.ui.fourth.activity.view.BjczHistroyAct;
+import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczHistroyAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjPresenter;
 

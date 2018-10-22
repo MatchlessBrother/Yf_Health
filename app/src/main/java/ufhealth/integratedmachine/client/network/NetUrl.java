@@ -8,9 +8,9 @@ import io.reactivex.Observable;
 import retrofit2.http.Multipart;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
-import ufhealth.integratedmachine.client.bean.fourth.BjczPageInfo;
-import ufhealth.integratedmachine.client.bean.fourth.BjczHistroyPageInfo;
-import ufhealth.integratedmachine.client.bean.third.BjHistroyPageInfo;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczHistroyPageInfo;
+import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyPageInfo;
 
 public interface NetUrl
 {

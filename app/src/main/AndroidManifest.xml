@@ -59,17 +59,17 @@
         </activity>
 
         <activity
-            android:name=".ui.fourth.activity.view.BjczHistroyAct"
+            android:name=".ui.bjcz.activity.view.BjczHistroyAct"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".ui.fourth.activity.view.BjczAct"
+            android:name=".ui.bjcz.activity.view.BjczAct"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".ui.fourth.activity.view.BjczPreviewPhotoAct"
+            android:name=".ui.bjcz.activity.view.BjczPreviewPhotoAct"
             android:screenOrientation="portrait">
         </activity>
 
