@@ -97,7 +97,7 @@ public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_
         }
     }
 
-    public void getDatasOfCondition()
+    public void getDatasOfCondition(final boolean isNeedDrawableLayout)
     {
         if(isAttachContextAndViewLayer())
         {
@@ -108,7 +108,7 @@ public class MainBjHistroyPresenter extends BaseMvp_Presenter<MainBjHistroyFrag_
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().getSuccessOfCondition(bjHistroyCondition.getData());
+                        getViewLayer().getSuccessOfCondition(bjHistroyCondition.getData(),isNeedDrawableLayout);
                     }
                 }
             });

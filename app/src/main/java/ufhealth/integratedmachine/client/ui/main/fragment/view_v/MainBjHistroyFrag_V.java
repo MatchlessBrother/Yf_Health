@@ -10,5 +10,5 @@ public interface MainBjHistroyFrag_V extends BaseMvp_View
     void finishLoadMore();
     void refreshDatas(BjHistroyPageInfo bjHistroyPageInfo);
     void loadMoreDatas(BjHistroyPageInfo bjHistroyPageInfo);
-    void getSuccessOfCondition(BjHistroyCondition bjHistroyCondition);
+    void getSuccessOfCondition(BjHistroyCondition bjHistroyCondition,boolean isNeedDrawableLayout);
 }
