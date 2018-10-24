@@ -22,6 +22,8 @@ import android.support.v7.widget.GridLayoutManager;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -32,7 +34,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import ufhealth.integratedmachine.client.bean.hztj.BjTypeInfo;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.adapter.hztj.BjTypeAdapter;
+import ufhealth.integratedmachine.client.adapter.hztj.TjTypeAdapter;
 import ufhealth.integratedmachine.client.bean.ssjc.JcChildCondition;
 import ufhealth.integratedmachine.client.bean.ssjc.JcParentCondition;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
@@ -47,7 +49,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
     private TextView mMainhzfragSwcz;
     private TextView mMainhzfragTscz;
     private RecyclerView mRecyclerView;
-    private BjTypeAdapter mBjTypeAdapter;
+    private TjTypeAdapter mTjTypeAdapter;
     private TextView mMainhzfragBarchartText;
     /******************************************************/
     /******************************************************/
@@ -62,7 +64,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
     private LinearLayout mMainhzfragZtAll;
     private LinearLayout mMainhzfragEtAll;
     private LinearLayout mMainhzfragStAll;
-    private JcConditionAdapter mJcConditionAdapter;
+    private TjConditionAdapter mTjConditionAdapter;
     private RecyclerView mMainhzfragRecyclerConditions;
     /******************************************************/
     /******************************************************/
@@ -98,13 +100,13 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragTscz = (TextView)rootView.findViewById(R.id.mainhzfrag_tscz);
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.mainhzfrag_recyclerview);
         mMainhzfragBarchartText = (TextView)rootView.findViewById(R.id.mainhzfrag_barchart_text);
-        mBjTypeAdapter = new BjTypeAdapter(mActivity,new ArrayList<BjTypeInfo>());
+        mTjTypeAdapter = new TjTypeAdapter(mActivity,new ArrayList<BjTypeInfo>());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,3);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setFocusableInTouchMode(false);
-        mRecyclerView.setAdapter(mBjTypeAdapter);
+        mRecyclerView.setAdapter(mTjTypeAdapter);
         /**********************************控件初始化第二部分**************************************/
         mMainhzfragRecyclerConditions = (RecyclerView)((MainAct)mActivity).getRootView().findViewById(R.id.mainhzfrag_conditions_recycler);
         mMainhzfragStAll = (LinearLayout)((MainAct)mActivity).getRootView().findViewById(R.id.mainhzfrag_conditions_starttime_all);
@@ -118,12 +120,12 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragZt = (TextView)((MainAct)mActivity).getRootView().findViewById(R.id.mainhzfrag_conditions_zt);
         mMainhzfragLx = (TextView)((MainAct)mActivity).getRootView().findViewById(R.id.mainhzfrag_conditions_lx);
         mDrawerLayout = (DrawerLayout)((MainAct)mActivity).getRootView().findViewById(R.id.main_drawerlayout);
-        mJcConditionAdapter = new JcConditionAdapter(mActivity,new ArrayList<MultiItemEntity>());
+        mTjConditionAdapter = new TjConditionAdapter(mActivity,new ArrayList<MultiItemEntity>());
         LinearLayoutManager linearLayoutManagerConditions = new LinearLayoutManager(mActivity);
         linearLayoutManagerConditions.setOrientation(LinearLayoutManager.VERTICAL);
         mMainhzfragRecyclerConditions.setLayoutManager(linearLayoutManagerConditions);
-        mJcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mMainhzfragRecyclerConditions.setAdapter(mJcConditionAdapter);
+        mTjConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mMainhzfragRecyclerConditions.setAdapter(mTjConditionAdapter);
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         /**********************************控件初始化第三部分**************************************/
         mLsOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener()
@@ -266,8 +268,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             }
             conditions.add(parentCondition);
         }
-        mJcConditionAdapter.initAdapterConfigure(jcParentCondition);
-        mJcConditionAdapter.setNewData(conditions);
+        mTjConditionAdapter.initAdapterConfigure(jcParentCondition);
+        mTjConditionAdapter.setNewData(conditions);
     }
 
     protected void initLogic()
@@ -319,8 +321,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             }
             bjTypeInfoList.add(bjTypeInfo);
         }
-        mBjTypeAdapter.getData().addAll(bjTypeInfoList);
-        mBjTypeAdapter.notifyDataSetChanged();
+        mTjTypeAdapter.getData().addAll(bjTypeInfoList);
+        mTjTypeAdapter.notifyDataSetChanged();
     }
 
     public void onClick(View view)
@@ -390,8 +392,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             }
             case R.id.mainhzfrag_conditions_reset:
             {
-                mJcConditionAdapter.initAdapterConfigure((JcParentCondition) mJcConditionAdapter.getData().get(0));
-                mJcConditionAdapter.notifyDataSetChanged();
+                mTjConditionAdapter.initAdapterConfigure((JcParentCondition) mJcConditionAdapter.getData().get(0));
+                mTjConditionAdapter.notifyDataSetChanged();
 
                 mCurrentSelectedLsItemOfIndex = 0;
                 mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
@@ -483,9 +485,9 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             mConditionsMap.put("status","");
 
 
-        mConditionsMap.put("partmentId",String.valueOf(mJcConditionAdapter.getmSelectedParentCode()));
-        if(mJcConditionAdapter.isSelectedChildCondition())
-            mConditionsMap.put("areaId",String.valueOf(mJcConditionAdapter.getmSelectedChildCode()));
+        mConditionsMap.put("partmentId",String.valueOf(mTjConditionAdapter.getmSelectedParentCode()));
+        if(mTjConditionAdapter.isSelectedChildCondition())
+            mConditionsMap.put("areaId",String.valueOf(mTjConditionAdapter.getmSelectedChildCode()));
         else
         {
             if(mConditionsMap.containsKey("areaId"))

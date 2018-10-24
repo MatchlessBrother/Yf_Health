@@ -35,10 +35,10 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
     private LinearLayout mMainhzfragConditions;
     private LinearLayout mMainjcfragConditions;
     private LinearLayout mMainbjhistroyfragConditions;
-    private String mTabSpecTv[] = { "汇总统计", "实时监测","报警处置","历史报警"};
-    private Class[] mTabSpecFragClass = { MainHzFrag.class,MainJcFrag.class,MainBjFrag.class,MainBjHistroyFrag.class};
+    private String mTabSpecTv[] = new String[]{ "汇总统计", "实时监测","报警处置","历史报警"};
+    private Class[] mTabSpecFragClass = new Class[]{ MainHzFrag.class,MainJcFrag.class,MainBjFrag.class,MainBjHistroyFrag.class};
     private Fragment[] mTabSpecFrag = new Fragment[]{new MainHzFrag(),new MainJcFrag(),new MainBjFrag(),new MainBjHistroyFrag()};
-    private int[] mTabSpecImg= { R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bj,R.drawable.selector_tabspec_bjhistroy};
+    private int[] mTabSpecImg= new int[]{ R.drawable.selector_tabspec_hz, R.drawable.selector_tabspec_jc,R.drawable.selector_tabspec_bj,R.drawable.selector_tabspec_bjhistroy};
 
     protected int setLayoutResID()
     {
@@ -63,7 +63,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
         mFragmentTabHost.setup(this,getSupportFragmentManager(),R.id.main_viewpager);
         mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mFragmentTabHost.getTabWidget().setDividerDrawable(null);
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(0);
         for(int index = 0;index < mTabSpecTv.length;index++)
         {
             TabHost.TabSpec tabSpec = mFragmentTabHost.newTabSpec(mTabSpecTv[index]).setIndicator(getTabSpecView(index));
@@ -130,7 +130,6 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
         {
             public void onTabChanged(String tabId)
             {
-                mViewPager.setCurrentItem(mFragmentTabHost.getCurrentTab());
                 if(mFragmentTabHost.getCurrentTab() == 0)
                 {
                     mMainhzfragConditions.setVisibility(View.VISIBLE);
@@ -158,7 +157,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
                     mMainjcfragConditions.setVisibility(View.GONE);
                     mMainbjhistroyfragConditions.setVisibility(View.GONE);
                     mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
+                }mViewPager.setCurrentItem(mFragmentTabHost.getCurrentTab());
             }
         });
         if(!getIntent().getBooleanExtra("islogined",false))

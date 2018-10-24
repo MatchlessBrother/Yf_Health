@@ -224,13 +224,13 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
 
     protected void initLogic()
     {
-        mMainBjHistroyPresenter.refreshDatas();
+        mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
         mMainBjHistroyPresenter.getDatasOfCondition(false);
         mMainbjhistroyfragSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             public void onRefresh()
             {
-                mMainBjHistroyPresenter.refreshDatas();
+                mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
             }
         });
 
@@ -239,7 +239,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         {
             public void onLoadMoreRequested()
             {
-                mMainBjHistroyPresenter.loadMoreDatas();
+                mMainBjHistroyPresenter.loadMoreDatas(mConditionsMap);
             }
         },mMainbjhistroyfragRecycler);
 
@@ -262,6 +262,11 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
     public void onClick(View view)
     {
         super.onClick(view);
+        if(mBjHistroyCondition == null)
+        {
+            mMainBjHistroyPresenter.getDatasOfCondition(true);
+            return;
+        }
         switch(view.getId())
         {
             case R.id.mainbjhistroyfrag_conditions_lx_all:
@@ -313,13 +318,19 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
                 mBjConditionAdapter.initAdapterConfigure(mBjConditionAdapter.getData().size() > 0 ? (BjHistroyCondition.DepartmentBean)mBjConditionAdapter.getData().get(0) : null);
                 mBjConditionAdapter.notifyDataSetChanged();
 
-                mCurrentSelectedLsItemOfIndex = mLsList.size() > 0 ? 0 : -1;
-                if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-                mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
+                if(null != mLsList)
+                {
+                    mCurrentSelectedLsItemOfIndex = mLsList.size() > 0 ? 0 : -1;
+                    if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
+                    mMainbjhistroyfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
+                }
 
-                mCurrentSelectedZtItemOfIndex = mZtList.size() > 0 ? 0 : -1;
-                if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-                mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
+                if(null != mZtList)
+                {
+                    mCurrentSelectedZtItemOfIndex = mZtList.size() > 0 ? 0 : -1;
+                    if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
+                    mMainbjhistroyfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
+                }
 
                 mEndTimeDate = null;
                 mStartTimeDate = null;
@@ -335,10 +346,7 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             {
                 updateConditionsMap();
                 mDrawerLayout.closeDrawers();
-                StringBuffer buffer = new StringBuffer();
-                for(Map.Entry<String,String> entry : mConditionsMap.entrySet())
-                    buffer.append(entry.getKey() + "：" + entry.getValue() + "\r\n");
-                showToast(buffer.toString().trim());
+                mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
                 break;
             }
         }
@@ -396,36 +404,35 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             mConditionsMap.put("endTime",mSimpleDateFormat.format(mEndTimeDate));
 
         if(null == mStartTimeDate)
-            mConditionsMap.put("startTime","");
+            mConditionsMap.put("beginTime","");
         else
-            mConditionsMap.put("startTime",mSimpleDateFormat.format(mStartTimeDate));
+            mConditionsMap.put("beginTime",mSimpleDateFormat.format(mStartTimeDate));
 
         if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())
-            mConditionsMap.put("type",String.valueOf(null != mLsList.get(mCurrentSelectedLsItemOfIndex).getId() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getId().trim() : ""));
+            mConditionsMap.put("categoryId",String.valueOf(null != mLsList.get(mCurrentSelectedLsItemOfIndex).getId() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getId().trim() : ""));
         else
-            mConditionsMap.put("type","");
+            mConditionsMap.put("categoryId","");
 
         if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())
-            mConditionsMap.put("status",String.valueOf(null != mZtList.get(mCurrentSelectedZtItemOfIndex).getId() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getId().trim() : ""));
+            mConditionsMap.put("alarmId",String.valueOf(null != mZtList.get(mCurrentSelectedZtItemOfIndex).getId() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getId().trim() : ""));
         else
-            mConditionsMap.put("status","");
-
-        mConditionsMap.put("partmentId",String.valueOf(mBjConditionAdapter.getmSelectedParentCode()));
+            mConditionsMap.put("alarmId","");
+        mConditionsMap.put("departmentId",String.valueOf(mBjConditionAdapter.getmSelectedParentCode() != -1 ? mBjConditionAdapter.getmSelectedParentCode() : ""));
         if(mBjConditionAdapter.isSelectedChildCondition())
-            mConditionsMap.put("areaId",String.valueOf(mBjConditionAdapter.getmSelectedChildCode()));
+            mConditionsMap.put("deviceAreaId",String.valueOf(mBjConditionAdapter.getmSelectedChildCode()));
         else
         {
-            if(mConditionsMap.containsKey("areaId"))
+            if(mConditionsMap.containsKey("deviceAreaId"))
             {
-                mConditionsMap.remove("areaId");
-                mConditionsMap.put("areaId","");
+                mConditionsMap.remove("deviceAreaId");
+                mConditionsMap.put("deviceAreaId","");
             }
         }
     }
 
     protected void onTitleMoreIconClick()
     {
-        super.onTitleMoreFontClick();
+        super.onTitleMoreIconClick();
         if(null != mBjHistroyCondition)
         {
             if(!mDrawerLayout.isDrawerOpen(Gravity.END))

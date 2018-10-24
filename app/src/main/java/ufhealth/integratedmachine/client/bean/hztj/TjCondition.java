@@ -3,6 +3,10 @@ package ufhealth.integratedmachine.client.bean.hztj;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.contrarywind.interfaces.IPickerViewData;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.chad.library.adapter.base.entity.AbstractExpandableItem;
+import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 
 public class TjCondition implements Parcelable
 {
@@ -25,7 +29,8 @@ public class TjCondition implements Parcelable
         this.departmentDeviceVos = departmentDeviceVos;
     }
 
-    public static class CategoryVosBean implements Parcelable{
+    public static class CategoryVosBean implements Parcelable, IPickerViewData
+    {
         /**
          * id :
          * name : 全部
@@ -41,6 +46,11 @@ public class TjCondition implements Parcelable
         private String parentSensorCategoryName;
         private String createTime;
         private String isDelete;
+
+        public String getPickerViewText()
+        {
+            return name.trim();
+        }
 
         public String getId() {
             return id;
@@ -130,16 +140,34 @@ public class TjCondition implements Parcelable
         };
     }
 
-    public static class DepartmentDeviceVosBean implements Parcelable{
+    public static class DepartmentDeviceVosBean extends AbstractExpandableItem<TjCondition.DepartmentDeviceVosBean.DeviceAreaListBean> implements MultiItemEntity,Parcelable{
         /**
          * departmentId :
          * departmentName : 全部
          * deviceAreaList : [{"id":"","departmentId":"","departmentName":"炼油运行三部","name":"1#常减压装置","peopleId":"","peopleName":"","peopleTelephone":"","createTime":"2018-10-11T18:33:29.000+0000"}]
          */
-
+        private boolean isSelected;
         private String departmentId;
         private String departmentName;
         private List<DeviceAreaListBean> deviceAreaList;
+
+        @Override
+        public int getLevel() {
+            return 0;
+        }
+
+        @Override
+        public int getItemType() {
+            return TjConditionAdapter.TYPE_PARENT;
+        }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
 
         public String getDepartmentId() {
             return departmentId;
@@ -165,7 +193,7 @@ public class TjCondition implements Parcelable
             this.deviceAreaList = deviceAreaList;
         }
 
-        public static class DeviceAreaListBean implements Parcelable{
+        public static class DeviceAreaListBean implements Parcelable,MultiItemEntity{
             /**
              * id :
              * departmentId :
@@ -176,7 +204,7 @@ public class TjCondition implements Parcelable
              * peopleTelephone :
              * createTime : 2018-10-11T18:33:29.000+0000
              */
-
+            private boolean isSelected;
             private String id;
             private String departmentId;
             private String departmentName;
@@ -185,6 +213,19 @@ public class TjCondition implements Parcelable
             private String peopleName;
             private String peopleTelephone;
             private String createTime;
+
+            public int getItemType()
+            {
+                return TjConditionAdapter.TYPE_CHILD;
+            }
+
+            public boolean isSelected() {
+                return isSelected;
+            }
+
+            public void setSelected(boolean selected) {
+                isSelected = selected;
+            }
 
             public String getId() {
                 return id;
@@ -257,6 +298,7 @@ public class TjCondition implements Parcelable
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
+                dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
                 dest.writeString(this.id);
                 dest.writeString(this.departmentId);
                 dest.writeString(this.departmentName);
@@ -271,6 +313,7 @@ public class TjCondition implements Parcelable
             }
 
             protected DeviceAreaListBean(Parcel in) {
+                this.isSelected = in.readByte() != 0;
                 this.id = in.readString();
                 this.departmentId = in.readString();
                 this.departmentName = in.readString();
@@ -301,6 +344,7 @@ public class TjCondition implements Parcelable
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
+            dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
             dest.writeString(this.departmentId);
             dest.writeString(this.departmentName);
             dest.writeTypedList(this.deviceAreaList);
@@ -310,6 +354,7 @@ public class TjCondition implements Parcelable
         }
 
         protected DepartmentDeviceVosBean(Parcel in) {
+            this.isSelected = in.readByte() != 0;
             this.departmentId = in.readString();
             this.departmentName = in.readString();
             this.deviceAreaList = in.createTypedArrayList(DeviceAreaListBean.CREATOR);

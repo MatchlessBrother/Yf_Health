@@ -10,11 +10,11 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.hztj.BjTypeInfo;
 
-public class BjTypeAdapter extends BaseQuickAdapter<BjTypeInfo,BaseViewHolder>
+public class TjTypeAdapter extends BaseQuickAdapter<BjTypeInfo,BaseViewHolder>
 {
     private Context mContext;
 
-    public BjTypeAdapter(Context context, List<BjTypeInfo> bjTypeInfoList)
+    public TjTypeAdapter(Context context, List<BjTypeInfo> bjTypeInfoList)
     {
         super(R.layout.item_mainhzfragment, bjTypeInfoList);
         mContext = context;
