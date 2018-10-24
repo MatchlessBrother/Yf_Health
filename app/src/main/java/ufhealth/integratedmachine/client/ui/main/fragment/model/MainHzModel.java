@@ -1,15 +1,26 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.model;
 
 import android.content.Context;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_PVModel;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_NetCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
 
 public class MainHzModel extends BaseMvp_PVModel
 {
+    public static final int RequestHztjDatas = 0x0001;
+    public static final int RequestHztjCondtions = 0x0002;
+
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalCallBack localCallBack)
     {
         localCallBack.onStart();
-        localCallBack.onFinish();
+        switch(netRequestCode)
+        {
+            case RequestHztjDatas:NetClient.getInstance(context).getNetUrl().requestHztjDatas(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
+            case RequestHztjCondtions:NetClient.getInstance(context).getNetUrl().requestHztjConditions().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
+        }
     }
 
     public void executeOfLocal(Context context, int localRequestCode, BaseMvp_LocalCallBack localCallBack)

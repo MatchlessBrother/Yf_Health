@@ -234,7 +234,6 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             }
         });
 
-
         mBjHistroyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener()
         {
             public void onLoadMoreRequested()
@@ -242,7 +241,6 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
                 mMainBjHistroyPresenter.loadMoreDatas(mConditionsMap);
             }
         },mMainbjhistroyfragRecycler);
-
 
         mBjHistroyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
         {
@@ -417,9 +415,10 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
             mConditionsMap.put("alarmId",String.valueOf(null != mZtList.get(mCurrentSelectedZtItemOfIndex).getId() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getId().trim() : ""));
         else
             mConditionsMap.put("alarmId","");
+
         mConditionsMap.put("departmentId",String.valueOf(mBjConditionAdapter.getmSelectedParentCode() != -1 ? mBjConditionAdapter.getmSelectedParentCode() : ""));
         if(mBjConditionAdapter.isSelectedChildCondition())
-            mConditionsMap.put("deviceAreaId",String.valueOf(mBjConditionAdapter.getmSelectedChildCode()));
+            mConditionsMap.put("deviceAreaId",String.valueOf(mBjConditionAdapter.getmSelectedChildCode() != 1 ? mBjConditionAdapter.getmSelectedChildCode() : ""));
         else
         {
             if(mConditionsMap.containsKey("deviceAreaId"))

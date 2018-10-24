@@ -11,6 +11,7 @@ import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 public class TjCondition implements Parcelable
 {
     private List<CategoryVosBean> categoryVos;
+    private List<AlarmLevelVosBean> alarmLevelVos;
     private List<DepartmentDeviceVosBean> departmentDeviceVos;
 
     public List<CategoryVosBean> getCategoryVos() {
@@ -21,12 +22,155 @@ public class TjCondition implements Parcelable
         this.categoryVos = categoryVos;
     }
 
+    public List<AlarmLevelVosBean> getAlarmLevelVos() {
+        return alarmLevelVos;
+    }
+
+    public void setAlarmLevelVos(List<AlarmLevelVosBean> alarmLevelVos) {
+        this.alarmLevelVos = alarmLevelVos;
+    }
+
     public List<DepartmentDeviceVosBean> getDepartmentDeviceVos() {
         return departmentDeviceVos;
     }
 
     public void setDepartmentDeviceVos(List<DepartmentDeviceVosBean> departmentDeviceVos) {
         this.departmentDeviceVos = departmentDeviceVos;
+    }
+
+    public static class AlarmLevelVosBean implements Parcelable,IPickerViewData
+    {
+        /**
+         * id : 1
+         * name : 全部
+         * priority : 1
+         * isGenerateAlarmRecord :
+         * isGenerateAlarmRecordDescription :
+         * colorCode :
+         * createTime :
+         * isDelete :
+         */
+
+        private String id;
+        private String name;
+        private String priority;
+        private String isGenerateAlarmRecord;
+        private String isGenerateAlarmRecordDescription;
+        private String colorCode;
+        private String createTime;
+        private String isDelete;
+
+        public String getPickerViewText()
+        {
+            return name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPriority() {
+            return priority;
+        }
+
+        public void setPriority(String priority) {
+            this.priority = priority;
+        }
+
+        public String getIsGenerateAlarmRecord() {
+            return isGenerateAlarmRecord;
+        }
+
+        public void setIsGenerateAlarmRecord(String isGenerateAlarmRecord) {
+            this.isGenerateAlarmRecord = isGenerateAlarmRecord;
+        }
+
+        public String getIsGenerateAlarmRecordDescription() {
+            return isGenerateAlarmRecordDescription;
+        }
+
+        public void setIsGenerateAlarmRecordDescription(String isGenerateAlarmRecordDescription) {
+            this.isGenerateAlarmRecordDescription = isGenerateAlarmRecordDescription;
+        }
+
+        public String getColorCode() {
+            return colorCode;
+        }
+
+        public void setColorCode(String colorCode) {
+            this.colorCode = colorCode;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getIsDelete() {
+            return isDelete;
+        }
+
+        public void setIsDelete(String isDelete) {
+            this.isDelete = isDelete;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.name);
+            dest.writeString(this.priority);
+            dest.writeString(this.isGenerateAlarmRecord);
+            dest.writeString(this.isGenerateAlarmRecordDescription);
+            dest.writeString(this.colorCode);
+            dest.writeString(this.createTime);
+            dest.writeString(this.isDelete);
+        }
+
+        public AlarmLevelVosBean() {
+        }
+
+        protected AlarmLevelVosBean(Parcel in) {
+            this.id = in.readString();
+            this.name = in.readString();
+            this.priority = in.readString();
+            this.isGenerateAlarmRecord = in.readString();
+            this.isGenerateAlarmRecordDescription = in.readString();
+            this.colorCode = in.readString();
+            this.createTime = in.readString();
+            this.isDelete = in.readString();
+        }
+
+        public static final Creator<AlarmLevelVosBean> CREATOR = new Creator<AlarmLevelVosBean>() {
+            @Override
+            public AlarmLevelVosBean createFromParcel(Parcel source) {
+                return new AlarmLevelVosBean(source);
+            }
+
+            @Override
+            public AlarmLevelVosBean[] newArray(int size) {
+                return new AlarmLevelVosBean[size];
+            }
+        };
     }
 
     public static class CategoryVosBean implements Parcelable, IPickerViewData
@@ -140,7 +284,8 @@ public class TjCondition implements Parcelable
         };
     }
 
-    public static class DepartmentDeviceVosBean extends AbstractExpandableItem<TjCondition.DepartmentDeviceVosBean.DeviceAreaListBean> implements MultiItemEntity,Parcelable{
+    public static class DepartmentDeviceVosBean extends AbstractExpandableItem<DepartmentDeviceVosBean.DeviceAreaListBean> implements MultiItemEntity,Parcelable
+    {
         /**
          * departmentId :
          * departmentName : 全部
@@ -193,7 +338,8 @@ public class TjCondition implements Parcelable
             this.deviceAreaList = deviceAreaList;
         }
 
-        public static class DeviceAreaListBean implements Parcelable,MultiItemEntity{
+        public static class DeviceAreaListBean implements Parcelable,MultiItemEntity
+        {
             /**
              * id :
              * departmentId :
@@ -204,6 +350,7 @@ public class TjCondition implements Parcelable
              * peopleTelephone :
              * createTime : 2018-10-11T18:33:29.000+0000
              */
+
             private boolean isSelected;
             private String id;
             private String departmentId;
@@ -381,6 +528,7 @@ public class TjCondition implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.categoryVos);
+        dest.writeTypedList(this.alarmLevelVos);
         dest.writeTypedList(this.departmentDeviceVos);
     }
 
@@ -389,6 +537,7 @@ public class TjCondition implements Parcelable
 
     protected TjCondition(Parcel in) {
         this.categoryVos = in.createTypedArrayList(CategoryVosBean.CREATOR);
+        this.alarmLevelVos = in.createTypedArrayList(AlarmLevelVosBean.CREATOR);
         this.departmentDeviceVos = in.createTypedArrayList(DepartmentDeviceVosBean.CREATOR);
     }
 

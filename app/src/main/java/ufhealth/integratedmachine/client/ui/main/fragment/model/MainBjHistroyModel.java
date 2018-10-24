@@ -19,7 +19,7 @@ public class MainBjHistroyModel extends BaseMvp_PVModel
         switch(netRequestCode)
         {
             case RequestHistroyAlarmDatas:NetClient.getInstance(context).getNetUrl().requestHistroyAlarmDatas(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
-            case RequestDatasOfCondition:NetClient.getInstance(context).getNetUrl().requestHistroyAlarmOfCondition().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
+            case RequestDatasOfCondition:NetClient.getInstance(context).getNetUrl().requestHistroyAlarmOfConditions().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
         }
     }
 
