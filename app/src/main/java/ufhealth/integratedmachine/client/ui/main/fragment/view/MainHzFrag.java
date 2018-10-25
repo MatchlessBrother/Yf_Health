@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.ArrayList;
 import android.view.Gravity;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.TextView;
@@ -40,15 +41,17 @@ import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainHzPresenter;
+import ufhealth.integratedmachine.client.util.EchartViewUtils;
+import ufhealth.integratedmachine.client.widget.EchartView;
 
 public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickListener
 {
     private TextView mMainhzfragSj;
     private TextView mMainhzfragSwcz;
     private TextView mMainhzfragTscz;
-    private WebView mMainhzfragWebview;
     private RecyclerView mRecyclerView;
     private TjTypeAdapter mTjTypeAdapter;
+    private EchartView mMainhzfragEchartView;
     private TextView mMainhzfragBarchartText;
     private NestedScrollView mMainhzfragNestedscrollview;
     private SwipeRefreshLayout mMainhzfragSwiperefreshlayout;
@@ -100,8 +103,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         mMainhzfragSj = (TextView)rootView.findViewById(R.id.mainhzfrag_sj);
         mMainhzfragSwcz = (TextView)rootView.findViewById(R.id.mainhzfrag_swcz);
         mMainhzfragTscz = (TextView)rootView.findViewById(R.id.mainhzfrag_tscz);
-        mMainhzfragWebview = (WebView)rootView.findViewById(R.id.mainhzfrag_webview);
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.mainhzfrag_recyclerview);
+        mMainhzfragEchartView = (EchartView) rootView.findViewById(R.id.mainhzfrag_echartview);
         mMainhzfragBarchartText = (TextView)rootView.findViewById(R.id.mainhzfrag_barchart_text);
         mMainhzfragNestedscrollview = (NestedScrollView)rootView.findViewById(R.id.mainhzfrag_nestedscrollview);
         mMainhzfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainhzfrag_swiperefreshlayout);
@@ -482,7 +485,19 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
 
     public void initBarGraph()
     {
-
+        if(null != mMainhzfragEchartView)
+        {
+            mMainhzfragEchartView.setWebViewClient(new WebViewClient()
+            {
+                public void onPageFinished(WebView view, String url)
+                {
+                    super.onPageFinished(view, url);
+                    Object[] x = new Object[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+                    Object[] y = new Object[]{820, 932, 901, 934, 1290, 1330, 19200};
+                    mMainhzfragEchartView.refreshEchartsViewWithOption(EchartViewUtils.getLineChartOptions(x, y));
+                }
+            });
+        }
     }
 
     public void getFailureOfDatas()

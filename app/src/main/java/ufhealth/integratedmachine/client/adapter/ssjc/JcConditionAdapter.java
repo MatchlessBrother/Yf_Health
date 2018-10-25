@@ -7,9 +7,8 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v4.content.ContextCompat;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import ufhealth.integratedmachine.client.bean.ssjc.JcChildCondition;
-import ufhealth.integratedmachine.client.bean.ssjc.JcParentCondition;
 
 public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>
 {
@@ -35,20 +34,20 @@ public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
        {
            case TYPE_PARENT:
            {
-               final JcParentCondition parentCondition = (JcParentCondition)item;
-               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_parent_all,parentCondition.isSelected() ? R.color.colorPrimary : R.color.white);
-               helper.setText(R.id.item_mainjcfragment_condition_parent_tv,null != parentCondition.getConditionName() ? parentCondition.getConditionName().trim() : "");
-               helper.setTextColor(R.id.item_mainjcfragment_condition_parent_tv,parentCondition.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
-               helper.setGone(R.id.item_mainjcfragment_condition_parent_imgall,(null != parentCondition.getConditionName() && (parentCondition.getConditionName().trim().contains("所有") || parentCondition.getConditionName().trim().contains("全部")))? false : true);
-               helper.setImageResource(R.id.item_mainjcfragment_condition_parent_img,parentCondition.isSelected() ? (parentCondition.isExpanded() ? R.drawable.icon_arrowbottom_white : R.drawable.icon_arrowright_white) : parentCondition.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
+               final JcCondition.DepartmentDeviceVosBean departmentDeviceVosBean = (JcCondition.DepartmentDeviceVosBean)item;
+               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_parent_all,departmentDeviceVosBean.isSelected() ? R.color.colorPrimary : R.color.white);
+               helper.setText(R.id.item_mainjcfragment_condition_parent_tv,null != departmentDeviceVosBean.getDepartmentName() ? departmentDeviceVosBean.getDepartmentName().trim() : "");
+               helper.setTextColor(R.id.item_mainjcfragment_condition_parent_tv,departmentDeviceVosBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
+               helper.setGone(R.id.item_mainjcfragment_condition_parent_imgall,(null != departmentDeviceVosBean.getDepartmentName() && (departmentDeviceVosBean.getDepartmentName().trim().contains("所有") || departmentDeviceVosBean.getDepartmentName().trim().contains("全部")))? false : true);
+               helper.setImageResource(R.id.item_mainjcfragment_condition_parent_img,departmentDeviceVosBean.isSelected() ? (departmentDeviceVosBean.isExpanded() ? R.drawable.icon_arrowbottom_white : R.drawable.icon_arrowright_white) : departmentDeviceVosBean.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
                helper.itemView.findViewById(R.id.item_mainjcfragment_condition_parent_tv).setOnClickListener(new View.OnClickListener()/*******************选择父类*********************/
                {
                    public synchronized void onClick(View v)
                    {
                        initItemFontColor();
                        mSelectedChildCode = -1;
-                       parentCondition.setSelected(true);
-                       mSelectedParentCode = parentCondition.getConditionCode();
+                       departmentDeviceVosBean.setSelected(true);
+                       mSelectedParentCode = Integer.valueOf(null != departmentDeviceVosBean.getDepartmentId() ? departmentDeviceVosBean.getDepartmentId().trim() : "-1");
                        notifyDataSetChanged();
                    }
                });
@@ -57,7 +56,7 @@ public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
                    public synchronized void onClick(View v)
                    {
                        int position = helper.getAdapterPosition();
-                       if (parentCondition.isExpanded())
+                       if (departmentDeviceVosBean.isExpanded())
                            collapse(position);
                        else
                            expand(position);
@@ -68,18 +67,18 @@ public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
            }
            case TYPE_CHILD:
            {
-               final JcChildCondition childCondition = (JcChildCondition)item;
-               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_child_all,childCondition.isSelected() ? R.color.colorPrimary : R.color.white);
-               helper.setText(R.id.item_mainjcfragment_condition_child_tv,null != childCondition.getConditionName() ? childCondition.getConditionName().trim() : "");
-               helper.setTextColor(R.id.item_mainjcfragment_condition_child_tv,childCondition.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
+               final JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean deviceAreaListBean = (JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean)item;
+               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_child_all,deviceAreaListBean.isSelected() ? R.color.colorPrimary : R.color.white);
+               helper.setText(R.id.item_mainjcfragment_condition_child_tv,null != deviceAreaListBean.getName() ? deviceAreaListBean.getName().trim() : "");
+               helper.setTextColor(R.id.item_mainjcfragment_condition_child_tv,deviceAreaListBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
                helper.itemView.setOnClickListener(new View.OnClickListener()
                {
                    public synchronized void onClick(View v)
                    {
                        initItemFontColor();
-                       childCondition.setSelected(true);
-                       mSelectedChildCode = childCondition.getConditionCode();
-                       mSelectedParentCode = ((JcParentCondition)(getData().get(getParentPosition(childCondition)))).getConditionCode();
+                       deviceAreaListBean.setSelected(true);
+                       mSelectedChildCode = Integer.valueOf(deviceAreaListBean.getId());
+                       mSelectedParentCode = Integer.valueOf(((JcCondition.DepartmentDeviceVosBean)(getData().get(getParentPosition(deviceAreaListBean)))).getDepartmentId());
                        notifyDataSetChanged();
                    }
                });
@@ -88,12 +87,15 @@ public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
        }
     }
 
-    public void initAdapterConfigure(JcParentCondition jcParentCondition)
+    public void initAdapterConfigure(JcCondition.DepartmentDeviceVosBean departmentDeviceVosBean)
     {
-        initItemFontColor();
-        mSelectedChildCode = -1;
-        jcParentCondition.setSelected(true);
-        mSelectedParentCode = jcParentCondition.getConditionCode();
+        if(null != departmentDeviceVosBean)
+        {
+            initItemFontColor();
+            mSelectedChildCode = -1;
+            departmentDeviceVosBean.setSelected(true);
+            mSelectedParentCode = Integer.valueOf(null != departmentDeviceVosBean.getDepartmentId() ? departmentDeviceVosBean.getDepartmentId().trim() : "-1");
+        }
     }
 
     public int getmSelectedChildCode()
@@ -120,24 +122,24 @@ public class JcConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
     {
         for(int index = 0;index < getData().size();index++)
         {
-            if(getData().get(index) instanceof JcParentCondition)
+            if(getData().get(index) instanceof JcCondition.DepartmentDeviceVosBean)
             {
-                JcParentCondition jcParentCondition = (JcParentCondition)getData().get(index);
-                jcParentCondition.setSelected(false);
-                List<JcChildCondition> jcChildConditions = jcParentCondition.getSubItems();
-                if(null != jcChildConditions && jcChildConditions.size() > 0)
+                JcCondition.DepartmentDeviceVosBean departmentDeviceVosBean = (JcCondition.DepartmentDeviceVosBean)getData().get(index);
+                departmentDeviceVosBean.setSelected(false);
+                List<JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean> deviceAreaListBeans = departmentDeviceVosBean.getSubItems();
+                if(null != deviceAreaListBeans && deviceAreaListBeans.size() > 0)
                 {
-                    for(int position = 0;position < jcChildConditions.size();position++)
+                    for(int position = 0;position < deviceAreaListBeans.size();position++)
                     {
-                        JcChildCondition jcChildConditions1 = jcChildConditions.get(position);
-                        jcChildConditions1.setSelected(false);
+                        JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean deviceAreaListBean = deviceAreaListBeans.get(position);
+                        deviceAreaListBean.setSelected(false);
                     }
                 }
             }
-            else if(getData().get(index) instanceof JcChildCondition)
+            else if(getData().get(index) instanceof JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean)
             {
-                JcChildCondition jcChildCondition = (JcChildCondition)getData().get(index);
-                jcChildCondition.setSelected(false);
+                JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean deviceAreaListBean = (JcCondition.DepartmentDeviceVosBean.DeviceAreaListBean)getData().get(index);
+                deviceAreaListBean.setSelected(false);
             }
         }
     }

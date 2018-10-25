@@ -284,12 +284,10 @@
                             android:textSize="26sp" />
                     </LinearLayout>
 
-                    <WebView
-                        android:id="@+id/mainhzfrag_webview"
-                        android:layout_height="320mm"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="20mm"
-                        android:layout_marginTop="36mm" />
+                    <ufhealth.integratedmachine.client.widget.EchartView
+                        android:id="@+id/mainhzfrag_echartview"
+                        android:layout_height="460mm"
+                        android:layout_width="match_parent"/>
 
                 </LinearLayout>
             </LinearLayout>

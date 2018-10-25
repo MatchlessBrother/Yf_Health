@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.contrarywind.interfaces.IPickerViewData;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
-import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
+import ufhealth.integratedmachine.client.adapter.lsbj.BjConditionAdapter;
 
 public class BjHistroyCondition implements Parcelable
 {
@@ -303,7 +303,7 @@ public class BjHistroyCondition implements Parcelable
 
         @Override
         public int getItemType() {
-            return JcConditionAdapter.TYPE_PARENT;
+            return BjConditionAdapter.TYPE_PARENT;
         }
 
         public boolean isSelected() {
@@ -363,7 +363,7 @@ public class BjHistroyCondition implements Parcelable
 
             public int getItemType()
             {
-                return JcConditionAdapter.TYPE_CHILD;
+                return BjConditionAdapter.TYPE_CHILD;
             }
 
             public boolean isSelected() {

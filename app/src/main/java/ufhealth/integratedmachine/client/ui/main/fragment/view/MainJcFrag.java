@@ -25,15 +25,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import ufhealth.integratedmachine.client.bean.ssjc.JcType;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import ufhealth.integratedmachine.client.bean.ssjc.JcStatus;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.bean.ssjc.JcChildCondition;
-import ufhealth.integratedmachine.client.bean.ssjc.JcParentCondition;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
@@ -65,8 +62,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     /******************************************************/
     private Date mEndTimeDate;
     private Date mStartTimeDate;
-    private List<JcType> mLsList;
-    private List<JcStatus> mZtList;
+    private TjCondition mTjCondition;
     private MainJcPresenter mMainJcPresenter;
     private int mCurrentSelectedLsItemOfIndex;
     private int mCurrentSelectedZtItemOfIndex;
@@ -76,6 +72,9 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     private TimePickerView mStartTimePickerView;
     private OptionsPickerView mLsOptionsPickerView;
     private OptionsPickerView mZtOptionsPickerView;
+    private List<TjCondition.CategoryVosBean> mLsList;
+    private List<TjCondition.AlarmLevelVosBean> mZtList;
+
 
     protected int setLayoutResID()
     {
@@ -95,6 +94,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mMainjcfragRecycler.setLayoutManager(linearLayoutManager);
+        mMainjcfragSwiperefreshlayout.setEnabled(true);
         /**********************************控件初始化第二部分**************************************/
         mMainjcfragRecyclerConditions = (RecyclerView)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_recycler);
         mMainjcfragStAll = (LinearLayout)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_starttime_all);
@@ -122,7 +122,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             {
                 mCurrentSelectedLsItemOfIndex = options1Index;
                 mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-                mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
+                mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
             }
         }) .setTitleText("类型选择").setLabels("","","").setTitleSize(33)
            .setSubmitText("确定") .setCancelText("取消")
@@ -143,7 +143,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             {
                 mCurrentSelectedZtItemOfIndex = options1Index;
                 mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-                mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
+                mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
             }
         }) .setTitleText("状态选择").setLabels("","","").setTitleSize(33)
                 .setSubmitText("确定") .setCancelText("取消")
@@ -157,8 +157,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
                 .setDividerColor(getResources().getColor(R.color.default_font_gray))
                 .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
                 .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
-
-
+        /******************************************************************************************/
         Calendar startDateRange = Calendar.getInstance();
         startDateRange.set(2000,0,1);
         Calendar endDateRange = Calendar.getInstance();

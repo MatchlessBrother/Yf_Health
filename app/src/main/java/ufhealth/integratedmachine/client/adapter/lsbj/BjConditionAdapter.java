@@ -24,8 +24,8 @@ public class BjConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
         mContext = context;
         mSelectedChildCode = -1;
         mSelectedParentCode = -1;
-        addItemType(TYPE_PARENT, R.layout.item_mainjcfragment_condition_parent);
-        addItemType(TYPE_CHILD, R.layout.item_mainjcfragment_condition_child);
+        addItemType(TYPE_PARENT, R.layout.item_mainbjfragment_condition_parent);
+        addItemType(TYPE_CHILD, R.layout.item_mainbjfragment_condition_child);
     }
 
     protected void convert(final BaseViewHolder helper, MultiItemEntity item)
@@ -35,12 +35,12 @@ public class BjConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
            case TYPE_PARENT:
            {
                final BjHistroyCondition.DepartmentBean departmentBean = (BjHistroyCondition.DepartmentBean)item;
-               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_parent_all,departmentBean.isSelected() ? R.color.colorPrimary : R.color.white);
-               helper.setText(R.id.item_mainjcfragment_condition_parent_tv,null != departmentBean.getDepartmentName() ? departmentBean.getDepartmentName().trim() : "");
-               helper.setTextColor(R.id.item_mainjcfragment_condition_parent_tv,departmentBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
-               helper.setGone(R.id.item_mainjcfragment_condition_parent_imgall,(null != departmentBean.getDepartmentName() && (departmentBean.getDepartmentName().trim().contains("所有") || departmentBean.getDepartmentName().trim().contains("全部")))? false : true);
-               helper.setImageResource(R.id.item_mainjcfragment_condition_parent_img,departmentBean.isSelected() ? (departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_white : R.drawable.icon_arrowright_white) : departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
-               helper.itemView.findViewById(R.id.item_mainjcfragment_condition_parent_tv).setOnClickListener(new View.OnClickListener()/*******************选择父类*********************/
+               helper.setBackgroundRes(R.id.item_mainbjfragment_condition_parent_all,departmentBean.isSelected() ? R.color.colorPrimary : R.color.white);
+               helper.setText(R.id.item_mainbjfragment_condition_parent_tv,null != departmentBean.getDepartmentName() ? departmentBean.getDepartmentName().trim() : "");
+               helper.setTextColor(R.id.item_mainbjfragment_condition_parent_tv,departmentBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
+               helper.setGone(R.id.item_mainbjfragment_condition_parent_imgall,(null != departmentBean.getDepartmentName() && (departmentBean.getDepartmentName().trim().contains("所有") || departmentBean.getDepartmentName().trim().contains("全部")))? false : true);
+               helper.setImageResource(R.id.item_mainbjfragment_condition_parent_img,departmentBean.isSelected() ? (departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_white : R.drawable.icon_arrowright_white) : departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
+               helper.itemView.findViewById(R.id.item_mainbjfragment_condition_parent_tv).setOnClickListener(new View.OnClickListener()/*******************选择父类*********************/
                {
                    public synchronized void onClick(View v)
                    {
@@ -51,7 +51,7 @@ public class BjConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
                        notifyDataSetChanged();
                    }
                });
-               helper.itemView.findViewById(R.id.item_mainjcfragment_condition_parent_imgall).setOnClickListener(new View.OnClickListener()/******************展开子类******************/
+               helper.itemView.findViewById(R.id.item_mainbjfragment_condition_parent_imgall).setOnClickListener(new View.OnClickListener()/******************展开子类******************/
                {
                    public synchronized void onClick(View v)
                    {
@@ -68,9 +68,9 @@ public class BjConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
            case TYPE_CHILD:
            {
                final BjHistroyCondition.DepartmentBean.DeviceAreaListBean deviceAreaListBean = (BjHistroyCondition.DepartmentBean.DeviceAreaListBean)item;
-               helper.setBackgroundRes(R.id.item_mainjcfragment_condition_child_all,deviceAreaListBean.isSelected() ? R.color.colorPrimary : R.color.white);
-               helper.setText(R.id.item_mainjcfragment_condition_child_tv,null != deviceAreaListBean.getName() ? deviceAreaListBean.getName().trim() : "");
-               helper.setTextColor(R.id.item_mainjcfragment_condition_child_tv,deviceAreaListBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
+               helper.setBackgroundRes(R.id.item_mainbjfragment_condition_child_all,deviceAreaListBean.isSelected() ? R.color.colorPrimary : R.color.white);
+               helper.setText(R.id.item_mainbjfragment_condition_child_tv,null != deviceAreaListBean.getName() ? deviceAreaListBean.getName().trim() : "");
+               helper.setTextColor(R.id.item_mainbjfragment_condition_child_tv,deviceAreaListBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
                helper.itemView.setOnClickListener(new View.OnClickListener()
                {
                    public synchronized void onClick(View v)

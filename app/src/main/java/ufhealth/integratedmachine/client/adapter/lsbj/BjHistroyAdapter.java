@@ -29,18 +29,16 @@ public class BjHistroyAdapter extends BaseQuickAdapter<BjHistroyPageInfo.Content
         {
             case 1:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.red));break;
             case 2:helper.setTextColor(R.id.item_mainbjhistroyfragment_status,ContextCompat.getColor(mContext,R.color.colorPrimary));break;
-        }helper.setText(R.id.item_mainbjhistroyfragment_status,null != bjHistroyInfo.getHandleStatusDescription() && !"".equals(bjHistroyInfo.getHandleStatusDescription().trim()) ? bjHistroyInfo.getHandleStatusDescription().trim() : "");
+        }
+        helper.setText(R.id.item_mainbjhistroyfragment_fourline_right,bjHistroyInfo.getAlarmNumber() + "");
+        helper.setText(R.id.item_mainbjhistroyfragment_fourline_left,bjHistroyInfo.getAlarmValue() + bjHistroyInfo.getUnit().trim());
         helper.setText(R.id.item_mainbjhistroyfragment_twoline_right,null != bjHistroyInfo.getAddress() && !"".equals(bjHistroyInfo.getAddress().trim()) ? bjHistroyInfo.getAddress().trim() : "");
         helper.setText(R.id.item_mainbjhistroyfragment_twoline_left,null != bjHistroyInfo.getSensorName() && !"".equals(bjHistroyInfo.getSensorName().trim()) ? bjHistroyInfo.getSensorName().trim() : "");
         helper.setText(R.id.item_mainbjhistroyfragment_oneline_left,null != bjHistroyInfo.getDepartmentName() && !"".equals(bjHistroyInfo.getDepartmentName().trim()) ? bjHistroyInfo.getDepartmentName().trim() : "");
         helper.setText(R.id.item_mainbjhistroyfragment_oneline_right,null != bjHistroyInfo.getDeviceAreaName() && !"".equals(bjHistroyInfo.getDeviceAreaName().trim()) ? bjHistroyInfo.getDeviceAreaName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_threeline_left,null != bjHistroyInfo.getParentCategoryName() && !"".equals(bjHistroyInfo.getParentCategoryName().trim()) ? bjHistroyInfo.getParentCategoryName().trim() : "");
+        helper.setText(R.id.item_mainbjhistroyfragment_status,null != bjHistroyInfo.getHandleStatusDescription() && !"".equals(bjHistroyInfo.getHandleStatusDescription().trim()) ? bjHistroyInfo.getHandleStatusDescription().trim() : "");
         helper.setText(R.id.item_mainbjhistroyfragment_threeline_right,null != bjHistroyInfo.getAlarmSettingDescription() && !"".equals(bjHistroyInfo.getAlarmSettingDescription().trim()) ? bjHistroyInfo.getAlarmSettingDescription().trim() : "");
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(null != bjHistroyInfo.getParentCategoryName() && !"".equals(bjHistroyInfo.getParentCategoryName().trim()) ? bjHistroyInfo.getParentCategoryName().trim() + "-": "");
-        stringBuffer.append(null != bjHistroyInfo.getChildCategoryName() && !"".equals(bjHistroyInfo.getChildCategoryName().trim()) ? bjHistroyInfo.getChildCategoryName().trim() : "");
-        helper.setText(R.id.item_mainbjhistroyfragment_threeline_left,stringBuffer.toString().trim());
-        helper.setText(R.id.item_mainbjhistroyfragment_fourline_right,bjHistroyInfo.getAlarmNumber() + "");
-        helper.setText(R.id.item_mainbjhistroyfragment_fourline_left,bjHistroyInfo.getAlarmValue() + bjHistroyInfo.getUnit().trim());
         helper.setText(R.id.item_mainbjhistroyfragment_time,"报警时间 : " +  mTimeFormat.format(new Date(Long.valueOf(null != bjHistroyInfo.getAlarmStartTime() && !"".equals(bjHistroyInfo.getAlarmStartTime().trim()) ? bjHistroyInfo.getAlarmStartTime().trim() : String.valueOf(new Date().getTime())))));
     }
 }
