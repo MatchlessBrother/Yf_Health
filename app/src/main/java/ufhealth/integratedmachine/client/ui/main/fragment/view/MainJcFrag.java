@@ -19,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -29,7 +28,8 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
+import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
+import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
@@ -42,7 +42,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     /******************************************************/
     /******************************************************/
     private RecyclerView mMainjcfragRecycler;
-    private SwipeRefreshLayout mMainjcfragSwiperefreshlayout;
     /******************************************************/
     /******************************************************/
     private TextView mMainjcfragLx;
@@ -62,7 +61,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     /******************************************************/
     private Date mEndTimeDate;
     private Date mStartTimeDate;
-    private TjCondition mTjCondition;
+    private JcCondition mJcCondition;
     private MainJcPresenter mMainJcPresenter;
     private int mCurrentSelectedLsItemOfIndex;
     private int mCurrentSelectedZtItemOfIndex;
@@ -72,9 +71,8 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     private TimePickerView mStartTimePickerView;
     private OptionsPickerView mLsOptionsPickerView;
     private OptionsPickerView mZtOptionsPickerView;
-    private List<TjCondition.CategoryVosBean> mLsList;
-    private List<TjCondition.AlarmLevelVosBean> mZtList;
-
+    private List<JcCondition.CategoryVosBean> mLsList;
+    private List<JcCondition.AlarmLevelVosBean> mZtList;
 
     protected int setLayoutResID()
     {
@@ -89,12 +87,10 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         setTitleMoreIcon(R.mipmap.searchicon);
         setTitleMoreIconVisible(View.VISIBLE);
         /**********************************控件初始化第一部分**************************************/
-        mMainjcfragSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.mainjcfrag_swiperefreshlayout);
         mMainjcfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainjcfrag_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mMainjcfragRecycler.setLayoutManager(linearLayoutManager);
-        mMainjcfragSwiperefreshlayout.setEnabled(true);
         /**********************************控件初始化第二部分**************************************/
         mMainjcfragRecyclerConditions = (RecyclerView)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_recycler);
         mMainjcfragStAll = (LinearLayout)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_starttime_all);
@@ -165,7 +161,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         Calendar endTimeCalendar = Calendar.getInstance();
         endTimeCalendar.setTime(new Date());
         Calendar startTimeCalendar = Calendar.getInstance();
-        endTimeCalendar.setTime(new Date());
+        startTimeCalendar.setTime(new Date());
         mEndTimePickerView = new TimePickerBuilder(mActivity,new OnTimeSelectListener()
         {
             public void onTimeSelect(Date date, View view)
@@ -211,57 +207,25 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 
     protected void initDatas()
     {
-        mConditionsMap = new HashMap<>();
-        mCurrentSelectedLsItemOfIndex = -1;
-        mCurrentSelectedZtItemOfIndex = -1;
         mMainJcPresenter = new MainJcPresenter();
         bindBaseMvpPresenter(mMainJcPresenter);
-        /*************************************************
-        *********************模拟网络数据*****************
-        *************************************************/
-        mLsList = new ArrayList<>();
-        mLsList.add(new JcType(1,"高危"));
-        mLsList.add(new JcType(2,"危险"));
-        mLsList.add(new JcType(3,"警告"));
-        mLsList.add(new JcType(4,"预警"));
-        mLsList.add(new JcType(5,"注意"));
-        mLsOptionsPickerView.setNPicker(mLsList,null,null);
-        mCurrentSelectedLsItemOfIndex = 0;
-        mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-        mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
-
-        mZtList = new ArrayList<>();
-        mZtList.add(new JcStatus(1,"未开始"));
-        mZtList.add(new JcStatus(2,"准备开始"));
-        mZtList.add(new JcStatus(3,"已开始"));
-        mZtList.add(new JcStatus(4,"进行中"));
-        mZtList.add(new JcStatus(5,"已完成"));
-        mZtList.add(new JcStatus(6,"准备结束"));
-        mZtList.add(new JcStatus(7,"已结束"));
-        mZtOptionsPickerView.setNPicker(mZtList,null,null);
-        mCurrentSelectedZtItemOfIndex = 0;
-        mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-        mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
-
-        JcParentCondition jcParentCondition  = new JcParentCondition(0,false,"全部");
-        List<MultiItemEntity> conditions = new ArrayList<>();
-        conditions.add(jcParentCondition);
-        for (int parentIndex = 1; parentIndex <= 6; parentIndex++)
-        {
-            JcParentCondition parentCondition = new JcParentCondition(parentIndex,false,"部门" + parentIndex);
-            for (int childIndex = 1; childIndex <= 6; childIndex++)
-            {
-                JcChildCondition childCondition = new JcChildCondition(childIndex,false,"区域" + childIndex);
-                parentCondition.addSubItem(childCondition);
-            }
-            conditions.add(parentCondition);
-        }
-        mJcConditionAdapter.initAdapterConfigure(jcParentCondition);
-        mJcConditionAdapter.setNewData(conditions);
+        mCurrentSelectedLsItemOfIndex = -1;
+        mCurrentSelectedZtItemOfIndex = -1;
+        mConditionsMap = new HashMap<>();
     }
 
     protected void initLogic()
     {
+        updateConditionsMap();
+        mMainJcPresenter.getDatasOfCondition(false);
+        mMainJcPresenter.getDatasInfo(mConditionsMap);
+        /*mBjHistroyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+            }
+        });*/
         mMainjcfragLxAll.setOnClickListener(this);
         mMainjcfragZtAll.setOnClickListener(this);
         mMainjcfragStAll.setOnClickListener(this);
@@ -273,7 +237,12 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     public void onClick(View view)
     {
         super.onClick(view);
-        switch (view.getId())
+        if(mJcCondition == null)
+        {
+            mMainJcPresenter.getDatasOfCondition(true);
+            return;
+        }
+        switch(view.getId())
         {
             case R.id.mainjcfrag_conditions_lx_all:
             {
@@ -321,16 +290,22 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             }
             case R.id.mainjcfrag_conditions_reset:
             {
-                mJcConditionAdapter.initAdapterConfigure((JcParentCondition) mJcConditionAdapter.getData().get(0));
+                mJcConditionAdapter.initAdapterConfigure(mJcConditionAdapter.getData().size() > 0 ? (JcCondition.DepartmentDeviceVosBean)mJcConditionAdapter.getData().get(0) : null);
                 mJcConditionAdapter.notifyDataSetChanged();
 
-                mCurrentSelectedLsItemOfIndex = 0;
-                mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
-                mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeName().trim() : "");
+                if(null != mLsList)
+                {
+                    mCurrentSelectedLsItemOfIndex = mLsList.size() > 0 ? 0 : -1;
+                    if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
+                    mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
+                }
 
-                mCurrentSelectedZtItemOfIndex = 0;
-                mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
-                mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusName().trim() : "");
+                if(null != mZtList)
+                {
+                    mCurrentSelectedZtItemOfIndex = mZtList.size() > 0 ? 0 : -1;
+                    if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
+                    mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
+                }
 
                 mEndTimeDate = null;
                 mStartTimeDate = null;
@@ -346,13 +321,15 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             {
                 updateConditionsMap();
                 mDrawerLayout.closeDrawers();
-                StringBuffer buffer = new StringBuffer();
-                for(Map.Entry<String,String> entry : mConditionsMap.entrySet())
-                    buffer.append(entry.getKey() + "：" + entry.getValue() + "\r\n");
-                showToast(buffer.toString().trim());
+                mMainJcPresenter.getDatasInfo(mConditionsMap);
                 break;
             }
         }
+    }
+
+    public void getFailOfDataInfos()
+    {
+
     }
 
     protected void onTitleBackClick()
@@ -389,40 +366,35 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         if(null == mConditionsMap)
             mConditionsMap = new HashMap<>();
 
-
         if(null == mEndTimeDate)
             mConditionsMap.put("endTime","");
         else
             mConditionsMap.put("endTime",mSimpleDateFormat.format(mEndTimeDate));
 
-
         if(null == mStartTimeDate)
-            mConditionsMap.put("startTime","");
+            mConditionsMap.put("beginTime","");
         else
-            mConditionsMap.put("startTime",mSimpleDateFormat.format(mStartTimeDate));
-
+            mConditionsMap.put("beginTime",mSimpleDateFormat.format(mStartTimeDate));
 
         if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())
-            mConditionsMap.put("type",String.valueOf(mLsList.get(mCurrentSelectedLsItemOfIndex).getTypeCode()));
+            mConditionsMap.put("categoryId",String.valueOf(null != mLsList.get(mCurrentSelectedLsItemOfIndex).getId() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getId().trim() : ""));
         else
-            mConditionsMap.put("type","");
-
+            mConditionsMap.put("categoryId","");
 
         if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())
-            mConditionsMap.put("status",String.valueOf(mZtList.get(mCurrentSelectedZtItemOfIndex).getStatusCode()));
+            mConditionsMap.put("alarmId",String.valueOf(null != mZtList.get(mCurrentSelectedZtItemOfIndex).getId() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getId().trim() : ""));
         else
-            mConditionsMap.put("status","");
+            mConditionsMap.put("alarmId","");
 
-
-        mConditionsMap.put("partmentId",String.valueOf(mJcConditionAdapter.getmSelectedParentCode()));
+        mConditionsMap.put("departmentId",String.valueOf(mJcConditionAdapter.getmSelectedParentCode() != -1 ? mJcConditionAdapter.getmSelectedParentCode() : ""));
         if(mJcConditionAdapter.isSelectedChildCondition())
-            mConditionsMap.put("areaId",String.valueOf(mJcConditionAdapter.getmSelectedChildCode()));
+            mConditionsMap.put("deviceAreaId",String.valueOf(mJcConditionAdapter.getmSelectedChildCode() != 1 ? mJcConditionAdapter.getmSelectedChildCode() : ""));
         else
         {
-            if(mConditionsMap.containsKey("areaId"))
+            if(mConditionsMap.containsKey("deviceAreaId"))
             {
-                mConditionsMap.remove("areaId");
-                mConditionsMap.put("areaId","");
+                mConditionsMap.remove("deviceAreaId");
+                mConditionsMap.put("deviceAreaId","");
             }
         }
     }
@@ -430,7 +402,68 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     protected void onTitleMoreIconClick()
     {
         super.onTitleMoreIconClick();
-        if(!mDrawerLayout.isDrawerOpen(Gravity.END))
-            mDrawerLayout.openDrawer(Gravity.END);
+        if(null != mJcCondition)
+        {
+            if(!mDrawerLayout.isDrawerOpen(Gravity.END))
+            {
+                mDrawerLayout.openDrawer(Gravity.END);
+            }
+        }
+        else
+        {
+            mMainJcPresenter.getDatasOfCondition(true);
+        }
+    }
+
+    public void getSuccessOfDataInfos(JcDataInfo jcDataInfo)
+    {
+
+    }
+
+    public void getSuccessOfCondition(JcCondition jcCondition,boolean isNeedDrawableLayout)
+    {
+        if(null != jcCondition)
+        {
+            mJcCondition = jcCondition;
+            mLsList = new ArrayList<>();
+            mLsList.addAll(mJcCondition.getCategoryVos());
+            mCurrentSelectedLsItemOfIndex = mLsList.size() > 0 ? 0 : -1;
+            mLsOptionsPickerView.setNPicker(mLsList,null,null);
+            if(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size())mLsOptionsPickerView.setSelectOptions(mCurrentSelectedLsItemOfIndex);
+            mMainjcfragLx.setText(mCurrentSelectedLsItemOfIndex > -1 && mCurrentSelectedLsItemOfIndex < mLsList.size() ? mLsList.get(mCurrentSelectedLsItemOfIndex).getPickerViewText().trim() : "");
+            /**********************************************************************************************************************************************************************************************/
+            mZtList = new ArrayList<>();
+            mZtList.addAll(mJcCondition.getAlarmLevelVos());
+            mCurrentSelectedZtItemOfIndex = mZtList.size() > 0 ? 0 : -1;
+            mZtOptionsPickerView.setNPicker(mZtList,null,null);
+            if(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size())mZtOptionsPickerView.setSelectOptions(mCurrentSelectedZtItemOfIndex);
+            mMainjcfragZt.setText(mCurrentSelectedZtItemOfIndex > -1 && mCurrentSelectedZtItemOfIndex < mZtList.size() ? mZtList.get(mCurrentSelectedZtItemOfIndex).getPickerViewText().trim() : "");
+            /**********************************************************************************************************************************************************************************************/
+            for(int parrentIndex = 0;parrentIndex < mJcCondition.getDepartmentDeviceVos().size();parrentIndex++)
+            {
+                for(int childIndex = 0;childIndex < mJcCondition.getDepartmentDeviceVos().get(parrentIndex).getDeviceAreaList().size();childIndex++)
+                {
+                    mJcCondition.getDepartmentDeviceVos().get(parrentIndex).addSubItem(mJcCondition.getDepartmentDeviceVos().get(parrentIndex).getDeviceAreaList().get(childIndex));
+                }
+            }
+            List<MultiItemEntity> recyclerConditions = new ArrayList<>();
+            recyclerConditions.addAll(mJcCondition.getDepartmentDeviceVos());
+            mJcConditionAdapter.initAdapterConfigure(mJcCondition.getDepartmentDeviceVos().size() > 0 ? mJcCondition.getDepartmentDeviceVos().get(0) : null);
+            mJcConditionAdapter.setNewData(recyclerConditions);
+            if(isNeedDrawableLayout)
+            {
+                if(!mDrawerLayout.isDrawerOpen(Gravity.END))
+                {
+                    mDrawerLayout.openDrawer(Gravity.END);
+                }
+            }
+            else
+            {
+                if(mDrawerLayout.isDrawerOpen(Gravity.END))
+                {
+                    mDrawerLayout.closeDrawers();
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ package ufhealth.integratedmachine.client.ui.main.fragment.presenter;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalObjCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
 import ufhealth.integratedmachine.client.ui.main.fragment.model.MainBjModel;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
@@ -25,7 +25,7 @@ public class MainBjPresenter extends BaseMvp_Presenter<MainBjFrag_V>
         {
             currentPageOfIndex = 0;
             BaseMvp_EntranceOfModel.requestDatas(MainBjModel.class).
-            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").putForm("handleStatus","1").convertForms().executeOfNet(getContext(),MainBjModel.RequestAlarmDatas,new BaseMvp_LocalCallBack<BaseReturnData<BjczPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").putForm("handleStatus","1").convertForms().executeOfNet(getContext(),MainBjModel.RequestAlarmDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<BjczPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjczPageInfo> bjczPageInfo)
                 {
@@ -63,7 +63,7 @@ public class MainBjPresenter extends BaseMvp_Presenter<MainBjFrag_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(MainBjModel.class).
-            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").putForm("handleStatus","1").convertForms().executeOfNet(getContext(),MainBjModel.RequestAlarmDatas,new BaseMvp_LocalCallBack<BaseReturnData<BjczPageInfo>>(this)
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").putForm("handleStatus","1").convertForms().executeOfNet(getContext(),MainBjModel.RequestAlarmDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<BjczPageInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<BjczPageInfo> bjczPageInfo)
                 {

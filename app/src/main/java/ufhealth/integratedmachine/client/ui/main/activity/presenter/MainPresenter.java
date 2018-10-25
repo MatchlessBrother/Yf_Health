@@ -5,7 +5,7 @@ import okhttp3.Interceptor;
 import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalObjCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
 import ufhealth.integratedmachine.client.ui.main.activity.model.MainModel;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.MainAct_V;
@@ -17,7 +17,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
     {
         if(isAttachContextAndViewLayer())
         {
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.SignOut,new BaseMvp_LocalCallBack<BaseReturnData>(this)
+            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.SignOut,new BaseMvp_LocalObjCallBack<BaseReturnData>(this)
             {
                 public void onSuccess(BaseReturnData baseReturnData)
                 {

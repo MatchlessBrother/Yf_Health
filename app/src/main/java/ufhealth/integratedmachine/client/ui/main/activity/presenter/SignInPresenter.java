@@ -7,7 +7,7 @@ import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalObjCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
 import ufhealth.integratedmachine.client.ui.main.activity.model.SignInModel;
 import ufhealth.integratedmachine.client.ui.main.activity.view_v.SignInAct_V;
@@ -20,7 +20,7 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(SignInModel.class).
-            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),SignInModel.SignIn,new BaseMvp_LocalCallBack<BaseReturnData<UserInfo>>(this)
+            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),SignInModel.SignIn,new BaseMvp_LocalObjCallBack<BaseReturnData<UserInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<UserInfo> userInfo)
                 {

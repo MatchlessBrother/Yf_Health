@@ -6,9 +6,12 @@ import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
 import retrofit2.http.Multipart;
+import ufhealth.integratedmachine.client.bean.BaseReturnListData;
 import ufhealth.integratedmachine.client.bean.main.UserInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.hztj.TjDataInfo;
+import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
+import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyPageInfo;
@@ -22,6 +25,9 @@ public interface NetUrl
 
     @POST("/cgqkshbj/stat/loadCondition.app")
     Observable<BaseReturnData<TjCondition>> requestHztjConditions();
+
+    @POST("/cgqkshbj/monitor/loadCondition.app")
+    Observable<BaseReturnData<JcCondition>> requestJcDatasOfCondition();
 
     @POST("/cgqkshbj/record/loadCondition.app")
     Observable<BaseReturnData<BjHistroyCondition>> requestHistroyAlarmOfConditions();
@@ -38,6 +44,10 @@ public interface NetUrl
     @Multipart
     Observable<BaseReturnData<TjDataInfo>> requestHztjDatas(@PartMap Map<String, RequestBody> params);
 
+    @POST("/cgqkshbj/monitor/monitor.app")
+    @Multipart
+    Observable<BaseReturnListData<JcDataInfo>> requestJcDatasInfo(@PartMap Map<String, RequestBody> params);
+
     @POST("/cgqkshbj/record/list.app")
     @Multipart
     Observable<BaseReturnData<BjczPageInfo>> requestAlarmDatas(@PartMap Map<String, RequestBody> params);
@@ -49,9 +59,4 @@ public interface NetUrl
     @POST("/cgqkshbj/record/list.app")
     @Multipart
     Observable<BaseReturnData<BjczHistroyPageInfo>> requestAlarmHistroyDatas(@PartMap Map<String, RequestBody> params);
-
-
-
-
-
 }

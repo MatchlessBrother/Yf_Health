@@ -5,7 +5,7 @@ import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.hztj.TjDataInfo;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_Presenter;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalObjCallBack;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_EntranceOfModel;
 import ufhealth.integratedmachine.client.ui.main.fragment.model.MainHzModel;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
@@ -22,7 +22,7 @@ public class MainHzPresenter extends BaseMvp_Presenter<MainHzFrag_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(MainHzModel.class).
-            putForms(conditionsMap).convertForms().executeOfNet(getContext(),MainHzModel.RequestHztjDatas,new BaseMvp_LocalCallBack<BaseReturnData<TjDataInfo>>(this)
+            putForms(conditionsMap).convertForms().executeOfNet(getContext(),MainHzModel.RequestHztjDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<TjDataInfo>>(this)
             {
                 public void onSuccess(BaseReturnData<TjDataInfo> tjDataInfo)
                 {
@@ -58,7 +58,7 @@ public class MainHzPresenter extends BaseMvp_Presenter<MainHzFrag_V>
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(MainHzModel.class).
-            executeOfNet(getContext(),MainHzModel.RequestHztjCondtions,new BaseMvp_LocalCallBack<BaseReturnData<TjCondition>>(this)
+            executeOfNet(getContext(),MainHzModel.RequestHztjCondtions,new BaseMvp_LocalObjCallBack<BaseReturnData<TjCondition>>(this)
             {
                 public void onSuccess(BaseReturnData<TjCondition> tjCondition)
                 {

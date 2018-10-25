@@ -5,23 +5,23 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import ufhealth.integratedmachine.client.network.NetClient;
 import ufhealth.integratedmachine.client.ui.base.BaseMvp_PVModel;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_NetCallBack;
-import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_NetObjCallBack;
+import ufhealth.integratedmachine.client.ui.base.BaseMvp_LocalObjCallBack;
 
 public class BjczModel extends BaseMvp_PVModel
 {
     public static final int UploadData = 0x0001;
 
-    public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalCallBack localCallBack)
+    public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
         localCallBack.onStart();
         switch(netRequestCode)
         {
-            case UploadData:NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetCallBack(context,localCallBack));break;
+            case UploadData:NetClient.getInstance(context).getNetUrl().signIn(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
         }
     }
 
-    public void executeOfLocal(Context context, int localRequestCode, BaseMvp_LocalCallBack localCallBack)
+    public void executeOfLocal(Context context, int localRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
         localCallBack.onStart();
         localCallBack.onFinish();

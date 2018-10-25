@@ -10,6 +10,7 @@ import okhttp3.MultipartBody;
 import android.content.Context;
 import java.util.concurrent.ConcurrentHashMap;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import ufhealth.integratedmachine.client.bean.BaseReturnListData;
 
 public abstract class BaseMvp_PVModel<T>
 {
@@ -299,7 +300,12 @@ public abstract class BaseMvp_PVModel<T>
     /**********************************************************************************************/
     /****************************************开始请求数据******************************************/
     /**********************************************************************************************/
-    public abstract void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
 
-    public abstract void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalCallBack<BaseReturnData<T>> localCallBack);
+    public void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalListCallBack<BaseReturnListData<T>> localCallBack){}
+
+    public abstract void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalObjCallBack<BaseReturnData<T>> localCallBack);
+
+    public void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalListCallBack<BaseReturnListData<T>> localCallBack){}
+
+    public abstract void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalObjCallBack<BaseReturnData<T>> localCallBack);
 }

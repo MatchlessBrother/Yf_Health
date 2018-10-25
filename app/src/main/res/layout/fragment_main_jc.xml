@@ -10,18 +10,13 @@
 
     <include layout="@layout/layout_title" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/mainjcfrag_swiperefreshlayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainjcfrag_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:fadingEdgeLength="0mm"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mainjcfrag_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:fadingEdgeLength="0mm"
-            android:requiresFadingEdge="vertical"
-            android:scrollbars="none" />
-    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

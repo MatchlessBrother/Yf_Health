@@ -1,15 +1,15 @@
 package ufhealth.integratedmachine.client.ui.base;
 
-import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import ufhealth.integratedmachine.client.bean.BaseReturnListData;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
-/********查询可用数据(包含网络数据和本地数据)最终的回调处理类*******/
-public abstract class BaseMvp_LocalCallBack<V extends BaseReturnData>
+/************查询可用数据(包含网络数据和本地数据)最终的回调处理类***********/
+public abstract class BaseMvp_LocalListCallBack<V extends BaseReturnListData>
 {
     private BaseProgressDialog mProgressDialog;
     private BaseMvp_Presenter mBaseMvpPresenter;
 
-    public BaseMvp_LocalCallBack(BaseMvp_Presenter baseMvpPresenter)
+    public BaseMvp_LocalListCallBack(BaseMvp_Presenter baseMvpPresenter)
     {
         mBaseMvpPresenter = baseMvpPresenter;
     }

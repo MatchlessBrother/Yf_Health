@@ -9,16 +9,16 @@ import java.net.SocketTimeoutException;
 import io.reactivex.disposables.Disposable;
 import com.yuan.devlibrary._12_______Utils.NetUtils;
 import ufhealth.integratedmachine.client.network.NetFlags;
-import ufhealth.integratedmachine.client.bean.BaseReturnData;
+import ufhealth.integratedmachine.client.bean.BaseReturnListData;
 
-/****************************查询网络数据回调的处理类***************************/
-public class BaseMvp_NetCallBack<T extends BaseReturnData> implements Observer<T>
+/********************************查询网络数据回调的处理类*******************************/
+public class BaseMvp_NetListCallBack<T extends BaseReturnListData> implements Observer<T>
 {
     private Context mContext;
     private Disposable mDisposable;
-    private BaseMvp_LocalCallBack mBaseMvpLocalCallBack;
+    private BaseMvp_LocalListCallBack mBaseMvpLocalCallBack;
 
-    public BaseMvp_NetCallBack(Context context, BaseMvp_LocalCallBack<T> baseMvpLocalCallBack)
+    public BaseMvp_NetListCallBack(Context context, BaseMvp_LocalListCallBack<T> baseMvpLocalCallBack)
     {
         mContext = context;
         mDisposable = null;
