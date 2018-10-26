@@ -297,15 +297,18 @@ public abstract class BaseMvp_PVModel<T>
     }
 
 
-    /**********************************************************************************************/
-    /****************************************开始请求数据******************************************/
-    /**********************************************************************************************/
-
+    /***************************************************************************************************************************/
+    /*******************************************************开始请求数据********************************************************/
+    /***************************************************************************************************************************/
+    /*****************************************该网络请求方式返回的数据为ListObject格式******************************************/
     public void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalListCallBack<BaseReturnListData<T>> localCallBack){}
 
+    /*******************************************该网络请求方式返回的数据为Object格式********************************************/
     public abstract void executeOfNet(Context context,int netRequestCode,BaseMvp_LocalObjCallBack<BaseReturnData<T>> localCallBack);
 
+    /*****************************************该本地请求方式返回的数据为ListObject格式******************************************/
     public void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalListCallBack<BaseReturnListData<T>> localCallBack){}
 
+    /*******************************************该本地请求方式返回的数据为Object格式********************************************/
     public abstract void executeOfLocal(Context context,int localRequestCode,BaseMvp_LocalObjCallBack<BaseReturnData<T>> localCallBack);
 }
