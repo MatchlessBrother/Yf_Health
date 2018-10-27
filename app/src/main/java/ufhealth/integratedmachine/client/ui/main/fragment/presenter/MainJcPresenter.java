@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.main.fragment.presenter;
 
+import java.util.Arrays;
 import java.util.Map;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.BaseReturnListData;
@@ -30,9 +31,7 @@ public class MainJcPresenter extends BaseMvp_Presenter<MainJcFrag_V>
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        //getViewLayer().getSuccessOfDataInfos(jcDataInfo.getData());
-                        int a = 1;
-                        a = a + 1;
+                        getViewLayer().getSuccessOfDataInfos(Arrays.asList(jcDataInfo.getData()));
                     }
                 }
 

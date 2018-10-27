@@ -1,9 +1,8 @@
 package ufhealth.integratedmachine.client.bean.ssjc;
 
+import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.List;
 
 public class JcDataInfo implements Parcelable
 {
@@ -13,7 +12,6 @@ public class JcDataInfo implements Parcelable
      * colorCode : FF3300
      * sensors : [{"id":"","departmentId":"","departmentName":"炼油运行三部","deviceAreaId":"","deviceAreaName":"2#常减压装置","categoryParentId":"","categoryParentName":"有毒有害气体","categoryChildId":"","categoryChildName":"H2S","name":"BDB001000","address":"R101西南侧00","medium":"氢气000","unit":"%LLE/PPM","realtimeDbPositionId":"YP1Z7GQ_BDB_001000","realtimeData":"","dataSyncInterval":"","dataSyncTime":"2018-10-17T06:29:15.000+0000","dataSyncStatus":"","dataSyncStatusName":"异常","alarmStatus":"","alarmLevelId":"","alarmLevelName":"","alarmNumber":"","alarmTotalNumber":"","peopleId":"","peopleName":"章庆文","peopleTelephone":"","peopleWorkTelephone":"6748274","settings":[{"levelId":"","levelName":"预警","ruleType":"","ruleValue":"","ruleDescription":"≥30 %LLE/PPM"},{"levelId":4,"levelName":"报警","ruleType":2,"ruleValue":50,"ruleDescription":"≥50 %LLE/PPM"}],"cameras":"","monthAlramRecordStat":""}]
      */
-
     private String id;
     private String name;
     private String colorCode;
@@ -51,7 +49,8 @@ public class JcDataInfo implements Parcelable
         this.sensors = sensors;
     }
 
-    public static class SensorsBean implements Parcelable{
+    public static class SensorsBean implements Parcelable
+    {
         /**
          * id :
          * departmentId :

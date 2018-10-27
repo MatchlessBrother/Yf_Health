@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_mainjcfrag_topbg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12mm"
+        android:layout_marginRight="12mm"
+        android:layout_marginTop="30mm"
+        android:background="@drawable/shape_rect_tltrround_brightorange_orange"
+        android:orientation="vertical"
+        android:paddingBottom="20mm"
+        android:paddingLeft="12mm"
+        android:paddingRight="12mm"
+        android:paddingTop="20mm">
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_wh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4mm"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="位号 : BDB00010201"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_qy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4mm"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="区域 : 2#常减压装置"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_dz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4mm"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="位置 : 成品泵203北"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_lsgj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4mm"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="历史报警 : 0"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_sjtx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4mm"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="数据通讯 : 正常"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_jczl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="检查种类 : 可燃气体"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginTop="4mm"
+            android:singleLine="true"
+            android:text="检查种类 : 可燃气体"
+            android:textColor="@color/default_font_black"
+            android:textSize="23sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_mainjcfrag_bottombg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30mm"
+        android:layout_marginLeft="12mm"
+        android:layout_marginRight="12mm"
+        android:background="@drawable/shape_rect_blbrround_orange"
+        android:gravity="center_vertical|left"
+        android:orientation="horizontal"
+        android:paddingBottom="20mm"
+        android:paddingLeft="12mm"
+        android:paddingRight="12mm"
+        android:paddingTop="20mm">
+
+        <ImageView
+            android:layout_width="30mm"
+            android:layout_height="30mm"
+            android:layout_marginRight="20mm"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bj"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/item_mainjcfrag_ssz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="实时值 : 52 vol%"
+            android:textColor="@color/white"
+            android:textSize="23sp" />
+    </LinearLayout>
+</LinearLayout>

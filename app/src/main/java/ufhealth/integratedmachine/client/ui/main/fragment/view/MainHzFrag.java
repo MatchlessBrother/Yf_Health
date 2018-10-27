@@ -34,6 +34,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import ufhealth.integratedmachine.client.bean.hztj.TjDataInfo;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
+
+import com.google.gson.Gson;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.adapter.hztj.TjTypeAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
@@ -41,7 +43,6 @@ import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainHzPresenter;
-import ufhealth.integratedmachine.client.util.EchartViewUtils;
 import ufhealth.integratedmachine.client.widget.EchartView;
 
 public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickListener
@@ -270,7 +271,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+
             }
         });
         mMainhzfragSj.setOnClickListener(this);
@@ -483,8 +484,9 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         }
     }
 
-    public void initBarGraph()
+    public void initBarGraph(final TjDataInfo tjDataInfo)
     {
+        mMainhzfragEchartView.loadUrl("file:///android_asset/stat.html");
         if(null != mMainhzfragEchartView)
         {
             mMainhzfragEchartView.setWebViewClient(new WebViewClient()
@@ -492,9 +494,7 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
                 public void onPageFinished(WebView view, String url)
                 {
                     super.onPageFinished(view, url);
-                    Object[] x = new Object[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-                    Object[] y = new Object[]{820, 932, 901, 934, 1290, 1330, 19200};
-                    mMainhzfragEchartView.refreshEchartsViewWithOption(EchartViewUtils.getLineChartOptions(x, y));
+                    mMainhzfragEchartView.refreshEchartsViewWithDataJson(new Gson().toJson(tjDataInfo));
                 }
             });
         }
@@ -510,6 +510,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
     {
         if(mMainhzfragSwiperefreshlayout.isRefreshing())
             mMainhzfragSwiperefreshlayout.setRefreshing(false);
+        mMainhzfragBarchartText.setText("近" + (null != tjDataInfo.getMonthAlramRecordStat() ? tjDataInfo.getMonthAlramRecordStat().size() : "0") + "月报警监测数据图");
+
         if(null != tjDataInfo)
         {
             mMainhzfragSj.setText(null != tjDataInfo.getDataSyncExceptionQuantity() ? tjDataInfo.getDataSyncExceptionQuantity().trim() : "0");
@@ -524,9 +526,8 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
                         mMainhzfragTscz.setText(null != tjDataInfo.getHandleStatusStat().get(index).getQuantity() ? tjDataInfo.getHandleStatusStat().get(index).getQuantity().trim() : "0");
                 }
             }
-
             //初始化表格数据
-            initBarGraph();
+            initBarGraph(tjDataInfo);
         }
     }
 

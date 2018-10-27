@@ -4,7 +4,6 @@ import android.webkit.WebView;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
-import com.github.abel533.echarts.json.GsonOption;
 
 public class EchartView extends WebView
 {
@@ -29,23 +28,16 @@ public class EchartView extends WebView
     private void init()
     {
         WebSettings webSettings = getSettings();
-        webSettings.setSupportZoom(false);
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setDisplayZoomControls(false);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        loadUrl("file:///android_asset/echarts.html");
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
     }
 
-    /**
-     * java调用js的loadEcharts方法刷新echart
-     * 不能在第一时间就用此方法来显示图表，因为第一时间html的标签还未加载完成，不能获取到标签值
-     * @param option
-     */
-    public void refreshEchartsViewWithOption(GsonOption option)
+    public void refreshEchartsViewWithDataJson(String dataJson)
     {
-        if (option == null)return;
-        String optionString = option.toString();
-        String call = "javascript:loadEcharts('" + optionString + "')";
+        if(dataJson == null)return;
+        String call = "javascript:loadEcharts('" + dataJson + "')";
         loadUrl(call);
     }
 }

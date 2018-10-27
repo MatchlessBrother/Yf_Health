@@ -18,7 +18,6 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import com.bigkoo.pickerview.view.TimePickerView;
-import android.support.v7.widget.GridLayoutManager;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -31,6 +30,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
 import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
+import ufhealth.integratedmachine.client.adapter.ssjc.JcParentAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
@@ -41,6 +41,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 {
     /******************************************************/
     /******************************************************/
+    private JcParentAdapter mJcParentAdapter;
     private RecyclerView mMainjcfragRecycler;
     /******************************************************/
     /******************************************************/
@@ -87,10 +88,12 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         setTitleMoreIcon(R.mipmap.searchicon);
         setTitleMoreIconVisible(View.VISIBLE);
         /**********************************控件初始化第一部分**************************************/
+        mJcParentAdapter = new JcParentAdapter(mActivity,new ArrayList<JcDataInfo>());
         mMainjcfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainjcfrag_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainjcfragRecycler.setLayoutManager(linearLayoutManager);
+        mMainjcfragRecycler.setAdapter(mJcParentAdapter);
         /**********************************控件初始化第二部分**************************************/
         mMainjcfragRecyclerConditions = (RecyclerView)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_recycler);
         mMainjcfragStAll = (LinearLayout)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_starttime_all);
@@ -415,9 +418,15 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         }
     }
 
-    public void getSuccessOfDataInfos(JcDataInfo jcDataInfo)
+    public void getSuccessOfDataInfos(List<JcDataInfo> jcDataInfos)
     {
-
+        List<JcDataInfo> tempList = new ArrayList<>();
+        for(JcDataInfo jcDataInfo : jcDataInfos)
+        {
+            if(jcDataInfo.getSensors().size() > 0)
+                tempList.add(jcDataInfo);
+        }
+        mJcParentAdapter.setNewData(tempList);
     }
 
     public void getSuccessOfCondition(JcCondition jcCondition,boolean isNeedDrawableLayout)
