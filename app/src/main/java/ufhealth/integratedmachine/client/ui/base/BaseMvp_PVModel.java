@@ -8,6 +8,7 @@ import okhttp3.RequestBody;
 import java.util.LinkedList;
 import okhttp3.MultipartBody;
 import android.content.Context;
+import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import ufhealth.integratedmachine.client.bean.BaseReturnData;
 import ufhealth.integratedmachine.client.bean.BaseReturnListData;
@@ -18,9 +19,11 @@ public abstract class BaseMvp_PVModel<T>
     private List<String> mFilesPath = new LinkedList<String>();
     private List<String> mImagesPath = new LinkedList<String>();
     private Map<String,String> mForms = new ConcurrentHashMap<String,String>();
+    private Map<String,String> mAllowSameKeyForms = new IdentityHashMap<String,String>();
     private List<MultipartBody.Part> mMultipartFiles = new LinkedList<MultipartBody.Part>();
     private List<MultipartBody.Part> mMultipartImages = new LinkedList<MultipartBody.Part>();
     private Map<String,RequestBody>  mMultipartForms = new ConcurrentHashMap<String,RequestBody>();
+    private Map<String,RequestBody> mMultipartAllowSameKeyForms = new IdentityHashMap<String,RequestBody>();
 
 
     /*****************************网络请求参数类型/本地查询参数类型********************************/
@@ -84,6 +87,25 @@ public abstract class BaseMvp_PVModel<T>
             for(Map.Entry<String, String> entry : forms.entrySet())
             {
                putForm(entry.getKey(),entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    public BaseMvp_PVModel putAllowSameKeyForm(String key, String value)
+    {
+        if(null != key && null != value)
+            mAllowSameKeyForms.put(key,value);
+        return this;
+    }
+
+    public BaseMvp_PVModel putAllowSameKeyForms(Map<String,String> forms)
+    {
+        if(null != forms && forms.size() > 0)
+        {
+            for(Map.Entry<String, String> entry : forms.entrySet())
+            {
+                putAllowSameKeyForm(entry.getKey(),entry.getValue());
             }
         }
         return this;
@@ -178,6 +200,37 @@ public abstract class BaseMvp_PVModel<T>
         return this;
     }
 
+    public BaseMvp_PVModel removeAllowSameKeyForm(String key)
+    {
+        if(null != key && mAllowSameKeyForms.containsKey(key))
+            mAllowSameKeyForms.remove(key);
+        return this;
+    }
+
+    public BaseMvp_PVModel removeAllowSameKeyForms(List<String> keys)
+    {
+        if(null != keys && keys.size() > 0)
+        {
+            for(String key : keys)
+            {
+                removeAllowSameKeyForm(key);
+            }
+        }
+        return this;
+    }
+
+    public BaseMvp_PVModel removeAllowSameKeyForms(Map<String,String> forms)
+    {
+        if(null != forms && forms.size() > 0)
+        {
+            for(Map.Entry<String, String> entry : forms.entrySet())
+            {
+                removeAllowSameKeyForm(entry.getKey());
+            }
+        }
+        return this;
+    }
+
 
     /**********************************************************************************************/
     /**************************************更改本地参数操作****************************************/
@@ -204,6 +257,28 @@ public abstract class BaseMvp_PVModel<T>
         return this;
     }
 
+    public BaseMvp_PVModel replaceAllowSameKeyForm(String key, String value)
+    {
+        if(null != key && null != value)
+        {
+            removeAllowSameKeyForm(key);
+            putAllowSameKeyForm(key,value);
+        }
+        return this;
+    }
+
+    public BaseMvp_PVModel replaceAllowSameKeyForms(Map<String,String> forms)
+    {
+        if(null != forms && forms.size() > 0)
+        {
+            for(Map.Entry<String, String> entry : forms.entrySet())
+            {
+                replaceAllowSameKeyForm(entry.getKey(),entry.getValue());
+            }
+        }
+        return this;
+    }
+
 
     /**********************************************************************************************/
     /*************************************转换本地参数为网络参数***********************************/
@@ -218,7 +293,8 @@ public abstract class BaseMvp_PVModel<T>
                 String filePath = mFilesPath.get(index);
                 File file = new File(filePath);
                 RequestBody requestFile = RequestBody.create(mFileType,file);
-                MultipartBody.Part multipartFilePart = MultipartBody.Part.createFormData("file" + index , file.getName(), requestFile);
+                //MultipartBody.Part multipartFilePart = MultipartBody.Part.createFormData("file" + index , file.getName(), requestFile);
+                MultipartBody.Part multipartFilePart = MultipartBody.Part.createFormData("files", file.getName(), requestFile);
                 mMultipartFiles.add(multipartFilePart);
             }
         }
@@ -256,6 +332,20 @@ public abstract class BaseMvp_PVModel<T>
         return this;
     }
 
+    public BaseMvp_PVModel convertAllowSameKeyForms()
+    {
+        mMultipartAllowSameKeyForms.clear();
+        if(null != mAllowSameKeyForms && mAllowSameKeyForms.size() > 0)
+        {
+            for(Map.Entry<String, String> entry : mAllowSameKeyForms.entrySet())
+            {
+                RequestBody requestBody = RequestBody.create(mTextType,entry.getValue());
+                mMultipartAllowSameKeyForms.put(entry.getKey(),requestBody);
+            }
+        }
+        return this;
+    }
+
 
     /**********************************************************************************************/
     /****************************************获取参数数据******************************************/
@@ -278,6 +368,12 @@ public abstract class BaseMvp_PVModel<T>
 
     }
 
+    public Map<String, String> getAllowSameKeyForms()
+    {
+        return mAllowSameKeyForms;
+
+    }
+
     public List<MultipartBody.Part> getMultipartFiles()
     {
         return mMultipartFiles;
@@ -293,6 +389,12 @@ public abstract class BaseMvp_PVModel<T>
     public Map<String, RequestBody>  getMultipartForms()
     {
         return mMultipartForms;
+
+    }
+
+    public Map<String, RequestBody>  getMultipartAllowSameKeyForms()
+    {
+        return mMultipartAllowSameKeyForms;
 
     }
 

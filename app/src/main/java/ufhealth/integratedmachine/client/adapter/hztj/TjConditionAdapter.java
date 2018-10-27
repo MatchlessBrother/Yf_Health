@@ -37,7 +37,7 @@ public class TjConditionAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
                 final TjCondition.DepartmentDeviceVosBean departmentBean = (TjCondition.DepartmentDeviceVosBean)item;
                 helper.setBackgroundRes(R.id.item_maintjfragment_condition_parent_all,departmentBean.isSelected() ? R.color.colorPrimary : R.color.white);
                 helper.setText(R.id.item_maintjfragment_condition_parent_tv,null != departmentBean.getDepartmentName() ? departmentBean.getDepartmentName().trim() : "");
-                helper.setTextColor(R.id.item_maintjfragment_condition_parent_tv,departmentBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.default_font_black));
+                helper.setTextColor(R.id.item_maintjfragment_condition_parent_tv,departmentBean.isSelected() ? ContextCompat.getColor(mContext,R.color.white): ContextCompat.getColor(mContext,R.color.colorPrimary));
                 helper.setGone(R.id.item_maintjfragment_condition_parent_imgall,(null != departmentBean.getDepartmentName() && (departmentBean.getDepartmentName().trim().contains("所有") || departmentBean.getDepartmentName().trim().contains("全部")))? false : true);
                 helper.setImageResource(R.id.item_maintjfragment_condition_parent_img,departmentBean.isSelected() ? (departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_white : R.drawable.icon_arrowright_white) : departmentBean.isExpanded() ? R.drawable.icon_arrowbottom_blue : R.drawable.icon_arrowright_blue);
                 helper.itemView.findViewById(R.id.item_maintjfragment_condition_parent_tv).setOnClickListener(new View.OnClickListener()/*******************选择父类*********************/

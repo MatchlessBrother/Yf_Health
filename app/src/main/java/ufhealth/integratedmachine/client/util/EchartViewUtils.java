@@ -12,7 +12,27 @@ public class EchartViewUtils
     {
         GsonOption option = new GsonOption();
         option.grid().x(46).y(20).x2(12).y2(26).borderWidth(0);
+
+        ValueAxis valueAxis = new ValueAxis();
+        option.yAxis(valueAxis);
+
+        CategoryAxis categorxAxis = new CategoryAxis();
+        categorxAxis.axisLine().onZero(false);
+        categorxAxis.boundaryGap(true);
+        categorxAxis.data(xAxis);
+        option.xAxis(categorxAxis);
+
+        Line line = new Line();
+        line.smooth(false).name("数量").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,0,0,0.4)");
+        option.series(line);
+        return option;
+    }
+
+  /*  public static GsonOption getBarChartOptions(Object[] xAxis, Object[] yAxis)
+    {
+        GsonOption option = new GsonOption();
         option.tooltip().trigger(Trigger.axis);
+        option.grid().x(46).y(20).x2(12).y2(26).borderWidth(0);
 
         ValueAxis valueAxis = new ValueAxis();
         option.yAxis(valueAxis);
@@ -27,5 +47,5 @@ public class EchartViewUtils
         line.smooth(false).name("销量").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,0,0,0.4)");
         option.series(line);
         return option;
-    }
+    }*/
 }

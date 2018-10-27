@@ -1,8 +1,11 @@
 package ufhealth.integratedmachine.client.network;
 
 import java.util.Map;
+import java.util.List;
 import okhttp3.RequestBody;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import okhttp3.MultipartBody;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
 import retrofit2.http.Multipart;
@@ -14,6 +17,7 @@ import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnListData;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczUploadImgInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyPageInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyCondition;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczHistroyPageInfo;
@@ -40,17 +44,25 @@ public interface NetUrl
     @Multipart
     Observable<BaseReturnData<UserInfo>> signIn(@PartMap Map<String, RequestBody> params);
 
+    @POST("/cgqkshbj/record/handle.app")
+    @Multipart
+    Observable<BaseReturnData> uploadBjczAllDatas(@PartMap Map<String, RequestBody> params);
+
     @POST("/cgqkshbj/stat/stat.app")
     @Multipart
     Observable<BaseReturnData<TjDataInfo>> requestHztjDatas(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cgqkshbj/record/list.app")
+    @Multipart
+    Observable<BaseReturnData<BjczPageInfo>> requestAlarmDatas(@PartMap Map<String, RequestBody> params);
 
     @POST("/cgqkshbj/monitor/monitor.app")
     @Multipart
     Observable<BaseReturnListData<JcDataInfo>> requestJcDatasInfo(@PartMap Map<String, RequestBody> params);
 
-    @POST("/cgqkshbj/record/list.app")
+    @POST("/upload/any")
     @Multipart
-    Observable<BaseReturnData<BjczPageInfo>> requestAlarmDatas(@PartMap Map<String, RequestBody> params);
+    Observable<BaseReturnListData<BjczUploadImgInfo>> uploadBjczImgDatas(@Part List<MultipartBody.Part> params);
 
     @POST("/cgqkshbj/record/list.app")
     @Multipart

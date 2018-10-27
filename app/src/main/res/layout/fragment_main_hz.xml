@@ -69,7 +69,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="36mm"
+                        android:layout_marginBottom="16mm"
                         android:layout_marginTop="36mm"
                         android:orientation="horizontal">
 
@@ -286,7 +286,7 @@
 
                     <ufhealth.integratedmachine.client.widget.EchartView
                         android:id="@+id/mainhzfrag_echartview"
-                        android:layout_height="460mm"
+                        android:layout_height="400mm"
                         android:layout_width="match_parent"/>
 
                 </LinearLayout>

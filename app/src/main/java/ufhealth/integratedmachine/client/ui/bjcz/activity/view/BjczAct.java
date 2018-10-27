@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.bjcz.activity.view;
 
+import java.util.Map;
 import java.util.List;
 import android.view.View;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.widget.EditText;
 import android.util.TypedValue;
+import java.util.IdentityHashMap;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.ColorDrawable;
@@ -17,12 +19,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import ufhealth.integratedmachine.client.base.BasePhotoAct;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczUploadImgInfo;
 import ufhealth.integratedmachine.client.adapter.bjcz.BjczImgAdapter;
 import ufhealth.integratedmachine.client.ui.bjcz.activity.view_v.BjczAct_V;
 import ufhealth.integratedmachine.client.ui.bjcz.activity.presenter.BjczPresenter;
 
 public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListener
 {
+    private String mAlarmId;
     private Button mBjczBtn;
     private EditText mBjczEt;
     private BjczPresenter mBjczPresenter;
@@ -38,6 +42,7 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
     {
         super.initWidgets(rootView);
         setTitleContent("报警处置");
+        mAlarmId = getIntent().getStringExtra("alarmid");
         mBjczEt = (EditText)rootView.findViewById(R.id.bjcz_et);
         mBjczBtn = (Button)rootView.findViewById(R.id.bjcz_btn);
         List dataList = new ArrayList<String>();dataList.add("");
@@ -126,7 +131,7 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
         {
             case R.id.bjcz_btn:
             {
-                mBjczPresenter.disposeAlarm(mBjczEt.getText().toString().trim(),mBjczImgAdapter.getData());
+                mBjczPresenter.disposeAlarmImage(mBjczImgAdapter.getData());
                 break;
             }
         }
@@ -142,6 +147,12 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
     {
         showToast("上传数据成功！");
         finish();
+    }
+
+    public void failOfUploadImgDatas()
+    {
+        showToast("上传图片失败，请稍后重试！");
+
     }
 
     protected void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
@@ -162,5 +173,18 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
             }
             mBjczImgAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void successOfUploadImgDatas(List<BjczUploadImgInfo> bjczUploadImgInfos)
+    {
+        Map<String,String> map = new IdentityHashMap<>();
+        for(int index = 0;index < bjczUploadImgInfos.size();index++)
+        {
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("imagePaths");
+            map.put(stringBuffer.toString(),null != bjczUploadImgInfos.get(index).getPath() ? bjczUploadImgInfos.get(index).getPath().trim() : "");
+
+        }
+        mBjczPresenter.disposeAlarm(mAlarmId,mBjczEt.getText().toString().trim(),map);
     }
 }

@@ -97,6 +97,7 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
                     case R.id.item_mainbjczfragment_process:
                     {
                         Intent intent = new Intent(mActivity,BjczAct.class);
+                        intent.putExtra("alarmid",((BjczPageInfo.ContentBean)adapter.getData().get(position)).getId() + "");
                         startActivity(intent);
                         break;
                     }
