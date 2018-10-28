@@ -1,9 +1,12 @@
 package ufhealth.integratedmachine.client.adapter.ssjc;
 
 import java.util.List;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import ufhealth.integratedmachine.client.R;
@@ -12,6 +15,7 @@ import android.graphics.drawable.GradientDrawable;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
+import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczDetailAct;
 
 public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,BaseViewHolder>
 {
@@ -24,7 +28,7 @@ public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,Base
         mContext = context;
     }
 
-    protected void convert(BaseViewHolder helper, JcDataInfo.SensorsBean sensorsBean)
+    protected void convert(BaseViewHolder helper,final JcDataInfo.SensorsBean sensorsBean)
     {
         if(null != sensorsBean.getDataSyncStatusName() && sensorsBean.getDataSyncStatusName().trim().contains("异常"))
             helper.setTextColor(R.id.item_mainjcfrag_sjtx, ContextCompat.getColor(mContext,R.color.red));
@@ -68,5 +72,14 @@ public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,Base
         bottomBackgroundDrawable.setCornerRadii(new float[]{0,0,0,0,12,12,12,12});
         bottomBackgroundDrawable.setColor(Color.parseColor("#FF" + (null != mBgColor ? mBgColor.trim() : "FF0000")));
         helper.getView(R.id.item_mainjcfrag_bottombg).setBackgroundDrawable(bottomBackgroundDrawable);
+        helper.itemView.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(mContext,BjczDetailAct.class);
+                intent.putExtra("alarmid",String.valueOf(sensorsBean.getId()));
+                mContext.startActivity(intent);
+            }
+        });
     }
 }

@@ -73,5 +73,14 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.bjcz.activity.view.BjczDetailAct"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".ui.ssjc.activity.view.SsjcDetailAct"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

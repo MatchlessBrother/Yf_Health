@@ -222,13 +222,6 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         updateConditionsMap();
         mMainJcPresenter.getDatasOfCondition(false);
         mMainJcPresenter.getDatasInfo(mConditionsMap);
-        /*mBjHistroyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
-        {
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
-            {
-                showToast("已点击第" + (position + 1) + "个子选项 ! ");
-            }
-        });*/
         mMainjcfragLxAll.setOnClickListener(this);
         mMainjcfragZtAll.setOnClickListener(this);
         mMainjcfragStAll.setOnClickListener(this);

@@ -16,7 +16,9 @@ import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
 import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczPageInfo;
+import ufhealth.integratedmachine.client.bean.ssjc.JcDetailInfo;
 import ufhealth.integratedmachine.client.bean.BaseReturnListData;
+import ufhealth.integratedmachine.client.bean.bjcz.BjczDetailInfo;
 import ufhealth.integratedmachine.client.bean.bjcz.BjczUploadImgInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyPageInfo;
 import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyCondition;
@@ -63,6 +65,14 @@ public interface NetUrl
     @POST("/upload/any")
     @Multipart
     Observable<BaseReturnListData<BjczUploadImgInfo>> uploadBjczImgDatas(@Part List<MultipartBody.Part> params);
+
+    @POST("/cgqkshbj/record/detail.app")
+    @Multipart
+    Observable<BaseReturnData<BjczDetailInfo>> requestAlarmDetailDatas(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cgqkshbj/monitor/monitorDetail.app")
+    @Multipart
+    Observable<BaseReturnData<JcDetailInfo>> requestSsjcDetailDatas(@PartMap Map<String, RequestBody> params);
 
     @POST("/cgqkshbj/record/list.app")
     @Multipart

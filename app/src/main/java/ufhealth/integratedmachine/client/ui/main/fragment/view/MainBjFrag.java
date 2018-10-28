@@ -16,6 +16,7 @@ import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.adapter.bjcz.BjczAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczAct;
+import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczDetailAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjFrag_V;
 import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczHistroyAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
@@ -80,7 +81,9 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+               Intent intent = new Intent(mActivity,BjczDetailAct.class);
+               intent.putExtra("alarmid",String.valueOf(mBjczAdapter.getData().get(position).getId()));
+               startActivity(intent);
             }
         });
 

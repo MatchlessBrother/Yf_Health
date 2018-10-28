@@ -34,6 +34,7 @@ import ufhealth.integratedmachine.client.bean.lsbj.BjHistroyCondition;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.adapter.lsbj.BjHistroyAdapter;
 import ufhealth.integratedmachine.client.adapter.lsbj.BjConditionAdapter;
+import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczDetailAct;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainBjHistroyFrag_V;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainBjHistroyPresenter;
@@ -246,7 +247,9 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+                Intent intent = new Intent(mActivity,BjczDetailAct.class);
+                intent.putExtra("alarmid",String.valueOf(mBjHistroyAdapter.getData().get(position).getId()));
+                startActivity(intent);
             }
         });
         mMainbjhistroyfragLxAll.setOnClickListener(this);

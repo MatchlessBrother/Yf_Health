@@ -2,6 +2,7 @@ package ufhealth.integratedmachine.client.ui.bjcz.activity.view;
 
 import android.view.View;
 import java.util.ArrayList;
+import android.content.Intent;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -69,7 +70,9 @@ public class BjczHistroyAct extends BaseAct implements BjczHistroyAct_V,View.OnC
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                showToast("已点击第" + (position + 1) + "个子选项 ! ");
+                Intent intent = new Intent(BjczHistroyAct.this,BjczDetailAct.class);
+                intent.putExtra("alarmid",String.valueOf(mBjczHistroyAdapter.getData().get(position).getId()));
+                startActivity(intent);
             }
         });
     }
