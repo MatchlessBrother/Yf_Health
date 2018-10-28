@@ -1,12 +1,11 @@
 package ufhealth.integratedmachine.client.adapter.ssjc;
 
 import java.util.List;
-
+import android.view.View;
 import android.content.Intent;
 import android.graphics.Color;
 import android.content.Context;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import ufhealth.integratedmachine.client.R;
@@ -15,7 +14,7 @@ import android.graphics.drawable.GradientDrawable;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
-import ufhealth.integratedmachine.client.ui.bjcz.activity.view.BjczDetailAct;
+import ufhealth.integratedmachine.client.ui.ssjc.activity.view.SsjcDetailAct;
 
 public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,BaseViewHolder>
 {
@@ -76,7 +75,7 @@ public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,Base
         {
             public void onClick(View v)
             {
-                Intent intent = new Intent(mContext,BjczDetailAct.class);
+                Intent intent = new Intent(mContext,SsjcDetailAct.class);
                 intent.putExtra("alarmid",String.valueOf(sensorsBean.getId()));
                 mContext.startActivity(intent);
             }
