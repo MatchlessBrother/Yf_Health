@@ -287,8 +287,7 @@
                     <ufhealth.integratedmachine.client.widget.EchartView
                         android:id="@+id/mainhzfrag_echartview"
                         android:layout_height="400mm"
-                        android:layout_width="match_parent"
-                        android:background="@color/red"/>
+                        android:layout_width="match_parent"/>
 
                 </LinearLayout>
             </LinearLayout>

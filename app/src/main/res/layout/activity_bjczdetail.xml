@@ -1,12 +1,755 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title"/>
+    <include layout="@layout/layout_title" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/bjczdetail_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdgeLength="0mm"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/default_background_gray"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="名称"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_name"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="部门"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_department"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="区域"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_area"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="位置"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_position"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bjczdetail_keyvalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/default_background_gray"
+                    android:orientation="vertical" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="检查种类"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_type"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="实时值"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_ssz"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="历史告警"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_lsgj"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="连续告警"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_lxgj"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="实时库编号"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_sskbh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="负责人"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_fzr"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="联系电话"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_lxdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="办公电话"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_bgdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="数据通信"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_sjtx"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置人"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_czr"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置人联系电话"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_czrlxdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置人办公电话"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_czrbgdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="关联视频"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/bjczdetail_glsp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30mm"
+                        android:fadingEdgeLength="0mm"
+                        android:requiresFadingEdge="horizontal"
+                        android:scrollbars="none" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingTop="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:layout_marginLeft="20mm"
+                        android:layout_marginRight="20mm"
+                        android:text="历史报警曲线图"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <ufhealth.integratedmachine.client.widget.EchartView
+                        android:id="@+id/bjczdetail_lsbjqxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="400mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置说明"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+                    <TextView
+                        android:id="@+id/bjczdetail_czsm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30mm"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="20mm"
+                    android:paddingTop="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingBottom="20mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置图片"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28mm" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/bjczdetail_cztp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30mm"
+                        android:fadingEdgeLength="0mm"
+                        android:requiresFadingEdge="vertical"
+                        android:scrollbars="none" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/default_divide_line" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
