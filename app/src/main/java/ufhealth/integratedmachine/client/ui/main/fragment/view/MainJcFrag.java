@@ -11,9 +11,13 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.TextView;
+import io.reactivex.Observable;
 import java.text.SimpleDateFormat;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import ufhealth.integratedmachine.client.R;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -41,6 +46,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 {
     /******************************************************/
     /******************************************************/
+    private boolean isNeedRefreshDatas = false;
     private JcParentAdapter mJcParentAdapter;
     private RecyclerView mMainjcfragRecycler;
     /******************************************************/
@@ -114,6 +120,9 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         mJcConditionAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mMainjcfragRecyclerConditions.setAdapter(mJcConditionAdapter);
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        mMainjcfragRecycler.setFocusableInTouchMode(false);
+        mMainjcfragRecycler.setHasFixedSize(true);
+
         /**********************************控件初始化第三部分**************************************/
         mLsOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener()
         {
@@ -230,6 +239,22 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         mMainjcfrag_ResetBtn.setOnClickListener(this);
     }
 
+    public void onResume()
+    {
+        super.onResume();
+        if(getUserVisibleHint())
+        {
+            isNeedRefreshDatas = true;
+            startRequestDatas();
+        }
+    }
+
+    public void onPause()
+    {
+        super.onPause();
+        isNeedRefreshDatas = false;
+    }
+
     public void onClick(View view)
     {
         super.onClick(view);
@@ -323,9 +348,29 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         }
     }
 
+    public void startRequestDatas()
+    {
+        Observable.just("RestartRequest").map(new Function<String, String>()
+        {
+            public String apply(String s) throws Exception
+            {
+                Thread.sleep(1000);
+                return "StartRequest";
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
+        {
+            public void accept(String s) throws Exception
+            {
+                if(isNeedRefreshDatas)
+                    mMainJcPresenter.getDatasInfo(mConditionsMap);
+            }
+        });
+    }
+
     public void getFailOfDataInfos()
     {
-
+        if(isNeedRefreshDatas)
+            mMainJcPresenter.getDatasInfo(mConditionsMap);
     }
 
     protected void onTitleBackClick()
@@ -420,6 +465,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
                 tempList.add(jcDataInfo);
         }
         mJcParentAdapter.setNewData(tempList);
+        startRequestDatas();
     }
 
     public void getSuccessOfCondition(JcCondition jcCondition,boolean isNeedDrawableLayout)

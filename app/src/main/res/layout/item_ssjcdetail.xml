@@ -24,7 +24,7 @@
         android:paddingTop="20mm">
 
         <TextView
-            android:id="@+id/bjczdetail_key"
+            android:id="@+id/ssjcdetail_key"
             android:layout_width="0mm"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +33,7 @@
             android:textSize="28sp" />
 
         <TextView
-            android:id="@+id/bjczdetail_value"
+            android:id="@+id/ssjcdetail_value"
             android:layout_width="0mm"
             android:layout_height="wrap_content"
             android:layout_weight="1"

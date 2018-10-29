@@ -14,11 +14,13 @@ import ufhealth.integratedmachine.client.bean.bjcz.BjczDetailInfo;
 
 public class BjczDetailImgAdapter extends BaseQuickAdapter<BjczDetailInfo.HandleImagesBean,BaseViewHolder>
 {
+    private String mBasePath;
     private Context mContext;
     public BjczDetailImgAdapter(Context context,@Nullable List<BjczDetailInfo.HandleImagesBean> data)
     {
         super(R.layout.item_bjczdetailimg,data);
         mContext = context;
+        mBasePath = "http://git.yunfanwulian.com:20001";
     }
 
     protected void convert(BaseViewHolder helper, BjczDetailInfo.HandleImagesBean handleImagesBean)
@@ -27,6 +29,6 @@ public class BjczDetailImgAdapter extends BaseQuickAdapter<BjczDetailInfo.Handle
         options.error(R.mipmap.defaultimage);
         options.placeholder(R.mipmap.defaultimage);
         options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(mContext).load(null != handleImagesBean.getImageUrl() ? handleImagesBean.getImageUrl().trim() : "").apply(options).into((ImageView) helper.getView(R.id.item_bjczdetail_img));
+        Glide.with(mContext).load(null != handleImagesBean.getImageUrl() ? mBasePath + handleImagesBean.getImageUrl().trim() : "").apply(options).into((ImageView) helper.getView(R.id.item_bjczdetail_img));
     }
 }

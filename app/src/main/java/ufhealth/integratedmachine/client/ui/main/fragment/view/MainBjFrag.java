@@ -52,6 +52,13 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         mBjczAdapter.setEnableLoadMore(true);
     }
 
+    public void onResume()
+    {
+        super.onResume();
+        if(getUserVisibleHint() && null != mMainBjPresenter)
+            mMainBjPresenter.refreshDatas();
+    }
+
     protected void initDatas()
     {
         mMainBjPresenter = new MainBjPresenter();

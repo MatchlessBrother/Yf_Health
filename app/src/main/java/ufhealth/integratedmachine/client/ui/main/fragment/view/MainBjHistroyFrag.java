@@ -214,6 +214,13 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
                 .setRangDate(startDateRange,endDateRange).setDate(startTimeCalendar).isCyclic(true).build();
     }
 
+    public void onResume()
+    {
+        super.onResume();
+        if(getUserVisibleHint() && null != mMainBjHistroyPresenter && null != mConditionsMap)
+            mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
+    }
+
     protected void initDatas()
     {
         mMainBjHistroyPresenter = new MainBjHistroyPresenter();

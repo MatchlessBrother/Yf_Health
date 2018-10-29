@@ -2,13 +2,16 @@ package ufhealth.integratedmachine.client.adapter.ssjc;
 
 import java.util.List;
 import android.view.View;
+import android.text.Spanned;
 import android.content.Intent;
 import android.graphics.Color;
 import android.content.Context;
 import android.util.TypedValue;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.text.SpannableString;
 import ufhealth.integratedmachine.client.R;
+import android.text.style.ForegroundColorSpan;
 import android.support.v4.content.ContextCompat;
 import android.graphics.drawable.GradientDrawable;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -41,7 +44,15 @@ public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,Base
         helper.setText(R.id.item_mainjcfrag_dz,"位置 : " + (null != sensorsBean.getAddress() ? sensorsBean.getAddress().trim() :""));
         helper.setText(R.id.item_mainjcfrag_qy,"区域 : " + (null != sensorsBean.getDeviceAreaName() ? sensorsBean.getDeviceAreaName().trim() :""));
         helper.setText(R.id.item_mainjcfrag_lsgj,"历史报警 : " + (null != sensorsBean.getAlarmTotalNumber() ? sensorsBean.getAlarmTotalNumber().trim() :"0"));
-        helper.setText(R.id.item_mainjcfrag_sjtx,"数据通讯 : " + (null != sensorsBean.getDataSyncStatusName() ? sensorsBean.getDataSyncStatusName().trim() :""));
+        if(null != sensorsBean.getDataSyncStatus() && "2".equals(sensorsBean.getDataSyncStatus().trim()))
+        {
+            String sjtx = "数据通讯 : "+(null != sensorsBean.getDataSyncStatusName() ? sensorsBean.getDataSyncStatusName().trim() :"");
+            SpannableString spannableString = new SpannableString(sjtx);
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#FF0000"));
+            spannableString.setSpan(colorSpan,sjtx.indexOf(":"),spannableString.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            ((TextView)(helper.itemView.findViewById(R.id.item_mainjcfrag_sjtx))).setText(spannableString);
+        }
+        else helper.setText(R.id.item_mainjcfrag_sjtx,"数据通讯 : " + (null != sensorsBean.getDataSyncStatusName() ? sensorsBean.getDataSyncStatusName().trim() :""));
         helper.setText(R.id.item_mainjcfrag_jczl,"检查种类 : " + (null != sensorsBean.getCategoryParentName() ? sensorsBean.getCategoryParentName().trim() :""));
         for(int index = 0;index < sensorsBean.getSettings().size();index++)
         {

@@ -10,7 +10,7 @@
     android:background="@color/default_font_gray">
 
     <TextView
-        android:id="@+id/item_bjczdetailglsp_tv"
+        android:id="@+id/item_ssjcdetailglsp_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
         android:textSize="26sp" />
 
     <ImageView
-        android:id="@+id/item_bjczdetailglsp_img"
+        android:id="@+id/item_ssjcdetailglsp_img"
         android:layout_width="90mm"
         android:layout_height="90mm"
         android:layout_gravity="center"

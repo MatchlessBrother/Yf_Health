@@ -17,7 +17,6 @@ public class MainJcModel extends BaseMvp_PVModel
 
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
-        localCallBack.onStart();
         switch(netRequestCode)
         {
             case RequestDatasOfCondition:NetClient.getInstance(context).getNetUrl().requestJcDatasOfCondition().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
@@ -26,7 +25,6 @@ public class MainJcModel extends BaseMvp_PVModel
 
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalListCallBack localCallBack)
     {
-        localCallBack.onStart();
         switch(netRequestCode)
         {
             case RequestDatasInfo:NetClient.getInstance(context).getNetUrl().requestJcDatasInfo(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;

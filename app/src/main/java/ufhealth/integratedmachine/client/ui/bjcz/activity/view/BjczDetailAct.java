@@ -28,6 +28,7 @@ import ufhealth.integratedmachine.client.ui.bjcz.activity.presenter.BjczDetailPr
 public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnClickListener
 {
     private String mAlarmId;
+    private String mBaseImgPath;
     private TextView mBjczdetailCzr;
     private TextView mBjczdetailFzr;
     private TextView mBjczdetailSsz;
@@ -64,6 +65,7 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
         super.initWidgets(rootView);
         setTitleContent("详情");
         mAlarmId = getIntent().getStringExtra("alarmid");
+        mBaseImgPath = "http://git.yunfanwulian.com:20001";
         mBjczdetailCzr = (TextView) rootView.findViewById(R.id.bjczdetail_czr);
         mBjczdetailSsz = (TextView) rootView.findViewById(R.id.bjczdetail_ssz);
         mBjczdetailFzr = (TextView) rootView.findViewById(R.id.bjczdetail_fzr);
@@ -131,7 +133,7 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
                 Intent intent = new Intent(BjczDetailAct.this,BjczPreviewPhotoAct.class);
-                intent.putExtra("imgPath",mBjczDetailImgAdapter.getData().get(position).getImageUrl().trim());
+                intent.putExtra("imgPath",mBaseImgPath + mBjczDetailImgAdapter.getData().get(position).getImageUrl().trim());
                 startActivity(intent);
             }
         });
@@ -153,10 +155,20 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
         mBjczdetailSwiperefreshlayout.setRefreshing(false);
         mBjczdetailName.setText(null != bjczDetailInfo.getSensorName() ? bjczDetailInfo.getSensorName().trim() : "");
         mBjczdetailLxgj.setText(null != bjczDetailInfo.getAlarmNumber() ? bjczDetailInfo.getAlarmNumber().trim() : "");
-        mBjczdetailSsz.setText(null != bjczDetailInfo.getRealtimeData() ? bjczDetailInfo.getRealtimeData().trim() : "");
+        String ssz = "";
+        if(null != bjczDetailInfo.getRealtimeData() && bjczDetailInfo.getRealtimeData().trim().indexOf(".") > 0)
+        {
+            ssz = bjczDetailInfo.getRealtimeData().trim();
+            ssz = ssz.replaceAll("0+?$", "");
+            ssz = ssz.replaceAll("[.]$", "");
+        }
+        mBjczdetailSsz.setText(ssz);
         mBjczdetailArea.setText(null != bjczDetailInfo.getDeviceAreaName() ? bjczDetailInfo.getDeviceAreaName().trim() : "");
         mBjczdetailLsgj.setText(null != bjczDetailInfo.getAlarmTotalNumber() ? bjczDetailInfo.getAlarmTotalNumber().trim() : "");
-        mBjczdetailType.setText(null != bjczDetailInfo.getParentCategoryName() ? bjczDetailInfo.getParentCategoryName().trim() : "");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(null != bjczDetailInfo.getParentCategoryName() ? bjczDetailInfo.getParentCategoryName().trim(): "");
+        stringBuffer.append(null != bjczDetailInfo.getMedium() && !"".equals( bjczDetailInfo.getMedium().trim()) ? "-" + bjczDetailInfo.getMedium().trim(): "");
+        mBjczdetailType.setText(stringBuffer.toString());
         mBjczdetailCzsm.setText(null != bjczDetailInfo.getHandleDescription() ? bjczDetailInfo.getHandleDescription().trim() : "");
         mBjczdetailSskbh.setText(null != bjczDetailInfo.getRealtimeDbPositionId() ? bjczDetailInfo.getRealtimeDbPositionId().trim() : "");
         mBjczdetailPosition.setText(null != bjczDetailInfo.getAddress() ? bjczDetailInfo.getAddress().trim() : "");
@@ -168,8 +180,9 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
         mBjczdetailCzrlxdh.setText(null != bjczDetailInfo.getHandlePeopleTelephone() ? bjczDetailInfo.getHandlePeopleTelephone().trim() : "");
         mBjczdetailCzrbgdh.setText(null != bjczDetailInfo.getHandlePeopleWorkTelephone() ? bjczDetailInfo.getHandlePeopleWorkTelephone().trim() : "");
         mBjczdetailSjtx.setText(null != bjczDetailInfo.getDataSyncStatusDescription() ? bjczDetailInfo.getDataSyncStatusDescription().trim() : "");
-        mBjczdetailSjtx.setTextColor((null != bjczDetailInfo.getDataSyncStatusDescription() && bjczDetailInfo.getDataSyncStatusDescription().trim().contains("正常")) ? Color.argb(255,0,255,0) : Color.argb(255,255,0,0));
+        mBjczdetailSjtx.setTextColor((null != bjczDetailInfo.getDataSyncStatus() && "1".equals(bjczDetailInfo.getDataSyncStatus().trim())) ? Color.argb(255,0,255,0) : Color.argb(255,255,0,0));
         /******************************************************************************************/
+        mBjczdetailKeyvalue.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
         for(int index = 0;index < bjczDetailInfo.getSettings().size();index++)
         {

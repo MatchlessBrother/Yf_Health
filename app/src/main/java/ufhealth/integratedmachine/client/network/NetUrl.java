@@ -62,7 +62,7 @@ public interface NetUrl
     @Multipart
     Observable<BaseReturnListData<JcDataInfo>> requestJcDatasInfo(@PartMap Map<String, RequestBody> params);
 
-    @POST("/upload/any")
+    @POST("/upload/any.app")
     @Multipart
     Observable<BaseReturnListData<BjczUploadImgInfo>> uploadBjczImgDatas(@Part List<MultipartBody.Part> params);
 
