@@ -60,7 +60,7 @@ public abstract class BasePhotoAct extends BasePhotoActivity implements BaseMvp_
             mTitleMoreFont = (TextView) rootView.findViewById(R.id.titlebar_morefont);
             mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.titlebar_moreicon);
             mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
-                    .hideBar(BarHide.FLAG_HIDE_STATUS_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
+                    .hideBar(BarHide.FLAG_SHOW_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
                     .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(false).keyboardEnable(true)
                     .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
             {

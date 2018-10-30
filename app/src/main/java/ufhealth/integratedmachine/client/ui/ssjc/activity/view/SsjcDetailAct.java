@@ -135,7 +135,7 @@ public class SsjcDetailAct extends BaseAct implements SsjcDetailAct_V,View.OnCli
             ssz = ssz.replaceAll("0+?$", "");
             ssz = ssz.replaceAll("[.]$", "");
         }
-        mSsjcdetailSsz.setText(ssz);
+        mSsjcdetailSsz.setText(!"".equals(ssz.trim()) ? ssz : (null != jcDetailInfo.getRealtimeData() ? jcDetailInfo.getRealtimeData().trim() : ""));
         mSsjcdetailLsgj.setText(null != jcDetailInfo.getAlarmTotalNumber() ? jcDetailInfo.getAlarmTotalNumber().trim() : "");
         mSsjcdetailLxgj.setText(null != jcDetailInfo.getAlarmNumber() ? jcDetailInfo.getAlarmNumber().trim() : "");
         mSsjcdetailSskbh.setText(null != jcDetailInfo.getRealtimeDbPositionId() ? jcDetailInfo.getRealtimeDbPositionId().trim() : "");

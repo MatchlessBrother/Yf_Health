@@ -1,5 +1,6 @@
 package ufhealth.integratedmachine.client.ui.bjcz.activity.view;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import android.view.View;
@@ -131,7 +132,10 @@ public class BjczAct extends BasePhotoAct implements BjczAct_V,View.OnClickListe
         {
             case R.id.bjcz_btn:
             {
-                mBjczPresenter.disposeAlarmImage(mBjczImgAdapter.getData());
+                if(mBjczImgAdapter.getData().size() > 0 && !"".equals(mBjczImgAdapter.getData().get(0).trim()))
+                    mBjczPresenter.disposeAlarmImage(mBjczImgAdapter.getData());
+                else
+                    mBjczPresenter.disposeAlarm(mAlarmId,mBjczEt.getText().toString().trim(),new HashMap<String, String>());
                 break;
             }
         }

@@ -32,12 +32,15 @@ public class JcChildAdapter extends BaseQuickAdapter<JcDataInfo.SensorsBean,Base
 
     protected void convert(BaseViewHolder helper,final JcDataInfo.SensorsBean sensorsBean)
     {
-        if(null != sensorsBean.getDataSyncStatusName() && sensorsBean.getDataSyncStatusName().trim().contains("异常"))
+        if(null != sensorsBean.getDataSyncStatus() && "2".equals(sensorsBean.getDataSyncStatus().trim()))
             helper.setTextColor(R.id.item_mainjcfrag_sjtx, ContextCompat.getColor(mContext,R.color.red));
         else
             helper.setTextColor(R.id.item_mainjcfrag_sjtx,ContextCompat.getColor(mContext,R.color.default_font_black));
         StringBuffer stringBuffer  = new StringBuffer();
-        stringBuffer.append(null != sensorsBean.getRealtimeData() ? sensorsBean.getRealtimeData().trim():"0");
+        if(null != sensorsBean.getDataSyncStatus() && !"2".equals(sensorsBean.getDataSyncStatus()))
+            stringBuffer.append(null != sensorsBean.getRealtimeData() ? sensorsBean.getRealtimeData().trim():"0");
+        else
+            stringBuffer.append("--");
         stringBuffer.append(null != sensorsBean.getUnit()         ?        sensorsBean.getUnit().trim() : "");
         helper.setText(R.id.item_mainjcfrag_ssz,"实时值 : " + stringBuffer.toString().trim());
         helper.setText(R.id.item_mainjcfrag_wh,"位号 : " + (null != sensorsBean.getName() ? sensorsBean.getName().trim() :""));

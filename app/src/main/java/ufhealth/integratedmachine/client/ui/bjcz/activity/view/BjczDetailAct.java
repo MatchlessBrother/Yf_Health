@@ -32,6 +32,7 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
     private TextView mBjczdetailCzr;
     private TextView mBjczdetailFzr;
     private TextView mBjczdetailSsz;
+    private TextView mBjczdetailBjz;
     private GlspAdapter mGlspAdapter;
     private TextView mBjczdetailName;
     private TextView mBjczdetailArea;
@@ -67,6 +68,7 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
         mAlarmId = getIntent().getStringExtra("alarmid");
         mBaseImgPath = "http://git.yunfanwulian.com:20001";
         mBjczdetailCzr = (TextView) rootView.findViewById(R.id.bjczdetail_czr);
+        mBjczdetailBjz = (TextView) rootView.findViewById(R.id.bjczdetail_bjz);
         mBjczdetailSsz = (TextView) rootView.findViewById(R.id.bjczdetail_ssz);
         mBjczdetailFzr = (TextView) rootView.findViewById(R.id.bjczdetail_fzr);
         mBjczdetailName = (TextView) rootView.findViewById(R.id.bjczdetail_name);
@@ -162,7 +164,15 @@ public class BjczDetailAct extends BaseAct implements BjczDetailAct_V,View.OnCli
             ssz = ssz.replaceAll("0+?$", "");
             ssz = ssz.replaceAll("[.]$", "");
         }
-        mBjczdetailSsz.setText(ssz);
+        mBjczdetailSsz.setText(!"".equals(ssz.trim()) ? ssz : (null != bjczDetailInfo.getRealtimeData() ? bjczDetailInfo.getRealtimeData().trim() : ""));
+        String bjz = "";
+        if(null != bjczDetailInfo.getAlarmValue() && bjczDetailInfo.getAlarmValue().trim().indexOf(".") > 0)
+        {
+            bjz = bjczDetailInfo.getAlarmValue().trim();
+            bjz = bjz.replaceAll("0+?$", "");
+            bjz = bjz.replaceAll("[.]$", "");
+        }
+        mBjczdetailBjz.setText(!"".equals(bjz.trim()) ? bjz : (null != bjczDetailInfo.getAlarmValue() ? bjczDetailInfo.getAlarmValue().trim() : ""));
         mBjczdetailArea.setText(null != bjczDetailInfo.getDeviceAreaName() ? bjczDetailInfo.getDeviceAreaName().trim() : "");
         mBjczdetailLsgj.setText(null != bjczDetailInfo.getAlarmTotalNumber() ? bjczDetailInfo.getAlarmTotalNumber().trim() : "");
         StringBuffer stringBuffer = new StringBuffer();

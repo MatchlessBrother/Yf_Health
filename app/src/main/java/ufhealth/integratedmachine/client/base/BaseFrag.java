@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.gyf.barlibrary.BarHide;
+import me.jessyan.autosize.AutoSize;
 import android.graphics.BitmapFactory;
 import com.gyf.barlibrary.ImmersionBar;
 import ufhealth.integratedmachine.client.R;
@@ -53,7 +54,7 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
             mTitleMoreFont = (TextView) rootView.findViewById(R.id.titlebar_morefont);
             mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.titlebar_moreicon);
             mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
-                    .hideBar(BarHide.FLAG_HIDE_STATUS_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
+                    .hideBar(BarHide.FLAG_SHOW_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
                     .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(false).keyboardEnable(true)
                     .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
             {
@@ -69,6 +70,12 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
             mTitleMoreFont.setOnClickListener(this);
             mTitleMoreIcon.setOnClickListener(this);
         }
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        AutoSize.autoConvertDensity(getActivity(),720,true);
     }
 
     public void onDestroy()

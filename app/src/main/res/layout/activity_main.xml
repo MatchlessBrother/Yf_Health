@@ -23,17 +23,24 @@
             android:layout_height="1mm"
             android:background="@color/default_font_gray" />
 
-        <android.support.v4.app.FragmentTabHost
-            android:id="@android:id/tabhost"
+        <TabHost
+            android:id="@+id/main_tabhost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EEF8F8F8">
+            android:background="#EEF8F8F8"
+            android:visibility="visible">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-        </android.support.v4.app.FragmentTabHost>
+                android:layout_width="0mm"
+                android:layout_height="0mm"
+                android:visibility="gone"/>
+        </TabHost>
     </LinearLayout>
 
     <LinearLayout
@@ -54,30 +61,35 @@
                 android:layout_weight="1"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/colorAccent"
                 android:layout_width="match_parent">
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:paddingTop="1mm"
                     android:fadingEdgeLength="0mm"
-                    android:layout_marginTop="20mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent"
                     android:requiresFadingEdge="vertical"
                     android:id="@+id/mainhzfrag_conditions_recycler"/>
 
                 <View
                     android:layout_width="1mm"
+                    android:layout_marginTop="54mm"
                     android:layout_height="match_parent"
                     android:background="@color/default_divide_line"/>
 
                 <LinearLayout
+                    android:paddingTop="28mm"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:paddingLeft="20mm"
                     android:paddingRight="20mm"
                     android:orientation="vertical"
-                    android:layout_marginTop="46mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -281,30 +293,35 @@
                 android:layout_weight="1"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:background="@color/white"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+                android:background="@color/colorAccent">
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:paddingTop="1mm"
                     android:fadingEdgeLength="0mm"
-                    android:layout_marginTop="20mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent"
                     android:requiresFadingEdge="vertical"
                     android:id="@+id/mainjcfrag_conditions_recycler"/>
 
                 <View
                     android:layout_width="1mm"
+                    android:layout_marginTop="54mm"
                     android:layout_height="match_parent"
                     android:background="@color/default_divide_line"/>
 
                 <LinearLayout
+                    android:paddingTop="28mm"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:paddingLeft="20mm"
                     android:paddingRight="20mm"
                     android:orientation="vertical"
-                    android:layout_marginTop="46mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -509,30 +526,35 @@
                 android:layout_weight="1"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:background="@color/white"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+                android:background="@color/colorAccent">
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:paddingTop="1mm"
                     android:fadingEdgeLength="0mm"
-                    android:layout_marginTop="20mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent"
                     android:requiresFadingEdge="vertical"
                     android:id="@+id/mainbjhistroyfrag_conditions_recycler"/>
 
                 <View
                     android:layout_width="1mm"
+                    android:layout_marginTop="54mm"
                     android:layout_height="match_parent"
                     android:background="@color/default_divide_line"/>
 
                 <LinearLayout
+                    android:paddingTop="28mm"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:paddingLeft="20mm"
                     android:paddingRight="20mm"
                     android:orientation="vertical"
-                    android:layout_marginTop="46mm"
+                    android:layout_marginTop="53mm"
+                    android:background="@color/white"
                     android:layout_height="match_parent">
 
                     <TextView
