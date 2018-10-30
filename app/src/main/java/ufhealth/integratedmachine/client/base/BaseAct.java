@@ -59,19 +59,19 @@ public abstract class BaseAct extends BaseActivity implements BaseMvp_View,View.
             mTitleContent = (TextView) rootView.findViewById(R.id.titlebar_content);
             mTitleMoreFont = (TextView) rootView.findViewById(R.id.titlebar_morefont);
             mTitleMoreIcon = (ImageButton) rootView.findViewById(R.id.titlebar_moreicon);
-            mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.transparent).navigationBarAlpha(0f)
-                         .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
-                         .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(true).keyboardEnable(true)
+            mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
+                         .hideBar(BarHide.FLAG_HIDE_STATUS_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
+                         .statusBarDarkFont(false).flymeOSStatusBarFontColor(R.color.white).fullScreen(false).keyboardEnable(true)
                          .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
-                         {
-                             public void onKeyboardChange(boolean status,int keyboardHeight)
-                             {
-                                 if(status)
-                                     Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
-                                 else
-                                     Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
-                             }
-                         }).init();
+            {
+                public void onKeyboardChange(boolean status,int keyboardHeight)
+                {
+                    if(status)
+                        Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+                    else
+                        Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+                }
+            }).init();
             mTitleBackBtn.setOnClickListener(this);
             mTitleMoreFont.setOnClickListener(this);
             mTitleMoreIcon.setOnClickListener(this);
