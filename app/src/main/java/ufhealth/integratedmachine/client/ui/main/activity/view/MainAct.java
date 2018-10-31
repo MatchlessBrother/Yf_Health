@@ -59,7 +59,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V,View.OnCli
         mMainbjhistroyfragConditions = (LinearLayout)rootView.findViewById(R.id.mainbjhistroyfrag_conditions);
         /****************************************************************************************************/
         mTabHost.setup();
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(4);
         mTabHost.getTabWidget().setDividerDrawable(null);
         mMainDrawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         for(int index = 0;index < mTabSpecTv.length;index++)

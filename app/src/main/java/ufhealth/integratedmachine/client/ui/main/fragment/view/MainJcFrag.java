@@ -354,7 +354,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         {
             public String apply(String s) throws Exception
             {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
                 return "StartRequest";
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()

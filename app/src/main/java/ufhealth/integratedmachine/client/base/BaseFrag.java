@@ -70,12 +70,13 @@ public abstract class BaseFrag extends BaseFragment implements BaseMvp_View,View
             mTitleMoreFont.setOnClickListener(this);
             mTitleMoreIcon.setOnClickListener(this);
         }
+        AutoSize.autoConvertDensity(mActivity,720,true);
     }
 
     public void onResume()
     {
         super.onResume();
-        AutoSize.autoConvertDensity(getActivity(),720,true);
+        AutoSize.autoConvertDensity(mActivity,720,true);
     }
 
     public void onDestroy()
