@@ -214,13 +214,6 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
                 .setRangDate(startDateRange,endDateRange).setDate(startTimeCalendar).isCyclic(true).build();
     }
 
-    public void onResume()
-    {
-        super.onResume();
-        if(getUserVisibleHint() && null != mMainBjHistroyPresenter && null != mConditionsMap)
-            mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
-    }
-
     protected void initDatas()
     {
         mMainBjHistroyPresenter = new MainBjHistroyPresenter();
@@ -265,6 +258,18 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         mMainbjhistroyfragEtAll.setOnClickListener(this);
         mMainbjhistroyfrag_SureBtn.setOnClickListener(this);
         mMainbjhistroyfrag_ResetBtn.setOnClickListener(this);
+    }
+
+    public void finishRefresh()
+    {
+        mMainbjhistroyfragSwiperefreshlayout.setRefreshing(false);
+
+    }
+
+    public void finishLoadMore()
+    {
+        mBjHistroyAdapter.loadMoreComplete();
+
     }
 
     public void onClick(View view)
@@ -360,18 +365,6 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         }
     }
 
-    public void finishRefresh()
-    {
-        mMainbjhistroyfragSwiperefreshlayout.setRefreshing(false);
-
-    }
-
-    public void finishLoadMore()
-    {
-        mBjHistroyAdapter.loadMoreComplete();
-
-    }
-
     protected void onTitleBackClick()
     {
         final View basePopupWindowContent = LayoutInflater.from(mActivity).inflate(R.layout.dialog_signin_exit,null);
@@ -452,6 +445,19 @@ public class MainBjHistroyFrag extends BaseFrag implements MainBjHistroyFrag_V,V
         else
         {
             mMainBjHistroyPresenter.getDatasOfCondition(true);
+        }
+    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && null != mMainBjHistroyPresenter && null != mConditionsMap)
+        {
+            mMainBjHistroyPresenter.refreshDatas(mConditionsMap);
+        }
+        else
+        {
+            System.gc();
         }
     }
 

@@ -14,6 +14,7 @@ public class MainJcModel extends BaseMvp_PVModel
 {
     public static final int RequestDatasInfo = 0x0001;
     public static final int RequestDatasOfCondition = 0x0002;
+    public static final int RequestDatasInfoWithProgress = 0x0003;
 
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
@@ -28,6 +29,7 @@ public class MainJcModel extends BaseMvp_PVModel
         switch(netRequestCode)
         {
             case RequestDatasInfo:NetClient.getInstance(context).getNetUrl().requestJcDatasInfo(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
+            case RequestDatasInfoWithProgress:localCallBack.onStart();NetClient.getInstance(context).getNetUrl().requestJcDatasInfo(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
         }
     }
 

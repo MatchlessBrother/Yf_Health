@@ -8,14 +8,15 @@ import android.view.View;
 import java.util.Calendar;
 import java.util.ArrayList;
 import android.view.Gravity;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.google.gson.Gson;
 import android.widget.Button;
+import android.webkit.WebView;
 import android.content.Intent;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
+import android.webkit.WebViewClient;
 import ufhealth.integratedmachine.client.R;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.widget.DrawerLayout;
@@ -29,13 +30,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import ufhealth.integratedmachine.client.base.BaseFrag;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import ufhealth.integratedmachine.client.widget.EchartView;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import ufhealth.integratedmachine.client.bean.hztj.TjDataInfo;
 import ufhealth.integratedmachine.client.bean.hztj.TjCondition;
-
-import com.google.gson.Gson;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import ufhealth.integratedmachine.client.adapter.hztj.TjTypeAdapter;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
@@ -43,7 +43,6 @@ import ufhealth.integratedmachine.client.adapter.hztj.TjConditionAdapter;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainHzFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainHzPresenter;
-import ufhealth.integratedmachine.client.widget.EchartView;
 
 public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickListener
 {
@@ -262,7 +261,6 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         {
             public void onRefresh()
             {
-                updateConditionsMap();
                 mMainHzPresenter.getDatas(mConditionsMap);
             }
         });
@@ -401,6 +399,12 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         }
     }
 
+    public void getFailureOfDatas()
+    {
+        if(mMainhzfragSwiperefreshlayout.isRefreshing())
+            mMainhzfragSwiperefreshlayout.setRefreshing(false);
+    }
+
     protected void onTitleBackClick()
     {
         final View basePopupWindowContent = LayoutInflater.from(mActivity).inflate(R.layout.dialog_signin_exit,null);
@@ -484,28 +488,6 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
         }
     }
 
-    public void initBarGraph(final TjDataInfo tjDataInfo)
-    {
-        mMainhzfragEchartView.loadUrl("file:///android_asset/stat.html");
-        if(null != mMainhzfragEchartView)
-        {
-            mMainhzfragEchartView.setWebViewClient(new WebViewClient()
-            {
-                public void onPageFinished(WebView view, String url)
-                {
-                    super.onPageFinished(view, url);
-                    mMainhzfragEchartView.refreshEchartsViewWithDataJson(new Gson().toJson(tjDataInfo));
-                }
-            });
-        }
-    }
-
-    public void getFailureOfDatas()
-    {
-        if(mMainhzfragSwiperefreshlayout.isRefreshing())
-            mMainhzfragSwiperefreshlayout.setRefreshing(false);
-    }
-
     public void getSuccessOfDatas(TjDataInfo tjDataInfo)
     {
         if(mMainhzfragSwiperefreshlayout.isRefreshing())
@@ -528,6 +510,31 @@ public class MainHzFrag extends BaseFrag implements MainHzFrag_V,View.OnClickLis
             }
             //初始化表格数据
             initBarGraph(tjDataInfo);
+        }
+    }
+
+    public void initBarGraph(final TjDataInfo tjDataInfo)
+    {
+        mMainhzfragEchartView.loadUrl("file:///android_asset/stat.html");
+        if(null != mMainhzfragEchartView)
+        {
+            mMainhzfragEchartView.setWebViewClient(new WebViewClient()
+            {
+                public void onPageFinished(WebView view, String url)
+                {
+                    super.onPageFinished(view, url);
+                    mMainhzfragEchartView.refreshEchartsViewWithDataJson(new Gson().toJson(tjDataInfo));
+                }
+            });
+        }
+    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(!isVisibleToUser)
+        {
+            System.gc();
         }
     }
 

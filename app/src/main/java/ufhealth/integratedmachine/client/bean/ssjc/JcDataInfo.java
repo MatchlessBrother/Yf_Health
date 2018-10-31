@@ -1,8 +1,12 @@
 package ufhealth.integratedmachine.client.bean.ssjc;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.TextView;
+import android.graphics.drawable.GradientDrawable;
 
 public class JcDataInfo implements Parcelable
 {
@@ -84,7 +88,6 @@ public class JcDataInfo implements Parcelable
          * cameras :
          * monthAlramRecordStat :
          */
-
         private String id;
         private String departmentId;
         private String departmentName;
@@ -365,7 +368,7 @@ public class JcDataInfo implements Parcelable
             this.settings = settings;
         }
 
-        public static class SettingsBean implements Parcelable{
+        public static class SettingsBean implements  Parcelable{
             /**
              * levelId :
              * levelName : 预警

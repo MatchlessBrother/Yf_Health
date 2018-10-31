@@ -9,7 +9,9 @@ import java.util.Calendar;
 import java.util.ArrayList;
 import android.view.Gravity;
 import android.widget.Button;
+import android.graphics.Color;
 import android.content.Intent;
+import android.util.TypedValue;
 import android.widget.TextView;
 import io.reactivex.Observable;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,8 @@ import ufhealth.integratedmachine.client.R;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v7.widget.GridLayoutManager;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -34,10 +38,12 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import ufhealth.integratedmachine.client.bean.ssjc.JcDataInfo;
 import ufhealth.integratedmachine.client.bean.ssjc.JcCondition;
+import ufhealth.integratedmachine.client.adapter.ssjc.JcAdapter;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
-import ufhealth.integratedmachine.client.adapter.ssjc.JcParentAdapter;
+import ufhealth.integratedmachine.client.bean.ssjc.JcDataAdapterInfo;
 import ufhealth.integratedmachine.client.ui.main.activity.view.MainAct;
 import ufhealth.integratedmachine.client.adapter.ssjc.JcConditionAdapter;
+import ufhealth.integratedmachine.client.ui.ssjc.activity.view.SsjcDetailAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.view_v.MainJcFrag_V;
 import ufhealth.integratedmachine.client.ui.main.activity.view.ModifyPasswordAct;
 import ufhealth.integratedmachine.client.ui.main.fragment.presenter.MainJcPresenter;
@@ -46,9 +52,10 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
 {
     /******************************************************/
     /******************************************************/
-    private boolean isNeedRefreshDatas = false;
-    private JcParentAdapter mJcParentAdapter;
+    private JcAdapter mJcAdapter;
     private RecyclerView mMainjcfragRecycler;
+    private boolean isNeedRefreshDatas = false;
+    private GridLayoutManager mGridLayoutManager;
     /******************************************************/
     /******************************************************/
     private TextView mMainjcfragLx;
@@ -94,12 +101,12 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         setTitleMoreIcon(R.mipmap.searchicon);
         setTitleMoreIconVisible(View.VISIBLE);
         /**********************************控件初始化第一部分**************************************/
-        mJcParentAdapter = new JcParentAdapter(mActivity,new ArrayList<JcDataInfo>());
+        mJcAdapter = new JcAdapter(mActivity,new ArrayList<JcDataAdapterInfo>());
         mMainjcfragRecycler = (RecyclerView)rootView.findViewById(R.id.mainjcfrag_recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mMainjcfragRecycler.setLayoutManager(linearLayoutManager);
-        mMainjcfragRecycler.setAdapter(mJcParentAdapter);
+        mGridLayoutManager = new GridLayoutManager(mActivity,2);
+        mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mMainjcfragRecycler.setLayoutManager(mGridLayoutManager);
+        mMainjcfragRecycler.setAdapter(mJcAdapter);
         /**********************************控件初始化第二部分**************************************/
         mMainjcfragRecyclerConditions = (RecyclerView)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_recycler);
         mMainjcfragStAll = (LinearLayout)((MainAct)mActivity).getRootView().findViewById(R.id.mainjcfrag_conditions_starttime_all);
@@ -230,29 +237,34 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     {
         updateConditionsMap();
         mMainJcPresenter.getDatasOfCondition(false);
-        mMainJcPresenter.getDatasInfo(mConditionsMap);
+        mMainJcPresenter.getDatasInfo(mConditionsMap,false);
         mMainjcfragLxAll.setOnClickListener(this);
         mMainjcfragZtAll.setOnClickListener(this);
         mMainjcfragStAll.setOnClickListener(this);
         mMainjcfragEtAll.setOnClickListener(this);
         mMainjcfrag_SureBtn.setOnClickListener(this);
         mMainjcfrag_ResetBtn.setOnClickListener(this);
-    }
 
-    public void onResume()
-    {
-        super.onResume();
-        if(getUserVisibleHint())
+        mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
         {
-            isNeedRefreshDatas = true;
-            startRequestDatas();
-        }
-    }
+            public int getSpanSize(int position)
+            {
+                return mJcAdapter.getData().get(position).isDivideLine() ? mGridLayoutManager.getSpanCount() : 1;
+            }
+        });
 
-    public void onPause()
-    {
-        super.onPause();
-        isNeedRefreshDatas = false;
+        mJcAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                if(!mJcAdapter.getData().get(position).isDivideLine())
+                {
+                    Intent intent = new Intent(mActivity,SsjcDetailAct.class);
+                    intent.putExtra("alarmid",String.valueOf(mJcAdapter.getData().get(position).getId()));
+                    mActivity.startActivity(intent);
+                }
+            }
+        });
     }
 
     public void onClick(View view)
@@ -342,7 +354,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             {
                 updateConditionsMap();
                 mDrawerLayout.closeDrawers();
-                mMainJcPresenter.getDatasInfo(mConditionsMap);
+                mMainJcPresenter.getDatasInfo(mConditionsMap,true);
                 break;
             }
         }
@@ -354,7 +366,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         {
             public String apply(String s) throws Exception
             {
-                Thread.sleep(3000);
+                Thread.sleep(1000);
                 return "StartRequest";
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
@@ -362,7 +374,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
             public void accept(String s) throws Exception
             {
                 if(isNeedRefreshDatas)
-                    mMainJcPresenter.getDatasInfo(mConditionsMap);
+                    mMainJcPresenter.getDatasInfo(mConditionsMap,false);
             }
         });
     }
@@ -370,7 +382,7 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
     public void getFailOfDataInfos()
     {
         if(isNeedRefreshDatas)
-            mMainJcPresenter.getDatasInfo(mConditionsMap);
+            mMainJcPresenter.getDatasInfo(mConditionsMap,false);
     }
 
     protected void onTitleBackClick()
@@ -456,16 +468,107 @@ public class MainJcFrag extends BaseFrag implements MainJcFrag_V,View.OnClickLis
         }
     }
 
-    public void getSuccessOfDataInfos(List<JcDataInfo> jcDataInfos)
+    public void setUserVisibleHint(boolean isVisibleToUser)
     {
-        List<JcDataInfo> tempList = new ArrayList<>();
-        for(JcDataInfo jcDataInfo : jcDataInfos)
+        super.setUserVisibleHint(isVisibleToUser);
+        if(!isVisibleToUser)//不可见
         {
-            if(jcDataInfo.getSensors().size() > 0)
-                tempList.add(jcDataInfo);
+            isNeedRefreshDatas = false;
+            System.gc();
         }
-        mJcParentAdapter.setNewData(tempList);
-        startRequestDatas();
+        else
+        {
+            isNeedRefreshDatas = true;
+            startRequestDatas();
+        }
+    }
+
+    public void getSuccessOfDataInfos(final List<JcDataInfo> jcDataInfos)
+    {
+        Observable.just("ConversionOfData").map(new Function<String,List<JcDataAdapterInfo>>()
+        {
+            public List<JcDataAdapterInfo> apply(String s) throws Exception
+            {
+                StringBuffer sszBuffer = new StringBuffer();
+                List<JcDataAdapterInfo> resultList = new ArrayList<>();
+                for(int index = 0;index < jcDataInfos.size();index++)
+                {
+                    if(jcDataInfos.get(index).getSensors().size() > 0)
+                    {
+                        JcDataAdapterInfo jcDataAdapterInfoParent = new JcDataAdapterInfo();
+                        jcDataAdapterInfoParent.setId("6666666666");
+                        jcDataAdapterInfoParent.setDivideLine(true);
+                        resultList.add(jcDataAdapterInfoParent);
+                    }
+                    for(int pos = 0; pos < jcDataInfos.get(index).getSensors().size();pos++)
+                    {
+                        JcDataAdapterInfo jcDataAdapterInfoChild = new JcDataAdapterInfo();
+                        JcDataInfo.SensorsBean childSensorsBean = jcDataInfos.get(index).getSensors().get(pos);
+                        jcDataAdapterInfoChild.setDivideLine(false);
+                        jcDataAdapterInfoChild.setId(childSensorsBean.getId().trim());
+                        jcDataAdapterInfoChild.setBgColorCode(jcDataInfos.get(index).getColorCode());
+                        jcDataAdapterInfoChild.setWh("位号 : " + (null != childSensorsBean.getName() ? childSensorsBean.getName().trim() :""));
+                        jcDataAdapterInfoChild.setQy("区域 : " + (null != childSensorsBean.getDeviceAreaName() ? childSensorsBean.getDeviceAreaName().trim() :""));
+                        jcDataAdapterInfoChild.setWz("位置 : " + (null != childSensorsBean.getAddress() ? childSensorsBean.getAddress().trim() :""));
+                        jcDataAdapterInfoChild.setLsbj("历史报警 : " + (null != childSensorsBean.getAlarmTotalNumber() ? childSensorsBean.getAlarmTotalNumber().trim() :"0"));
+                        jcDataAdapterInfoChild.setSjtx("数据通讯 : " + (null != childSensorsBean.getDataSyncStatusName() ? childSensorsBean.getDataSyncStatusName().trim() :""));
+                        sszBuffer.setLength(0);
+                        if(null != childSensorsBean.getDataSyncStatus() && "1".equals(childSensorsBean.getDataSyncStatus().trim()))
+                        {
+                            jcDataAdapterInfoChild.setSjtxColorCode("#FF333333");
+                            sszBuffer.append(null != childSensorsBean.getRealtimeData() ? childSensorsBean.getRealtimeData().trim():"0");
+                            sszBuffer.append(null != childSensorsBean.getUnit() ? childSensorsBean.getUnit().trim() : "");
+                        }
+                        else
+                        {
+                            sszBuffer.append("--");
+                            jcDataAdapterInfoChild.setSjtxColorCode("#FFFF0000");
+                            sszBuffer.append(null != childSensorsBean.getUnit() ? childSensorsBean.getUnit().trim() : "");
+                        }
+                        jcDataAdapterInfoChild.setSsz("实时值 : " + sszBuffer.toString().trim());
+                        jcDataAdapterInfoChild.setJczl("检查种类 : " + (null != childSensorsBean.getCategoryParentName() ? childSensorsBean.getCategoryParentName().trim() :""));
+                        jcDataAdapterInfoChild.setLevelNameRuleDescriptions(new ArrayList<TextView>());
+                        for(int childNum = 0;childNum < childSensorsBean.getSettings().size();childNum++)
+                        {
+                            sszBuffer.setLength(0);
+                            TextView textView = new TextView(mActivity);
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,4,mActivity.getResources().getDisplayMetrics()),0,0);
+                            textView.setTextColor(mActivity.getResources().getColor(R.color.default_font_black));
+                            textView.setLayoutParams(layoutParams);
+                            textView.setSingleLine(true);
+                            textView.setTextSize(23);
+                            sszBuffer.append(null != childSensorsBean.getSettings().get(childNum).getLevelName() ? childSensorsBean.getSettings().get(childNum).getLevelName().trim() + " : " : "");
+                            sszBuffer.append(null != childSensorsBean.getSettings().get(childNum).getRuleDescription() ? childSensorsBean.getSettings().get(childNum).getRuleDescription().trim() : "");
+                            textView.setText(sszBuffer.toString());
+                            jcDataAdapterInfoChild.getLevelNameRuleDescriptions().add(textView);
+                        }
+                        GradientDrawable topBackgroundDrawable = new GradientDrawable();
+                        topBackgroundDrawable.setShape(GradientDrawable.RECTANGLE);
+                        topBackgroundDrawable.setCornerRadii(new float[]{12,12,12,12,0,0,0,0});
+                        topBackgroundDrawable.setColor(Color.parseColor("#33" + (null != jcDataInfos.get(index).getColorCode() ? jcDataInfos.get(index).getColorCode().trim() : "FFFFFF")));
+                        topBackgroundDrawable.setStroke((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,1,mActivity.getResources().getDisplayMetrics()),Color.parseColor("#FF" + (null != jcDataInfos.get(index).getColorCode() ? jcDataInfos.get(index).getColorCode().trim() : "EEEEEE")));
+                        jcDataAdapterInfoChild.setTopBackgroundDrawable(topBackgroundDrawable);
+                        /*****************************************************************************************************************************************************************************************************************************************************************************************/
+                        GradientDrawable bottomBackgroundDrawable = new GradientDrawable();
+                        bottomBackgroundDrawable.setShape(GradientDrawable.RECTANGLE);
+                        bottomBackgroundDrawable.setCornerRadii(new float[]{0,0,0,0,12,12,12,12});
+                        bottomBackgroundDrawable.setColor(Color.parseColor("#FF" + (null != jcDataInfos.get(index).getColorCode() ? jcDataInfos.get(index).getColorCode().trim() : "EEEEEE")));
+                        jcDataAdapterInfoChild.setBottomBackgroundDrawable(bottomBackgroundDrawable);
+                        /*****************************************************************************************************************************************************************************************************************************************************************************************/
+                       resultList.add(jcDataAdapterInfoChild);
+                    }
+                }
+                return resultList;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<JcDataAdapterInfo>>()
+        {
+            public void accept(List<JcDataAdapterInfo> resultList) throws Exception
+            {
+                mJcAdapter.setNewData(resultList);
+                startRequestDatas();
+            }
+        });
     }
 
     public void getSuccessOfCondition(JcCondition jcCondition,boolean isNeedDrawableLayout)

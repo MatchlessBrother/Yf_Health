@@ -52,13 +52,6 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         mBjczAdapter.setEnableLoadMore(true);
     }
 
-    public void onResume()
-    {
-        super.onResume();
-        if(getUserVisibleHint() && null != mMainBjPresenter)
-            mMainBjPresenter.refreshDatas();
-    }
-
     protected void initDatas()
     {
         mMainBjPresenter = new MainBjPresenter();
@@ -137,25 +130,6 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
         }
     }
 
-    public void refreshDatas(BjczPageInfo bjczPageInfo)
-    {
-        mBjczAdapter.setNewData(bjczPageInfo.getContent());
-        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
-            mBjczAdapter.setEnableLoadMore(false);
-        else
-            mBjczAdapter.setEnableLoadMore(true);
-    }
-
-    public void loadMoreDatas(BjczPageInfo bjczPageInfo)
-    {
-        mBjczAdapter.addData(bjczPageInfo.getContent());
-        mBjczAdapter.notifyDataSetChanged();
-        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
-            mBjczAdapter.setEnableLoadMore(false);
-        else
-            mBjczAdapter.setEnableLoadMore(true);
-    }
-
     protected void onTitleBackClick()
     {
         final View basePopupWindowContent = LayoutInflater.from(mActivity).inflate(R.layout.dialog_signin_exit,null);
@@ -189,5 +163,37 @@ public class MainBjFrag extends BaseFrag implements MainBjFrag_V,View.OnClickLis
     {
         super.onTitleMoreFontClick();
         startActivity(new Intent(mActivity, BjczHistroyAct.class));
+    }
+
+    public void refreshDatas(BjczPageInfo bjczPageInfo)
+    {
+        mBjczAdapter.setNewData(bjczPageInfo.getContent());
+        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
+            mBjczAdapter.setEnableLoadMore(false);
+        else
+            mBjczAdapter.setEnableLoadMore(true);
+    }
+
+    public void loadMoreDatas(BjczPageInfo bjczPageInfo)
+    {
+        mBjczAdapter.addData(bjczPageInfo.getContent());
+        mBjczAdapter.notifyDataSetChanged();
+        if(bjczPageInfo.getContent().size() < bjczPageInfo.getPageSize())
+            mBjczAdapter.setEnableLoadMore(false);
+        else
+            mBjczAdapter.setEnableLoadMore(true);
+    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && null != mMainBjPresenter)
+        {
+            mMainBjPresenter.refreshDatas();
+        }
+        else
+        {
+            System.gc();
+        }
     }
 }
